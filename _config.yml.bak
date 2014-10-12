@@ -1,0 +1,19 @@
+# Site settings
+title: 行之博客 
+email: 486614191@qq.com
+description: Linux/C/golang/Emacs
+baseurl: "" # the subpath of your site, e.g. /blog/
+url: "http://yourdomain.com" # the base hostname & protocol for your site
+twitter_username: xep007
+#
+github_username:  xep007
+
+# Build settings
+markdown: kramdown
+
+#paginate
+paginate: 5
+paginate_path: "page:num"
+
+#comments
+duoshuo: true

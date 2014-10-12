@@ -1,0 +1,780 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>行之博客</title>
+    <description>Linux  /  C  /  golang  /  Emacs</description>
+    <link>http://yourdomain.com/</link>
+    <atom:link href="http://yourdomain.com/feed.xml" rel="self" type="application/rss+xml" />
+    <pubDate>Sun, 12 Oct 2014 15:54:52 +0800</pubDate>
+    <lastBuildDate>Sun, 12 Oct 2014 15:54:52 +0800</lastBuildDate>
+    <generator>Jekyll v2.4.0</generator>
+    
+      <item>
+        <title>org-jekyll-mode安装及配置</title>
+        <description>&lt;div id=&quot;table-of-contents&quot;&gt;
+&lt;h2&gt;Table of Contents&lt;/h2&gt;
+&lt;div id=&quot;text-table-of-contents&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1&quot;&gt;1. 安装org-jekyll-mode&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-2&quot;&gt;2. 设置org-jekyll-mode&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-3&quot;&gt;3. 使用org-jekyll-mode&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+
+
+&lt;p&gt;
+&amp;#x2014;
+layout: page
+title: org-jekyll-mode安装及配置
+excerpt: excerpt
+tags: org; jekyll
+categories: org; jekyll
+&amp;#x2014;
+&lt;/p&gt;
+
+
+&lt;p&gt;
+前几天测试使用octopress创建github静态博客时，有个org-octopress的emacs插件非常好用。如今使用jekyll/bootstrap来建站，用emacs写博客就成了一个麻烦的问题。在github上找了一下，居然找到一个org-jekyll-mode，得好好试试。
+&lt;/p&gt;
+&lt;div id=&quot;outline-container-sec-1&quot; class=&quot;outline-2&quot;&gt;
+&lt;h2 id=&quot;sec-1&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;1&lt;/span&gt; 安装org-jekyll-mode&lt;/h2&gt;
+&lt;div class=&quot;outline-text-2&quot; id=&quot;text-1&quot;&gt;
+&lt;div class=&quot;org-src-container&quot;&gt;
+
+&lt;pre class=&quot;src src-git&quot;&gt;git clone https://github.com/jsuper/org-jekyll-mode org-jekyll-mode
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&quot;outline-container-sec-2&quot; class=&quot;outline-2&quot;&gt;
+&lt;h2 id=&quot;sec-2&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;2&lt;/span&gt; 设置org-jekyll-mode&lt;/h2&gt;
+&lt;div class=&quot;outline-text-2&quot; id=&quot;text-2&quot;&gt;
+&lt;p&gt;
+我把org-jekyll-mode文件夹拷贝到~/.emacs.d，然后按照作者主页(&lt;a href=&quot;http://jsuper.github.io/blog/using-org-mode-to-write-jekyll-post.html&quot;&gt;http://jsuper.github.io/blog/using-org-mode-to-write-jekyll-post.html&lt;/a&gt;)上的说明,在~/.emacs中加入以下设置。
+&lt;/p&gt;
+&lt;pre class=&quot;example&quot;&gt;
+(add-to-list &#39;load-path &quot;your-org-jekyll-mode-root&quot;)
+(require &#39;org-jekyll-mode)
+(setq org-jekyll/jekyll-project-root &quot;your-jekyll-root&quot;)
+(setq org-jekyll/org-mode-project-root &quot;your-org-mode-project-root&quot;)
+&lt;/pre&gt;
+
+&lt;p&gt;
+在使用org-jekyll-mode之前，你必须要先定义一些变量的值:
+&lt;/p&gt;
+&lt;pre class=&quot;example&quot;&gt;
+org-jekyll/jekyll-project-root
+&lt;/pre&gt;
+&lt;p&gt;
+这个变量指定了你的jekyll项目的根目录。因为org-jekyll-mode会根据这个路径，将其文件发布 到这个目录的相应子目录下。
+&lt;/p&gt;
+&lt;pre class=&quot;example&quot;&gt;
+org-jekyll/org-mode-project-root
+&lt;/pre&gt;
+&lt;p&gt;
+该变量指定了你的org-mode文件存放的目录。一般我喜欢将我的文件放在一个单独的网盘里面， 这样方便管理和随时查看。
+&lt;/p&gt;
+&lt;pre class=&quot;example&quot;&gt;
+org-jekyll/org-mode-static-files-folder-name
+&lt;/pre&gt;
+&lt;p&gt;
+这个变量指定了你在org-mode项目目录下，用于存放静态文件，如：图片、css等文件的目录名。 默认是你的org-mode项目的根目录。我个人比较喜欢将其放在一个叫assets的目录下。所以我的 org-mode 项目目录结构:
+&lt;/p&gt;
+&lt;pre class=&quot;example&quot;&gt;
+-Notes
+ --assets
+  ----img
+  ----css
+*.org
+&lt;/pre&gt;
+&lt;p&gt;
+关于更多的介绍，请参见项目WIKI。
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-sec-3&quot; class=&quot;outline-2&quot;&gt;
+&lt;h2 id=&quot;sec-3&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;3&lt;/span&gt; 使用org-jekyll-mode&lt;/h2&gt;
+&lt;div class=&quot;outline-text-2&quot; id=&quot;text-3&quot;&gt;
+&lt;p&gt;
+打开emacs,键入M-x，然后输入org-jekyll-mode,按照提示输入文件名。
+以org-mode语法书写博客。以下是几个快捷键：
+&lt;/p&gt;
+&lt;pre class=&quot;example&quot;&gt;
+C-c C-d   创建新文件
+&lt;/pre&gt;
+&lt;pre class=&quot;example&quot;&gt;
+C-c C-p   发布文件
+&lt;/pre&gt;
+
+&lt;p&gt;
+不知道是不是安装的姿势不对，C-c C-p居然没反应。有空再好好看看。
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</description>
+        <pubDate>Wed, 08 Oct 2014 00:00:00 +0800</pubDate>
+        <link>http://yourdomain.com/jekyll/org/2014/10/08/org-jekyll-mode%E5%AE%89%E8%A3%85%E5%8F%8A%E9%85%8D%E7%BD%AE.html</link>
+        <guid isPermaLink="true">http://yourdomain.com/jekyll/org/2014/10/08/org-jekyll-mode%E5%AE%89%E8%A3%85%E5%8F%8A%E9%85%8D%E7%BD%AE.html</guid>
+        
+        
+        <category>jekyll</category>
+        
+        <category>org</category>
+        
+      </item>
+    
+      <item>
+        <title>debian7搭建hexo博客</title>
+        <description>&lt;div id=&quot;table-of-contents&quot;&gt;
+&lt;h2&gt;Table of Contents&lt;/h2&gt;
+&lt;div id=&quot;text-table-of-contents&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1&quot;&gt;1. 安装nodejs和npm&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-2&quot;&gt;2. 安装hexo&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-3&quot;&gt;3. 创建hexo文件夹&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-4&quot;&gt;4. 安装依赖包&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-5&quot;&gt;5. 本地预览&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+
+
+&lt;div id=&quot;outline-container-sec-1&quot; class=&quot;outline-2&quot;&gt;
+&lt;h2 id=&quot;sec-1&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;1&lt;/span&gt; 安装nodejs和npm&lt;/h2&gt;
+&lt;div class=&quot;outline-text-2&quot; id=&quot;text-1&quot;&gt;
+&lt;pre class=&quot;example&quot;&gt;
+sudo aptitude install nodejs npm
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-sec-2&quot; class=&quot;outline-2&quot;&gt;
+&lt;h2 id=&quot;sec-2&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;2&lt;/span&gt; 安装hexo&lt;/h2&gt;
+&lt;div class=&quot;outline-text-2&quot; id=&quot;text-2&quot;&gt;
+&lt;pre class=&quot;example&quot;&gt;
+sudo npm install -g hexo
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-sec-3&quot; class=&quot;outline-2&quot;&gt;
+&lt;h2 id=&quot;sec-3&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;3&lt;/span&gt; 创建hexo文件夹&lt;/h2&gt;
+&lt;div class=&quot;outline-text-2&quot; id=&quot;text-3&quot;&gt;
+&lt;p&gt;
+如果不在家目录建立文件夹，那么等下执行hexo init时会提示&quot;Error: Theme landscape does not exist.&quot;
+&lt;/p&gt;
+
+&lt;pre class=&quot;example&quot;&gt;
+mkdir ~/hexo
+&lt;/pre&gt;
+
+&lt;p&gt;
+进入hexo文件夹
+&lt;/p&gt;
+&lt;pre class=&quot;example&quot;&gt;
+cd hexo
+hexo init
+&lt;/pre&gt;
+&lt;p&gt;
+如果提示/usr/bin/env: node:没有那个文件或目录,就执行以下命令。然后再执行hexo init。
+&lt;/p&gt;
+&lt;pre class=&quot;example&quot;&gt;
+sudo ln -s /usr/bin/nodejs /usr/bin/node
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+
+&lt;div id=&quot;outline-container-sec-4&quot; class=&quot;outline-2&quot;&gt;
+&lt;h2 id=&quot;sec-4&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;4&lt;/span&gt; 安装依赖包&lt;/h2&gt;
+&lt;div class=&quot;outline-text-2&quot; id=&quot;text-4&quot;&gt;
+&lt;pre class=&quot;example&quot;&gt;
+npm install
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-sec-5&quot; class=&quot;outline-2&quot;&gt;
+&lt;h2 id=&quot;sec-5&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;5&lt;/span&gt; 本地预览&lt;/h2&gt;
+&lt;div class=&quot;outline-text-2&quot; id=&quot;text-5&quot;&gt;
+&lt;p&gt;
+进入hexo文件夹，运行以下命令。然后就可以在浏览器中通过localhost:4000进行预览。
+&lt;/p&gt;
+&lt;pre class=&quot;example&quot;&gt;
+hexo generate
+hexo server
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</description>
+        <pubDate>Wed, 08 Oct 2014 00:00:00 +0800</pubDate>
+        <link>http://yourdomain.com/linux/hexo/2014/10/08/debian7%E6%9E%84%E5%BB%BAhexo+github%E5%8D%9A%E5%AE%A2.html</link>
+        <guid isPermaLink="true">http://yourdomain.com/linux/hexo/2014/10/08/debian7%E6%9E%84%E5%BB%BAhexo+github%E5%8D%9A%E5%AE%A2.html</guid>
+        
+        
+        <category>linux</category>
+        
+        <category>hexo</category>
+        
+      </item>
+    
+      <item>
+        <title>解决升级org8而导致的几个问题</title>
+        <description>&lt;div id=&quot;table-of-contents&quot;&gt;
+&lt;h2&gt;Table of Contents&lt;/h2&gt;
+&lt;div id=&quot;text-table-of-contents&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1&quot;&gt;1. org升级到版本8,自定义导出pdf的设置出错了&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-2&quot;&gt;2. 解决办法&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-2-1&quot;&gt;2.1. 在.emacs文件中修改,把&quot;to&quot;去掉。&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-2-2&quot;&gt;2.2. 在.emacs中修改自定义导出pdf的classes语法&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-2-3&quot;&gt;2.3. 在org文件头中把&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-sec-1&quot; class=&quot;outline-2&quot;&gt;
+&lt;h2 id=&quot;sec-1&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;1&lt;/span&gt; org升级到版本8,自定义导出pdf的设置出错了&lt;/h2&gt;
+&lt;div class=&quot;outline-text-2&quot; id=&quot;text-1&quot;&gt;
+&lt;p&gt;
+这两天因为安装org-octopress需要，升级了org到8.2版本（原本是7.9）。没想到原来自定义的导出pdf和emacs的html的style设置都罢工了。错误提示：
+&lt;/p&gt;
+&lt;ol class=&quot;org-ol&quot;&gt;
+&lt;li&gt;unknow class: cn-article
+&lt;/li&gt;
+&lt;li&gt;emacs的html style无效
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-sec-2&quot; class=&quot;outline-2&quot;&gt;
+&lt;h2 id=&quot;sec-2&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;2&lt;/span&gt; 解决办法&lt;/h2&gt;
+&lt;div class=&quot;outline-text-2&quot; id=&quot;text-2&quot;&gt;
+&lt;p&gt;
+baidu了好久，不得不说baidu在这方面真是无能。后来直接到查找org官网，找到&lt;a href=&quot;http://orgmode.org/worg/org-8.0.html&quot;&gt;http://orgmode.org/worg/org-8.0.html&lt;/a&gt; 才解决。
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&quot;outline-container-sec-2-1&quot; class=&quot;outline-3&quot;&gt;
+&lt;h3 id=&quot;sec-2-1&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;2.1&lt;/span&gt; 在.emacs文件中修改,把&quot;to&quot;去掉。&lt;/h3&gt;
+&lt;div class=&quot;outline-text-3&quot; id=&quot;text-2-1&quot;&gt;
+&lt;pre class=&quot;example&quot;&gt;
+(setq org-latex-to-pdf-process &#39;(&quot;xelatex -interaction nonstopmode %f&quot;
+                              &quot;xelatex -interaction nonstopmode %f&quot;))
+&lt;/pre&gt;
+&lt;p&gt;
+变成：
+&lt;/p&gt;
+&lt;pre class=&quot;example&quot;&gt;
+(setq org-latex-pdf-process &#39;(&quot;xelatex -interaction nonstopmode %f&quot;
+                              &quot;xelatex -interaction nonstopmode %f&quot;))
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-sec-2-2&quot; class=&quot;outline-3&quot;&gt;
+&lt;h3 id=&quot;sec-2-2&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;2.2&lt;/span&gt; 在.emacs中修改自定义导出pdf的classes语法&lt;/h3&gt;
+&lt;div class=&quot;outline-text-3&quot; id=&quot;text-2-2&quot;&gt;
+&lt;p&gt;
+把以下语句中的export去掉。
+&lt;/p&gt;
+&lt;pre class=&quot;example&quot;&gt;
+(unless (boundp &#39;org-export-latex-classes)
+  (setq org-export-latex-classes nil))
+(add-to-list &#39;org-export-latex-classes
+&lt;/pre&gt;
+&lt;p&gt;
+变成：
+&lt;/p&gt;
+&lt;pre class=&quot;example&quot;&gt;
+(unless (boundp &#39;org-latex-classes)
+  (setq org-latex-classes nil))
+(add-to-list &#39;org-latex-classes
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-sec-2-3&quot; class=&quot;outline-3&quot;&gt;
+&lt;h3 id=&quot;sec-2-3&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;2.3&lt;/span&gt; 在org文件头中把&lt;/h3&gt;
+&lt;div class=&quot;outline-text-3&quot; id=&quot;text-2-3&quot;&gt;
+&lt;pre class=&quot;example&quot;&gt;
+#+STYLE:
+&lt;/pre&gt;
+
+&lt;p&gt;
+修改为：
+&lt;/p&gt;
+
+&lt;pre class=&quot;example&quot;&gt;
+#+HTML_HEAD:
+&lt;/pre&gt;
+
+&lt;p&gt;
+好了，收工。
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</description>
+        <pubDate>Tue, 07 Oct 2014 00:00:00 +0800</pubDate>
+        <link>http://yourdomain.com/emacs/org/2014/10/07/%E8%A7%A3%E5%86%B3%E5%8D%87%E7%BA%A7org8%E8%80%8C%E5%AF%BC%E8%87%B4%E7%9A%84%E5%87%A0%E4%B8%AA%E9%97%AE%E9%A2%98.html</link>
+        <guid isPermaLink="true">http://yourdomain.com/emacs/org/2014/10/07/%E8%A7%A3%E5%86%B3%E5%8D%87%E7%BA%A7org8%E8%80%8C%E5%AF%BC%E8%87%B4%E7%9A%84%E5%87%A0%E4%B8%AA%E9%97%AE%E9%A2%98.html</guid>
+        
+        
+        <category>emacs</category>
+        
+        <category>org</category>
+        
+      </item>
+    
+      <item>
+        <title>org-octopress + github 构建静态博客</title>
+        <description>&lt;div id=&quot;table-of-contents&quot;&gt;
+&lt;h2&gt;Table of Contents&lt;/h2&gt;
+&lt;div id=&quot;text-table-of-contents&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1&quot;&gt;1. 创建github博客&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-2&quot;&gt;2. 安装git和ruby&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-3&quot;&gt;3. 安装配置Octopress&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-3-1&quot;&gt;3.1. 安装octopress&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-3-2&quot;&gt;3.2. 配置octopress&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-4&quot;&gt;4. 安装配置Org-octopress&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-4-1&quot;&gt;4.1. 安装org&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-4-2&quot;&gt;4.2. 配置org&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-4-3&quot;&gt;4.3. 安装org-octopress&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-4-4&quot;&gt;4.4. 配置org-octopress&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-4-5&quot;&gt;4.5. 使用org-octopress&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-5&quot;&gt;5. 博客本地预览&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-6&quot;&gt;6. 发布博客&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+
+
+&lt;div id=&quot;outline-container-sec-1&quot; class=&quot;outline-2&quot;&gt;
+&lt;h2 id=&quot;sec-1&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;1&lt;/span&gt; 创建github博客&lt;/h2&gt;
+&lt;div class=&quot;outline-text-2&quot; id=&quot;text-1&quot;&gt;
+&lt;p&gt;
+请参照这篇博客：&lt;a href=&quot;http://blog.csdn.net/renfufei/article/details/37725057&quot;&gt;http://blog.csdn.net/renfufei/article/details/37725057&lt;/a&gt;
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&quot;outline-container-sec-2&quot; class=&quot;outline-2&quot;&gt;
+&lt;h2 id=&quot;sec-2&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;2&lt;/span&gt; 安装git和ruby&lt;/h2&gt;
+&lt;div class=&quot;outline-text-2&quot; id=&quot;text-2&quot;&gt;
+&lt;p&gt;
+&amp;lt;!&amp;#x2013;more&amp;#x2013;&amp;gt;
+&lt;/p&gt;
+&lt;pre class=&quot;example&quot;&gt;
+sudo aptitude install git ruby ruby-dev
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&quot;outline-container-sec-3&quot; class=&quot;outline-2&quot;&gt;
+&lt;h2 id=&quot;sec-3&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;3&lt;/span&gt; 安装配置Octopress&lt;/h2&gt;
+&lt;div class=&quot;outline-text-2&quot; id=&quot;text-3&quot;&gt;
+&lt;/div&gt;&lt;div id=&quot;outline-container-sec-3-1&quot; class=&quot;outline-3&quot;&gt;
+&lt;h3 id=&quot;sec-3-1&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;3.1&lt;/span&gt; 安装octopress&lt;/h3&gt;
+&lt;div class=&quot;outline-text-3&quot; id=&quot;text-3-1&quot;&gt;
+&lt;pre class=&quot;example&quot;&gt;
+git clone git://github.com/imathis/octopress.git octopress
+cd octopress
+sudo gem install bundler
+bundle install
+rake install
+&lt;/pre&gt;
+&lt;p&gt;
+注意：如果在后面运行rake preview进行本地预览时提示以下错误：
+&lt;/p&gt;
+&lt;pre class=&quot;example&quot;&gt;
+/var/lib/gems/2.1.0/gems/execjs-1.1.2/lib/execjs/runtimes.rb:43:in `autodetect’: Could not find a JavaScript runtime.
+&lt;/pre&gt;
+&lt;p&gt;
+请修改Gemfile,在其中添加:
+&lt;/p&gt;
+&lt;pre class=&quot;example&quot;&gt;
+gem &#39;execjs&#39;
+gem &#39;therubyracer&#39;
+&lt;/pre&gt;
+&lt;p&gt;
+然后重新执行以下命令:
+&lt;/p&gt;
+&lt;pre class=&quot;example&quot;&gt;
+bundle install
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&quot;outline-container-sec-3-2&quot; class=&quot;outline-3&quot;&gt;
+&lt;h3 id=&quot;sec-3-2&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;3.2&lt;/span&gt; 配置octopress&lt;/h3&gt;
+&lt;div class=&quot;outline-text-3&quot; id=&quot;text-3-2&quot;&gt;
+&lt;pre class=&quot;example&quot;&gt;
+rake setup_github_pages
+&lt;/pre&gt;
+&lt;p&gt;
+依照提示键入你在github中申请的博客地址
+&lt;/p&gt;
+
+&lt;p&gt;
+然后修改&lt;sub&gt;config&lt;/sub&gt;.yml,填入相应的信息。
+&lt;/p&gt;
+&lt;pre class=&quot;example&quot;&gt;
+url: http://yoursite.com
+title: My Octopress Blog
+subtitle: A blogging framework for hackers.
+author: Your Name
+simple_search: https://www.google.com/search
+description:
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&quot;outline-container-sec-4&quot; class=&quot;outline-2&quot;&gt;
+&lt;h2 id=&quot;sec-4&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;4&lt;/span&gt; 安装配置Org-octopress&lt;/h2&gt;
+&lt;div class=&quot;outline-text-2&quot; id=&quot;text-4&quot;&gt;
+&lt;p&gt;
+在emacs中安装org-octopress很简单。但是emacs24.3自带的org是0.7版的，而org-octopress需要0.8以上。所以先安装org。 
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&quot;outline-container-sec-4-1&quot; class=&quot;outline-3&quot;&gt;
+&lt;h3 id=&quot;sec-4-1&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;4.1&lt;/span&gt; 安装org&lt;/h3&gt;
+&lt;div class=&quot;outline-text-3&quot; id=&quot;text-4-1&quot;&gt;
+&lt;p&gt;
+打开emacs,输入以下命令。
+&lt;/p&gt;
+&lt;pre class=&quot;example&quot;&gt;
+M-x packages-install
+&lt;/pre&gt;
+&lt;p&gt;
+回车，再输入
+&lt;/p&gt;
+&lt;pre class=&quot;example&quot;&gt;
+org
+&lt;/pre&gt;
+&lt;p&gt;
+如果用elpa安装的org有问题，无法使用。请下载tar文件，自己解压放在elpa中。
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&quot;outline-container-sec-4-2&quot; class=&quot;outline-3&quot;&gt;
+&lt;h3 id=&quot;sec-4-2&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;4.2&lt;/span&gt; 配置org&lt;/h3&gt;
+&lt;div class=&quot;outline-text-3&quot; id=&quot;text-4-2&quot;&gt;
+&lt;p&gt;
+在.emacs中添加以下内容：
+&lt;/p&gt;
+&lt;pre class=&quot;example&quot;&gt;
+(require &#39;org-install)
+   (require &#39;org)
+   (require &#39;org-publish)
+   (add-to-list &#39;auto-mode-alist &#39;(&quot;\\.org\\&#39;&quot; . org-mode))
+   (add-hook &#39;org-mode-hook &#39;turn-on-font-lock)
+   (add-hook &#39;org-mode-hook 
+   (lambda () (setq truncate-lines nil)))
+
+   (global-set-key &quot;\C-cl&quot; &#39;org-store-link)
+   (global-set-key &quot;\C-ca&quot; &#39;org-agenda)
+   (global-set-key &quot;\C-cb&quot; &#39;org-iswitchb)
+   (setq org-log-done t)
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&quot;outline-container-sec-4-3&quot; class=&quot;outline-3&quot;&gt;
+&lt;h3 id=&quot;sec-4-3&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;4.3&lt;/span&gt; 安装org-octopress&lt;/h3&gt;
+&lt;div class=&quot;outline-text-3&quot; id=&quot;text-4-3&quot;&gt;
+&lt;pre class=&quot;example&quot;&gt;
+M-x packages-install
+&lt;/pre&gt;
+&lt;p&gt;
+回车，再输入
+&lt;/p&gt;
+&lt;pre class=&quot;example&quot;&gt;
+org-octopress
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&quot;outline-container-sec-4-4&quot; class=&quot;outline-3&quot;&gt;
+&lt;h3 id=&quot;sec-4-4&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;4.4&lt;/span&gt; 配置org-octopress&lt;/h3&gt;
+&lt;div class=&quot;outline-text-3&quot; id=&quot;text-4-4&quot;&gt;
+&lt;p&gt;
+安装完org-octopress后，在.emacs中加入以下内容。注意把路径换成自己的。
+&lt;/p&gt;
+&lt;pre class=&quot;example&quot;&gt;
+(require &#39;org-octopress)
+(setq org-octopress-directory-top       &quot;~/octopress/source&quot;)
+(setq org-octopress-directory-posts     &quot;~/octopress/source/_posts&quot;)
+(setq org-octopress-directory-org-top   &quot;~/octopress/source&quot;)
+(setq org-octopress-directory-org-posts &quot;~/octopress/source/blog&quot;)
+(setq org-octopress-setup-file          &quot;~/lib/org-sty/setupfile.org&quot;)
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-sec-4-5&quot; class=&quot;outline-3&quot;&gt;
+&lt;h3 id=&quot;sec-4-5&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;4.5&lt;/span&gt; 使用org-octopress&lt;/h3&gt;
+&lt;div class=&quot;outline-text-3&quot; id=&quot;text-4-5&quot;&gt;
+&lt;p&gt;
+emacs中的操作进程
+打开emacs,然后输入命令：
+&lt;/p&gt;
+&lt;pre class=&quot;example&quot;&gt;
+M-x org-octopress
+&lt;/pre&gt;
+&lt;p&gt;
+打开新的界面后，键入w来新创一个文件，或者选择旧文件进行编辑。如果是新建文件，键入w后，输入新文件的名称，回车，选择日期，回车。
+依照org-mode格式进行书写。
+写完之后，进行输出：
+&lt;/p&gt;
+&lt;pre class=&quot;example&quot;&gt;
+c-c c-e P x
+&lt;/pre&gt;
+&lt;p&gt;
+然后键入octopress进行转换。
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&quot;outline-container-sec-5&quot; class=&quot;outline-2&quot;&gt;
+&lt;h2 id=&quot;sec-5&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;5&lt;/span&gt; 博客本地预览&lt;/h2&gt;
+&lt;div class=&quot;outline-text-2&quot; id=&quot;text-5&quot;&gt;
+&lt;p&gt;
+打开terminal，定位到octopress目录，运行以下命令：
+&lt;/p&gt;
+&lt;pre class=&quot;example&quot;&gt;
+rake preview
+&lt;/pre&gt;
+&lt;p&gt;
+然后打开浏览器，输入localhost:4000进行本地预览。
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&quot;outline-container-sec-6&quot; class=&quot;outline-2&quot;&gt;
+&lt;h2 id=&quot;sec-6&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;6&lt;/span&gt; 发布博客&lt;/h2&gt;
+&lt;div class=&quot;outline-text-2&quot; id=&quot;text-6&quot;&gt;
+&lt;pre class=&quot;example&quot;&gt;
+rake generate
+rake deploy
+&lt;/pre&gt;
+&lt;p&gt;
+如果提示如下错误：
+&lt;/p&gt;
+&lt;pre class=&quot;example&quot;&gt;
+error: 无法推送一些引用到 &#39;git@github.com:xep007/xep007.github.io.git&#39;
+提示：更新被拒绝，因为您当前分支的最新提交落后于其对应的远程分支。
+提示：再次推送前，先与远程变更合并（如 &#39;git pull ...&#39;）。详见
+提示：&#39;git push --help&#39; 中的 &#39;Note about fast-forwards&#39; 小节。
+
+## Github Pages deploy complete
+&lt;/pre&gt;
+
+&lt;p&gt;
+更换目录，并更新：
+&lt;/p&gt;
+&lt;pre class=&quot;example&quot;&gt;
+cd octopress/_deploy
+git pull origin master
+&lt;/pre&gt;
+&lt;p&gt;
+跳出目录，重新deploy
+&lt;/p&gt;
+&lt;pre class=&quot;example&quot;&gt;
+cd ..
+rake deploy
+&lt;/pre&gt;
+&lt;p&gt;
+本错误解决办法来自于：&lt;a href=&quot;http://www.conxz.net/blog/2014/04/12/non-fast-forward-error-with-octopress/&quot;&gt;http://www.conxz.net/blog/2014/04/12/non-fast-forward-error-with-octopress/&lt;/a&gt;
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</description>
+        <pubDate>Sun, 05 Oct 2014 00:00:00 +0800</pubDate>
+        <link>http://yourdomain.com/octopress/git/jekyll/2014/10/05/org-octopress+github%E6%9E%84%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2.html</link>
+        <guid isPermaLink="true">http://yourdomain.com/octopress/git/jekyll/2014/10/05/org-octopress+github%E6%9E%84%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2.html</guid>
+        
+        
+        <category>octopress</category>
+        
+        <category>git</category>
+        
+        <category>jekyll</category>
+        
+      </item>
+    
+      <item>
+        <title>debian7/gnome下设置golang环境</title>
+        <description>&lt;div id=&quot;table-of-contents&quot;&gt;
+&lt;h2&gt;Table of Contents&lt;/h2&gt;
+&lt;div id=&quot;text-table-of-contents&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1&quot;&gt;1. 以前设置go环境的方法&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-2&quot;&gt;2. 现在碰到的问题&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-3&quot;&gt;3. 最后解决的办法&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;p&gt;
+最近换了新机子，安装debian7/gnome，设置golang环境变量时碰到了一个奇怪的问题，虽然最终解决了问题，但却不知其所以然，记录在下。
+&lt;/p&gt;
+&lt;div id=&quot;outline-container-sec-1&quot; class=&quot;outline-2&quot;&gt;
+&lt;h2 id=&quot;sec-1&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;1&lt;/span&gt; 以前设置go环境的方法&lt;/h2&gt;
+&lt;div class=&quot;outline-text-2&quot; id=&quot;text-1&quot;&gt;
+&lt;p&gt;
+下载go二进制包，解压到家目录~/
+在~/.bashrc中设置如下：
+&lt;/p&gt;
+&lt;pre class=&quot;example&quot;&gt;
+###############go setup##########
+export GOROOT=$HOME/go
+export GOARCH=amd64
+export GOOS=linux
+export GOBIN=$GOROOT/bin
+export GOPATH=$HOME/gopro
+export PATH=$PATH:$GOBIN
+################################
+&lt;/pre&gt;
+&lt;p&gt;
+一切都没问题。
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&quot;outline-container-sec-2&quot; class=&quot;outline-2&quot;&gt;
+&lt;h2 id=&quot;sec-2&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;2&lt;/span&gt; 现在碰到的问题&lt;/h2&gt;
+&lt;div class=&quot;outline-text-2&quot; id=&quot;text-2&quot;&gt;
+&lt;p&gt;
+新装debian7/gnome后，依照旧法安装设置后，运行go -env没问题。但通过Alt+f2来运行emacs，在emacs中写完go代码进行编译时，一直提示/bin/bash找不到go命令。
+如果在terminal中输入emacs启动，却不会有问题。很奇怪！
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&quot;outline-container-sec-3&quot; class=&quot;outline-2&quot;&gt;
+&lt;h2 id=&quot;sec-3&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;3&lt;/span&gt; 最后解决的办法&lt;/h2&gt;
+&lt;div class=&quot;outline-text-2&quot; id=&quot;text-3&quot;&gt;
+&lt;p&gt;
+把环境设置放在~/.profile就行了。
+不得其解的问题，我看了~/.profile里有这么一句。不知今儿为啥不行了。
+&lt;/p&gt;
+&lt;pre class=&quot;example&quot;&gt;
+# if running bash
+if [ -n &quot;$BASH_VERSION&quot; ]; then
+    # include .bashrc if it exists
+    if [ -f &quot;$HOME/.bashrc&quot; ]; then
+	. &quot;$HOME/.bashrc&quot;
+    fi
+fi
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</description>
+        <pubDate>Sun, 05 Oct 2014 00:00:00 +0800</pubDate>
+        <link>http://yourdomain.com/linux/golang/2014/10/05/debian7%E8%AE%BE%E7%BD%AEgolang%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F.html</link>
+        <guid isPermaLink="true">http://yourdomain.com/linux/golang/2014/10/05/debian7%E8%AE%BE%E7%BD%AEgolang%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F.html</guid>
+        
+        
+        <category>linux</category>
+        
+        <category>golang</category>
+        
+      </item>
+    
+      <item>
+        <title>git push提示everthing up to date 错误</title>
+        <description>&lt;div id=&quot;table-of-contents&quot;&gt;
+&lt;h2&gt;Table of Contents&lt;/h2&gt;
+&lt;div id=&quot;text-table-of-contents&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1&quot;&gt;1. git push时，提示everthing up-to-date *&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-sec-1&quot; class=&quot;outline-2&quot;&gt;
+&lt;h2 id=&quot;sec-1&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;1&lt;/span&gt; git push时，提示everthing up-to-date *&lt;/h2&gt;
+&lt;div class=&quot;outline-text-2&quot; id=&quot;text-1&quot;&gt;
+&lt;p&gt;
+上传没有成功
+&lt;/p&gt;
+
+&lt;p&gt;
+运行git push origin master时，提示everthing up-to-date,提交未成功。
+&lt;/p&gt;
+
+&lt;p&gt;
+解决办法：
+执行git remote -v后看到自己的remote端名字为origin
+&lt;/p&gt;
+&lt;pre class=&quot;example&quot;&gt;
+git remote -v
+&lt;/pre&gt;
+&lt;p&gt;
+执行git branch后看到自己当下用的分支是master:
+&lt;/p&gt;
+&lt;pre class=&quot;example&quot;&gt;
+git branch
+&lt;/pre&gt;
+
+&lt;p&gt;
+因此在本地commit后，再push到remote端。
+&lt;/p&gt;
+&lt;pre class=&quot;example&quot;&gt;
+git add -A
+git commit -m &quot;edit&quot;
+git push origin master
+&lt;/pre&gt;
+&lt;p&gt;
+好了。没问题了。
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</description>
+        <pubDate>Sat, 04 Oct 2014 00:00:00 +0800</pubDate>
+        <link>http://yourdomain.com/git/2014/10/04/git-everthing-up-to-date.html</link>
+        <guid isPermaLink="true">http://yourdomain.com/git/2014/10/04/git-everthing-up-to-date.html</guid>
+        
+        
+        <category>git</category>
+        
+      </item>
+    
+      <item>
+        <title>Welcome to Jekyll!</title>
+        <description>&lt;p&gt;You’ll find this post in your &lt;code&gt;_posts&lt;/code&gt; directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run &lt;code&gt;jekyll serve --watch&lt;/code&gt;, which launches a web server and auto-regenerates your site when a file is updated.&lt;/p&gt;
+
+&lt;p&gt;To add new posts, simply add a file in the &lt;code&gt;_posts&lt;/code&gt; directory that follows the convention &lt;code&gt;YYYY-MM-DD-name-of-post.ext&lt;/code&gt; and includes the necessary front matter. Take a look at the source for this post to get an idea about how it works.&lt;/p&gt;
+
+&lt;p&gt;Jekyll also offers powerful support for code snippets:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;print_hi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;nb&quot;&gt;puts&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;Hi, &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;print_hi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;Tom&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;#=&amp;gt; prints &amp;#39;Hi, Tom&amp;#39; to STDOUT.&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Check out the &lt;a href=&quot;http://jekyllrb.com&quot;&gt;Jekyll docs&lt;/a&gt; for more info on how to get the most out of Jekyll. File all bugs/feature requests at &lt;a href=&quot;https://github.com/jekyll/jekyll&quot;&gt;Jekyll’s GitHub repo&lt;/a&gt;. If you have questions, you can ask them on &lt;a href=&quot;https://github.com/jekyll/jekyll-help&quot;&gt;Jekyll’s dedicated Help repository&lt;/a&gt;.&lt;/p&gt;
+
+</description>
+        <pubDate>Wed, 01 Oct 2014 20:25:03 +0800</pubDate>
+        <link>http://yourdomain.com/jekyll/update/2014/10/01/welcome-to-jekyll.html</link>
+        <guid isPermaLink="true">http://yourdomain.com/jekyll/update/2014/10/01/welcome-to-jekyll.html</guid>
+        
+        
+        <category>jekyll</category>
+        
+        <category>update</category>
+        
+      </item>
+    
+  </channel>
+</rss>
