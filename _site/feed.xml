@@ -5,8 +5,8 @@
     <description>Linux / C / golang / Emacs</description>
     <link>http://xep007.github.io/</link>
     <atom:link href="http://xep007.github.io/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Mon, 13 Oct 2014 18:03:16 +0800</pubDate>
-    <lastBuildDate>Mon, 13 Oct 2014 18:03:16 +0800</lastBuildDate>
+    <pubDate>Wed, 15 Oct 2014 12:28:39 +0800</pubDate>
+    <lastBuildDate>Wed, 15 Oct 2014 12:28:39 +0800</lastBuildDate>
     <generator>Jekyll v2.4.0</generator>
     
       <item>
@@ -40,7 +40,7 @@ W: 无法锁定缓存文件；这通常意味着 dpkg 或另一个 apt 工具已
 &lt;h2 id=&quot;sec-1&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;1&lt;/span&gt; 解决办法1:温柔解决，不一定有效果&lt;/h2&gt;
 &lt;div class=&quot;outline-text-2&quot; id=&quot;text-1&quot;&gt;
 &lt;p&gt;
-运行ps ax,找出aptitude进程，杀死。
+运行ps ax,找出aptitude进程，杀死。我这边找不到aptitude相关进程，只好采用第二种办法。
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -77,7 +77,15 @@ OK.
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-
+&lt;p&gt;
+&amp;#x2014;
+layout: page
+title: org-jekyll-mode安装及配置
+excerpt: excerpt
+tags: org; jekyll
+categories: org; jekyll
+&amp;#x2014;
+&lt;/p&gt;
 
 
 &lt;p&gt;
@@ -186,8 +194,6 @@ C-c C-p   发布文件
 &lt;/div&gt;
 &lt;/div&gt;
 
-
-
 &lt;div id=&quot;outline-container-sec-1&quot; class=&quot;outline-2&quot;&gt;
 &lt;h2 id=&quot;sec-1&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;1&lt;/span&gt; 安装nodejs和npm&lt;/h2&gt;
 &lt;div class=&quot;outline-text-2&quot; id=&quot;text-1&quot;&gt;
@@ -233,7 +239,6 @@ sudo ln -s /usr/bin/nodejs /usr/bin/node
 &lt;/div&gt;
 &lt;/div&gt;
 
-
 &lt;div id=&quot;outline-container-sec-4&quot; class=&quot;outline-2&quot;&gt;
 &lt;h2 id=&quot;sec-4&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;4&lt;/span&gt; 安装依赖包&lt;/h2&gt;
 &lt;div class=&quot;outline-text-2&quot; id=&quot;text-4&quot;&gt;
@@ -247,7 +252,7 @@ npm install
 &lt;h2 id=&quot;sec-5&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;5&lt;/span&gt; 本地预览&lt;/h2&gt;
 &lt;div class=&quot;outline-text-2&quot; id=&quot;text-5&quot;&gt;
 &lt;p&gt;
-进入hexo文件夹，运行以下命令。然后就可以在浏览器中通过localhost:4000进行预览。
+与octopress大同小异。进入hexo文件夹，运行以下命令。然后就可以在浏览器中通过localhost:4000进行预览。
 &lt;/p&gt;
 &lt;pre class=&quot;example&quot;&gt;
 hexo generate
@@ -276,9 +281,13 @@ hexo server
 &lt;li&gt;&lt;a href=&quot;#sec-1&quot;&gt;1. org升级到版本8,自定义导出pdf的设置出错了&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&quot;#sec-2&quot;&gt;2. 解决办法&lt;/a&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-2-1&quot;&gt;2.1. 在.emacs文件中修改,把&quot;to&quot;去掉。&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-2-1&quot;&gt;2.1. 修改.emacs配置&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&quot;#sec-2-2&quot;&gt;2.2. 在.emacs中修改自定义导出pdf的classes语法&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-2-3&quot;&gt;2.3. 在org文件头中把&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-3&quot;&gt;3. 解决自定义插入style的问题&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-3-1&quot;&gt;3.1. 解决办法&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
@@ -308,8 +317,11 @@ baidu了好久，不得不说baidu在这方面真是无能。后来直接到查�
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&quot;outline-container-sec-2-1&quot; class=&quot;outline-3&quot;&gt;
-&lt;h3 id=&quot;sec-2-1&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;2.1&lt;/span&gt; 在.emacs文件中修改,把&quot;to&quot;去掉。&lt;/h3&gt;
+&lt;h3 id=&quot;sec-2-1&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;2.1&lt;/span&gt; 修改.emacs配置&lt;/h3&gt;
 &lt;div class=&quot;outline-text-3&quot; id=&quot;text-2-1&quot;&gt;
+&lt;p&gt;
+在.emacs文件中修改,把&quot;to&quot;去掉。
+&lt;/p&gt;
 &lt;pre class=&quot;example&quot;&gt;
 (setq org-latex-to-pdf-process &#39;(&quot;xelatex -interaction nonstopmode %f&quot;
                               &quot;xelatex -interaction nonstopmode %f&quot;))
@@ -345,10 +357,18 @@ baidu了好久，不得不说baidu在这方面真是无能。后来直接到查�
 &lt;/pre&gt;
 &lt;/div&gt;
 &lt;/div&gt;
+&lt;/div&gt;
 
-&lt;div id=&quot;outline-container-sec-2-3&quot; class=&quot;outline-3&quot;&gt;
-&lt;h3 id=&quot;sec-2-3&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;2.3&lt;/span&gt; 在org文件头中把&lt;/h3&gt;
-&lt;div class=&quot;outline-text-3&quot; id=&quot;text-2-3&quot;&gt;
+&lt;div id=&quot;outline-container-sec-3&quot; class=&quot;outline-2&quot;&gt;
+&lt;h2 id=&quot;sec-3&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;3&lt;/span&gt; 解决自定义插入style的问题&lt;/h2&gt;
+&lt;div class=&quot;outline-text-2&quot; id=&quot;text-3&quot;&gt;
+&lt;/div&gt;&lt;div id=&quot;outline-container-sec-3-1&quot; class=&quot;outline-3&quot;&gt;
+&lt;h3 id=&quot;sec-3-1&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;3.1&lt;/span&gt; 解决办法&lt;/h3&gt;
+&lt;div class=&quot;outline-text-3&quot; id=&quot;text-3-1&quot;&gt;
+&lt;p&gt;
+修改org文件头配置,在org文件头中把
+&lt;/p&gt;
+
 &lt;pre class=&quot;example&quot;&gt;
 #+STYLE:
 &lt;/pre&gt;
@@ -369,13 +389,13 @@ baidu了好久，不得不说baidu在这方面真是无能。后来直接到查�
 &lt;/div&gt;
 </description>
         <pubDate>Tue, 07 Oct 2014 00:00:00 +0800</pubDate>
-        <link>http://xep007.github.io/emacs/org/2014/10/07/%E8%A7%A3%E5%86%B3%E5%8D%87%E7%BA%A7org8%E8%80%8C%E5%AF%BC%E8%87%B4%E7%9A%84%E5%87%A0%E4%B8%AA%E9%97%AE%E9%A2%98.html</link>
-        <guid isPermaLink="true">http://xep007.github.io/emacs/org/2014/10/07/%E8%A7%A3%E5%86%B3%E5%8D%87%E7%BA%A7org8%E8%80%8C%E5%AF%BC%E8%87%B4%E7%9A%84%E5%87%A0%E4%B8%AA%E9%97%AE%E9%A2%98.html</guid>
+        <link>http://xep007.github.io/emacs/org-mode/2014/10/07/%E8%A7%A3%E5%86%B3%E5%8D%87%E7%BA%A7org8%E8%80%8C%E5%AF%BC%E8%87%B4%E7%9A%84%E5%87%A0%E4%B8%AA%E9%97%AE%E9%A2%98.html</link>
+        <guid isPermaLink="true">http://xep007.github.io/emacs/org-mode/2014/10/07/%E8%A7%A3%E5%86%B3%E5%8D%87%E7%BA%A7org8%E8%80%8C%E5%AF%BC%E8%87%B4%E7%9A%84%E5%87%A0%E4%B8%AA%E9%97%AE%E9%A2%98.html</guid>
         
         
         <category>emacs</category>
         
-        <category>org</category>
+        <category>org-mode</category>
         
       </item>
     
@@ -415,15 +435,13 @@ baidu了好久，不得不说baidu在这方面真是无能。后来直接到查�
 &lt;div class=&quot;outline-text-2&quot; id=&quot;text-1&quot;&gt;
 &lt;p&gt;
 请参照这篇博客：&lt;a href=&quot;http://blog.csdn.net/renfufei/article/details/37725057&quot;&gt;http://blog.csdn.net/renfufei/article/details/37725057&lt;/a&gt;
+感谢作者的付出。
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;div id=&quot;outline-container-sec-2&quot; class=&quot;outline-2&quot;&gt;
 &lt;h2 id=&quot;sec-2&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;2&lt;/span&gt; 安装git和ruby&lt;/h2&gt;
 &lt;div class=&quot;outline-text-2&quot; id=&quot;text-2&quot;&gt;
-&lt;p&gt;
-&amp;lt;!&amp;#x2013;more&amp;#x2013;&amp;gt;
-&lt;/p&gt;
 &lt;pre class=&quot;example&quot;&gt;
 sudo aptitude install git ruby ruby-dev
 &lt;/pre&gt;
@@ -521,18 +539,12 @@ org
 在.emacs中添加以下内容：
 &lt;/p&gt;
 &lt;pre class=&quot;example&quot;&gt;
-(require &#39;org-install)
-   (require &#39;org)
-   (require &#39;org-publish)
-   (add-to-list &#39;auto-mode-alist &#39;(&quot;\\.org\\&#39;&quot; . org-mode))
-   (add-hook &#39;org-mode-hook &#39;turn-on-font-lock)
-   (add-hook &#39;org-mode-hook 
-   (lambda () (setq truncate-lines nil)))
-
-   (global-set-key &quot;\C-cl&quot; &#39;org-store-link)
-   (global-set-key &quot;\C-ca&quot; &#39;org-agenda)
-   (global-set-key &quot;\C-cb&quot; &#39;org-iswitchb)
-   (setq org-log-done t)
+(require &#39;org)
+(require &#39;org-publish)
+(add-to-list &#39;auto-mode-alist &#39;(&quot;\\.org\\&#39;&quot; . org-mode))
+(add-hook &#39;org-mode-hook &#39;turn-on-font-lock)
+(add-hook &#39;org-mode-hook 
+(lambda () (setq truncate-lines nil)))
 &lt;/pre&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -554,7 +566,7 @@ org-octopress
 &lt;h3 id=&quot;sec-4-4&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;4.4&lt;/span&gt; 配置org-octopress&lt;/h3&gt;
 &lt;div class=&quot;outline-text-3&quot; id=&quot;text-4-4&quot;&gt;
 &lt;p&gt;
-安装完org-octopress后，在.emacs中加入以下内容。注意把路径换成自己的。
+安装完org-octopress后，在.emacs中加入以下内容。
 &lt;/p&gt;
 &lt;pre class=&quot;example&quot;&gt;
 (require &#39;org-octopress)
@@ -709,7 +721,7 @@ export PATH=$PATH:$GOBIN
 &lt;div class=&quot;outline-text-2&quot; id=&quot;text-3&quot;&gt;
 &lt;p&gt;
 把环境设置放在~/.profile就行了。
-不得其解的问题，我看了~/.profile里有这么一句。不知今儿为啥不行了。
+不得其解的是，我看了~/.profile里有这么几句。按理说已经把.bashrc包含进去了，不知今儿为啥不行了。
 &lt;/p&gt;
 &lt;pre class=&quot;example&quot;&gt;
 # if running bash
@@ -735,18 +747,18 @@ fi
       </item>
     
       <item>
-        <title>git push提示everthing up to date 错误</title>
+        <title>git push提示everthing up to date,上传不成功</title>
         <description>&lt;div id=&quot;table-of-contents&quot;&gt;
 &lt;h2&gt;Table of Contents&lt;/h2&gt;
 &lt;div id=&quot;text-table-of-contents&quot;&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1&quot;&gt;1. git push时，提示everthing up-to-date *&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1&quot;&gt;1. git push时，提示everthing up-to-date信息 *&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 
 &lt;div id=&quot;outline-container-sec-1&quot; class=&quot;outline-2&quot;&gt;
-&lt;h2 id=&quot;sec-1&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;1&lt;/span&gt; git push时，提示everthing up-to-date *&lt;/h2&gt;
+&lt;h2 id=&quot;sec-1&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;1&lt;/span&gt; git push时，提示everthing up-to-date信息 *&lt;/h2&gt;
 &lt;div class=&quot;outline-text-2&quot; id=&quot;text-1&quot;&gt;
 &lt;p&gt;
 上传没有成功

@@ -10,7 +10,7 @@
     <meta name="description" content="Linux / C / golang / Emacs">
 
     <link rel="stylesheet" href="/css/main.css">
-    <link rel="canonical" href="http://xep007.github.io/emacs/org/2014/10/07/%E8%A7%A3%E5%86%B3%E5%8D%87%E7%BA%A7org8%E8%80%8C%E5%AF%BC%E8%87%B4%E7%9A%84%E5%87%A0%E4%B8%AA%E9%97%AE%E9%A2%98.html">
+    <link rel="canonical" href="http://xep007.github.io/emacs/org-mode/2014/10/07/%E8%A7%A3%E5%86%B3%E5%8D%87%E7%BA%A7org8%E8%80%8C%E5%AF%BC%E8%87%B4%E7%9A%84%E5%87%A0%E4%B8%AA%E9%97%AE%E9%A2%98.html">
 </head>
 
 
@@ -47,8 +47,6 @@
           <a class="page-link" href="/about/">关于我</a>
           
         
-          
-        
       </div>
     </nav>
 
@@ -74,9 +72,13 @@
 <li><a href="#sec-1">1. org升级到版本8,自定义导出pdf的设置出错了</a></li>
 <li><a href="#sec-2">2. 解决办法</a>
 <ul>
-<li><a href="#sec-2-1">2.1. 在.emacs文件中修改,把"to"去掉。</a></li>
+<li><a href="#sec-2-1">2.1. 修改.emacs配置</a></li>
 <li><a href="#sec-2-2">2.2. 在.emacs中修改自定义导出pdf的classes语法</a></li>
-<li><a href="#sec-2-3">2.3. 在org文件头中把</a></li>
+</ul>
+</li>
+<li><a href="#sec-3">3. 解决自定义插入style的问题</a>
+<ul>
+<li><a href="#sec-3-1">3.1. 解决办法</a></li>
 </ul>
 </li>
 </ul>
@@ -106,8 +108,11 @@ baidu了好久，不得不说baidu在这方面真是无能。后来直接到查�
 </p>
 </div>
 <div id="outline-container-sec-2-1" class="outline-3">
-<h3 id="sec-2-1"><span class="section-number-3">2.1</span> 在.emacs文件中修改,把"to"去掉。</h3>
+<h3 id="sec-2-1"><span class="section-number-3">2.1</span> 修改.emacs配置</h3>
 <div class="outline-text-3" id="text-2-1">
+<p>
+在.emacs文件中修改,把"to"去掉。
+</p>
 <pre class="example">
 (setq org-latex-to-pdf-process '("xelatex -interaction nonstopmode %f"
                               "xelatex -interaction nonstopmode %f"))
@@ -143,10 +148,18 @@ baidu了好久，不得不说baidu在这方面真是无能。后来直接到查�
 </pre>
 </div>
 </div>
+</div>
 
-<div id="outline-container-sec-2-3" class="outline-3">
-<h3 id="sec-2-3"><span class="section-number-3">2.3</span> 在org文件头中把</h3>
-<div class="outline-text-3" id="text-2-3">
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3"><span class="section-number-2">3</span> 解决自定义插入style的问题</h2>
+<div class="outline-text-2" id="text-3">
+</div><div id="outline-container-sec-3-1" class="outline-3">
+<h3 id="sec-3-1"><span class="section-number-3">3.1</span> 解决办法</h3>
+<div class="outline-text-3" id="text-3-1">
+<p>
+修改org文件头配置,在org文件头中把
+</p>
+
 <pre class="example">
 #+STYLE:
 </pre>
@@ -170,7 +183,7 @@ baidu了好久，不得不说baidu在这方面真是无能。后来直接到查�
   
   <section>  
     <div id="comments" aria-live="polite"><!-- 多说评论框 start (class="ds-thread")-->
-	<div class="ds-thread" data-thread-key="/emacs/org/2014/10/07/解决升级org8而导致的几个问题" data-title="解决升级org8而导致的几个问题" data-url="xep007.github.io//emacs/org/2014/10/07/%E8%A7%A3%E5%86%B3%E5%8D%87%E7%BA%A7org8%E8%80%8C%E5%AF%BC%E8%87%B4%E7%9A%84%E5%87%A0%E4%B8%AA%E9%97%AE%E9%A2%98.html"
+	<div class="ds-thread" data-thread-key="/emacs/org-mode/2014/10/07/解决升级org8而导致的几个问题" data-title="解决升级org8而导致的几个问题" data-url="xep007.github.io//emacs/org-mode/2014/10/07/%E8%A7%A3%E5%86%B3%E5%8D%87%E7%BA%A7org8%E8%80%8C%E5%AF%BC%E8%87%B4%E7%9A%84%E5%87%A0%E4%B8%AA%E9%97%AE%E9%A2%98.html"
 ></div>
 <!-- 多说评论框 end -->
 <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
@@ -204,7 +217,7 @@ var duoshuoQuery = {short_name:"xep007"};
       <div class="footer-col  footer-col-1">
         <ul class="contact-list">
 <!--          <li><a href="">行之博客</a></li> -->
-          <li><a href="mailto:486614191@qq.com">486614191@qq.com</a></li>
+          <li><a href="mailto:48614191@qq.com">48614191@qq.com</a></li>
         </ul>
       </div>
 
@@ -239,6 +252,36 @@ var duoshuoQuery = {short_name:"xep007"};
 </footer>
 
 
-  </body>
 
+
+
+<!-- JiaThis Button BEGIN -->
+<div class="jiathis_share_slide jiathis_share_16x16" id="jiathis_share_slide">
+<div class="jiathis_share_slide_top" id="jiathis_share_title"></div>
+<div class="jiathis_share_slide_inner">
+<div class="jiathis_style">
+<a class="jiathis_button_weixin"></a>
+<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_ji
+athis" target="_blank"></a>
+<script type="text/javascript">
+var jiathis_config = {data_track_clickback:'true'
+	,slide:{
+		divid:'jiathis_main',
+		pos:'right',
+		gt:'true'
+	}
+};
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=141062
+0472538495" charset="utf-8"></script>	
+<script type="text/javascript" src="http://v3.jiathis.com/code/jiathis_slide.js"
+ charset="utf-8"></script>
+</div></div></div>
+<!-- JiaThis Button END -->
+<!-- UJian Button BEGIN -->
+	<script type="text/javascript" src="http://v1.ujian.cc/code/ujian.js?typ
+e=slideuid=1410620472538495"></script>
+<!-- UJian Button END -->
+
+</body>
 </html>
