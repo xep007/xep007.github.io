@@ -1,6 +1,7 @@
 ---
 layout: default
 ---
+<br />
 <!-- 分页开始 -->
 <div class="home">
 
@@ -48,6 +49,8 @@ layout: default
 
 
 <!-- 分页结束 -->
+
+<br />
 
 <!-- <p class="rss-subscribe">subscribe <a href="{{ "/feed.xml" | prepend: site.baseurl }}">via RSS</a></p>-->
 

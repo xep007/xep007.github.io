@@ -6,11 +6,11 @@
     <meta name="viewport" content="width=device-width initial-scale=1" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-    <title>git push提示everthing up to date,上传不成功</title>
+    <title>行之博客</title>
     <meta name="description" content="Linux / C / golang / Emacs">
 
     <link rel="stylesheet" href="/css/main.css">
-    <link rel="canonical" href="http://xep007.github.io/git/2014/10/04/git-everthing-up-to-date.html">
+    <link rel="canonical" href="http://xep007.github.io/d">
 </head>
 
 
@@ -61,94 +61,28 @@
 
     <div class="page-content">
       <div class="wrapper">
-        <div class="post">
+        <br />
+<!-- 分页开始 -->
+<div class="home">
 
-  <header class="post-header">
-    <h1 class="post-title">git push提示everthing up to date,上传不成功</h1>
-    <p class="post-meta">Oct 4, 2014</p>
-  </header>
+  <h1 class="page-heading">最新文章</h1>
 
-  <article class="post-content">
-    <div id="table-of-contents">
-<h2>Table of Contents</h2>
-<div id="text-table-of-contents">
-<ul>
-<li><a href="#sec-1">1. git push时，提示everthing up-to-date信息 *</a></li>
-</ul>
-</div>
+  <ul class="post-list">
+    
+  </ul>
 </div>
 
-<div id="outline-container-sec-1" class="outline-2">
-<h2 id="sec-1"><span class="section-number-2">1</span> git push时，提示everthing up-to-date信息 *</h2>
-<div class="outline-text-2" id="text-1">
-<p>
-上传没有成功
-</p>
 
-<p>
-运行git push origin master时，提示everthing up-to-date,提交未成功。
-</p>
 
-<p>
-解决办法：
-执行git remote -v后看到自己的remote端名字为origin
-</p>
-<pre class="example">
-git remote -v
-</pre>
-<p>
-执行git branch后看到自己当下用的分支是master:
-</p>
-<pre class="example">
-git branch
-</pre>
 
-<p>
-因此在本地commit后，再push到remote端。
-</p>
-<pre class="example">
-git add -A
-git commit -m "edit"
-git push origin master
-</pre>
-<p>
-好了。没问题了。
-</p>
-</div>
-</div>
 
-  </article>
-
-  
-<br />
-<!-- JiaThis Button BEGIN -->
-<div class="jiathis_style_32x32">
-	<a class="jiathis_button_qzone"></a>
-	<a class="jiathis_button_tsina"></a>
-	<a class="jiathis_button_tqq"></a>
-	<a class="jiathis_button_weixin"></a>
-	<a class="jiathis_button_renren"></a>
-	<a href="http://www.jiathis.com/share?uid=1975461" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
-	<a class="jiathis_counter_style"></a>
-</div>
-<script type="text/javascript">
-var jiathis_config = {data_track_clickback:'true'};
-</script>
-<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1410620472538495" charset="utf-8"></script>
-<!-- JiaThis Button END -->
-<!-- UJian Button BEGIN -->
-	<div class="ujian-hook"></div>
-	<script type="text/javascript" src="http://v1.ujian.cc/code/ujian.js"></script>
-<!-- UJian Button END -->
-<h3 align="right"><a href="#top" target="_self">返回顶部</a></h3>
+<!-- 分页结束 -->
 
 <br />
 
-<!-- UY BEGIN -->
-<div id="uyan_frame"></div>
-<script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=1975461"></script>
-<!-- UY END -->
-</div>
+<!-- <p class="rss-subscribe">subscribe <a href="/feed.xml">via RSS</a></p>-->
+
+
 
       </div>
     </div>

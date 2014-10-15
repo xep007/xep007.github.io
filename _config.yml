@@ -11,8 +11,6 @@ github_username:  xep007
 markdown: kramdown
 
 #paginate
-paginate: 8
+paginate: 5
 paginate_path: "page:num"
 
-#comments
-duoshuo: true
