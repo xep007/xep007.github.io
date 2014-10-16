@@ -5,8 +5,8 @@
     <description>Linux / C / golang / Emacs</description>
     <link>http://xep007.github.io/</link>
     <atom:link href="http://xep007.github.io/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Wed, 15 Oct 2014 19:15:09 +0800</pubDate>
-    <lastBuildDate>Wed, 15 Oct 2014 19:15:09 +0800</lastBuildDate>
+    <pubDate>Thu, 16 Oct 2014 23:30:21 +0800</pubDate>
+    <lastBuildDate>Thu, 16 Oct 2014 23:30:21 +0800</lastBuildDate>
     <generator>Jekyll v2.4.0</generator>
     
       <item>
@@ -77,17 +77,6 @@ OK.
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;p&gt;
-&amp;#x2014;
-layout: page
-title: org-jekyll-mode安装及配置
-excerpt: excerpt
-tags: org; jekyll
-categories: org; jekyll
-&amp;#x2014;
-&lt;/p&gt;
-
-
 &lt;p&gt;
 前几天测试使用octopress创建github静态博客时，有个org-octopress的emacs插件非常好用。如今使用jekyll/bootstrap来建站，用emacs写博客就成了一个麻烦的问题。在github上找了一下，居然找到一个org-jekyll-mode，得好好试试。
 &lt;/p&gt;
@@ -278,7 +267,7 @@ hexo server
 &lt;h2&gt;Table of Contents&lt;/h2&gt;
 &lt;div id=&quot;text-table-of-contents&quot;&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1&quot;&gt;1. org升级到版本8,自定义导出pdf的设置出错了&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1&quot;&gt;1. org升级到版本8,几个自定义设置罢工了&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&quot;#sec-2&quot;&gt;2. 解决办法&lt;/a&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&quot;#sec-2-1&quot;&gt;2.1. 修改.emacs配置&lt;/a&gt;&lt;/li&gt;
@@ -295,25 +284,24 @@ hexo server
 &lt;/div&gt;
 
 &lt;div id=&quot;outline-container-sec-1&quot; class=&quot;outline-2&quot;&gt;
-&lt;h2 id=&quot;sec-1&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;1&lt;/span&gt; org升级到版本8,自定义导出pdf的设置出错了&lt;/h2&gt;
+&lt;h2 id=&quot;sec-1&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;1&lt;/span&gt; org升级到版本8,几个自定义设置罢工了&lt;/h2&gt;
 &lt;div class=&quot;outline-text-2&quot; id=&quot;text-1&quot;&gt;
 &lt;p&gt;
-这两天因为安装org-octopress需要，升级了org到8.2版本（原本是7.9）。没想到原来自定义的导出pdf和emacs的html的style设置都罢工了。错误提示：
+这两天因为安装org-octopress需要，升级了org到8.2版本（原本是7.9）。没想到导出pdf的自定义设置以及导出html的自定义style设置都罢工了。错误提示：
 &lt;/p&gt;
-&lt;ol class=&quot;org-ol&quot;&gt;
-&lt;li&gt;unknow class: cn-article
-&lt;/li&gt;
-&lt;li&gt;emacs的html style无效
-&lt;/li&gt;
-&lt;/ol&gt;
+&lt;pre class=&quot;example&quot;&gt;
+1. unknow class: my-article
+2. emacs的html style无效
+&lt;/pre&gt;
 &lt;/div&gt;
 &lt;/div&gt;
+
 
 &lt;div id=&quot;outline-container-sec-2&quot; class=&quot;outline-2&quot;&gt;
 &lt;h2 id=&quot;sec-2&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;2&lt;/span&gt; 解决办法&lt;/h2&gt;
 &lt;div class=&quot;outline-text-2&quot; id=&quot;text-2&quot;&gt;
 &lt;p&gt;
-baidu了好久，不得不说baidu在这方面真是无能。后来直接到查找org官网，找到&lt;a href=&quot;http://orgmode.org/worg/org-8.0.html&quot;&gt;http://orgmode.org/worg/org-8.0.html&lt;/a&gt; 才解决。
+baidu了好久，不得要领。后来直接到org官网查找，找到&lt;a href=&quot;http://orgmode.org/worg/org-8.0.html&quot;&gt;http://orgmode.org/worg/org-8.0.html&lt;/a&gt; 才解决。
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&quot;outline-container-sec-2-1&quot; class=&quot;outline-3&quot;&gt;
@@ -492,7 +480,7 @@ rake setup_github_pages
 &lt;/p&gt;
 
 &lt;p&gt;
-然后修改&lt;sub&gt;config&lt;/sub&gt;.yml,填入相应的信息。
+然后修改&quot; _config.yml&quot;,填入相应的信息。
 &lt;/p&gt;
 &lt;pre class=&quot;example&quot;&gt;
 url: http://yoursite.com
@@ -683,7 +671,7 @@ rake deploy
 &lt;/div&gt;
 
 &lt;p&gt;
-最近换了新机子，安装debian7/gnome，设置golang环境变量时碰到了一个奇怪的问题，虽然最终解决了问题，但却不知其所以然，记录在下。
+最近换了新机子，不想再折腾，就直接安装debian7/gnome，设置golang环境变量时碰到了一个奇怪的问题，虽然最终解决了问题，但却不知其所以然，记录在下。
 &lt;/p&gt;
 &lt;div id=&quot;outline-container-sec-1&quot; class=&quot;outline-2&quot;&gt;
 &lt;h2 id=&quot;sec-1&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;1&lt;/span&gt; 以前设置go环境的方法&lt;/h2&gt;
@@ -752,13 +740,14 @@ fi
 &lt;h2&gt;Table of Contents&lt;/h2&gt;
 &lt;div id=&quot;text-table-of-contents&quot;&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1&quot;&gt;1. git push时，提示everthing up-to-date信息 *&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1&quot;&gt;1. git push时，提示everthing up-to-date信息&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 
+
 &lt;div id=&quot;outline-container-sec-1&quot; class=&quot;outline-2&quot;&gt;
-&lt;h2 id=&quot;sec-1&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;1&lt;/span&gt; git push时，提示everthing up-to-date信息 *&lt;/h2&gt;
+&lt;h2 id=&quot;sec-1&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;1&lt;/span&gt; git push时，提示everthing up-to-date信息&lt;/h2&gt;
 &lt;div class=&quot;outline-text-2&quot; id=&quot;text-1&quot;&gt;
 &lt;p&gt;
 上传没有成功
