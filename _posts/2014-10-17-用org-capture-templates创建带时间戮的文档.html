@@ -3,7 +3,7 @@ layout: post
 comments: true
 title: 用org-capture-templates创建带时间戮的文档
 tags: 
-categories: [org ,jekyll ]
+categories: [org ,jekyll,emacs ]
 ---
 <div id="table-of-contents">
 <h2>Table of Contents</h2>
@@ -22,7 +22,7 @@ categories: [org ,jekyll ]
 <h2 id="sec-1"><span class="section-number-2">1</span> 创建符合jekyll要求的yaml格式的文件很麻烦</h2>
 <div class="outline-text-2" id="text-1">
 <p>
-自从使用orgmode和jekyll写博客后，最麻烦的事就是用(C-x C-f)新建一个文档时得按"y-m-d-文档名.org"格式输入文件名。org-octopress倒是做得不错，功能齐全，不但可以新建“日期+文档名.org”的文档，还可以自行选择日期；不仅如此，它还能编辑和删除已存在的文档。org-jekyll-mode也很好，虽然功能不如org-octopress那么多。但是这两个插件都需要下载并配置，如果以后emacs升级造成不兼容或是作者放弃维护了，那也是一件麻烦事。而我只想方便创建带时间戮的文件名，因而我并未采用这两个插件。我就到网上四处搜寻，功夫不负有心人，终于找到了两篇文档，利用自定义org-capture templates很笨拙地解决了问题。
+自从使用orgmode和jekyll写博客后，最麻烦的事就是用(C-x C-f)新建一个文档时得按"y-m-d-文档名.org"格式输入文件名。org-octopress倒是做得不错，功能齐全，不但可以新建“日期+文档名.org”的文档，还可以自行选择日期；不仅如此，它还能编辑和删除已存在的文档。org-jekyll-mode也很好，虽然功能不如org-octopress那么多。但是这两个插件都需要下载并配置。而我只想方便地创建带时间戮的文件，因而并未采用这两个插件。我就到网上四处搜寻，功夫不负有心人，终于找到了两篇文档，利用自定义org-capture templates很笨拙地解决了问题。
 </p>
 
 <ul class="org-ul">
@@ -38,7 +38,7 @@ categories: [org ,jekyll ]
 <h2 id="sec-2"><span class="section-number-2">2</span> 我的org-capture templates配置</h2>
 <div class="outline-text-2" id="text-2">
 <p>
-上面提到的两篇文档都很简略，第一篇给出的代码是创建以日期分割的文件夹，然后在最后一个文件夹里创建index.org文件。第二个文档并未给出创建带日期的文件的方法。我瞎试着修改第一个文档，得出配置如下。把以下代码写入".emacs"。
+上面提到的两篇文档都很简略，第一篇给出的代码是层递创建以日期分割的文件夹，然后在最后一个文件夹里创建index.org文件。第二个文档并未给出创建带日期的文件的方法。我瞎试着修改第一个文档给出的代码，得到如下配置。把以下代码写入".emacs"。
 </p>
 <div class="org-src-container">
 
@@ -77,10 +77,10 @@ categories: [org ,jekyll ]
 <h2 id="sec-4"><span class="section-number-2">4</span> 存在的问题</h2>
 <div class="outline-text-2" id="text-4">
 <p>
-利用org-capture templates来创建jekyll文件是取巧的办法。我使用之后，发现存在两个问题，不知如何解决。请大大教我。
+利用org-capture templates来创建带时间戮的文件是取巧的办法。我使用之后，发现存在两个问题，不知如何解决。请大大教我。
 </p>
 <ul class="org-ul">
-<li>创建文件后打开的窗口只有整个窗口的一半，除了手式杀死另一个窗口之外，不知有什么办法。
+<li>创建文件后打开的窗口只有整个窗口的一半，除了手动杀死另一个窗口之外，不知有什么办法。
 </li>
 <li>创建新文件后，文件头有一个*号，除了手工删除，不知还有什么别的办法。
 </li>
