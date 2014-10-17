@@ -38,7 +38,7 @@ categories: [org ,jekyll ]
 <h2 id="sec-2"><span class="section-number-2">2</span> 我的org-capture templates配置</h2>
 <div class="outline-text-2" id="text-2">
 <p>
-上面提到的两篇文档都很简略，第一篇给出的代码是创建以日期分割的文件夹，然后在最后一个文件夹里创建文件。第二个文档并未给出创建带日期的文件。我瞎试着修改第一个文档，得出配置如下。把以下代码写入".emacs"。
+上面提到的两篇文档都很简略，第一篇给出的代码是创建以日期分割的文件夹，然后在最后一个文件夹里创建index.org文件。第二个文档并未给出创建带日期的文件的方法。我瞎试着修改第一个文档，得出配置如下。把以下代码写入".emacs"。
 </p>
 <div class="org-src-container">
 
@@ -69,7 +69,7 @@ categories: [org ,jekyll ]
 <h2 id="sec-3"><span class="section-number-2">3</span> 如何使用</h2>
 <div class="outline-text-2" id="text-3">
 <p>
-打开emacs,按下快捷键(C-cc),回车，然后输入文件名(不用输入org后缀)。然后开始写博文，最后保存。
+打开emacs,按下快捷键(C-cc),跳出一个日期表，默认选中当天，回车。接着输入文件名(不用输入org后缀)，回车。然后开始写博文，最后保存。
 </p>
 </div>
 </div>
@@ -80,7 +80,7 @@ categories: [org ,jekyll ]
 利用org-capture templates来创建jekyll文件是取巧的办法。我使用之后，发现存在两个问题，不知如何解决。请大大教我。
 </p>
 <ul class="org-ul">
-<li>创建文件后打开的窗口只有整个窗口的一半，除了手式杀死另一个窗口之外，不知不有什么办法。
+<li>创建文件后打开的窗口只有整个窗口的一半，除了手式杀死另一个窗口之外，不知有什么办法。
 </li>
 <li>创建新文件后，文件头有一个*号，除了手工删除，不知还有什么别的办法。
 </li>
