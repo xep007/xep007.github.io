@@ -1,9 +1,9 @@
 ---
 layout: post
 comments: true
-title: 用org-capture-templates创建带时间戮的文档
+title: 用org-capture-templates创建带时间戳的文档
 tags: 
-categories: [org ,jekyll,emacs ]
+categories: [org ,jekyll ]
 ---
 <div id="table-of-contents">
 <h2>Table of Contents</h2>
@@ -22,7 +22,7 @@ categories: [org ,jekyll,emacs ]
 <h2 id="sec-1"><span class="section-number-2">1</span> 创建符合jekyll要求的yaml格式的文件很麻烦</h2>
 <div class="outline-text-2" id="text-1">
 <p>
-自从使用orgmode和jekyll写博客后，最麻烦的事就是用(C-x C-f)新建一个文档时得按"y-m-d-文档名.org"格式输入文件名。org-octopress倒是做得不错，功能齐全，不但可以新建“日期+文档名.org”的文档，还可以自行选择日期；不仅如此，它还能编辑和删除已存在的文档。org-jekyll-mode也很好，虽然功能不如org-octopress那么多。但是这两个插件都需要下载并配置。而我只想方便地创建带时间戮的文件，因而并未采用这两个插件。我就到网上四处搜寻，功夫不负有心人，终于找到了两篇文档，利用自定义org-capture templates很笨拙地解决了问题。
+自从使用orgmode和jekyll写博客后，最麻烦的事就是用(C-x C-f)新建一个文档时得按"y-m-d-文档名.org"格式输入文件名。org-octopress倒是做得不错，功能齐全，不但可以新建“日期+文档名.org”的文档，还可以自行选择日期；不仅如此，它还能编辑和删除已存在的文档。org-jekyll-mode也很好，虽然功能不如org-octopress那么多。但是这两个插件都需要下载并配置。而我只想方便地创建带时间戳的文件，因而并未采用这两个插件。我就到网上四处搜寻，功夫不负有心人，终于找到了两篇文档，利用自定义org-capture templates很笨拙地解决了问题。
 </p>
 
 <ul class="org-ul">
@@ -77,7 +77,7 @@ categories: [org ,jekyll,emacs ]
 <h2 id="sec-4"><span class="section-number-2">4</span> 存在的问题</h2>
 <div class="outline-text-2" id="text-4">
 <p>
-利用org-capture templates来创建带时间戮的文件是取巧的办法。我使用之后，发现存在两个问题，不知如何解决。请大大教我。
+利用org-capture templates来创建带时间戳的文件是取巧的办法。我使用之后，发现存在两个问题，不知如何解决。请大大教我。
 </p>
 <ul class="org-ul">
 <li>创建文件后打开的窗口只有整个窗口的一半，除了手动杀死另一个窗口之外，不知有什么办法。
