@@ -159,7 +159,34 @@
 <div class="outline-text-2" id="text-5">
 <p>
 哈哈，在不经意间，找到了《Linusp's blog》，然后找到他的<a href="https://github.com/Linusp/Linusp.github.io">Linusp.github.io</a>项目。高手啊，很优雅地解决了这个问题。谢谢Linusp。看来，应该学一学elisp了。
+Linusp的代码如下：
 </p>
+<pre class="example">
+;; Write Blog
+(defvar post-dir "~/Dropbox/org/blog/_posts/")
+(defun blog-post (title)
+  (interactive "sEnter title: ")
+  (let ((post-file (concat post-dir
+                           (format-time-string "%Y-%m-%d")
+                           "-"
+                           title
+                           ".org")))
+    (progn
+      (switch-to-buffer (find-file-noselect post-file))
+      (insert (concat "#+startup: showall\n"
+                      "#+options: toc:nil\n"
+                      "#+begin_html\n"
+                      "---\n"
+                      "layout     : post\n"
+                      "title      : \n"
+                      "categories : \n"
+                      "tags       : \n"
+                      "description: \n"
+                      "---\n"
+                      "#+end_html\n"))))
+  )
+(define-key global-map "\C-cp" 'blog-post)
+</pre>
 </div>
 </div>
 

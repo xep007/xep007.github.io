@@ -5,8 +5,8 @@
     <description>Linux / C / golang / Emacs</description>
     <link>http://xep007.github.io/</link>
     <atom:link href="http://xep007.github.io/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Sun, 19 Oct 2014 23:19:04 +0800</pubDate>
-    <lastBuildDate>Sun, 19 Oct 2014 23:19:04 +0800</lastBuildDate>
+    <pubDate>Sun, 19 Oct 2014 23:40:39 +0800</pubDate>
+    <lastBuildDate>Sun, 19 Oct 2014 23:40:39 +0800</lastBuildDate>
     <generator>Jekyll v2.4.0</generator>
     
       <item>
@@ -1038,7 +1038,34 @@ count
 &lt;div class=&quot;outline-text-2&quot; id=&quot;text-5&quot;&gt;
 &lt;p&gt;
 哈哈，在不经意间，找到了《Linusp&#39;s blog》，然后找到他的&lt;a href=&quot;https://github.com/Linusp/Linusp.github.io&quot;&gt;Linusp.github.io&lt;/a&gt;项目。高手啊，很优雅地解决了这个问题。谢谢Linusp。看来，应该学一学elisp了。
+Linusp的代码如下：
 &lt;/p&gt;
+&lt;pre class=&quot;example&quot;&gt;
+;; Write Blog
+(defvar post-dir &quot;~/Dropbox/org/blog/_posts/&quot;)
+(defun blog-post (title)
+  (interactive &quot;sEnter title: &quot;)
+  (let ((post-file (concat post-dir
+                           (format-time-string &quot;%Y-%m-%d&quot;)
+                           &quot;-&quot;
+                           title
+                           &quot;.org&quot;)))
+    (progn
+      (switch-to-buffer (find-file-noselect post-file))
+      (insert (concat &quot;#+startup: showall\n&quot;
+                      &quot;#+options: toc:nil\n&quot;
+                      &quot;#+begin_html\n&quot;
+                      &quot;---\n&quot;
+                      &quot;layout     : post\n&quot;
+                      &quot;title      : \n&quot;
+                      &quot;categories : \n&quot;
+                      &quot;tags       : \n&quot;
+                      &quot;description: \n&quot;
+                      &quot;---\n&quot;
+                      &quot;#+end_html\n&quot;))))
+  )
+(define-key global-map &quot;\C-cp&quot; &#39;blog-post)
+&lt;/pre&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 </description>
