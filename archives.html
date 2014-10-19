@@ -1,0 +1,18 @@
+---
+layout: default
+title : 归档
+---
+<ul>
+  {% for post in site.posts %}
+  <li><h3>
+    <a href="{{ post.url }}" title="{{ post.title }}">
+      <span >
+        <span >{{ post.date | date: '%d' }}</span>
+        <span ><abbr>{{ post.date | date: '%b' }}</abbr></span>
+        <span >{{ post.date | date: '%Y' }}</span>
+      </span>
+      <span >{{ post.title }}</span>
+    </a>
+  </h3> </li>
+  {% endfor %}
+</ul>
