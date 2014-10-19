@@ -127,12 +127,12 @@ TAB键和M-C-\自动缩排,有助于程序结构更加清晰。
 <p>
 在emacs书写elisp程序的步骤：
 </p>
-<ol class="org-ol">
+<ul class="org-ul">
 <li>打开emacs
 </li>
 <li>M-x 键入lisp-interaction-mode
 </li>
-</ol>
+</ul>
 <p>
 就可进入lisp mode，进行程序书写。
 Lisp中任何列表都是一个可运行的程序。要运行该列表，先把光标放置于列表之后，键入C-j或者C-x C-e就可以了。
@@ -182,6 +182,9 @@ Lisp中任何列表都是一个可运行的程序。要运行该列表，先把�
 </ul>
 <p>
 Lisp解释嵌套列表是由内往外执行的。
+</p>
+
+<p>
 <b>字节编译</b>
 运行编译命令(byte-compile-file)可以将.el代码编译成字节编码(.elc)。
 </p>
