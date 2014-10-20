@@ -4,7 +4,7 @@ title : 归档
 ---
 <ul>
   {% for post in site.posts %}
-  <li><h3>
+  <li><h4>
     <a href="{{ post.url }}" title="{{ post.title }}">
       <span >
         <span >{{ post.date | date: '%d' }}</span>
@@ -13,6 +13,6 @@ title : 归档
       </span>
       <span >{{ post.title }}</span>
     </a>
-  </h3> </li>
+  </h4> </li>
   {% endfor %}
 </ul>

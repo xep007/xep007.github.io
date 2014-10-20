@@ -4,15 +4,15 @@ layout: default
 <!-- 分页开始 -->
 <div class="home">
 
-  <h1 class="page-heading">最新文章</h1>
+  <h3 class="page-heading">最新文章</h3>
 
   <ul class="post-list">
     {% for post in paginator.posts %}
       <li>
-        <h3>
+        <h4>
           {{ post.date | date: "%Y %b %d "}}
           <a  href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
-        </h3>
+        </h4>
       </li>
     {% endfor %}
   </ul>
