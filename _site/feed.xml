@@ -5,9 +5,189 @@
     <description>Linux / C / golang / Emacs</description>
     <link>http://xep007.github.io/</link>
     <atom:link href="http://xep007.github.io/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Mon, 20 Oct 2014 12:00:05 +0800</pubDate>
-    <lastBuildDate>Mon, 20 Oct 2014 12:00:05 +0800</lastBuildDate>
+    <pubDate>Mon, 20 Oct 2014 20:44:25 +0800</pubDate>
+    <lastBuildDate>Mon, 20 Oct 2014 20:44:25 +0800</lastBuildDate>
     <generator>Jekyll v2.4.0</generator>
+    
+      <item>
+        <title>GNU Emacs Lisp 编程入门笔记（四）</title>
+        <description>&lt;div id=&quot;table-of-contents&quot;&gt;
+&lt;h2&gt;Table of Contents&lt;/h2&gt;
+&lt;div id=&quot;text-table-of-contents&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1&quot;&gt;1. 第4章 与缓冲区有关的函数&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-1&quot;&gt;1.1. 查找更多的信息&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-2&quot;&gt;1.2. 简化的beginning-of-buffer函数定义&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-3&quot;&gt;1.3. make-whole-buffer函数的定义&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-4&quot;&gt;1.4. append-to-buffer函数的定义&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-4-1&quot;&gt;1.4.1. append-to-buffer函数的交互表达式&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-4-2&quot;&gt;1.4.2. append-to-buffer函数体&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-4-3&quot;&gt;1.4.3. append-to-buffer函数中的save-excursion&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-5&quot;&gt;1.5. 回顾&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-sec-1&quot; class=&quot;outline-2&quot;&gt;
+&lt;h2 id=&quot;sec-1&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;1&lt;/span&gt; 第4章 与缓冲区有关的函数&lt;/h2&gt;
+&lt;div class=&quot;outline-text-2&quot; id=&quot;text-1&quot;&gt;
+&lt;/div&gt;&lt;div id=&quot;outline-container-sec-1-1&quot; class=&quot;outline-3&quot;&gt;
+&lt;h3 id=&quot;sec-1-1&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.1&lt;/span&gt; 查找更多的信息&lt;/h3&gt;
+&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-1&quot;&gt;
+&lt;p&gt;
+在任何时候，你都可以键入C-h f以及函数名，得到Emacs Lisp函数的全部文档。键入C-h v 和变量名得到任何变量的全部文档。
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&quot;outline-container-sec-1-2&quot; class=&quot;outline-3&quot;&gt;
+&lt;h3 id=&quot;sec-1-2&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.2&lt;/span&gt; 简化的beginning-of-buffer函数定义&lt;/h3&gt;
+&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-2&quot;&gt;
+&lt;p&gt;
+完整版的beginning-of-buffer函数见下一章。以下是简化版的。代码如下：
+&lt;/p&gt;
+&lt;div class=&quot;org-src-container&quot;&gt;
+
+&lt;pre class=&quot;src src-lisp&quot;&gt;&lt;span class=&quot;linenr&quot;&gt;1: &lt;/span&gt;(&lt;span style=&quot;color: #00ffff;&quot;&gt;defun&lt;/span&gt; &lt;span style=&quot;color: #00fa9a;&quot;&gt;beginning-of-buffer&lt;/span&gt; ()
+&lt;span class=&quot;linenr&quot;&gt;2: &lt;/span&gt;    &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;Move point to the beginning of the buffer;&lt;/span&gt;
+&lt;span class=&quot;linenr&quot;&gt;3: &lt;/span&gt;&lt;span style=&quot;color: #ffa500;&quot;&gt;leave mark at previous position.&quot;&lt;/span&gt;
+&lt;span class=&quot;linenr&quot;&gt;4: &lt;/span&gt;    (interactive)
+&lt;span class=&quot;linenr&quot;&gt;5: &lt;/span&gt;    (push-mark)
+&lt;span class=&quot;linenr&quot;&gt;6: &lt;/span&gt;    (goto-char (point-min)))
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;
+(push-mark)表达式表示在光标的当前位置设置一个标记。这个标记被保存在标记环中。
+(goto-char)表达式表示将光标跳到本缓冲区的最小可能位点处，也就是缓冲区的开始处。
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&quot;outline-container-sec-1-3&quot; class=&quot;outline-3&quot;&gt;
+&lt;h3 id=&quot;sec-1-3&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.3&lt;/span&gt; make-whole-buffer函数的定义&lt;/h3&gt;
+&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-3&quot;&gt;
+&lt;p&gt;
+make-whole-buffer函数将整个缓冲区作为一个域来标记，方法是将位点置于缓冲区开始的位置，在缓冲区的末尾放一个标记。其完整代码如下：
+&lt;/p&gt;
+&lt;div class=&quot;org-src-container&quot;&gt;
+
+&lt;pre class=&quot;src src-lisp&quot;&gt;&lt;span class=&quot;linenr&quot;&gt;1: &lt;/span&gt;(&lt;span style=&quot;color: #00ffff;&quot;&gt;defun&lt;/span&gt; &lt;span style=&quot;color: #00fa9a;&quot;&gt;mark-whole-buffer&lt;/span&gt; () 
+&lt;span class=&quot;linenr&quot;&gt;2: &lt;/span&gt;    &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;Put point at beginning and mark at end of buffer.&quot;&lt;/span&gt;
+&lt;span class=&quot;linenr&quot;&gt;3: &lt;/span&gt;    (interactive)
+&lt;span class=&quot;linenr&quot;&gt;4: &lt;/span&gt;    (push-mark (point))
+&lt;span class=&quot;linenr&quot;&gt;5: &lt;/span&gt;    (push-mark (point-max))
+&lt;span class=&quot;linenr&quot;&gt;6: &lt;/span&gt;    (goto-char (point-min)))
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;
+函数体有三行。
+((push-mark (point)),这一行与(push-mark)的作用一样。即在当前位置设置一个标记。不加(point)也是可以的。
+(push-mark (point-max)),这个表达式在缓冲区中数值最大的位点处（缓冲区末尾）设置一个标记。设置好这一标记后，原来的标记就不是标记了，但Emacs记住了它的位置。
+(goto-char (point-min)),这个表达式与上一个函数中的一样。
+这个函数的作用就是标记了整个缓冲区。
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&quot;outline-container-sec-1-4&quot; class=&quot;outline-3&quot;&gt;
+&lt;h3 id=&quot;sec-1-4&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.4&lt;/span&gt; append-to-buffer函数的定义&lt;/h3&gt;
+&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-4&quot;&gt;
+&lt;p&gt;
+append-to-buffer函数功能是从当前缓冲区中拷贝一个域（即缓冲区中介于位点和标记之间的域）到一个指定的缓冲区。代码如下：
+&lt;/p&gt;
+&lt;div class=&quot;org-src-container&quot;&gt;
+
+&lt;pre class=&quot;src src-lisp&quot;&gt;&lt;span class=&quot;linenr&quot;&gt; 1: &lt;/span&gt;(&lt;span style=&quot;color: #00ffff;&quot;&gt;defun&lt;/span&gt; &lt;span style=&quot;color: #00fa9a;&quot;&gt;append-to-buffer&lt;/span&gt; (buffer start end)
+&lt;span class=&quot;linenr&quot;&gt; 2: &lt;/span&gt;    &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;Append to specified buffer the text of the region.&lt;/span&gt;
+&lt;span class=&quot;linenr&quot;&gt; 3: &lt;/span&gt;&lt;span style=&quot;color: #ffa500;&quot;&gt;     It is inserted into that buffer before its point.&lt;/span&gt;
+&lt;span class=&quot;linenr&quot;&gt; 4: &lt;/span&gt;&lt;span style=&quot;color: #ffa500;&quot;&gt;    When calling from a program, give three arguments:&lt;/span&gt;
+&lt;span class=&quot;linenr&quot;&gt; 5: &lt;/span&gt;&lt;span style=&quot;color: #ffa500;&quot;&gt;    a buffer or the name of one, and two charactre number&lt;/span&gt;
+&lt;span class=&quot;linenr&quot;&gt; 6: &lt;/span&gt;&lt;span style=&quot;color: #ffa500;&quot;&gt;    apecifying the portion of the current buffer to be copied.&quot;&lt;/span&gt;
+&lt;span class=&quot;linenr&quot;&gt; 7: &lt;/span&gt;    (interactive &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;BAppend to buffer: \nr&quot;&lt;/span&gt;)
+&lt;span class=&quot;linenr&quot;&gt; 8: &lt;/span&gt;    (&lt;span style=&quot;color: #00ffff;&quot;&gt;let&lt;/span&gt; ((oldbuf (current-buffer)))
+&lt;span class=&quot;linenr&quot;&gt; 9: &lt;/span&gt;       (&lt;span style=&quot;color: #00ffff;&quot;&gt;save-excursion&lt;/span&gt;
+&lt;span class=&quot;linenr&quot;&gt;10: &lt;/span&gt;           (set-buffer (get-buffer-create buffer))
+&lt;span class=&quot;linenr&quot;&gt;11: &lt;/span&gt;           (insert-buffer-substring oldbuf start end))))
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;
+函数定义的第一行包含了函数名以及三个参量。buffer参量是指拷贝文本的目的缓冲区，start和end参量是指将要被拷贝的当前缓冲区中指定域的起始和终止位点。
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&quot;outline-container-sec-1-4-1&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1-4-1&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.4.1&lt;/span&gt; append-to-buffer函数的交互表达式&lt;/h4&gt;
+&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-4-1&quot;&gt;
+&lt;p&gt;
+交互表达式interactive的参量有两个部分，用&quot;\n&quot;分隔。
+参量第一部分是&quot;BAppend to buffer:&quot;。&quot;B&quot;控制符告诉Emacs要求输入缓冲区的名字并将这个名字传送给函数。Emacs将在minibuffer中打印出&quot;B&quot;字符后面的字符串&quot;Append to buffer:&quot;来提示用户输入这个缓冲区名。然后Emacs将函数参量列表中的参量buffer绑定到指定的缓冲区.
+&quot;r&quot;,告诉Emacs将函数参量列表中符号&quot;buffer&quot;之后的两个参量（即start和end）绑定到位点和标记上。
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&quot;outline-container-sec-1-4-2&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1-4-2&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.4.2&lt;/span&gt; append-to-buffer函数体&lt;/h4&gt;
+&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-4-2&quot;&gt;
+&lt;p&gt;
+函数体从let开始。let表达式有三个元素：
+&lt;/p&gt;
+&lt;ul class=&quot;org-ul&quot;&gt;
+&lt;li&gt;符号let;
+&lt;/li&gt;
+&lt;li&gt;一个变量列表，本例中，变量列表包含一个两元素列表（variable value）;
+&lt;/li&gt;
+&lt;li&gt;let表达式主体。
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&quot;outline-container-sec-1-4-3&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1-4-3&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.4.3&lt;/span&gt; append-to-buffer函数中的save-excursion&lt;/h4&gt;
+&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-4-3&quot;&gt;
+&lt;p&gt;
+let表达式的主体由一个save-excursion表达式组成。它保存位点和标记的位置，并当这个函数体的其他表达式都被求值之后恢复位点和标记到相应的位置。
+(set-buffer (get-buffer-create buffer))列表中，(get-buffer-create buffer)函数要么获得已经命名的缓冲区，要么用给定的名字创建一个缓冲区。
+(insert-buffer-substring oldbuf start end)函数从作为其第一个参量指定的缓冲区中拷贝一个字符串，并将其插入到当前的缓冲区中。
+(insert-buffer-substring)函数执行完之后，save-excursion将恢复对原来缓冲区的操作，并且append-to-buffer将完成其工作。
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&quot;outline-container-sec-1-5&quot; class=&quot;outline-3&quot;&gt;
+&lt;h3 id=&quot;sec-1-5&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.5&lt;/span&gt; 回顾&lt;/h3&gt;
+&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-5&quot;&gt;
+&lt;ul class=&quot;org-ul&quot;&gt;
+&lt;li&gt;find-tag
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;
+找到某个函数或者变量的源代码的文件，并切换到这个缓冲区，将位点（光标）置于相应函数或者变量的开始处。
+&lt;/p&gt;
+&lt;ul class=&quot;org-ul&quot;&gt;
+&lt;li&gt;set-buffer
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;
+将Emacs的注意力转移到另一个缓冲区，但是不改变显示的窗口。
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</description>
+        <pubDate>Mon, 20 Oct 2014 00:00:00 +0800</pubDate>
+        <link>http://xep007.github.io/emacs/lisp/2014/10/20/gnu%20emacs%20lisp%20%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8%E7%AC%94%E8%AE%B0%EF%BC%88%E5%9B%9B%EF%BC%89.html</link>
+        <guid isPermaLink="true">http://xep007.github.io/emacs/lisp/2014/10/20/gnu%20emacs%20lisp%20%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8%E7%AC%94%E8%AE%B0%EF%BC%88%E5%9B%9B%EF%BC%89.html</guid>
+        
+        <category>lisp</category>
+        
+        
+        <category>emacs</category>
+        
+        <category>lisp</category>
+        
+      </item>
     
       <item>
         <title>GNU Emacs Lisp编程入门笔记（二）</title>
@@ -96,7 +276,7 @@ other-buffer函数返回最近使用过的缓冲区。
       </item>
     
       <item>
-        <title>GNU Emacs Lisp编程入门读书笔记（三）</title>
+        <title>GNU Emacs Lisp编程入门笔记（三）</title>
         <description>&lt;div id=&quot;table-of-contents&quot;&gt;
 &lt;h2&gt;Table of Contents&lt;/h2&gt;
 &lt;div id=&quot;text-table-of-contents&quot;&gt;
@@ -569,7 +749,566 @@ setq函数将其第一个参量的值设为第二个参量的值。这个函数�
       </item>
     
       <item>
-        <title>GNU Emacs Lisp 编程入门读书笔记（一)</title>
+        <title>GNU Emacs Lisp编程入门笔记（二）</title>
+        <description>&lt;div id=&quot;table-of-contents&quot;&gt;
+&lt;h2&gt;Table of Contents&lt;/h2&gt;
+&lt;div id=&quot;text-table-of-contents&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1&quot;&gt;1. 第2章 求值实践&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-1&quot;&gt;1.1. 缓冲区名&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-2&quot;&gt;1.2. 获得缓冲区&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-3&quot;&gt;1.3. 切换缓冲区&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-4&quot;&gt;1.4. 缓冲区大小和位点的定位&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-sec-1&quot; class=&quot;outline-2&quot;&gt;
+&lt;h2 id=&quot;sec-1&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;1&lt;/span&gt; 第2章 求值实践&lt;/h2&gt;
+&lt;div class=&quot;outline-text-2&quot; id=&quot;text-1&quot;&gt;
+&lt;/div&gt;&lt;div id=&quot;outline-container-sec-1-1&quot; class=&quot;outline-3&quot;&gt;
+&lt;h3 id=&quot;sec-1-1&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.1&lt;/span&gt; 缓冲区名&lt;/h3&gt;
+&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-1&quot;&gt;
+&lt;p&gt;
+缓冲区和文件是不同的概念。文件是永久保存在计算机中的信息。缓冲区则是Emacs内部的信息，如果不保存，则Emacs关闭后缓冲区中的内容将消失。
+打开Emacs,在&quot;&lt;b&gt;scratch&lt;/b&gt;&quot;缓冲区中对(buffer-name)求值将显示&quot;&lt;b&gt;scratch&lt;/b&gt;&quot;，对&quot;(buffer-file-name)&quot;进行求值则会显示&quot;nil&quot;。
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&quot;outline-container-sec-1-2&quot; class=&quot;outline-3&quot;&gt;
+&lt;h3 id=&quot;sec-1-2&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.2&lt;/span&gt; 获得缓冲区&lt;/h3&gt;
+&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-2&quot;&gt;
+&lt;p&gt;
+buffer-name函数返回缓冲区的名字。
+current-buffer函数获得缓冲区本身。
+other-buffer函数返回最近使用过的缓冲区。
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&quot;outline-container-sec-1-3&quot; class=&quot;outline-3&quot;&gt;
+&lt;h3 id=&quot;sec-1-3&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.3&lt;/span&gt; 切换缓冲区&lt;/h3&gt;
+&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-3&quot;&gt;
+&lt;p&gt;
+当other-buffer函数被一个函数用作参量时，通过switch-to-buffer加上other-buff函数可以切换到另外一个缓冲区。
+&lt;/p&gt;
+&lt;div class=&quot;org-src-container&quot;&gt;
+
+&lt;pre class=&quot;src src-lisp&quot;&gt;(switch-to-buffer (other-buffer))
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;
+在实际应用中用到更多的函数是set-buffer。
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&quot;outline-container-sec-1-4&quot; class=&quot;outline-3&quot;&gt;
+&lt;h3 id=&quot;sec-1-4&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.4&lt;/span&gt; 缓冲区大小和位点的定位&lt;/h3&gt;
+&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-4&quot;&gt;
+&lt;ul class=&quot;org-ul&quot;&gt;
+&lt;li&gt;buffer-size函数。这个函数给出当前缓冲区的大小，即缓冲区中字符数的计数。
+&lt;/li&gt;
+&lt;li&gt;point函数。返回光标所处位置，即从缓冲区首字符到光标所在位置之间的字符数。
+&lt;/li&gt;
+&lt;li&gt;point-min函数。返回当前缓冲区中位点的最小可能值。一般是1。
+&lt;/li&gt;
+&lt;li&gt;point-max函数。返回当前缓冲区中位点的最大可能值。
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</description>
+        <pubDate>Sun, 19 Oct 2014 00:00:00 +0800</pubDate>
+        <link>http://xep007.github.io/emacs/lisp/2014/10/19/gnu%20emacs%20lisp%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%EF%BC%89.html</link>
+        <guid isPermaLink="true">http://xep007.github.io/emacs/lisp/2014/10/19/gnu%20emacs%20lisp%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%EF%BC%89.html</guid>
+        
+        <category>emacs</category>
+        
+        
+        <category>emacs</category>
+        
+        <category>lisp</category>
+        
+      </item>
+    
+      <item>
+        <title>GNU Emacs Lisp编程入门笔记（三）</title>
+        <description>&lt;div id=&quot;table-of-contents&quot;&gt;
+&lt;h2&gt;Table of Contents&lt;/h2&gt;
+&lt;div id=&quot;text-table-of-contents&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1&quot;&gt;1. 第3章 如何编写函数定义&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-1&quot;&gt;1.1. defun特殊表&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-2&quot;&gt;1.2. 安装函数定义&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-3&quot;&gt;1.3. 使函数成为交互函数&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-4&quot;&gt;1.4. interactive函数的不同选项&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-5&quot;&gt;1.5. 永久地安装代码&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-6&quot;&gt;1.6. let函数&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-6-1&quot;&gt;1.6.1. let表达式的各个部分&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-6-2&quot;&gt;1.6.2. let表达式例子&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-6-3&quot;&gt;1.6.3. let语句中的未初始化变量&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-7&quot;&gt;1.7. if特殊表&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-8&quot;&gt;1.8. if-then-else表达式&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-9&quot;&gt;1.9. Lisp中的真和假&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-10&quot;&gt;1.10. save-excursion函数&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-11&quot;&gt;1.11. 小结&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-sec-1&quot; class=&quot;outline-2&quot;&gt;
+&lt;h2 id=&quot;sec-1&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;1&lt;/span&gt; 第3章 如何编写函数定义&lt;/h2&gt;
+&lt;div class=&quot;outline-text-2&quot; id=&quot;text-1&quot;&gt;
+&lt;/div&gt;&lt;div id=&quot;outline-container-sec-1-1&quot; class=&quot;outline-3&quot;&gt;
+&lt;h3 id=&quot;sec-1-1&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.1&lt;/span&gt; defun特殊表&lt;/h3&gt;
+&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-1&quot;&gt;
+&lt;p&gt;
+在Lisp中，一个类似于mark-whole-buffer这样的符号已经有代码与之联系了，这告诉计算机当函数被调用时要做些什么。该代码被称作函数定义，它是通过对一个以符号defun开头的Lisp表达式求值而被建立的。因为defun不以通常的方式对它的参量求值，因此它被称为特殊表。
+一个函数定义在defun符号之后最多有五个部分：
+&lt;/p&gt;
+&lt;ul class=&quot;org-ul&quot;&gt;
+&lt;li&gt;符号名，这是函数定义将要依附的符号。
+&lt;/li&gt;
+&lt;li&gt;将要传送给函数的参量列表。如果无参量，那就是空列表（）。
+&lt;/li&gt;
+&lt;li&gt;描述这个函数的文档。
+&lt;/li&gt;
+&lt;li&gt;一个使函数成为交互函数的表达式，这是可选的。因此，可以通过键入M-x和函数名来使用它，或者键入一个事先设定的快捷键。
+&lt;/li&gt;
+&lt;li&gt;指导计算机如何运行的代码，这是函数定义的主体。
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&quot;org-src-container&quot;&gt;
+
+&lt;pre class=&quot;src src-lisp&quot;&gt;(&lt;span style=&quot;color: #00ffff;&quot;&gt;defun&lt;/span&gt; &lt;span style=&quot;color: #00fa9a;&quot;&gt;function-name&lt;/span&gt; (arguments...)
+    &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;optional-documentation...&quot;&lt;/span&gt;
+    (interactive argument-passing-info) &lt;span style=&quot;color: #ffd700;&quot;&gt;;&lt;/span&gt;&lt;span style=&quot;color: #ffd700;&quot;&gt;optional&lt;/span&gt;
+    body...)
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;
+例子：
+&lt;/p&gt;
+&lt;div class=&quot;org-src-container&quot;&gt;
+
+&lt;pre class=&quot;src src-lisp&quot;&gt;(&lt;span style=&quot;color: #00ffff;&quot;&gt;defun&lt;/span&gt; &lt;span style=&quot;color: #00fa9a;&quot;&gt;multiply-by-seven&lt;/span&gt; (number)
+    &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;Multiply NUMBER by seven.&quot;&lt;/span&gt;
+    (* 7 number))
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-sec-1-2&quot; class=&quot;outline-3&quot;&gt;
+&lt;h3 id=&quot;sec-1-2&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.2&lt;/span&gt; 安装函数定义&lt;/h3&gt;
+&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-2&quot;&gt;
+&lt;p&gt;
+对函数求值（即运行它，光标移到函数末尾执行C-j或者C-c C-e）将返回函数本身，这一动作就是函数的安装。不过这是临时安装，Emacs关闭后这个函数也将失去。
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&quot;outline-container-sec-1-3&quot; class=&quot;outline-3&quot;&gt;
+&lt;h3 id=&quot;sec-1-3&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.3&lt;/span&gt; 使函数成为交互函数&lt;/h3&gt;
+&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-3&quot;&gt;
+&lt;p&gt;
+使一个函数成为交互函数可以这样实现：在函数文档后面增加一个以特殊表interactive开始的列表。
+&lt;/p&gt;
+&lt;div class=&quot;org-src-container&quot;&gt;
+
+&lt;pre class=&quot;src src-lisp&quot;&gt;(&lt;span style=&quot;color: #00ffff;&quot;&gt;defun&lt;/span&gt; &lt;span style=&quot;color: #00fa9a;&quot;&gt;multiply-by-seven&lt;/span&gt; (number)
+    &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;Multiply NUMBER by seven.&quot;&lt;/span&gt;
+    (interactive &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;p&quot;&lt;/span&gt;)
+    (message &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;The result is %d.&quot;&lt;/span&gt; (* 7 number)))
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;
+message是一个Emacs Lisp函数（应该可以叫库函数吧，就如printf）。其作用是将一行消息传递给用户。
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&quot;outline-container-sec-1-4&quot; class=&quot;outline-3&quot;&gt;
+&lt;h3 id=&quot;sec-1-4&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.4&lt;/span&gt; interactive函数的不同选项&lt;/h3&gt;
+&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-4&quot;&gt;
+&lt;p&gt;
+在上面的例子中，myltiply-by-seven函数使用&quot;p&quot;作为交互命令interactive的参量。这个参量告诉Emacs将你正在键入的C-u加上一个数字或META加上一个数字解释为一个命令，用来将这个数字作为参量传递给函数。Emacs有多于20个为interactive预先定义好的字符。interactive可以有多个参量。
+&lt;/p&gt;
+&lt;div class=&quot;org-src-container&quot;&gt;
+
+&lt;pre class=&quot;src src-lisp&quot;&gt;(&lt;span style=&quot;color: #00ffff;&quot;&gt;defun&lt;/span&gt; &lt;span style=&quot;color: #00fa9a;&quot;&gt;name-of-function&lt;/span&gt; (buffer start end)
+    &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;documentation...&quot;&lt;/span&gt;
+    (interactive &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;BAppend to buffer: \nr&quot;&lt;/span&gt;)
+    boy-of-function...)
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&quot;outline-container-sec-1-5&quot; class=&quot;outline-3&quot;&gt;
+&lt;h3 id=&quot;sec-1-5&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.5&lt;/span&gt; 永久地安装代码&lt;/h3&gt;
+&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-5&quot;&gt;
+&lt;p&gt;
+永久安装代码有三种办法：
+&lt;/p&gt;
+&lt;ul class=&quot;org-ul&quot;&gt;
+&lt;li&gt;个人使用，可以写入.emacs中。
+&lt;/li&gt;
+&lt;li&gt;可以将函数定义放在一个或多个文件中（一般以el作为后缀），然后使用load函数让Emacs对它们求值。
+&lt;/li&gt;
+&lt;li&gt;所有用户使用的，一般将它放在site-init.el文件中，它在Emacs启动时被加载。
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&quot;outline-container-sec-1-6&quot; class=&quot;outline-3&quot;&gt;
+&lt;h3 id=&quot;sec-1-6&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.6&lt;/span&gt; let函数&lt;/h3&gt;
+&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-6&quot;&gt;
+&lt;p&gt;
+let是一个特殊表，用于将一个符号绑定到一个值上。可以理解为声明局部变量，它的作用域为let表达式。
+let可以创建一个或多个变量。也可给每一个变量赋初值。初值可以是数字、字符串或nil(空)。
+let表达式返回值为表达式主体中最后一个表达式的值。
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&quot;outline-container-sec-1-6-1&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1-6-1&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.6.1&lt;/span&gt; let表达式的各个部分&lt;/h4&gt;
+&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-6-1&quot;&gt;
+&lt;p&gt;
+let表达式是一个具有三个部分的列表。
+&lt;/p&gt;
+&lt;ul class=&quot;org-ul&quot;&gt;
+&lt;li&gt;let符号
+&lt;/li&gt;
+&lt;li&gt;列表，称为变量列表(varlist),这个列表的每个元素是一个符号或一个两元素的列表，而它的第一个元素一定是一个符号。
+&lt;/li&gt;
+&lt;li&gt;表达式主体，由一个或多个列表组成。
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;
+let表达式的模板如下：
+&lt;/p&gt;
+&lt;div class=&quot;org-src-container&quot;&gt;
+
+&lt;pre class=&quot;src src-lisp&quot;&gt;(&lt;span style=&quot;color: #00ffff;&quot;&gt;let&lt;/span&gt; varlist body...)
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;
+如果变量列表是由两元素列表组成，其模板如下：
+&lt;/p&gt;
+&lt;div class=&quot;org-src-container&quot;&gt;
+
+&lt;pre class=&quot;src src-lisp&quot;&gt;(&lt;span style=&quot;color: #00ffff;&quot;&gt;let&lt;/span&gt; ((variable value)
+     (variable value)
+     ...)
+     body...)
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&quot;outline-container-sec-1-6-2&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1-6-2&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.6.2&lt;/span&gt; let表达式例子&lt;/h4&gt;
+&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-6-2&quot;&gt;
+&lt;div class=&quot;org-src-container&quot;&gt;
+
+&lt;pre class=&quot;src src-lisp&quot;&gt;(&lt;span style=&quot;color: #00ffff;&quot;&gt;let&lt;/span&gt; ((zebra &#39;stripes)
+      (tiger &#39;fierce))
+    (message &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;One kind of animal has %s and another is %s.&quot;&lt;/span&gt; 
+         zebra tiger))
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&quot;outline-container-sec-1-6-3&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1-6-3&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.6.3&lt;/span&gt; let语句中的未初始化变量&lt;/h4&gt;
+&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-6-3&quot;&gt;
+&lt;p&gt;
+如果let语句中未对变量赋初值，则默认为nil。
+&lt;/p&gt;
+&lt;div class=&quot;org-src-container&quot;&gt;
+
+&lt;pre class=&quot;src src-lisp&quot;&gt;(&lt;span style=&quot;color: #00ffff;&quot;&gt;let&lt;/span&gt; ((birch 3)
+      pine
+      fir
+      (oak &#39;some))
+    (message
+     &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;Here are %d variables with %s, %s, and %s value.&quot;&lt;/span&gt;
+      birch pine fir oak))
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&quot;outline-container-sec-1-7&quot; class=&quot;outline-3&quot;&gt;
+&lt;h3 id=&quot;sec-1-7&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.7&lt;/span&gt; if特殊表&lt;/h3&gt;
+&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-7&quot;&gt;
+&lt;p&gt;
+if是个条件特殊表。编写一个if表达式时，真假测试经常与if写在同一行，执行语句则另起一行。
+例子:
+&lt;/p&gt;
+&lt;div class=&quot;org-src-container&quot;&gt;
+
+&lt;pre class=&quot;src src-lisp&quot;&gt;(&lt;span style=&quot;color: #00ffff;&quot;&gt;defun&lt;/span&gt; &lt;span style=&quot;color: #00fa9a;&quot;&gt;type-of-animal&lt;/span&gt; (characteristic)
+    &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;Print message in echo area depending on CHARACTERISTIC.&lt;/span&gt;
+&lt;span style=&quot;color: #ffa500;&quot;&gt;    If the CHARACTERISTIC is the symbol &#39;fierce&#39;,&lt;/span&gt;
+&lt;span style=&quot;color: #ffa500;&quot;&gt;    then warn of a tiger.&quot;&lt;/span&gt;
+    (&lt;span style=&quot;color: #00ffff;&quot;&gt;if&lt;/span&gt; (equal characteristic &#39;fierce)
+        (message &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;It&#39;t a tiger&quot;&lt;/span&gt;)))
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;
+在Lisp中，equal是判定它的第一个参量是否等于第二个参量的函数。
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&quot;outline-container-sec-1-8&quot; class=&quot;outline-3&quot;&gt;
+&lt;h3 id=&quot;sec-1-8&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.8&lt;/span&gt; if-then-else表达式&lt;/h3&gt;
+&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-8&quot;&gt;
+&lt;p&gt;
+在elisp中，if-then-else判断只出现if,默认第二个参量为then部，第三个为else部。else部的缩进比then部的小。
+模板如下：
+&lt;/p&gt;
+&lt;div class=&quot;org-src-container&quot;&gt;
+
+&lt;pre class=&quot;src src-lisp&quot;&gt;(&lt;span style=&quot;color: #00ffff;&quot;&gt;if&lt;/span&gt; true-or-false-test
+    (action-to-carry-out-if-the-test-returns-true)
+  (action-to-carry-out-if-the-test-returns-false))
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;
+例子：
+&lt;/p&gt;
+&lt;div class=&quot;org-src-container&quot;&gt;
+
+&lt;pre class=&quot;src src-lisp&quot;&gt;(&lt;span style=&quot;color: #00ffff;&quot;&gt;let&lt;/span&gt; ((zebra &#39;stripes)
+      (tiger &#39;fierce)))
+
+(&lt;span style=&quot;color: #00ffff;&quot;&gt;defun&lt;/span&gt; &lt;span style=&quot;color: #00fa9a;&quot;&gt;type-of-animal&lt;/span&gt; (char) &lt;span style=&quot;color: #ffd700;&quot;&gt;;&lt;/span&gt;&lt;span style=&quot;color: #ffd700;&quot;&gt;second version&lt;/span&gt;
+    (&lt;span style=&quot;color: #00ffff;&quot;&gt;if&lt;/span&gt; (equal char &#39;fierce)
+        (message &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;It&#39;s a tiger&quot;&lt;/span&gt;)
+      (message &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;It&#39;s not fierce!&quot;&lt;/span&gt;)))
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&quot;outline-container-sec-1-9&quot; class=&quot;outline-3&quot;&gt;
+&lt;h3 id=&quot;sec-1-9&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.9&lt;/span&gt; Lisp中的真和假&lt;/h3&gt;
+&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-9&quot;&gt;
+&lt;p&gt;
+如果值为nil，则为假。非nil,则为真。在Lisp中，nil有两种含义，一为假，一为空列表()。
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&quot;outline-container-sec-1-10&quot; class=&quot;outline-3&quot;&gt;
+&lt;h3 id=&quot;sec-1-10&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.10&lt;/span&gt; save-excursion函数&lt;/h3&gt;
+&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-10&quot;&gt;
+&lt;p&gt;
+这个函数是将当前的位点和标记保存起来，执行函数体，然后，如果位点和标记发生改变就将位点和标记恢复成原来的值。
+&lt;/p&gt;
+
+&lt;p&gt;
+&lt;b&gt;复习：&lt;/b&gt;
+&lt;/p&gt;
+&lt;ul class=&quot;org-ul&quot;&gt;
+&lt;li&gt;位点：就是光标所处的位置。光标在什么位置，位点就是光标的前一位。位点是个整数。位点(point)函数返回光标的当前位置，每一个缓冲区都有它的位点。
+&lt;/li&gt;
+&lt;li&gt;标记：是缓冲区的另外一个位置。它的值可以用set-mark-command来设置。
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;
+位点和标记之间的缓冲区称为区域(region)。save-excursion特殊表可以将位点和标记的当前位置保存起来，并当特殊表主体代码由Lisp解释器执行完毕后恢复到原来的位点和标记的位置。
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&quot;outline-container-sec-1-11&quot; class=&quot;outline-3&quot;&gt;
+&lt;h3 id=&quot;sec-1-11&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.11&lt;/span&gt; 小结&lt;/h3&gt;
+&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-11&quot;&gt;
+&lt;ul class=&quot;org-ul&quot;&gt;
+&lt;li&gt;defun
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;
+定义函数。最多可以有5个部分：函数名、传送给函数的参量的模板、文档、一个可选的交互函数声明以及函数体。
+&lt;/p&gt;
+&lt;div class=&quot;org-src-container&quot;&gt;
+
+&lt;pre class=&quot;src src-lisp&quot;&gt;(&lt;span style=&quot;color: #00ffff;&quot;&gt;defun&lt;/span&gt; &lt;span style=&quot;color: #00fa9a;&quot;&gt;back-to-indentation&lt;/span&gt; ()
+    &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;Point to first visible character on line.&quot;&lt;/span&gt;
+    (interactive)
+    (beginning-of-line 1)
+    (skip-chars-forward &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot; \t&quot;&lt;/span&gt;))
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;ul class=&quot;org-ul&quot;&gt;
+&lt;li&gt;interactive
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;
+向Lisp解释器声明这个函数可以被交互地使用。这个特殊表可以用一个字符串，分成一个部分或几个部分，依次传递信息到这个函数的参数。这些部分也可以告诉Lisp解释器提示这些信息。字符串的每一个部分用换行符&quot; \n&quot;分开。
+其中常用到的控制字符是：
+b 一个已经存在的缓冲区的名字
+f 一个已经存在的文件的名字
+p 数字前缀参量
+r 位点和标记，作为两个数字参量，小的在前。这是唯一定义两个连续参量而不是一个参量的控制符。
+&lt;/p&gt;
+&lt;ul class=&quot;org-ul&quot;&gt;
+&lt;li&gt;let
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;
+声明在let表达式主体中使用的变量列表并给它们赋初值，初值要么是nil,要么是一个指定的值。
+&lt;/p&gt;
+&lt;ul class=&quot;org-ul&quot;&gt;
+&lt;li&gt;save-excursion
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;
+在对这个特殊表主体求值前，记录位点和标记的值以及当前缓冲区。求值之后恢复原来的位点和标记。
+&lt;/p&gt;
+&lt;div class=&quot;org-src-container&quot;&gt;
+
+&lt;pre class=&quot;src src-lisp&quot;&gt;(message &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;We are %d characters into this buffer.&quot;&lt;/span&gt;
+        (- (point)
+            (&lt;span style=&quot;color: #00ffff;&quot;&gt;save-excursion&lt;/span&gt;
+                (goto-char (poing-min)) (poing))))
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;ul class=&quot;org-ul&quot;&gt;
+&lt;li&gt;if
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;
+对函数的第一个参量求值;如果为真，则对第二个参量求值;否则，如果有第三个参量，就对第三个参量求值。
+&lt;/p&gt;
+&lt;ul class=&quot;org-ul&quot;&gt;
+&lt;li&gt;equal和eq
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;
+测试两个对象是否相同。如果两个对象有相似的结构和内容，equal则返回“真”。如果两个参量确实是完全相同的对象，则另一个函数eq返回“真”。
+&lt;/p&gt;
+&lt;ul class=&quot;org-ul&quot;&gt;
+&lt;li&gt;&amp;lt; 、 &amp;gt; 、&amp;lt;= 、 &amp;gt;=
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;
+这个比较容易理解。
+&lt;/p&gt;
+&lt;ul class=&quot;org-ul&quot;&gt;
+&lt;li&gt;message
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;
+用于回显区打印一条消息。打印消息只可以有一行。可以包含%s、%d、%c。
+&lt;/p&gt;
+&lt;ul class=&quot;org-ul&quot;&gt;
+&lt;li&gt;setq、set
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;
+setq函数将其第一个参量的值设为第二个参量的值。这个函数对后续的成对参量执行相同的赋值操作。set函数则只接受两个参量，并且第二个参量前要加单引号。
+&lt;/p&gt;
+&lt;ul class=&quot;org-ul&quot;&gt;
+&lt;li&gt;buffer-name
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;
+这个函数不需要参量，返回缓冲区的名字。
+&lt;/p&gt;
+&lt;ul class=&quot;org-ul&quot;&gt;
+&lt;li&gt;buffer-file-name
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;
+这个函数也不需要参量，返回当前缓冲区正在访问的文件的名字
+&lt;/p&gt;
+&lt;ul class=&quot;org-ul&quot;&gt;
+&lt;li&gt;current-buffer
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;
+返回Emacs中当前缓冲区的名字，这个缓冲区可能并不是屏幕上看到的缓冲区。
+&lt;/p&gt;
+&lt;ul class=&quot;org-ul&quot;&gt;
+&lt;li&gt;other-buffer
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;
+返回最近选择过的缓冲区。
+&lt;/p&gt;
+&lt;ul class=&quot;org-ul&quot;&gt;
+&lt;li&gt;switch-to-buffer
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;
+这个函数为Emacs选择一个活动的缓冲区，并将它显示在当前的窗口。
+&lt;/p&gt;
+&lt;ul class=&quot;org-ul&quot;&gt;
+&lt;li&gt;set-buffer
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;
+将Emacsr注意力切换到另外一个运行程序的缓冲区。不要改变当前窗口正在显示的内容。
+&lt;/p&gt;
+&lt;ul class=&quot;org-ul&quot;&gt;
+&lt;li&gt;buffer-size
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;
+返回当前缓冲区中的字符数。
+&lt;/p&gt;
+&lt;ul class=&quot;org-ul&quot;&gt;
+&lt;li&gt;point
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;
+返回当前光标对应的值，这个值是从缓冲区的开始处直到光标所在位置所占的总字符数。
+&lt;/p&gt;
+&lt;ul class=&quot;org-ul&quot;&gt;
+&lt;li&gt;point-min
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;
+返回当前缓冲区中位点的最小可能值，如果变窄没有开启，这个值就是1。
+&lt;/p&gt;
+&lt;ul class=&quot;org-ul&quot;&gt;
+&lt;li&gt;point-max
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;
+返回当前缓冲区中位点的最大可能值。如果变窄没有开启，这个值就是缓冲区末尾对应的值。
+&lt;/p&gt;
+&lt;ul class=&quot;org-ul&quot;&gt;
+&lt;li&gt;eval-last-sexp
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;
+对光标所处的位点前的最后一个符号表达式求值。如果这个函数被激活时没有带参量，返回输出在回显区中。如果这个函数被激活时带有参量，其输出打印在当前缓冲区中。
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</description>
+        <pubDate>Sun, 19 Oct 2014 00:00:00 +0800</pubDate>
+        <link>http://xep007.github.io/emacs/lisp/2014/10/19/gnu%20emacs%20lisp%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%89%EF%BC%89.html</link>
+        <guid isPermaLink="true">http://xep007.github.io/emacs/lisp/2014/10/19/gnu%20emacs%20lisp%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%89%EF%BC%89.html</guid>
+        
+        <category>emacs</category>
+        
+        
+        <category>emacs</category>
+        
+        <category>lisp</category>
+        
+      </item>
+    
+      <item>
+        <title>GNU Emacs Lisp 编程入门笔记（一)</title>
         <description>&lt;div id=&quot;table-of-contents&quot;&gt;
 &lt;h2&gt;Table of Contents&lt;/h2&gt;
 &lt;div id=&quot;text-table-of-contents&quot;&gt;
@@ -949,6 +1688,386 @@ count
       </item>
     
       <item>
+        <title>GNU Emacs Lisp 编程入门笔记（一)</title>
+        <description>&lt;div id=&quot;table-of-contents&quot;&gt;
+&lt;h2&gt;Table of Contents&lt;/h2&gt;
+&lt;div id=&quot;text-table-of-contents&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1&quot;&gt;1. 第1章 列表处理&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-1&quot;&gt;1.1. Lisp列表&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-1-1&quot;&gt;1.1.1. Lisp原子&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-1-2&quot;&gt;1.1.2. 列表中的空格&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-1-3&quot;&gt;1.1.3. GNU Emacs帮助你输入列表&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-2&quot;&gt;1.2. 运行一个程序&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-3&quot;&gt;1.3. 产生错误的消息&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-4&quot;&gt;1.4. 符号名和函数定义&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-5&quot;&gt;1.5. Lisp解释器&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-6&quot;&gt;1.6. 求值&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-7&quot;&gt;1.7. 变量&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-8&quot;&gt;1.8. 参量&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-8-1&quot;&gt;1.8.1. 参量的数据类型&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-8-2&quot;&gt;1.8.2. 作为变量和列表的值的参量&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-8-3&quot;&gt;1.8.3. 可变参量&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-9&quot;&gt;1.9. 给一个变量赋值&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-9-1&quot;&gt;1.9.1. 使用set函数&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-9-2&quot;&gt;1.9.2. 使用setq函数&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-9-3&quot;&gt;1.9.3. 计数&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-10&quot;&gt;1.10. 小结&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+
+&lt;div id=&quot;outline-container-sec-1&quot; class=&quot;outline-2&quot;&gt;
+&lt;h2 id=&quot;sec-1&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;1&lt;/span&gt; 第1章 列表处理&lt;/h2&gt;
+&lt;div class=&quot;outline-text-2&quot; id=&quot;text-1&quot;&gt;
+&lt;p&gt;
+Lisp是指&quot;LISt Processing&quot;(列表处理)。是一种通过把列表放置在括号中进行处理的编程语言。
+列表是Lisp的基础。
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&quot;outline-container-sec-1-1&quot; class=&quot;outline-3&quot;&gt;
+&lt;h3 id=&quot;sec-1-1&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.1&lt;/span&gt; Lisp列表&lt;/h3&gt;
+&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-1&quot;&gt;
+&lt;p&gt;
+&lt;b&gt;列表的基本样式&lt;/b&gt;
+&lt;/p&gt;
+&lt;ul class=&quot;org-ul&quot;&gt;
+&lt;li&gt;&#39;(rose violet daisy buttercup)
+&lt;/li&gt;
+&lt;li&gt;(+ 2 2)
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;
+&lt;b&gt;列表可以嵌套&lt;/b&gt;
+&lt;/p&gt;
+&lt;div class=&quot;org-src-container&quot;&gt;
+
+&lt;pre class=&quot;src src-n&quot;&gt;&#39;(this is has (a list inside of it))
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&quot;outline-container-sec-1-1-1&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1-1-1&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.1.1&lt;/span&gt; Lisp原子&lt;/h4&gt;
+&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-1-1&quot;&gt;
+&lt;p&gt;
+Lisp原子，不可分的元素。原子有以下几种：
+&lt;/p&gt;
+&lt;ul class=&quot;org-ul&quot;&gt;
+&lt;li&gt;数字。比如 &quot;35&quot; &quot;511&quot;
+&lt;/li&gt;
+&lt;li&gt;符号。比如 &quot;+&quot; &quot;foo&quot; &quot;forward-line&quot;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;
+双引号中的文本，不论是句子或者段落都是一个原子。
+列表有三种组成方式：
+&lt;/p&gt;
+&lt;ul class=&quot;org-ul&quot;&gt;
+&lt;li&gt;括号和原子
+&lt;/li&gt;
+&lt;li&gt;括号和列表
+&lt;/li&gt;
+&lt;li&gt;括号和其他列表及原子
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;
+原子和列表的书面表示都被称作符号表达式，s-表达式（s-expression）。
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&quot;outline-container-sec-1-1-2&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1-1-2&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.1.2&lt;/span&gt; 列表中的空格&lt;/h4&gt;
+&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-1-2&quot;&gt;
+&lt;p&gt;
+列表中的原子以空格分隔，多个空格只等同于一个。
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&quot;outline-container-sec-1-1-3&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1-1-3&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.1.3&lt;/span&gt; GNU Emacs帮助你输入列表&lt;/h4&gt;
+&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-1-3&quot;&gt;
+&lt;p&gt;
+TAB键和M-C-\自动缩排,有助于程序结构更加清晰。
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&quot;outline-container-sec-1-2&quot; class=&quot;outline-3&quot;&gt;
+&lt;h3 id=&quot;sec-1-2&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.2&lt;/span&gt; 运行一个程序&lt;/h3&gt;
+&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-2&quot;&gt;
+&lt;p&gt;
+在emacs书写elisp程序的步骤：
+&lt;/p&gt;
+&lt;ul class=&quot;org-ul&quot;&gt;
+&lt;li&gt;打开emacs
+&lt;/li&gt;
+&lt;li&gt;M-x 键入lisp-interaction-mode
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;
+就可进入lisp mode，进行程序书写。
+Lisp中任何列表都是一个可运行的程序。要运行该列表，先把光标放置于列表之后，键入C-j或者C-x C-e就可以了。
+运行他，计算机将完成三件事情：
+&lt;/p&gt;
+&lt;ul class=&quot;org-ul&quot;&gt;
+&lt;li&gt;只返回列表
+&lt;/li&gt;
+&lt;li&gt;告诉你一个出错消息
+&lt;/li&gt;
+&lt;li&gt;将列表中的第一个符号当作一个命令，然后执行这个命令。
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;
+单引号&quot; &#39; &quot;，被称作一个引用（quote）。当单引号位于一个列表之前时，它告诉Lisp不要对这个列表做任何操作。如果列表前没有单引号，那么列表的第一个符号就是一条计算机可以执行的命令。
+（+ 2 2 ）这个列表前没有引号，所以+号就是命令，执行2+2。
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&quot;outline-container-sec-1-3&quot; class=&quot;outline-3&quot;&gt;
+&lt;h3 id=&quot;sec-1-3&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.3&lt;/span&gt; 产生错误的消息&lt;/h3&gt;
+&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-3&quot;&gt;
+&lt;p&gt;
+运行程序时，如果发生错误，错误信息会在mini-buffer中显示。
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&quot;outline-container-sec-1-4&quot; class=&quot;outline-3&quot;&gt;
+&lt;h3 id=&quot;sec-1-4&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.4&lt;/span&gt; 符号名和函数定义&lt;/h3&gt;
+&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-4&quot;&gt;
+&lt;p&gt;
+在Lisp中，一组指令可以连到几个名字，例如加法指令可以连接到符号&quot;Plus&quot;，也可连接到符号&quot;+&quot;。另一方面，一个符号一次只能有一个函数定义与其相连。
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&quot;outline-container-sec-1-5&quot; class=&quot;outline-3&quot;&gt;
+&lt;h3 id=&quot;sec-1-5&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.5&lt;/span&gt; Lisp解释器&lt;/h3&gt;
+&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-5&quot;&gt;
+&lt;p&gt;
+&lt;b&gt;Lisp工作方式&lt;/b&gt;
+&lt;/p&gt;
+&lt;ul class=&quot;org-ul&quot;&gt;
+&lt;li&gt;首先，它一列表前面是否有单引号。如有，就给出这个列表。
+&lt;/li&gt;
+&lt;li&gt;其次，列表前无单引号，就查看列表第一个元素，判断其是否是一个函数定义。如进，则解释执行函数定义中的指令。否则就打印条错误消息。
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;
+Lisp解释嵌套列表是由内往外执行的。
+&lt;/p&gt;
+
+&lt;p&gt;
+&lt;b&gt;字节编译&lt;/b&gt;
+运行编译命令(byte-compile-file)可以将.el代码编译成字节编码(.elc)。
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&quot;outline-container-sec-1-6&quot; class=&quot;outline-3&quot;&gt;
+&lt;h3 id=&quot;sec-1-6&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.6&lt;/span&gt; 求值&lt;/h3&gt;
+&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-6&quot;&gt;
+&lt;p&gt;
+当Lisp解释器处理一个表达式时，这个动作被称作“求值”。求值总是从内部列表开始，逐层往外进行。求值会返回一个值，同时可能产生一个附带效果，不然，就产生一个错误消息。
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&quot;outline-container-sec-1-7&quot; class=&quot;outline-3&quot;&gt;
+&lt;h3 id=&quot;sec-1-7&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.7&lt;/span&gt; 变量&lt;/h3&gt;
+&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-7&quot;&gt;
+&lt;p&gt;
+有值的可变的符号称作变量。变量应该赋值。如试图对一个没有赋值的变量求值，将收到一个错误消息（Symbol&#39;s value as variable is void: ）。
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&quot;outline-container-sec-1-8&quot; class=&quot;outline-3&quot;&gt;
+&lt;h3 id=&quot;sec-1-8&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.8&lt;/span&gt; 参量&lt;/h3&gt;
+&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-8&quot;&gt;
+&lt;p&gt;
+传递给函数的信息被称作参量。相当于C语言的实参吧。在Lisp中，一个函数的参量是函数后面的原子或者列表。
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&quot;outline-container-sec-1-8-1&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1-8-1&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.8.1&lt;/span&gt; 参量的数据类型&lt;/h4&gt;
+&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-8-1&quot;&gt;
+&lt;p&gt;
+传递给函数的参量的数据类型取决于它使用什么信息。
+&lt;/p&gt;
+&lt;ul class=&quot;org-ul&quot;&gt;
+&lt;li&gt;像“+”函数，其参量必须是数字类型的值。
+&lt;/li&gt;
+&lt;li&gt;像“concat”函数（连接两个或多个字符串的函数），其参量必须是字符串。
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&quot;org-src-container&quot;&gt;
+
+&lt;pre class=&quot;src src-lisp&quot;&gt;(concat &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;abc&quot;&lt;/span&gt; &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;def&quot;&lt;/span&gt;)
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;
+求值结果为：
+&lt;/p&gt;
+&lt;div class=&quot;org-src-container&quot;&gt;
+
+&lt;pre class=&quot;src src-lisp&quot;&gt;&lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;abcdef&quot;&lt;/span&gt;
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;ul class=&quot;org-ul&quot;&gt;
+&lt;li&gt;有些函数（如substring）,其参量既有字符串也有数字。
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&quot;org-src-container&quot;&gt;
+
+&lt;pre class=&quot;src src-lisp&quot;&gt;(substring &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;The quick brown fox jumped.&quot;&lt;/span&gt; 16 19)
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;
+求值结果为
+&lt;/p&gt;
+&lt;div class=&quot;org-src-container&quot;&gt;
+
+&lt;pre class=&quot;src src-lisp&quot;&gt;fox
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&quot;outline-container-sec-1-8-2&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1-8-2&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.8.2&lt;/span&gt; 作为变量和列表的值的参量&lt;/h4&gt;
+&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-8-2&quot;&gt;
+&lt;p&gt;
+参量可以是一个符号。对这个符号求值将返回一个值。例如：
+&lt;/p&gt;
+&lt;div class=&quot;org-src-container&quot;&gt;
+
+&lt;pre class=&quot;src src-lisp&quot;&gt;(+ 2 fill-column)
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;
+返回74。(不同机器可能值不同，因fill-column值不同。)
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&quot;outline-container-sec-1-8-3&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1-8-3&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.8.3&lt;/span&gt; 可变参量&lt;/h4&gt;
+&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-8-3&quot;&gt;
+&lt;p&gt;
+Lisp可变参量很简单。比如：
+&lt;/p&gt;
+&lt;pre class=&quot;example&quot;&gt;
+(+ 3)
+(+ 3 4 5 6)
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&quot;outline-container-sec-1-9&quot; class=&quot;outline-3&quot;&gt;
+&lt;h3 id=&quot;sec-1-9&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.9&lt;/span&gt; 给一个变量赋值&lt;/h3&gt;
+&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-9&quot;&gt;
+&lt;p&gt;
+给参量赋值可使用“set” “setq” “let”函数。
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&quot;outline-container-sec-1-9-1&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1-9-1&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.9.1&lt;/span&gt; 使用set函数&lt;/h4&gt;
+&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-9-1&quot;&gt;
+&lt;div class=&quot;org-src-container&quot;&gt;
+
+&lt;pre class=&quot;src src-lisp&quot;&gt;(set &#39;flowers &#39;(rose violet daisy buttercup))
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;
+使用set函数给变量赋值时应在列表前加单引号(&quot; &#39; &quot;)。
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&quot;outline-container-sec-1-9-2&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1-9-2&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.9.2&lt;/span&gt; 使用setq函数&lt;/h4&gt;
+&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-9-2&quot;&gt;
+&lt;p&gt;
+使用setq函数时，第一个参量不必加单引号。
+&lt;/p&gt;
+&lt;div class=&quot;org-src-container&quot;&gt;
+
+&lt;pre class=&quot;src src-lisp&quot;&gt;(setq  flowers &#39;(rose violet daisy buttercup))
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;
+setq同样可以为多个变量赋值。
+&lt;/p&gt;
+&lt;div class=&quot;org-src-container&quot;&gt;
+
+&lt;pre class=&quot;src src-lisp&quot;&gt;(setq trees &#39;(pine fir oak maple)
+      herbivores &#39;(gazelle antelope zebra))
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&quot;outline-container-sec-1-9-3&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1-9-3&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.9.3&lt;/span&gt; 计数&lt;/h4&gt;
+&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-9-3&quot;&gt;
+&lt;div class=&quot;org-src-container&quot;&gt;
+
+&lt;pre class=&quot;src src-lisp&quot;&gt;(setq count 0)
+(setq count (+ count 1))
+count
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&quot;outline-container-sec-1-10&quot; class=&quot;outline-3&quot;&gt;
+&lt;h3 id=&quot;sec-1-10&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.10&lt;/span&gt; 小结&lt;/h3&gt;
+&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-10&quot;&gt;
+&lt;ul class=&quot;org-ul&quot;&gt;
+&lt;li&gt;Lisp程序由表达式组成，表达式是列表或单个原子。
+&lt;/li&gt;
+&lt;li&gt;列表由0个或多个原子或内部列表组成，原子或列表之间用空格分隔，并由括号括起来。列表可以是空的。
+&lt;/li&gt;
+&lt;li&gt;原子是多字符的符号(如forward-paragraph)、单字符符号(如＋)、双引号之间的字符串、或者数字。
+&lt;/li&gt;
+&lt;li&gt;对数字求值就是它本身。
+&lt;/li&gt;
+&lt;li&gt;对双引号之间的字符串求值也是其本身。
+&lt;/li&gt;
+&lt;li&gt;当对一个符号求值时，返回它的值。
+&lt;/li&gt;
+&lt;li&gt;对一个列表求值时，Lisp解数器查看列表中的第一个符号以及绑定在其上的函数定义。然后这个函数定义中的指令将被执行。
+&lt;/li&gt;
+&lt;li&gt;单引号告诉Lisp解释器返回后续表达式的字面值。
+&lt;/li&gt;
+&lt;li&gt;参量是传递给函数的信息。除了作为列表的第一个元素的函数之外，通过对列表的其余元素求值来计算函数的参量。
+&lt;/li&gt;
+&lt;li&gt;当对一个函数求值时总是返回一个值（除非是一个错误消息）。另外，它也可以完成一些被称作附带效果的操作。在许多情况下，一个函数的主要目的是产生一个附带效果。
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</description>
+        <pubDate>Sat, 18 Oct 2014 00:00:00 +0800</pubDate>
+        <link>http://xep007.github.io/emacs/lisp/2014/10/18/gnu%20emacs%20lisp%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%80%EF%BC%89.html</link>
+        <guid isPermaLink="true">http://xep007.github.io/emacs/lisp/2014/10/18/gnu%20emacs%20lisp%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%80%EF%BC%89.html</guid>
+        
+        <category>emacs</category>
+        
+        
+        <category>emacs</category>
+        
+        <category>lisp</category>
+        
+      </item>
+    
+      <item>
         <title>用org-capture-templates创建带时间戳的文档</title>
         <description>&lt;div id=&quot;table-of-contents&quot;&gt;
 &lt;h2&gt;Table of Contents&lt;/h2&gt;
@@ -1236,572 +2355,6 @@ C-c C-p   发布文件
         <category>jekyll</category>
         
         <category>org</category>
-        
-      </item>
-    
-      <item>
-        <title>debian7搭建hexo博客</title>
-        <description>&lt;div id=&quot;table-of-contents&quot;&gt;
-&lt;h2&gt;Table of Contents&lt;/h2&gt;
-&lt;div id=&quot;text-table-of-contents&quot;&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1&quot;&gt;1. 安装nodejs和npm&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-2&quot;&gt;2. 安装hexo&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-3&quot;&gt;3. 创建hexo文件夹&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-4&quot;&gt;4. 安装依赖包&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-5&quot;&gt;5. 本地预览&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div id=&quot;outline-container-sec-1&quot; class=&quot;outline-2&quot;&gt;
-&lt;h2 id=&quot;sec-1&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;1&lt;/span&gt; 安装nodejs和npm&lt;/h2&gt;
-&lt;div class=&quot;outline-text-2&quot; id=&quot;text-1&quot;&gt;
-&lt;pre class=&quot;example&quot;&gt;
-sudo aptitude install nodejs npm
-&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div id=&quot;outline-container-sec-2&quot; class=&quot;outline-2&quot;&gt;
-&lt;h2 id=&quot;sec-2&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;2&lt;/span&gt; 安装hexo&lt;/h2&gt;
-&lt;div class=&quot;outline-text-2&quot; id=&quot;text-2&quot;&gt;
-&lt;pre class=&quot;example&quot;&gt;
-sudo npm install -g hexo
-&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div id=&quot;outline-container-sec-3&quot; class=&quot;outline-2&quot;&gt;
-&lt;h2 id=&quot;sec-3&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;3&lt;/span&gt; 创建hexo文件夹&lt;/h2&gt;
-&lt;div class=&quot;outline-text-2&quot; id=&quot;text-3&quot;&gt;
-&lt;p&gt;
-如果不在家目录建立文件夹，那么等下执行hexo init时会提示&quot;Error: Theme landscape does not exist.&quot;
-&lt;/p&gt;
-
-&lt;pre class=&quot;example&quot;&gt;
-mkdir ~/hexo
-&lt;/pre&gt;
-
-&lt;p&gt;
-进入hexo文件夹
-&lt;/p&gt;
-&lt;pre class=&quot;example&quot;&gt;
-cd hexo
-hexo init
-&lt;/pre&gt;
-&lt;p&gt;
-如果提示/usr/bin/env: node:没有那个文件或目录,就执行以下命令。然后再执行hexo init。
-&lt;/p&gt;
-&lt;pre class=&quot;example&quot;&gt;
-sudo ln -s /usr/bin/nodejs /usr/bin/node
-&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div id=&quot;outline-container-sec-4&quot; class=&quot;outline-2&quot;&gt;
-&lt;h2 id=&quot;sec-4&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;4&lt;/span&gt; 安装依赖包&lt;/h2&gt;
-&lt;div class=&quot;outline-text-2&quot; id=&quot;text-4&quot;&gt;
-&lt;pre class=&quot;example&quot;&gt;
-npm install
-&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div id=&quot;outline-container-sec-5&quot; class=&quot;outline-2&quot;&gt;
-&lt;h2 id=&quot;sec-5&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;5&lt;/span&gt; 本地预览&lt;/h2&gt;
-&lt;div class=&quot;outline-text-2&quot; id=&quot;text-5&quot;&gt;
-&lt;p&gt;
-与octopress大同小异。进入hexo文件夹，运行以下命令。然后就可以在浏览器中通过localhost:4000进行预览。
-&lt;/p&gt;
-&lt;pre class=&quot;example&quot;&gt;
-hexo generate
-hexo server
-&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-</description>
-        <pubDate>Wed, 08 Oct 2014 00:00:00 +0800</pubDate>
-        <link>http://xep007.github.io/linux/hexo/2014/10/08/debian7%E6%9E%84%E5%BB%BAhexo+github%E5%8D%9A%E5%AE%A2.html</link>
-        <guid isPermaLink="true">http://xep007.github.io/linux/hexo/2014/10/08/debian7%E6%9E%84%E5%BB%BAhexo+github%E5%8D%9A%E5%AE%A2.html</guid>
-        
-        
-        <category>linux</category>
-        
-        <category>hexo</category>
-        
-      </item>
-    
-      <item>
-        <title>解决升级org8而导致的几个问题</title>
-        <description>&lt;div id=&quot;table-of-contents&quot;&gt;
-&lt;h2&gt;Table of Contents&lt;/h2&gt;
-&lt;div id=&quot;text-table-of-contents&quot;&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1&quot;&gt;1. org升级到版本8,几个自定义设置罢工了&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-2&quot;&gt;2. 解决办法&lt;/a&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-2-1&quot;&gt;2.1. 修改.emacs配置&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-2-2&quot;&gt;2.2. 在.emacs中修改自定义导出pdf的classes语法&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-3&quot;&gt;3. 解决自定义插入style的问题&lt;/a&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-3-1&quot;&gt;3.1. 解决办法&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div id=&quot;outline-container-sec-1&quot; class=&quot;outline-2&quot;&gt;
-&lt;h2 id=&quot;sec-1&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;1&lt;/span&gt; org升级到版本8,几个自定义设置罢工了&lt;/h2&gt;
-&lt;div class=&quot;outline-text-2&quot; id=&quot;text-1&quot;&gt;
-&lt;p&gt;
-这两天因为安装org-octopress需要，升级了org到8.2版本（原本是7.9）。没想到导出pdf的自定义设置以及导出html的自定义style设置都罢工了。错误提示：
-&lt;/p&gt;
-&lt;pre class=&quot;example&quot;&gt;
-1. unknow class: my-article
-2. emacs的html style无效
-&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-
-&lt;div id=&quot;outline-container-sec-2&quot; class=&quot;outline-2&quot;&gt;
-&lt;h2 id=&quot;sec-2&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;2&lt;/span&gt; 解决办法&lt;/h2&gt;
-&lt;div class=&quot;outline-text-2&quot; id=&quot;text-2&quot;&gt;
-&lt;p&gt;
-baidu了好久，不得要领。后来直接到org官网查找，找到&lt;a href=&quot;http://orgmode.org/worg/org-8.0.html&quot;&gt;http://orgmode.org/worg/org-8.0.html&lt;/a&gt; 才解决。
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;div id=&quot;outline-container-sec-2-1&quot; class=&quot;outline-3&quot;&gt;
-&lt;h3 id=&quot;sec-2-1&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;2.1&lt;/span&gt; 修改.emacs配置&lt;/h3&gt;
-&lt;div class=&quot;outline-text-3&quot; id=&quot;text-2-1&quot;&gt;
-&lt;p&gt;
-在.emacs文件中修改,把&quot;to&quot;去掉。
-&lt;/p&gt;
-&lt;pre class=&quot;example&quot;&gt;
-(setq org-latex-to-pdf-process &#39;(&quot;xelatex -interaction nonstopmode %f&quot;
-                              &quot;xelatex -interaction nonstopmode %f&quot;))
-&lt;/pre&gt;
-&lt;p&gt;
-变成：
-&lt;/p&gt;
-&lt;pre class=&quot;example&quot;&gt;
-(setq org-latex-pdf-process &#39;(&quot;xelatex -interaction nonstopmode %f&quot;
-                              &quot;xelatex -interaction nonstopmode %f&quot;))
-&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div id=&quot;outline-container-sec-2-2&quot; class=&quot;outline-3&quot;&gt;
-&lt;h3 id=&quot;sec-2-2&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;2.2&lt;/span&gt; 在.emacs中修改自定义导出pdf的classes语法&lt;/h3&gt;
-&lt;div class=&quot;outline-text-3&quot; id=&quot;text-2-2&quot;&gt;
-&lt;p&gt;
-把以下语句中的export去掉。
-&lt;/p&gt;
-&lt;pre class=&quot;example&quot;&gt;
-(unless (boundp &#39;org-export-latex-classes)
-  (setq org-export-latex-classes nil))
-(add-to-list &#39;org-export-latex-classes
-&lt;/pre&gt;
-&lt;p&gt;
-变成：
-&lt;/p&gt;
-&lt;pre class=&quot;example&quot;&gt;
-(unless (boundp &#39;org-latex-classes)
-  (setq org-latex-classes nil))
-(add-to-list &#39;org-latex-classes
-&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div id=&quot;outline-container-sec-3&quot; class=&quot;outline-2&quot;&gt;
-&lt;h2 id=&quot;sec-3&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;3&lt;/span&gt; 解决自定义插入style的问题&lt;/h2&gt;
-&lt;div class=&quot;outline-text-2&quot; id=&quot;text-3&quot;&gt;
-&lt;/div&gt;&lt;div id=&quot;outline-container-sec-3-1&quot; class=&quot;outline-3&quot;&gt;
-&lt;h3 id=&quot;sec-3-1&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;3.1&lt;/span&gt; 解决办法&lt;/h3&gt;
-&lt;div class=&quot;outline-text-3&quot; id=&quot;text-3-1&quot;&gt;
-&lt;p&gt;
-修改org文件头配置,在org文件头中把
-&lt;/p&gt;
-
-&lt;pre class=&quot;example&quot;&gt;
-#+STYLE:
-&lt;/pre&gt;
-
-&lt;p&gt;
-修改为：
-&lt;/p&gt;
-
-&lt;pre class=&quot;example&quot;&gt;
-#+HTML_HEAD:
-&lt;/pre&gt;
-
-&lt;p&gt;
-好了，收工。
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-</description>
-        <pubDate>Tue, 07 Oct 2014 00:00:00 +0800</pubDate>
-        <link>http://xep007.github.io/emacs/org/2014/10/07/%E8%A7%A3%E5%86%B3%E5%8D%87%E7%BA%A7org8%E8%80%8C%E5%AF%BC%E8%87%B4%E7%9A%84%E5%87%A0%E4%B8%AA%E9%97%AE%E9%A2%98.html</link>
-        <guid isPermaLink="true">http://xep007.github.io/emacs/org/2014/10/07/%E8%A7%A3%E5%86%B3%E5%8D%87%E7%BA%A7org8%E8%80%8C%E5%AF%BC%E8%87%B4%E7%9A%84%E5%87%A0%E4%B8%AA%E9%97%AE%E9%A2%98.html</guid>
-        
-        
-        <category>emacs</category>
-        
-        <category>org</category>
-        
-      </item>
-    
-      <item>
-        <title>org-octopress + github 构建静态博客</title>
-        <description>&lt;div id=&quot;table-of-contents&quot;&gt;
-&lt;h2&gt;Table of Contents&lt;/h2&gt;
-&lt;div id=&quot;text-table-of-contents&quot;&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1&quot;&gt;1. 创建github博客&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-2&quot;&gt;2. 安装git和ruby&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-3&quot;&gt;3. 安装配置Octopress&lt;/a&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-3-1&quot;&gt;3.1. 安装octopress&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-3-2&quot;&gt;3.2. 配置octopress&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-4&quot;&gt;4. 安装配置Org-octopress&lt;/a&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-4-1&quot;&gt;4.1. 安装org&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-4-2&quot;&gt;4.2. 配置org&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-4-3&quot;&gt;4.3. 安装org-octopress&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-4-4&quot;&gt;4.4. 配置org-octopress&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-4-5&quot;&gt;4.5. 使用org-octopress&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-5&quot;&gt;5. 博客本地预览&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-6&quot;&gt;6. 发布博客&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-
-
-&lt;div id=&quot;outline-container-sec-1&quot; class=&quot;outline-2&quot;&gt;
-&lt;h2 id=&quot;sec-1&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;1&lt;/span&gt; 创建github博客&lt;/h2&gt;
-&lt;div class=&quot;outline-text-2&quot; id=&quot;text-1&quot;&gt;
-&lt;p&gt;
-请参照这篇博客：&lt;a href=&quot;http://blog.csdn.net/renfufei/article/details/37725057&quot;&gt;http://blog.csdn.net/renfufei/article/details/37725057&lt;/a&gt;
-感谢作者的付出。
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id=&quot;outline-container-sec-2&quot; class=&quot;outline-2&quot;&gt;
-&lt;h2 id=&quot;sec-2&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;2&lt;/span&gt; 安装git和ruby&lt;/h2&gt;
-&lt;div class=&quot;outline-text-2&quot; id=&quot;text-2&quot;&gt;
-&lt;pre class=&quot;example&quot;&gt;
-sudo aptitude install git ruby ruby-dev
-&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id=&quot;outline-container-sec-3&quot; class=&quot;outline-2&quot;&gt;
-&lt;h2 id=&quot;sec-3&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;3&lt;/span&gt; 安装配置Octopress&lt;/h2&gt;
-&lt;div class=&quot;outline-text-2&quot; id=&quot;text-3&quot;&gt;
-&lt;/div&gt;&lt;div id=&quot;outline-container-sec-3-1&quot; class=&quot;outline-3&quot;&gt;
-&lt;h3 id=&quot;sec-3-1&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;3.1&lt;/span&gt; 安装octopress&lt;/h3&gt;
-&lt;div class=&quot;outline-text-3&quot; id=&quot;text-3-1&quot;&gt;
-&lt;pre class=&quot;example&quot;&gt;
-git clone git://github.com/imathis/octopress.git octopress
-cd octopress
-sudo gem install bundler
-bundle install
-rake install
-&lt;/pre&gt;
-&lt;p&gt;
-注意：如果在后面运行rake preview进行本地预览时提示以下错误：
-&lt;/p&gt;
-&lt;pre class=&quot;example&quot;&gt;
-/var/lib/gems/2.1.0/gems/execjs-1.1.2/lib/execjs/runtimes.rb:43:in `autodetect’: Could not find a JavaScript runtime.
-&lt;/pre&gt;
-&lt;p&gt;
-请修改Gemfile,在其中添加:
-&lt;/p&gt;
-&lt;pre class=&quot;example&quot;&gt;
-gem &#39;execjs&#39;
-gem &#39;therubyracer&#39;
-&lt;/pre&gt;
-&lt;p&gt;
-然后重新执行以下命令:
-&lt;/p&gt;
-&lt;pre class=&quot;example&quot;&gt;
-bundle install
-&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id=&quot;outline-container-sec-3-2&quot; class=&quot;outline-3&quot;&gt;
-&lt;h3 id=&quot;sec-3-2&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;3.2&lt;/span&gt; 配置octopress&lt;/h3&gt;
-&lt;div class=&quot;outline-text-3&quot; id=&quot;text-3-2&quot;&gt;
-&lt;pre class=&quot;example&quot;&gt;
-rake setup_github_pages
-&lt;/pre&gt;
-&lt;p&gt;
-依照提示键入你在github中申请的博客地址
-&lt;/p&gt;
-
-&lt;p&gt;
-然后修改&quot; _config.yml&quot;,填入相应的信息。
-&lt;/p&gt;
-&lt;pre class=&quot;example&quot;&gt;
-url: http://yoursite.com
-title: My Octopress Blog
-subtitle: A blogging framework for hackers.
-author: Your Name
-simple_search: https://www.google.com/search
-description:
-&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id=&quot;outline-container-sec-4&quot; class=&quot;outline-2&quot;&gt;
-&lt;h2 id=&quot;sec-4&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;4&lt;/span&gt; 安装配置Org-octopress&lt;/h2&gt;
-&lt;div class=&quot;outline-text-2&quot; id=&quot;text-4&quot;&gt;
-&lt;p&gt;
-在emacs中安装org-octopress很简单。但是emacs24.3自带的org是0.7版的，而org-octopress需要0.8以上。所以先安装org。 
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;div id=&quot;outline-container-sec-4-1&quot; class=&quot;outline-3&quot;&gt;
-&lt;h3 id=&quot;sec-4-1&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;4.1&lt;/span&gt; 安装org&lt;/h3&gt;
-&lt;div class=&quot;outline-text-3&quot; id=&quot;text-4-1&quot;&gt;
-&lt;p&gt;
-打开emacs,输入以下命令。
-&lt;/p&gt;
-&lt;pre class=&quot;example&quot;&gt;
-M-x packages-install
-&lt;/pre&gt;
-&lt;p&gt;
-回车，再输入
-&lt;/p&gt;
-&lt;pre class=&quot;example&quot;&gt;
-org
-&lt;/pre&gt;
-&lt;p&gt;
-如果用elpa安装的org有问题，无法使用。请下载tar文件，自己解压放在elpa中。
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id=&quot;outline-container-sec-4-2&quot; class=&quot;outline-3&quot;&gt;
-&lt;h3 id=&quot;sec-4-2&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;4.2&lt;/span&gt; 配置org&lt;/h3&gt;
-&lt;div class=&quot;outline-text-3&quot; id=&quot;text-4-2&quot;&gt;
-&lt;p&gt;
-在.emacs中添加以下内容：
-&lt;/p&gt;
-&lt;pre class=&quot;example&quot;&gt;
-(require &#39;org)
-(require &#39;org-publish)
-(add-to-list &#39;auto-mode-alist &#39;(&quot;\\.org\\&#39;&quot; . org-mode))
-(add-hook &#39;org-mode-hook &#39;turn-on-font-lock)
-(add-hook &#39;org-mode-hook 
-(lambda () (setq truncate-lines nil)))
-&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id=&quot;outline-container-sec-4-3&quot; class=&quot;outline-3&quot;&gt;
-&lt;h3 id=&quot;sec-4-3&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;4.3&lt;/span&gt; 安装org-octopress&lt;/h3&gt;
-&lt;div class=&quot;outline-text-3&quot; id=&quot;text-4-3&quot;&gt;
-&lt;pre class=&quot;example&quot;&gt;
-M-x packages-install
-&lt;/pre&gt;
-&lt;p&gt;
-回车，再输入
-&lt;/p&gt;
-&lt;pre class=&quot;example&quot;&gt;
-org-octopress
-&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id=&quot;outline-container-sec-4-4&quot; class=&quot;outline-3&quot;&gt;
-&lt;h3 id=&quot;sec-4-4&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;4.4&lt;/span&gt; 配置org-octopress&lt;/h3&gt;
-&lt;div class=&quot;outline-text-3&quot; id=&quot;text-4-4&quot;&gt;
-&lt;p&gt;
-安装完org-octopress后，在.emacs中加入以下内容。
-&lt;/p&gt;
-&lt;pre class=&quot;example&quot;&gt;
-(require &#39;org-octopress)
-(setq org-octopress-directory-top       &quot;~/octopress/source&quot;)
-(setq org-octopress-directory-posts     &quot;~/octopress/source/_posts&quot;)
-(setq org-octopress-directory-org-top   &quot;~/octopress/source&quot;)
-(setq org-octopress-directory-org-posts &quot;~/octopress/source/blog&quot;)
-(setq org-octopress-setup-file          &quot;~/lib/org-sty/setupfile.org&quot;)
-&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div id=&quot;outline-container-sec-4-5&quot; class=&quot;outline-3&quot;&gt;
-&lt;h3 id=&quot;sec-4-5&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;4.5&lt;/span&gt; 使用org-octopress&lt;/h3&gt;
-&lt;div class=&quot;outline-text-3&quot; id=&quot;text-4-5&quot;&gt;
-&lt;p&gt;
-emacs中的操作进程
-打开emacs,然后输入命令：
-&lt;/p&gt;
-&lt;pre class=&quot;example&quot;&gt;
-M-x org-octopress
-&lt;/pre&gt;
-&lt;p&gt;
-打开新的界面后，键入w来新创一个文件，或者选择旧文件进行编辑。如果是新建文件，键入w后，输入新文件的名称，回车，选择日期，回车。
-依照org-mode格式进行书写。
-写完之后，进行输出：
-&lt;/p&gt;
-&lt;pre class=&quot;example&quot;&gt;
-c-c c-e P x
-&lt;/pre&gt;
-&lt;p&gt;
-然后键入octopress进行转换。
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id=&quot;outline-container-sec-5&quot; class=&quot;outline-2&quot;&gt;
-&lt;h2 id=&quot;sec-5&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;5&lt;/span&gt; 博客本地预览&lt;/h2&gt;
-&lt;div class=&quot;outline-text-2&quot; id=&quot;text-5&quot;&gt;
-&lt;p&gt;
-打开terminal，定位到octopress目录，运行以下命令：
-&lt;/p&gt;
-&lt;pre class=&quot;example&quot;&gt;
-rake preview
-&lt;/pre&gt;
-&lt;p&gt;
-然后打开浏览器，输入localhost:4000进行本地预览。
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id=&quot;outline-container-sec-6&quot; class=&quot;outline-2&quot;&gt;
-&lt;h2 id=&quot;sec-6&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;6&lt;/span&gt; 发布博客&lt;/h2&gt;
-&lt;div class=&quot;outline-text-2&quot; id=&quot;text-6&quot;&gt;
-&lt;pre class=&quot;example&quot;&gt;
-rake generate
-rake deploy
-&lt;/pre&gt;
-&lt;p&gt;
-如果提示如下错误：
-&lt;/p&gt;
-&lt;pre class=&quot;example&quot;&gt;
-error: 无法推送一些引用到 &#39;git@github.com:xep007/xep007.github.io.git&#39;
-提示：更新被拒绝，因为您当前分支的最新提交落后于其对应的远程分支。
-提示：再次推送前，先与远程变更合并（如 &#39;git pull ...&#39;）。详见
-提示：&#39;git push --help&#39; 中的 &#39;Note about fast-forwards&#39; 小节。
-
-## Github Pages deploy complete
-&lt;/pre&gt;
-
-&lt;p&gt;
-更换目录，并更新：
-&lt;/p&gt;
-&lt;pre class=&quot;example&quot;&gt;
-cd octopress/_deploy
-git pull origin master
-&lt;/pre&gt;
-&lt;p&gt;
-跳出目录，重新deploy
-&lt;/p&gt;
-&lt;pre class=&quot;example&quot;&gt;
-cd ..
-rake deploy
-&lt;/pre&gt;
-&lt;p&gt;
-本错误解决办法来自于：&lt;a href=&quot;http://www.conxz.net/blog/2014/04/12/non-fast-forward-error-with-octopress/&quot;&gt;http://www.conxz.net/blog/2014/04/12/non-fast-forward-error-with-octopress/&lt;/a&gt;
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-</description>
-        <pubDate>Sun, 05 Oct 2014 00:00:00 +0800</pubDate>
-        <link>http://xep007.github.io/octopress/git/jekyll/2014/10/05/org-octopress+github%E6%9E%84%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2.html</link>
-        <guid isPermaLink="true">http://xep007.github.io/octopress/git/jekyll/2014/10/05/org-octopress+github%E6%9E%84%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2.html</guid>
-        
-        
-        <category>octopress</category>
-        
-        <category>git</category>
-        
-        <category>jekyll</category>
-        
-      </item>
-    
-      <item>
-        <title>debian7/gnome下设置golang环境</title>
-        <description>&lt;div id=&quot;table-of-contents&quot;&gt;
-&lt;h2&gt;Table of Contents&lt;/h2&gt;
-&lt;div id=&quot;text-table-of-contents&quot;&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1&quot;&gt;1. 以前设置go环境的方法&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-2&quot;&gt;2. 现在碰到的问题&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-3&quot;&gt;3. 最后解决的办法&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;p&gt;
-最近换了新机子，不想再折腾，就直接安装debian7/gnome，设置golang环境变量时碰到了一个奇怪的问题，虽然最终解决了问题，但却不知其所以然，记录在下。
-&lt;/p&gt;
-&lt;div id=&quot;outline-container-sec-1&quot; class=&quot;outline-2&quot;&gt;
-&lt;h2 id=&quot;sec-1&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;1&lt;/span&gt; 以前设置go环境的方法&lt;/h2&gt;
-&lt;div class=&quot;outline-text-2&quot; id=&quot;text-1&quot;&gt;
-&lt;p&gt;
-下载go二进制包，解压到家目录~/
-在~/.bashrc中设置如下：
-&lt;/p&gt;
-&lt;pre class=&quot;example&quot;&gt;
-###############go setup##########
-export GOROOT=$HOME/go
-export GOARCH=amd64
-export GOOS=linux
-export GOBIN=$GOROOT/bin
-export GOPATH=$HOME/gopro
-export PATH=$PATH:$GOBIN
-################################
-&lt;/pre&gt;
-&lt;p&gt;
-一切都没问题。
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id=&quot;outline-container-sec-2&quot; class=&quot;outline-2&quot;&gt;
-&lt;h2 id=&quot;sec-2&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;2&lt;/span&gt; 现在碰到的问题&lt;/h2&gt;
-&lt;div class=&quot;outline-text-2&quot; id=&quot;text-2&quot;&gt;
-&lt;p&gt;
-新装debian7/gnome后，依照旧法安装设置后，运行go -env没问题。但通过Alt+f2来运行emacs，在emacs中写完go代码进行编译时，一直提示/bin/bash找不到go命令。
-如果在terminal中输入emacs启动，却不会有问题。很奇怪！
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id=&quot;outline-container-sec-3&quot; class=&quot;outline-2&quot;&gt;
-&lt;h2 id=&quot;sec-3&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;3&lt;/span&gt; 最后解决的办法&lt;/h2&gt;
-&lt;div class=&quot;outline-text-2&quot; id=&quot;text-3&quot;&gt;
-&lt;p&gt;
-把环境设置放在~/.profile就行了。
-不得其解的是，我看了~/.profile里有这么几句。按理说已经把.bashrc包含进去了，不知今儿为啥不行了。
-&lt;/p&gt;
-&lt;pre class=&quot;example&quot;&gt;
-# if running bash
-if [ -n &quot;$BASH_VERSION&quot; ]; then
-    # include .bashrc if it exists
-    if [ -f &quot;$HOME/.bashrc&quot; ]; then
-	. &quot;$HOME/.bashrc&quot;
-    fi
-fi
-&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-</description>
-        <pubDate>Sun, 05 Oct 2014 00:00:00 +0800</pubDate>
-        <link>http://xep007.github.io/linux/golang/2014/10/05/debian7%E8%AE%BE%E7%BD%AEgolang%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F.html</link>
-        <guid isPermaLink="true">http://xep007.github.io/linux/golang/2014/10/05/debian7%E8%AE%BE%E7%BD%AEgolang%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F.html</guid>
-        
-        
-        <category>linux</category>
-        
-        <category>golang</category>
         
       </item>
     

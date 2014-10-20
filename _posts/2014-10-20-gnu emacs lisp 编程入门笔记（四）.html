@@ -1,0 +1,171 @@
+---
+layout     : post
+title      : GNU Emacs Lisp 编程入门笔记（四）
+categories : [emacs ,lisp ]
+tags       : lisp
+description: 
+---
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1. 第4章 与缓冲区有关的函数</a>
+<ul>
+<li><a href="#sec-1-1">1.1. 查找更多的信息</a></li>
+<li><a href="#sec-1-2">1.2. 简化的beginning-of-buffer函数定义</a></li>
+<li><a href="#sec-1-3">1.3. make-whole-buffer函数的定义</a></li>
+<li><a href="#sec-1-4">1.4. append-to-buffer函数的定义</a>
+<ul>
+<li><a href="#sec-1-4-1">1.4.1. append-to-buffer函数的交互表达式</a></li>
+<li><a href="#sec-1-4-2">1.4.2. append-to-buffer函数体</a></li>
+<li><a href="#sec-1-4-3">1.4.3. append-to-buffer函数中的save-excursion</a></li>
+</ul>
+</li>
+<li><a href="#sec-1-5">1.5. 回顾</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> 第4章 与缓冲区有关的函数</h2>
+<div class="outline-text-2" id="text-1">
+</div><div id="outline-container-sec-1-1" class="outline-3">
+<h3 id="sec-1-1"><span class="section-number-3">1.1</span> 查找更多的信息</h3>
+<div class="outline-text-3" id="text-1-1">
+<p>
+在任何时候，你都可以键入C-h f以及函数名，得到Emacs Lisp函数的全部文档。键入C-h v 和变量名得到任何变量的全部文档。
+</p>
+</div>
+</div>
+<div id="outline-container-sec-1-2" class="outline-3">
+<h3 id="sec-1-2"><span class="section-number-3">1.2</span> 简化的beginning-of-buffer函数定义</h3>
+<div class="outline-text-3" id="text-1-2">
+<p>
+完整版的beginning-of-buffer函数见下一章。以下是简化版的。代码如下：
+</p>
+<div class="org-src-container">
+
+<pre class="src src-lisp"><span class="linenr">1: </span>(<span style="color: #00ffff;">defun</span> <span style="color: #00fa9a;">beginning-of-buffer</span> ()
+<span class="linenr">2: </span>    <span style="color: #ffa500;">"Move point to the beginning of the buffer;</span>
+<span class="linenr">3: </span><span style="color: #ffa500;">leave mark at previous position."</span>
+<span class="linenr">4: </span>    (interactive)
+<span class="linenr">5: </span>    (push-mark)
+<span class="linenr">6: </span>    (goto-char (point-min)))
+</pre>
+</div>
+<p>
+(push-mark)表达式表示在光标的当前位置设置一个标记。这个标记被保存在标记环中。
+(goto-char)表达式表示将光标跳到本缓冲区的最小可能位点处，也就是缓冲区的开始处。
+</p>
+</div>
+</div>
+<div id="outline-container-sec-1-3" class="outline-3">
+<h3 id="sec-1-3"><span class="section-number-3">1.3</span> make-whole-buffer函数的定义</h3>
+<div class="outline-text-3" id="text-1-3">
+<p>
+make-whole-buffer函数将整个缓冲区作为一个域来标记，方法是将位点置于缓冲区开始的位置，在缓冲区的末尾放一个标记。其完整代码如下：
+</p>
+<div class="org-src-container">
+
+<pre class="src src-lisp"><span class="linenr">1: </span>(<span style="color: #00ffff;">defun</span> <span style="color: #00fa9a;">mark-whole-buffer</span> () 
+<span class="linenr">2: </span>    <span style="color: #ffa500;">"Put point at beginning and mark at end of buffer."</span>
+<span class="linenr">3: </span>    (interactive)
+<span class="linenr">4: </span>    (push-mark (point))
+<span class="linenr">5: </span>    (push-mark (point-max))
+<span class="linenr">6: </span>    (goto-char (point-min)))
+</pre>
+</div>
+<p>
+函数体有三行。
+((push-mark (point)),这一行与(push-mark)的作用一样。即在当前位置设置一个标记。不加(point)也是可以的。
+(push-mark (point-max)),这个表达式在缓冲区中数值最大的位点处（缓冲区末尾）设置一个标记。设置好这一标记后，原来的标记就不是标记了，但Emacs记住了它的位置。
+(goto-char (point-min)),这个表达式与上一个函数中的一样。
+这个函数的作用就是标记了整个缓冲区。
+</p>
+</div>
+</div>
+<div id="outline-container-sec-1-4" class="outline-3">
+<h3 id="sec-1-4"><span class="section-number-3">1.4</span> append-to-buffer函数的定义</h3>
+<div class="outline-text-3" id="text-1-4">
+<p>
+append-to-buffer函数功能是从当前缓冲区中拷贝一个域（即缓冲区中介于位点和标记之间的域）到一个指定的缓冲区。代码如下：
+</p>
+<div class="org-src-container">
+
+<pre class="src src-lisp"><span class="linenr"> 1: </span>(<span style="color: #00ffff;">defun</span> <span style="color: #00fa9a;">append-to-buffer</span> (buffer start end)
+<span class="linenr"> 2: </span>    <span style="color: #ffa500;">"Append to specified buffer the text of the region.</span>
+<span class="linenr"> 3: </span><span style="color: #ffa500;">     It is inserted into that buffer before its point.</span>
+<span class="linenr"> 4: </span><span style="color: #ffa500;">    When calling from a program, give three arguments:</span>
+<span class="linenr"> 5: </span><span style="color: #ffa500;">    a buffer or the name of one, and two charactre number</span>
+<span class="linenr"> 6: </span><span style="color: #ffa500;">    apecifying the portion of the current buffer to be copied."</span>
+<span class="linenr"> 7: </span>    (interactive <span style="color: #ffa500;">"BAppend to buffer: \nr"</span>)
+<span class="linenr"> 8: </span>    (<span style="color: #00ffff;">let</span> ((oldbuf (current-buffer)))
+<span class="linenr"> 9: </span>       (<span style="color: #00ffff;">save-excursion</span>
+<span class="linenr">10: </span>           (set-buffer (get-buffer-create buffer))
+<span class="linenr">11: </span>           (insert-buffer-substring oldbuf start end))))
+</pre>
+</div>
+<p>
+函数定义的第一行包含了函数名以及三个参量。buffer参量是指拷贝文本的目的缓冲区，start和end参量是指将要被拷贝的当前缓冲区中指定域的起始和终止位点。
+</p>
+</div>
+<div id="outline-container-sec-1-4-1" class="outline-4">
+<h4 id="sec-1-4-1"><span class="section-number-4">1.4.1</span> append-to-buffer函数的交互表达式</h4>
+<div class="outline-text-4" id="text-1-4-1">
+<p>
+交互表达式interactive的参量有两个部分，用"\n"分隔。
+参量第一部分是"BAppend to buffer:"。"B"控制符告诉Emacs要求输入缓冲区的名字并将这个名字传送给函数。Emacs将在minibuffer中打印出"B"字符后面的字符串"Append to buffer:"来提示用户输入这个缓冲区名。然后Emacs将函数参量列表中的参量buffer绑定到指定的缓冲区.
+"r",告诉Emacs将函数参量列表中符号"buffer"之后的两个参量（即start和end）绑定到位点和标记上。
+</p>
+</div>
+</div>
+<div id="outline-container-sec-1-4-2" class="outline-4">
+<h4 id="sec-1-4-2"><span class="section-number-4">1.4.2</span> append-to-buffer函数体</h4>
+<div class="outline-text-4" id="text-1-4-2">
+<p>
+函数体从let开始。let表达式有三个元素：
+</p>
+<ul class="org-ul">
+<li>符号let;
+</li>
+<li>一个变量列表，本例中，变量列表包含一个两元素列表（variable value）;
+</li>
+<li>let表达式主体。
+</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-sec-1-4-3" class="outline-4">
+<h4 id="sec-1-4-3"><span class="section-number-4">1.4.3</span> append-to-buffer函数中的save-excursion</h4>
+<div class="outline-text-4" id="text-1-4-3">
+<p>
+let表达式的主体由一个save-excursion表达式组成。它保存位点和标记的位置，并当这个函数体的其他表达式都被求值之后恢复位点和标记到相应的位置。
+(set-buffer (get-buffer-create buffer))列表中，(get-buffer-create buffer)函数要么获得已经命名的缓冲区，要么用给定的名字创建一个缓冲区。
+(insert-buffer-substring oldbuf start end)函数从作为其第一个参量指定的缓冲区中拷贝一个字符串，并将其插入到当前的缓冲区中。
+(insert-buffer-substring)函数执行完之后，save-excursion将恢复对原来缓冲区的操作，并且append-to-buffer将完成其工作。
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-1-5" class="outline-3">
+<h3 id="sec-1-5"><span class="section-number-3">1.5</span> 回顾</h3>
+<div class="outline-text-3" id="text-1-5">
+<ul class="org-ul">
+<li>find-tag
+</li>
+</ul>
+<p>
+找到某个函数或者变量的源代码的文件，并切换到这个缓冲区，将位点（光标）置于相应函数或者变量的开始处。
+</p>
+<ul class="org-ul">
+<li>set-buffer
+</li>
+</ul>
+<p>
+将Emacs的注意力转移到另一个缓冲区，但是不改变显示的窗口。
+</p>
+</div>
+</div>
+</div>
