@@ -66,8 +66,8 @@ copy-to-buffer函数拷贝文本到一个缓冲区，替换原有缓冲区中的
 <span class="linenr"> 5: </span>  (<span style="color: #00ffff;">let</span> (start end newmark)
 <span class="linenr"> 6: </span>    (<span style="color: #00ffff;">save-excursion</span>
 <span class="linenr"> 7: </span>      (<span style="color: #00ffff;">save-excursion</span>
-<span class="linenr"> 8: </span>      (set-buffer buffer)
-<span class="linenr"> 9: </span>      (setq start (point-min) end (point max)))
+<span class="linenr"> 8: </span>        (set-buffer buffer)
+<span class="linenr"> 9: </span>        (setq start (point-min) end (point-max)))
 <span class="linenr">10: </span>      (insert-buffer-substring buffer start end)
 <span class="linenr">11: </span>      (setq newmark (point)))
 <span class="linenr">12: </span>    (push-mark newmark)))
