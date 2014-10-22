@@ -1,0 +1,154 @@
+---
+layout     : post
+title      : GNU Emacs Lisp编程入门笔记（六）
+categories : [emacs ,lisp ]
+tags       : 
+description: 
+---
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1. 第7章 基本函数：car、cdr、cons</a>
+<ul>
+<li><a href="#sec-1-1">1.1. car和cdr函数</a></li>
+<li><a href="#sec-1-2">1.2. cons函数</a></li>
+<li><a href="#sec-1-3">1.3. nthcdr函数</a></li>
+<li><a href="#sec-1-4">1.4. setcar函数</a></li>
+<li><a href="#sec-1-5">1.5. setcdr函数</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> 第7章 基本函数：car、cdr、cons</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+在Lisp中，car、cdr、cons都是基本函数。cons函数用于构造列表，car和cdr函数则用于拆分列表。
+</p>
+</div>
+<div id="outline-container-sec-1-1" class="outline-3">
+<h3 id="sec-1-1"><span class="section-number-3">1.1</span> car和cdr函数</h3>
+<div class="outline-text-3" id="text-1-1">
+<p>
+一个列表的car，就是返回这个列表的第一个元素。
+</p>
+<div class="org-src-container">
+
+<pre class="src src-lisp"><span class="linenr">1: </span>(car '(rose violet daisy buttercup))
+</pre>
+</div>
+<p>
+得到结果为“rose”。
+car并不改变列表。只是返回列表的第一个元素。
+一个列表的cdr就是一个列表第一个元素之后的所有元素。
+</p>
+<div class="org-src-container">
+
+<pre class="src src-lisp"><span class="linenr">1: </span>(car '(rose violet daisy buttercup))
+</pre>
+</div>
+<p>
+结果为“(violet daisy buttercup)”。cdr也不改变原列表。
+</p>
+</div>
+</div>
+<div id="outline-container-sec-1-2" class="outline-3">
+<h3 id="sec-1-2"><span class="section-number-3">1.2</span> cons函数</h3>
+<div class="outline-text-3" id="text-1-2">
+<p>
+cons函数可以构造列表，其作用与car和cdr函数正好相反。
+</p>
+<div class="org-src-container">
+
+<pre class="src src-lisp"><span class="linenr">1: </span>(cons 'pine '(fir oak maple))
+</pre>
+</div>
+<p>
+结果为“(pine fir oak maple)”。cons必须提供一个待插入元素的列表，哪怕是空列表。
+</p>
+
+<p>
+<b>查询列表的长度：length函数</b>
+通过Lisp的length函数可以得到一个列表的长度。
+</p>
+<div class="org-src-container">
+
+<pre class="src src-lisp"><span class="linenr">1: </span>(length '(a b c))
+</pre>
+</div>
+<p>
+结果为3。
+</p>
+<div class="org-src-container">
+
+<pre class="src src-lisp"><span class="linenr">1: </span>(length (cons 'a '(b c d e)))
+</pre>
+</div>
+<p>
+结果为5。
+</p>
+</div>
+</div>
+<div id="outline-container-sec-1-3" class="outline-3">
+<h3 id="sec-1-3"><span class="section-number-3">1.3</span> nthcdr函数</h3>
+<div class="outline-text-3" id="text-1-3">
+<p>
+nthcdr函数,其所做之事就是重复地取列表的cdr。
+</p>
+<div class="org-src-container">
+
+<pre class="src src-lisp"><span class="linenr">1: </span>(nthcdr 2 '(pine fir oak maple))
+</pre>
+</div>
+<p>
+结果为(oak maple)。
+</p>
+<div class="org-src-container">
+
+<pre class="src src-lisp"><span class="linenr">1: </span>(netcdr 4 '(pine fir oak maple))
+</pre>
+</div>
+<p>
+结果为nil。nthcdr也不会改变原列表。
+</p>
+</div>
+</div>
+<div id="outline-container-sec-1-4" class="outline-3">
+<h3 id="sec-1-4"><span class="section-number-3">1.4</span> setcar函数</h3>
+<div class="outline-text-3" id="text-1-4">
+<p>
+setcar函数会改变列表的值。
+</p>
+<div class="org-src-container">
+
+<pre class="src src-lisp"><span class="linenr">1: </span>(setq animals '(giraffe antelope tiger lion))  
+<span class="linenr">2: </span>(setcar animals 'hippopotamus)
+</pre>
+</div>
+<p>
+第一行代码构造一个列表，并把列表赋值给变量animals。第二行代码：这时变量animals的值变成了(hippopotamus antelope tiger lion),列表的第一个值被替换了。
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-1-5" class="outline-3">
+<h3 id="sec-1-5"><span class="section-number-3">1.5</span> setcdr函数</h3>
+<div class="outline-text-3" id="text-1-5">
+<p>
+与setcar函数相似，不同之处在于这个函数替换列表的第二个以及其后的所有元素。
+</p>
+<div class="org-src-container">
+
+<pre class="src src-lisp"><span class="linenr">1: </span>(setq domesticated-animals '(horse cow sheep goat))
+<span class="linenr">2: </span>(setcdr domesticated-animals '(cat dog))
+</pre>
+</div>
+<p>
+现在domesticated-animals的值变成了(horse cat dog)。
+</p>
+</div>
+</div>
+</div>

@@ -5,9 +5,283 @@
     <description>Linux / C / golang / Emacs</description>
     <link>http://xep007.github.io/</link>
     <atom:link href="http://xep007.github.io/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Mon, 20 Oct 2014 20:47:39 +0800</pubDate>
-    <lastBuildDate>Mon, 20 Oct 2014 20:47:39 +0800</lastBuildDate>
+    <pubDate>Wed, 22 Oct 2014 21:45:06 +0800</pubDate>
+    <lastBuildDate>Wed, 22 Oct 2014 21:45:06 +0800</lastBuildDate>
     <generator>Jekyll v2.4.0</generator>
+    
+      <item>
+        <title>GNU Emacs Lisp编程入门笔记（六）</title>
+        <description>&lt;div id=&quot;table-of-contents&quot;&gt;
+&lt;h2&gt;Table of Contents&lt;/h2&gt;
+&lt;div id=&quot;text-table-of-contents&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1&quot;&gt;1. 第7章 基本函数：car、cdr、cons&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-1&quot;&gt;1.1. car和cdr函数&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-2&quot;&gt;1.2. cons函数&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-3&quot;&gt;1.3. nthcdr函数&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-4&quot;&gt;1.4. setcar函数&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-5&quot;&gt;1.5. setcdr函数&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-sec-1&quot; class=&quot;outline-2&quot;&gt;
+&lt;h2 id=&quot;sec-1&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;1&lt;/span&gt; 第7章 基本函数：car、cdr、cons&lt;/h2&gt;
+&lt;div class=&quot;outline-text-2&quot; id=&quot;text-1&quot;&gt;
+&lt;p&gt;
+在Lisp中，car、cdr、cons都是基本函数。cons函数用于构造列表，car和cdr函数则用于拆分列表。
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&quot;outline-container-sec-1-1&quot; class=&quot;outline-3&quot;&gt;
+&lt;h3 id=&quot;sec-1-1&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.1&lt;/span&gt; car和cdr函数&lt;/h3&gt;
+&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-1&quot;&gt;
+&lt;p&gt;
+一个列表的car，就是返回这个列表的第一个元素。
+&lt;/p&gt;
+&lt;div class=&quot;org-src-container&quot;&gt;
+
+&lt;pre class=&quot;src src-lisp&quot;&gt;&lt;span class=&quot;linenr&quot;&gt;1: &lt;/span&gt;(car &#39;(rose violet daisy buttercup))
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;
+得到结果为“rose”。
+car并不改变列表。只是返回列表的第一个元素。
+一个列表的cdr就是一个列表第一个元素之后的所有元素。
+&lt;/p&gt;
+&lt;div class=&quot;org-src-container&quot;&gt;
+
+&lt;pre class=&quot;src src-lisp&quot;&gt;&lt;span class=&quot;linenr&quot;&gt;1: &lt;/span&gt;(car &#39;(rose violet daisy buttercup))
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;
+结果为“(violet daisy buttercup)”。cdr也不改变原列表。
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&quot;outline-container-sec-1-2&quot; class=&quot;outline-3&quot;&gt;
+&lt;h3 id=&quot;sec-1-2&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.2&lt;/span&gt; cons函数&lt;/h3&gt;
+&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-2&quot;&gt;
+&lt;p&gt;
+cons函数可以构造列表，其作用与car和cdr函数正好相反。
+&lt;/p&gt;
+&lt;div class=&quot;org-src-container&quot;&gt;
+
+&lt;pre class=&quot;src src-lisp&quot;&gt;&lt;span class=&quot;linenr&quot;&gt;1: &lt;/span&gt;(cons &#39;pine &#39;(fir oak maple))
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;
+结果为“(pine fir oak maple)”。cons必须提供一个待插入元素的列表，哪怕是空列表。
+&lt;/p&gt;
+
+&lt;p&gt;
+&lt;b&gt;查询列表的长度：length函数&lt;/b&gt;
+通过Lisp的length函数可以得到一个列表的长度。
+&lt;/p&gt;
+&lt;div class=&quot;org-src-container&quot;&gt;
+
+&lt;pre class=&quot;src src-lisp&quot;&gt;&lt;span class=&quot;linenr&quot;&gt;1: &lt;/span&gt;(length &#39;(a b c))
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;
+结果为3。
+&lt;/p&gt;
+&lt;div class=&quot;org-src-container&quot;&gt;
+
+&lt;pre class=&quot;src src-lisp&quot;&gt;&lt;span class=&quot;linenr&quot;&gt;1: &lt;/span&gt;(length (cons &#39;a &#39;(b c d e)))
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;
+结果为5。
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&quot;outline-container-sec-1-3&quot; class=&quot;outline-3&quot;&gt;
+&lt;h3 id=&quot;sec-1-3&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.3&lt;/span&gt; nthcdr函数&lt;/h3&gt;
+&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-3&quot;&gt;
+&lt;p&gt;
+nthcdr函数,其所做之事就是重复地取列表的cdr。
+&lt;/p&gt;
+&lt;div class=&quot;org-src-container&quot;&gt;
+
+&lt;pre class=&quot;src src-lisp&quot;&gt;&lt;span class=&quot;linenr&quot;&gt;1: &lt;/span&gt;(nthcdr 2 &#39;(pine fir oak maple))
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;
+结果为(oak maple)。
+&lt;/p&gt;
+&lt;div class=&quot;org-src-container&quot;&gt;
+
+&lt;pre class=&quot;src src-lisp&quot;&gt;&lt;span class=&quot;linenr&quot;&gt;1: &lt;/span&gt;(netcdr 4 &#39;(pine fir oak maple))
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;
+结果为nil。nthcdr也不会改变原列表。
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&quot;outline-container-sec-1-4&quot; class=&quot;outline-3&quot;&gt;
+&lt;h3 id=&quot;sec-1-4&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.4&lt;/span&gt; setcar函数&lt;/h3&gt;
+&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-4&quot;&gt;
+&lt;p&gt;
+setcar函数会改变列表的值。
+&lt;/p&gt;
+&lt;div class=&quot;org-src-container&quot;&gt;
+
+&lt;pre class=&quot;src src-lisp&quot;&gt;&lt;span class=&quot;linenr&quot;&gt;1: &lt;/span&gt;(setq animals &#39;(giraffe antelope tiger lion))  
+&lt;span class=&quot;linenr&quot;&gt;2: &lt;/span&gt;(setcar animals &#39;hippopotamus)
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;
+第一行代码构造一个列表，并把列表赋值给变量animals。第二行代码：这时变量animals的值变成了(hippopotamus antelope tiger lion),列表的第一个值被替换了。
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-sec-1-5&quot; class=&quot;outline-3&quot;&gt;
+&lt;h3 id=&quot;sec-1-5&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.5&lt;/span&gt; setcdr函数&lt;/h3&gt;
+&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-5&quot;&gt;
+&lt;p&gt;
+与setcar函数相似，不同之处在于这个函数替换列表的第二个以及其后的所有元素。
+&lt;/p&gt;
+&lt;div class=&quot;org-src-container&quot;&gt;
+
+&lt;pre class=&quot;src src-lisp&quot;&gt;&lt;span class=&quot;linenr&quot;&gt;1: &lt;/span&gt;(setq domesticated-animals &#39;(horse cow sheep goat))
+&lt;span class=&quot;linenr&quot;&gt;2: &lt;/span&gt;(setcdr domesticated-animals &#39;(cat dog))
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;
+现在domesticated-animals的值变成了(horse cat dog)。
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</description>
+        <pubDate>Wed, 22 Oct 2014 00:00:00 +0800</pubDate>
+        <link>http://xep007.github.io/emacs/lisp/2014/10/22/gnu%20emacs%20lisp%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8%E7%AC%94%E8%AE%B0%EF%BC%88%E5%85%AD%EF%BC%89.html</link>
+        <guid isPermaLink="true">http://xep007.github.io/emacs/lisp/2014/10/22/gnu%20emacs%20lisp%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8%E7%AC%94%E8%AE%B0%EF%BC%88%E5%85%AD%EF%BC%89.html</guid>
+        
+        
+        <category>emacs</category>
+        
+        <category>lisp</category>
+        
+      </item>
+    
+      <item>
+        <title>GNU Emacs Lisp编程入门笔记（五）</title>
+        <description>&lt;div id=&quot;table-of-contents&quot;&gt;
+&lt;h2&gt;Table of Contents&lt;/h2&gt;
+&lt;div id=&quot;text-table-of-contents&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1&quot;&gt;1. 第5章 更复杂的函数&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-1&quot;&gt;1.1. copy-to-buffer函数的定义&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-2&quot;&gt;1.2. insert-buffer函数&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-2-1&quot;&gt;1.2.1. insert-buff函数中的交互表达式&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-2-2&quot;&gt;1.2.2. insert-buffer函数体&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-3&quot;&gt;1.3. 其余略&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-sec-1&quot; class=&quot;outline-2&quot;&gt;
+&lt;h2 id=&quot;sec-1&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;1&lt;/span&gt; 第5章 更复杂的函数&lt;/h2&gt;
+&lt;div class=&quot;outline-text-2&quot; id=&quot;text-1&quot;&gt;
+&lt;/div&gt;&lt;div id=&quot;outline-container-sec-1-1&quot; class=&quot;outline-3&quot;&gt;
+&lt;h3 id=&quot;sec-1-1&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.1&lt;/span&gt; copy-to-buffer函数的定义&lt;/h3&gt;
+&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-1&quot;&gt;
+&lt;p&gt;
+copy-to-buffer函数拷贝文本到一个缓冲区，替换原有缓冲区中的文本。
+&lt;/p&gt;
+&lt;div class=&quot;org-src-container&quot;&gt;
+
+&lt;pre class=&quot;src src-lisp&quot;&gt;&lt;span class=&quot;linenr&quot;&gt;1: &lt;/span&gt;(&lt;span style=&quot;color: #00ffff;&quot;&gt;defun&lt;/span&gt; &lt;span style=&quot;color: #00fa9a;&quot;&gt;copy-to-buffer&lt;/span&gt; buffer start end
+&lt;span class=&quot;linenr&quot;&gt;2: &lt;/span&gt;    (interactive &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;BCopy to buffer: \nr&quot;&lt;/span&gt;)
+&lt;span class=&quot;linenr&quot;&gt;3: &lt;/span&gt;        (&lt;span style=&quot;color: #00ffff;&quot;&gt;let&lt;/span&gt; ((oldbuf (current-buffer)))
+&lt;span class=&quot;linenr&quot;&gt;4: &lt;/span&gt;            (&lt;span style=&quot;color: #00ffff;&quot;&gt;save-excursion&lt;/span&gt;
+&lt;span class=&quot;linenr&quot;&gt;5: &lt;/span&gt;               (set-buffer (get-buffer-create buffer))
+&lt;span class=&quot;linenr&quot;&gt;6: &lt;/span&gt;               (erase-buffer)
+&lt;span class=&quot;linenr&quot;&gt;7: &lt;/span&gt;               (&lt;span style=&quot;color: #00ffff;&quot;&gt;save-excursion&lt;/span&gt;
+&lt;span class=&quot;linenr&quot;&gt;8: &lt;/span&gt;                  (insert-buffer-substring oldbuf start end)))))
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;
+(erase-buffer)删除了缓冲区原有的内容。第一次使用save-excurision函数返回到将要拷贝文本的缓冲区。第二次使用是使Emacs在被插入内容的缓冲区的域的开始设置位点。
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&quot;outline-container-sec-1-2&quot; class=&quot;outline-3&quot;&gt;
+&lt;h3 id=&quot;sec-1-2&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.2&lt;/span&gt; insert-buffer函数&lt;/h3&gt;
+&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-2&quot;&gt;
+&lt;p&gt;
+此命令将另外一个缓冲区的内容拷贝到当前缓冲区中。
+&lt;/p&gt;
+&lt;div class=&quot;org-src-container&quot;&gt;
+
+&lt;pre class=&quot;src src-lisp&quot;&gt;&lt;span class=&quot;linenr&quot;&gt; 1: &lt;/span&gt;(&lt;span style=&quot;color: #00ffff;&quot;&gt;defun&lt;/span&gt; &lt;span style=&quot;color: #00fa9a;&quot;&gt;insert-buffer&lt;/span&gt; (buffer)
+&lt;span class=&quot;linenr&quot;&gt; 2: &lt;/span&gt;  (interactive &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;*bInsert buffer: &quot;&lt;/span&gt;)
+&lt;span class=&quot;linenr&quot;&gt; 3: &lt;/span&gt;  (or (bufferp buffer)
+&lt;span class=&quot;linenr&quot;&gt; 4: &lt;/span&gt;      (setq buffer (get-buffer buffer)))
+&lt;span class=&quot;linenr&quot;&gt; 5: &lt;/span&gt;  (&lt;span style=&quot;color: #00ffff;&quot;&gt;let&lt;/span&gt; (start end newmark)
+&lt;span class=&quot;linenr&quot;&gt; 6: &lt;/span&gt;    (&lt;span style=&quot;color: #00ffff;&quot;&gt;save-excursion&lt;/span&gt;
+&lt;span class=&quot;linenr&quot;&gt; 7: &lt;/span&gt;      (&lt;span style=&quot;color: #00ffff;&quot;&gt;save-excursion&lt;/span&gt;
+&lt;span class=&quot;linenr&quot;&gt; 8: &lt;/span&gt;      (set-buffer buffer)
+&lt;span class=&quot;linenr&quot;&gt; 9: &lt;/span&gt;      (setq start (point-min) end (point max)))
+&lt;span class=&quot;linenr&quot;&gt;10: &lt;/span&gt;      (insert-buffer-substring buffer start end)
+&lt;span class=&quot;linenr&quot;&gt;11: &lt;/span&gt;      (setq newmark (point)))
+&lt;span class=&quot;linenr&quot;&gt;12: &lt;/span&gt;    (push-mark newmark)))
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&quot;outline-container-sec-1-2-1&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1-2-1&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.2.1&lt;/span&gt; insert-buff函数中的交互表达式&lt;/h4&gt;
+&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-2-1&quot;&gt;
+&lt;p&gt;
+interactive表达式的参量有两个部分：一部分是一个星号“*”， 另一部分是“bInsert buffer: ”。
+&lt;/p&gt;
+&lt;ol class=&quot;org-ol&quot;&gt;
+&lt;li&gt;只读缓冲区。星号用于缓冲区是一个只读缓冲区的情况。如果insert-buffer被一个只读缓冲区调用，一条消息将打印在回显区。警告不允许往这个缓冲区写入任何东西。
+&lt;/li&gt;
+&lt;li&gt;交互表达式的中“b”
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;
+小写的“b”告诉lisp解释器传送给insert-buffer函数的参量应是一个存在缓冲区或者这个缓冲区的名字。大写的“B”可以允许参量传送不存在的缓冲区。
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&quot;outline-container-sec-1-2-2&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1-2-2&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.2.2&lt;/span&gt; insert-buffer函数体&lt;/h4&gt;
+&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-2-2&quot;&gt;
+&lt;p&gt;
+函数体有两个主要部分：一个or表达式和一个let表达式。or表达式的目的是为了确保buffer参量真正与一个缓冲区绑定在一起，而不是绑定到缓冲区的名字。let表达式包含了将另外一个缓冲区的内容拷贝到当前缓冲区所需的代码。
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&quot;outline-container-sec-1-3&quot; class=&quot;outline-3&quot;&gt;
+&lt;h3 id=&quot;sec-1-3&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.3&lt;/span&gt; 其余略&lt;/h3&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</description>
+        <pubDate>Wed, 22 Oct 2014 00:00:00 +0800</pubDate>
+        <link>http://xep007.github.io/emacs/lisp/2014/10/22/gnu%20emacs%20lisp%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%94%EF%BC%89.html</link>
+        <guid isPermaLink="true">http://xep007.github.io/emacs/lisp/2014/10/22/gnu%20emacs%20lisp%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%94%EF%BC%89.html</guid>
+        
+        
+        <category>emacs</category>
+        
+        <category>lisp</category>
+        
+      </item>
     
       <item>
         <title>GNU Emacs Lisp 编程入门笔记（四）</title>
@@ -1509,402 +1783,6 @@ hexo server
         <category>linux</category>
         
         <category>hexo</category>
-        
-      </item>
-    
-      <item>
-        <title>解决升级org8而导致的几个问题</title>
-        <description>&lt;div id=&quot;table-of-contents&quot;&gt;
-&lt;h2&gt;Table of Contents&lt;/h2&gt;
-&lt;div id=&quot;text-table-of-contents&quot;&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1&quot;&gt;1. org升级到版本8,几个自定义设置罢工了&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-2&quot;&gt;2. 解决办法&lt;/a&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-2-1&quot;&gt;2.1. 修改.emacs配置&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-2-2&quot;&gt;2.2. 在.emacs中修改自定义导出pdf的classes语法&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-3&quot;&gt;3. 解决自定义插入style的问题&lt;/a&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-3-1&quot;&gt;3.1. 解决办法&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div id=&quot;outline-container-sec-1&quot; class=&quot;outline-2&quot;&gt;
-&lt;h2 id=&quot;sec-1&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;1&lt;/span&gt; org升级到版本8,几个自定义设置罢工了&lt;/h2&gt;
-&lt;div class=&quot;outline-text-2&quot; id=&quot;text-1&quot;&gt;
-&lt;p&gt;
-这两天因为安装org-octopress需要，升级了org到8.2版本（原本是7.9）。没想到导出pdf的自定义设置以及导出html的自定义style设置都罢工了。错误提示：
-&lt;/p&gt;
-&lt;pre class=&quot;example&quot;&gt;
-1. unknow class: my-article
-2. emacs的html style无效
-&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-
-&lt;div id=&quot;outline-container-sec-2&quot; class=&quot;outline-2&quot;&gt;
-&lt;h2 id=&quot;sec-2&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;2&lt;/span&gt; 解决办法&lt;/h2&gt;
-&lt;div class=&quot;outline-text-2&quot; id=&quot;text-2&quot;&gt;
-&lt;p&gt;
-baidu了好久，不得要领。后来直接到org官网查找，找到&lt;a href=&quot;http://orgmode.org/worg/org-8.0.html&quot;&gt;http://orgmode.org/worg/org-8.0.html&lt;/a&gt; 才解决。
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;div id=&quot;outline-container-sec-2-1&quot; class=&quot;outline-3&quot;&gt;
-&lt;h3 id=&quot;sec-2-1&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;2.1&lt;/span&gt; 修改.emacs配置&lt;/h3&gt;
-&lt;div class=&quot;outline-text-3&quot; id=&quot;text-2-1&quot;&gt;
-&lt;p&gt;
-在.emacs文件中修改,把&quot;to&quot;去掉。
-&lt;/p&gt;
-&lt;pre class=&quot;example&quot;&gt;
-(setq org-latex-to-pdf-process &#39;(&quot;xelatex -interaction nonstopmode %f&quot;
-                              &quot;xelatex -interaction nonstopmode %f&quot;))
-&lt;/pre&gt;
-&lt;p&gt;
-变成：
-&lt;/p&gt;
-&lt;pre class=&quot;example&quot;&gt;
-(setq org-latex-pdf-process &#39;(&quot;xelatex -interaction nonstopmode %f&quot;
-                              &quot;xelatex -interaction nonstopmode %f&quot;))
-&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div id=&quot;outline-container-sec-2-2&quot; class=&quot;outline-3&quot;&gt;
-&lt;h3 id=&quot;sec-2-2&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;2.2&lt;/span&gt; 在.emacs中修改自定义导出pdf的classes语法&lt;/h3&gt;
-&lt;div class=&quot;outline-text-3&quot; id=&quot;text-2-2&quot;&gt;
-&lt;p&gt;
-把以下语句中的export去掉。
-&lt;/p&gt;
-&lt;pre class=&quot;example&quot;&gt;
-(unless (boundp &#39;org-export-latex-classes)
-  (setq org-export-latex-classes nil))
-(add-to-list &#39;org-export-latex-classes
-&lt;/pre&gt;
-&lt;p&gt;
-变成：
-&lt;/p&gt;
-&lt;pre class=&quot;example&quot;&gt;
-(unless (boundp &#39;org-latex-classes)
-  (setq org-latex-classes nil))
-(add-to-list &#39;org-latex-classes
-&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div id=&quot;outline-container-sec-3&quot; class=&quot;outline-2&quot;&gt;
-&lt;h2 id=&quot;sec-3&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;3&lt;/span&gt; 解决自定义插入style的问题&lt;/h2&gt;
-&lt;div class=&quot;outline-text-2&quot; id=&quot;text-3&quot;&gt;
-&lt;/div&gt;&lt;div id=&quot;outline-container-sec-3-1&quot; class=&quot;outline-3&quot;&gt;
-&lt;h3 id=&quot;sec-3-1&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;3.1&lt;/span&gt; 解决办法&lt;/h3&gt;
-&lt;div class=&quot;outline-text-3&quot; id=&quot;text-3-1&quot;&gt;
-&lt;p&gt;
-修改org文件头配置,在org文件头中把
-&lt;/p&gt;
-
-&lt;pre class=&quot;example&quot;&gt;
-#+STYLE:
-&lt;/pre&gt;
-
-&lt;p&gt;
-修改为：
-&lt;/p&gt;
-
-&lt;pre class=&quot;example&quot;&gt;
-#+HTML_HEAD:
-&lt;/pre&gt;
-
-&lt;p&gt;
-好了，收工。
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-</description>
-        <pubDate>Tue, 07 Oct 2014 00:00:00 +0800</pubDate>
-        <link>http://xep007.github.io/emacs/org/2014/10/07/%E8%A7%A3%E5%86%B3%E5%8D%87%E7%BA%A7org8%E8%80%8C%E5%AF%BC%E8%87%B4%E7%9A%84%E5%87%A0%E4%B8%AA%E9%97%AE%E9%A2%98.html</link>
-        <guid isPermaLink="true">http://xep007.github.io/emacs/org/2014/10/07/%E8%A7%A3%E5%86%B3%E5%8D%87%E7%BA%A7org8%E8%80%8C%E5%AF%BC%E8%87%B4%E7%9A%84%E5%87%A0%E4%B8%AA%E9%97%AE%E9%A2%98.html</guid>
-        
-        
-        <category>emacs</category>
-        
-        <category>org</category>
-        
-      </item>
-    
-      <item>
-        <title>org-octopress + github 构建静态博客</title>
-        <description>&lt;div id=&quot;table-of-contents&quot;&gt;
-&lt;h2&gt;Table of Contents&lt;/h2&gt;
-&lt;div id=&quot;text-table-of-contents&quot;&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1&quot;&gt;1. 创建github博客&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-2&quot;&gt;2. 安装git和ruby&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-3&quot;&gt;3. 安装配置Octopress&lt;/a&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-3-1&quot;&gt;3.1. 安装octopress&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-3-2&quot;&gt;3.2. 配置octopress&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-4&quot;&gt;4. 安装配置Org-octopress&lt;/a&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-4-1&quot;&gt;4.1. 安装org&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-4-2&quot;&gt;4.2. 配置org&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-4-3&quot;&gt;4.3. 安装org-octopress&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-4-4&quot;&gt;4.4. 配置org-octopress&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-4-5&quot;&gt;4.5. 使用org-octopress&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-5&quot;&gt;5. 博客本地预览&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-6&quot;&gt;6. 发布博客&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-
-
-&lt;div id=&quot;outline-container-sec-1&quot; class=&quot;outline-2&quot;&gt;
-&lt;h2 id=&quot;sec-1&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;1&lt;/span&gt; 创建github博客&lt;/h2&gt;
-&lt;div class=&quot;outline-text-2&quot; id=&quot;text-1&quot;&gt;
-&lt;p&gt;
-请参照这篇博客：&lt;a href=&quot;http://blog.csdn.net/renfufei/article/details/37725057&quot;&gt;http://blog.csdn.net/renfufei/article/details/37725057&lt;/a&gt;
-感谢作者的付出。
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id=&quot;outline-container-sec-2&quot; class=&quot;outline-2&quot;&gt;
-&lt;h2 id=&quot;sec-2&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;2&lt;/span&gt; 安装git和ruby&lt;/h2&gt;
-&lt;div class=&quot;outline-text-2&quot; id=&quot;text-2&quot;&gt;
-&lt;pre class=&quot;example&quot;&gt;
-sudo aptitude install git ruby ruby-dev
-&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id=&quot;outline-container-sec-3&quot; class=&quot;outline-2&quot;&gt;
-&lt;h2 id=&quot;sec-3&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;3&lt;/span&gt; 安装配置Octopress&lt;/h2&gt;
-&lt;div class=&quot;outline-text-2&quot; id=&quot;text-3&quot;&gt;
-&lt;/div&gt;&lt;div id=&quot;outline-container-sec-3-1&quot; class=&quot;outline-3&quot;&gt;
-&lt;h3 id=&quot;sec-3-1&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;3.1&lt;/span&gt; 安装octopress&lt;/h3&gt;
-&lt;div class=&quot;outline-text-3&quot; id=&quot;text-3-1&quot;&gt;
-&lt;pre class=&quot;example&quot;&gt;
-git clone git://github.com/imathis/octopress.git octopress
-cd octopress
-sudo gem install bundler
-bundle install
-rake install
-&lt;/pre&gt;
-&lt;p&gt;
-注意：如果在后面运行rake preview进行本地预览时提示以下错误：
-&lt;/p&gt;
-&lt;pre class=&quot;example&quot;&gt;
-/var/lib/gems/2.1.0/gems/execjs-1.1.2/lib/execjs/runtimes.rb:43:in `autodetect’: Could not find a JavaScript runtime.
-&lt;/pre&gt;
-&lt;p&gt;
-请修改Gemfile,在其中添加:
-&lt;/p&gt;
-&lt;pre class=&quot;example&quot;&gt;
-gem &#39;execjs&#39;
-gem &#39;therubyracer&#39;
-&lt;/pre&gt;
-&lt;p&gt;
-然后重新执行以下命令:
-&lt;/p&gt;
-&lt;pre class=&quot;example&quot;&gt;
-bundle install
-&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id=&quot;outline-container-sec-3-2&quot; class=&quot;outline-3&quot;&gt;
-&lt;h3 id=&quot;sec-3-2&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;3.2&lt;/span&gt; 配置octopress&lt;/h3&gt;
-&lt;div class=&quot;outline-text-3&quot; id=&quot;text-3-2&quot;&gt;
-&lt;pre class=&quot;example&quot;&gt;
-rake setup_github_pages
-&lt;/pre&gt;
-&lt;p&gt;
-依照提示键入你在github中申请的博客地址
-&lt;/p&gt;
-
-&lt;p&gt;
-然后修改&quot; _config.yml&quot;,填入相应的信息。
-&lt;/p&gt;
-&lt;pre class=&quot;example&quot;&gt;
-url: http://yoursite.com
-title: My Octopress Blog
-subtitle: A blogging framework for hackers.
-author: Your Name
-simple_search: https://www.google.com/search
-description:
-&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id=&quot;outline-container-sec-4&quot; class=&quot;outline-2&quot;&gt;
-&lt;h2 id=&quot;sec-4&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;4&lt;/span&gt; 安装配置Org-octopress&lt;/h2&gt;
-&lt;div class=&quot;outline-text-2&quot; id=&quot;text-4&quot;&gt;
-&lt;p&gt;
-在emacs中安装org-octopress很简单。但是emacs24.3自带的org是0.7版的，而org-octopress需要0.8以上。所以先安装org。 
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;div id=&quot;outline-container-sec-4-1&quot; class=&quot;outline-3&quot;&gt;
-&lt;h3 id=&quot;sec-4-1&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;4.1&lt;/span&gt; 安装org&lt;/h3&gt;
-&lt;div class=&quot;outline-text-3&quot; id=&quot;text-4-1&quot;&gt;
-&lt;p&gt;
-打开emacs,输入以下命令。
-&lt;/p&gt;
-&lt;pre class=&quot;example&quot;&gt;
-M-x packages-install
-&lt;/pre&gt;
-&lt;p&gt;
-回车，再输入
-&lt;/p&gt;
-&lt;pre class=&quot;example&quot;&gt;
-org
-&lt;/pre&gt;
-&lt;p&gt;
-如果用elpa安装的org有问题，无法使用。请下载tar文件，自己解压放在elpa中。
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id=&quot;outline-container-sec-4-2&quot; class=&quot;outline-3&quot;&gt;
-&lt;h3 id=&quot;sec-4-2&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;4.2&lt;/span&gt; 配置org&lt;/h3&gt;
-&lt;div class=&quot;outline-text-3&quot; id=&quot;text-4-2&quot;&gt;
-&lt;p&gt;
-在.emacs中添加以下内容：
-&lt;/p&gt;
-&lt;pre class=&quot;example&quot;&gt;
-(require &#39;org)
-(require &#39;org-publish)
-(add-to-list &#39;auto-mode-alist &#39;(&quot;\\.org\\&#39;&quot; . org-mode))
-(add-hook &#39;org-mode-hook &#39;turn-on-font-lock)
-(add-hook &#39;org-mode-hook 
-(lambda () (setq truncate-lines nil)))
-&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id=&quot;outline-container-sec-4-3&quot; class=&quot;outline-3&quot;&gt;
-&lt;h3 id=&quot;sec-4-3&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;4.3&lt;/span&gt; 安装org-octopress&lt;/h3&gt;
-&lt;div class=&quot;outline-text-3&quot; id=&quot;text-4-3&quot;&gt;
-&lt;pre class=&quot;example&quot;&gt;
-M-x packages-install
-&lt;/pre&gt;
-&lt;p&gt;
-回车，再输入
-&lt;/p&gt;
-&lt;pre class=&quot;example&quot;&gt;
-org-octopress
-&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id=&quot;outline-container-sec-4-4&quot; class=&quot;outline-3&quot;&gt;
-&lt;h3 id=&quot;sec-4-4&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;4.4&lt;/span&gt; 配置org-octopress&lt;/h3&gt;
-&lt;div class=&quot;outline-text-3&quot; id=&quot;text-4-4&quot;&gt;
-&lt;p&gt;
-安装完org-octopress后，在.emacs中加入以下内容。
-&lt;/p&gt;
-&lt;pre class=&quot;example&quot;&gt;
-(require &#39;org-octopress)
-(setq org-octopress-directory-top       &quot;~/octopress/source&quot;)
-(setq org-octopress-directory-posts     &quot;~/octopress/source/_posts&quot;)
-(setq org-octopress-directory-org-top   &quot;~/octopress/source&quot;)
-(setq org-octopress-directory-org-posts &quot;~/octopress/source/blog&quot;)
-(setq org-octopress-setup-file          &quot;~/lib/org-sty/setupfile.org&quot;)
-&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div id=&quot;outline-container-sec-4-5&quot; class=&quot;outline-3&quot;&gt;
-&lt;h3 id=&quot;sec-4-5&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;4.5&lt;/span&gt; 使用org-octopress&lt;/h3&gt;
-&lt;div class=&quot;outline-text-3&quot; id=&quot;text-4-5&quot;&gt;
-&lt;p&gt;
-emacs中的操作进程
-打开emacs,然后输入命令：
-&lt;/p&gt;
-&lt;pre class=&quot;example&quot;&gt;
-M-x org-octopress
-&lt;/pre&gt;
-&lt;p&gt;
-打开新的界面后，键入w来新创一个文件，或者选择旧文件进行编辑。如果是新建文件，键入w后，输入新文件的名称，回车，选择日期，回车。
-依照org-mode格式进行书写。
-写完之后，进行输出：
-&lt;/p&gt;
-&lt;pre class=&quot;example&quot;&gt;
-c-c c-e P x
-&lt;/pre&gt;
-&lt;p&gt;
-然后键入octopress进行转换。
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id=&quot;outline-container-sec-5&quot; class=&quot;outline-2&quot;&gt;
-&lt;h2 id=&quot;sec-5&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;5&lt;/span&gt; 博客本地预览&lt;/h2&gt;
-&lt;div class=&quot;outline-text-2&quot; id=&quot;text-5&quot;&gt;
-&lt;p&gt;
-打开terminal，定位到octopress目录，运行以下命令：
-&lt;/p&gt;
-&lt;pre class=&quot;example&quot;&gt;
-rake preview
-&lt;/pre&gt;
-&lt;p&gt;
-然后打开浏览器，输入localhost:4000进行本地预览。
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id=&quot;outline-container-sec-6&quot; class=&quot;outline-2&quot;&gt;
-&lt;h2 id=&quot;sec-6&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;6&lt;/span&gt; 发布博客&lt;/h2&gt;
-&lt;div class=&quot;outline-text-2&quot; id=&quot;text-6&quot;&gt;
-&lt;pre class=&quot;example&quot;&gt;
-rake generate
-rake deploy
-&lt;/pre&gt;
-&lt;p&gt;
-如果提示如下错误：
-&lt;/p&gt;
-&lt;pre class=&quot;example&quot;&gt;
-error: 无法推送一些引用到 &#39;git@github.com:xep007/xep007.github.io.git&#39;
-提示：更新被拒绝，因为您当前分支的最新提交落后于其对应的远程分支。
-提示：再次推送前，先与远程变更合并（如 &#39;git pull ...&#39;）。详见
-提示：&#39;git push --help&#39; 中的 &#39;Note about fast-forwards&#39; 小节。
-
-## Github Pages deploy complete
-&lt;/pre&gt;
-
-&lt;p&gt;
-更换目录，并更新：
-&lt;/p&gt;
-&lt;pre class=&quot;example&quot;&gt;
-cd octopress/_deploy
-git pull origin master
-&lt;/pre&gt;
-&lt;p&gt;
-跳出目录，重新deploy
-&lt;/p&gt;
-&lt;pre class=&quot;example&quot;&gt;
-cd ..
-rake deploy
-&lt;/pre&gt;
-&lt;p&gt;
-本错误解决办法来自于：&lt;a href=&quot;http://www.conxz.net/blog/2014/04/12/non-fast-forward-error-with-octopress/&quot;&gt;http://www.conxz.net/blog/2014/04/12/non-fast-forward-error-with-octopress/&lt;/a&gt;
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-</description>
-        <pubDate>Sun, 05 Oct 2014 00:00:00 +0800</pubDate>
-        <link>http://xep007.github.io/octopress/git/jekyll/2014/10/05/org-octopress+github%E6%9E%84%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2.html</link>
-        <guid isPermaLink="true">http://xep007.github.io/octopress/git/jekyll/2014/10/05/org-octopress+github%E6%9E%84%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2.html</guid>
-        
-        
-        <category>octopress</category>
-        
-        <category>git</category>
-        
-        <category>jekyll</category>
         
       </item>
     

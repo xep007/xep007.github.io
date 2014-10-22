@@ -1,0 +1,106 @@
+---
+layout     : post
+title      : GNU Emacs Lisp编程入门笔记（五）
+categories : [emacs ,lisp ]
+tags       : 
+description: 
+---
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1. 第5章 更复杂的函数</a>
+<ul>
+<li><a href="#sec-1-1">1.1. copy-to-buffer函数的定义</a></li>
+<li><a href="#sec-1-2">1.2. insert-buffer函数</a>
+<ul>
+<li><a href="#sec-1-2-1">1.2.1. insert-buff函数中的交互表达式</a></li>
+<li><a href="#sec-1-2-2">1.2.2. insert-buffer函数体</a></li>
+</ul>
+</li>
+<li><a href="#sec-1-3">1.3. 其余略</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> 第5章 更复杂的函数</h2>
+<div class="outline-text-2" id="text-1">
+</div><div id="outline-container-sec-1-1" class="outline-3">
+<h3 id="sec-1-1"><span class="section-number-3">1.1</span> copy-to-buffer函数的定义</h3>
+<div class="outline-text-3" id="text-1-1">
+<p>
+copy-to-buffer函数拷贝文本到一个缓冲区，替换原有缓冲区中的文本。
+</p>
+<div class="org-src-container">
+
+<pre class="src src-lisp"><span class="linenr">1: </span>(<span style="color: #00ffff;">defun</span> <span style="color: #00fa9a;">copy-to-buffer</span> buffer start end
+<span class="linenr">2: </span>    (interactive <span style="color: #ffa500;">"BCopy to buffer: \nr"</span>)
+<span class="linenr">3: </span>        (<span style="color: #00ffff;">let</span> ((oldbuf (current-buffer)))
+<span class="linenr">4: </span>            (<span style="color: #00ffff;">save-excursion</span>
+<span class="linenr">5: </span>               (set-buffer (get-buffer-create buffer))
+<span class="linenr">6: </span>               (erase-buffer)
+<span class="linenr">7: </span>               (<span style="color: #00ffff;">save-excursion</span>
+<span class="linenr">8: </span>                  (insert-buffer-substring oldbuf start end)))))
+</pre>
+</div>
+<p>
+(erase-buffer)删除了缓冲区原有的内容。第一次使用save-excurision函数返回到将要拷贝文本的缓冲区。第二次使用是使Emacs在被插入内容的缓冲区的域的开始设置位点。
+</p>
+</div>
+</div>
+<div id="outline-container-sec-1-2" class="outline-3">
+<h3 id="sec-1-2"><span class="section-number-3">1.2</span> insert-buffer函数</h3>
+<div class="outline-text-3" id="text-1-2">
+<p>
+此命令将另外一个缓冲区的内容拷贝到当前缓冲区中。
+</p>
+<div class="org-src-container">
+
+<pre class="src src-lisp"><span class="linenr"> 1: </span>(<span style="color: #00ffff;">defun</span> <span style="color: #00fa9a;">insert-buffer</span> (buffer)
+<span class="linenr"> 2: </span>  (interactive <span style="color: #ffa500;">"*bInsert buffer: "</span>)
+<span class="linenr"> 3: </span>  (or (bufferp buffer)
+<span class="linenr"> 4: </span>      (setq buffer (get-buffer buffer)))
+<span class="linenr"> 5: </span>  (<span style="color: #00ffff;">let</span> (start end newmark)
+<span class="linenr"> 6: </span>    (<span style="color: #00ffff;">save-excursion</span>
+<span class="linenr"> 7: </span>      (<span style="color: #00ffff;">save-excursion</span>
+<span class="linenr"> 8: </span>      (set-buffer buffer)
+<span class="linenr"> 9: </span>      (setq start (point-min) end (point max)))
+<span class="linenr">10: </span>      (insert-buffer-substring buffer start end)
+<span class="linenr">11: </span>      (setq newmark (point)))
+<span class="linenr">12: </span>    (push-mark newmark)))
+</pre>
+</div>
+</div>
+<div id="outline-container-sec-1-2-1" class="outline-4">
+<h4 id="sec-1-2-1"><span class="section-number-4">1.2.1</span> insert-buff函数中的交互表达式</h4>
+<div class="outline-text-4" id="text-1-2-1">
+<p>
+interactive表达式的参量有两个部分：一部分是一个星号“*”， 另一部分是“bInsert buffer: ”。
+</p>
+<ol class="org-ol">
+<li>只读缓冲区。星号用于缓冲区是一个只读缓冲区的情况。如果insert-buffer被一个只读缓冲区调用，一条消息将打印在回显区。警告不允许往这个缓冲区写入任何东西。
+</li>
+<li>交互表达式的中“b”
+</li>
+</ol>
+<p>
+小写的“b”告诉lisp解释器传送给insert-buffer函数的参量应是一个存在缓冲区或者这个缓冲区的名字。大写的“B”可以允许参量传送不存在的缓冲区。
+</p>
+</div>
+</div>
+<div id="outline-container-sec-1-2-2" class="outline-4">
+<h4 id="sec-1-2-2"><span class="section-number-4">1.2.2</span> insert-buffer函数体</h4>
+<div class="outline-text-4" id="text-1-2-2">
+<p>
+函数体有两个主要部分：一个or表达式和一个let表达式。or表达式的目的是为了确保buffer参量真正与一个缓冲区绑定在一起，而不是绑定到缓冲区的名字。let表达式包含了将另外一个缓冲区的内容拷贝到当前缓冲区所需的代码。
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-1-3" class="outline-3">
+<h3 id="sec-1-3"><span class="section-number-3">1.3</span> 其余略</h3>
+</div>
+</div>
