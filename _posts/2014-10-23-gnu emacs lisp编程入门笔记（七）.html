@@ -1,0 +1,222 @@
+---
+layout     : post
+title      : GNU Emacs Lisp编程入门笔记（七）
+categories : [emacs ,lisp ]
+tags       : 
+description: 
+---
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1. 第8章 剪切和存储文本</a>
+<ul>
+<li><a href="#sec-1-1">1.1. zap-to-char函数</a>
+<ul>
+<li><a href="#sec-1-1-1">1.1.1. interactive表达式</a></li>
+<li><a href="#sec-1-1-2">1.1.2. zap-to-char函数体</a></li>
+<li><a href="#sec-1-1-3">1.1.3. search-forward函数</a></li>
+<li><a href="#sec-1-1-4">1.1.4. progn函数</a></li>
+<li><a href="#sec-1-1-5">1.1.5. 总结zap-to-char函数</a></li>
+</ul>
+</li>
+<li><a href="#sec-1-2">1.2. kill-region函数</a></li>
+<li><a href="#sec-1-3">1.3. delete-region函数：接触c</a></li>
+<li><a href="#sec-1-4">1.4. 用defvar初始化变量</a></li>
+<li><a href="#sec-1-5">1.5. copy-region-as-kill函数</a></li>
+<li><a href="#sec-1-6">1.6. 回顾</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> 第8章 剪切和存储文本</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+在Emacs中，kill命令从一个缓冲区剪切一段文本，它不会丢弃文本，而是用一个列表保存起来。保存被剪切的一段文本的列表被称为kill环(kill ring)。
+</p>
+</div>
+<div id="outline-container-sec-1-1" class="outline-3">
+<h3 id="sec-1-1"><span class="section-number-3">1.1</span> zap-to-char函数</h3>
+<div class="outline-text-3" id="text-1-1">
+<p>
+此函数的功能就是：将光标当前位置（位点）与出现特定字符的下一个位置之间这一区域中的文本剪切掉。剪切掉的文本放在kill环中。并能通过C-y(yank)命令从kill环中找回。
+</p>
+<div class="org-src-container">
+
+<pre class="src src-lisp">(<span style="color: #00ffff;">defun</span> <span style="color: #00fa9a;">zap-to-char</span> (arg char) <span style="color: #ffd700;">;</span><span style="color: #ffd700;">version 19 implementation</span>
+  <span style="color: #ffa500;">"Kill up to and including ARG'th occurrence of CHAR.</span>
+<span style="color: #ffa500;">Goes backward if ARG is engative; error if CHAR not found."</span>
+  (interactive <span style="color: #ffa500;">"*[\ncZap to char: "</span>)
+  (kill-region (point)
+               (<span style="color: #00ffff;">progn</span>
+                 (search-forward (char-to-string char) nil nil arg)
+                 (point))))
+</pre>
+</div>
+</div>
+<div id="outline-container-sec-1-1-1" class="outline-4">
+<h4 id="sec-1-1-1"><span class="section-number-4">1.1.1</span> interactive表达式</h4>
+<div class="outline-text-4" id="text-1-1-1">
+<p>
+(interactive "*p\ncZap to char: ")
+</p>
+<ul class="org-ul">
+<li>“*”，星号意味着如果缓冲区是只读的，将产生一个错误。
+</li>
+<li>“p”，这一部分以换行符"\n"结束。“p”是指传送给函数的第一个参量将是一个处理过的前缀参量的值。前缀参量用C-u以及其后的一个数来传送，或者用M-和一个数来传送。如果不带参量交互地调用这个函数，默认值1将被传送给这个函数。
+</li>
+<li>“cZap to char: ”。小写的"c"是指交互表达式希望产生一个提示并且后续的参量将是一个字符。
+</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-sec-1-1-2" class="outline-4">
+<h4 id="sec-1-1-2"><span class="section-number-4">1.1.2</span> zap-to-char函数体</h4>
+<div class="outline-text-4" id="text-1-1-2">
+<p>
+zap-to-char函数体包含了从光标的当前位置到（并包含）指定字符的这一区域剪切文本的代码。
+(kill-region (point)……
+(point)就是光标所处的当前位置。
+代码的下一个部分是一个使用progn的表达式。progn表达式的主体由search-forward和point函数组成。
+学习了search-forward函数之后，就容易理解progn是如何工作的了。因此先学search-forward函数。
+</p>
+</div>
+</div>
+<div id="outline-container-sec-1-1-3" class="outline-4">
+<h4 id="sec-1-1-3"><span class="section-number-4">1.1.3</span> search-forward函数</h4>
+<div class="outline-text-4" id="text-1-1-3">
+<p>
+此函数用于定位zap-to-char函数中被截取的字符的。查询成功，search-forward函数就在目标字符串中最后一个字符处设置位点。
+</p>
+
+<p>
+search-forward函数如下：
+</p>
+
+<p>
+(search-forward (char-to-string char) nil nil arg)
+</p>
+
+<p>
+search-forward函数有4个参量：
+</p>
+<ol class="org-ol">
+<li>第一个参量是目标，就是所要查找的内容。此参量必须是一个字符串。char-to-string用于转换字符串。
+</li>
+<li>第二个参量绑定查询范围;nil表示到达缓冲区末尾。
+</li>
+<li>第三个参量告诉这个函数如果查询失败应该怎么办——可以发出一个出错信号，也可返回nil。nil表示发出一个出错信号。
+</li>
+<li>第四个参量是重复计数值——待查找字符串出现的次数的计数。此参量可选。如未给，则默认为1,如为负，则查询就朝后进行。
+</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-sec-1-1-4" class="outline-4">
+<h4 id="sec-1-1-4"><span class="section-number-4">1.1.4</span> progn函数</h4>
+<div class="outline-text-4" id="text-1-1-4">
+<p>
+progn函数使其每一个参量顺序求值并返回最后一个参量的值。此例中progn有两个参量，一个是search-forward，表示在文本中查询目标字符串，如查到就在目标字符串后设置位点。第二个参量point表达式返回位点的值。传送给kill-region函数作为其第二个参量。
+</p>
+</div>
+</div>
+<div id="outline-container-sec-1-1-5" class="outline-4">
+<h4 id="sec-1-1-5"><span class="section-number-4">1.1.5</span> 总结zap-to-char函数</h4>
+<div class="outline-text-4" id="text-1-1-5">
+<p>
+当zap-to-char函数被调用时，给kill-region的第一个参量是光标所在的位置，search-forward函数将位点移到查找到的字符后，point返回位点的值。然后kill-region将区域内的文本剪切掉。
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-1-2" class="outline-3">
+<h3 id="sec-1-2"><span class="section-number-3">1.2</span> kill-region函数</h3>
+<div class="outline-text-3" id="text-1-2">
+<p>
+kill-region函数功能就是删去文档字符串的一部分。代码如下：
+</p>
+<div class="org-src-container">
+
+<pre class="src src-lisp">(<span style="color: #00ffff;">defun</span> <span style="color: #00fa9a;">kill-region</span> (beg end)
+    <span style="color: #ffa500;">"Kill between point and mark.</span>
+<span style="color: #ffa500;">The text is deleted but saved in the kill ring."</span>
+(interactive <span style="color: #ffa500;">"*r"</span>)
+(copy-region-as-kill beg end)
+(delete-region beg end))
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-1-3" class="outline-3">
+<h3 id="sec-1-3"><span class="section-number-3">1.3</span> delete-region函数：接触c</h3>
+<div class="outline-text-3" id="text-1-3">
+<p>
+delete-region函数删除一个区域中的内容，而且你永远无法找回它。此函数是用c语言写成的。
+</p>
+</div>
+</div>
+<div id="outline-container-sec-1-4" class="outline-3">
+<h3 id="sec-1-4"><span class="section-number-3">1.4</span> 用defvar初始化变量</h3>
+<div class="outline-text-3" id="text-1-4">
+<p>
+defvar是创建一个变量并可以赋初值用的。它跟setq函数相似。但有两点不同。
+</p>
+
+<p>
+defvar与setq的不同之处：
+</p>
+
+<ul class="org-ul">
+<li>第一，defvar只对无值的变量赋值。如果变量已经有一个值，defvar不会覆盖已经存在的值。
+</li>
+<li>第二，defvar特殊表有一个文档字符串。
+</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-sec-1-5" class="outline-3">
+<h3 id="sec-1-5"><span class="section-number-3">1.5</span> copy-region-as-kill函数</h3>
+<div class="outline-text-3" id="text-1-5">
+<p>
+此函数拷贝缓冲区中的一个文本区域，并将其保存到kill-ring变量中。
+</p>
+</div>
+</div>
+<div id="outline-container-sec-1-6" class="outline-3">
+<h3 id="sec-1-6"><span class="section-number-3">1.6</span> 回顾</h3>
+<div class="outline-text-3" id="text-1-6">
+<ul class="org-ul">
+<li>progn 
+</li>
+</ul>
+<p>
+这个函数依次对其第一个参量求值，并返回最后一个参量的值。例如：
+(progn 1 2 3 4 )
+结果返回4。
+</p>
+<ul class="org-ul">
+<li>searchforward
+</li>
+</ul>
+<p>
+这个函数查找一个字符串，并且如果找到这个字符串就移动位点。
+这个函数有4个参量：
+</p>
+<ol class="org-ol">
+<li>要查找的字符串
+</li>
+<li>查找的限制范围（可选）
+</li>
+<li>如果查找失败是返回nil还是返回一个错误消息（可选）
+</li>
+<li>重复查找多少次，如果这个参量是负的，就是往后查找（可选）
+</li>
+</ol>
+</div>
+</div>
+</div>

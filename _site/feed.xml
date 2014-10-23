@@ -5,9 +5,238 @@
     <description>Linux / C / golang / Emacs</description>
     <link>http://xep007.github.io/</link>
     <atom:link href="http://xep007.github.io/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Thu, 23 Oct 2014 20:05:11 +0800</pubDate>
-    <lastBuildDate>Thu, 23 Oct 2014 20:05:11 +0800</lastBuildDate>
+    <pubDate>Thu, 23 Oct 2014 22:10:58 +0800</pubDate>
+    <lastBuildDate>Thu, 23 Oct 2014 22:10:58 +0800</lastBuildDate>
     <generator>Jekyll v2.4.0</generator>
+    
+      <item>
+        <title>GNU Emacs Lisp编程入门笔记（七）</title>
+        <description>&lt;div id=&quot;table-of-contents&quot;&gt;
+&lt;h2&gt;Table of Contents&lt;/h2&gt;
+&lt;div id=&quot;text-table-of-contents&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1&quot;&gt;1. 第8章 剪切和存储文本&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-1&quot;&gt;1.1. zap-to-char函数&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-1-1&quot;&gt;1.1.1. interactive表达式&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-1-2&quot;&gt;1.1.2. zap-to-char函数体&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-1-3&quot;&gt;1.1.3. search-forward函数&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-1-4&quot;&gt;1.1.4. progn函数&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-1-5&quot;&gt;1.1.5. 总结zap-to-char函数&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-2&quot;&gt;1.2. kill-region函数&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-3&quot;&gt;1.3. delete-region函数：接触c&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-4&quot;&gt;1.4. 用defvar初始化变量&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-5&quot;&gt;1.5. copy-region-as-kill函数&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-6&quot;&gt;1.6. 回顾&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+
+&lt;div id=&quot;outline-container-sec-1&quot; class=&quot;outline-2&quot;&gt;
+&lt;h2 id=&quot;sec-1&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;1&lt;/span&gt; 第8章 剪切和存储文本&lt;/h2&gt;
+&lt;div class=&quot;outline-text-2&quot; id=&quot;text-1&quot;&gt;
+&lt;p&gt;
+在Emacs中，kill命令从一个缓冲区剪切一段文本，它不会丢弃文本，而是用一个列表保存起来。保存被剪切的一段文本的列表被称为kill环(kill ring)。
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&quot;outline-container-sec-1-1&quot; class=&quot;outline-3&quot;&gt;
+&lt;h3 id=&quot;sec-1-1&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.1&lt;/span&gt; zap-to-char函数&lt;/h3&gt;
+&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-1&quot;&gt;
+&lt;p&gt;
+此函数的功能就是：将光标当前位置（位点）与出现特定字符的下一个位置之间这一区域中的文本剪切掉。剪切掉的文本放在kill环中。并能通过C-y(yank)命令从kill环中找回。
+&lt;/p&gt;
+&lt;div class=&quot;org-src-container&quot;&gt;
+
+&lt;pre class=&quot;src src-lisp&quot;&gt;(&lt;span style=&quot;color: #00ffff;&quot;&gt;defun&lt;/span&gt; &lt;span style=&quot;color: #00fa9a;&quot;&gt;zap-to-char&lt;/span&gt; (arg char) &lt;span style=&quot;color: #ffd700;&quot;&gt;;&lt;/span&gt;&lt;span style=&quot;color: #ffd700;&quot;&gt;version 19 implementation&lt;/span&gt;
+  &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;Kill up to and including ARG&#39;th occurrence of CHAR.&lt;/span&gt;
+&lt;span style=&quot;color: #ffa500;&quot;&gt;Goes backward if ARG is engative; error if CHAR not found.&quot;&lt;/span&gt;
+  (interactive &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;*[\ncZap to char: &quot;&lt;/span&gt;)
+  (kill-region (point)
+               (&lt;span style=&quot;color: #00ffff;&quot;&gt;progn&lt;/span&gt;
+                 (search-forward (char-to-string char) nil nil arg)
+                 (point))))
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&quot;outline-container-sec-1-1-1&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1-1-1&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.1.1&lt;/span&gt; interactive表达式&lt;/h4&gt;
+&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-1-1&quot;&gt;
+&lt;p&gt;
+(interactive &quot;*p\ncZap to char: &quot;)
+&lt;/p&gt;
+&lt;ul class=&quot;org-ul&quot;&gt;
+&lt;li&gt;“*”，星号意味着如果缓冲区是只读的，将产生一个错误。
+&lt;/li&gt;
+&lt;li&gt;“p”，这一部分以换行符&quot;\n&quot;结束。“p”是指传送给函数的第一个参量将是一个处理过的前缀参量的值。前缀参量用C-u以及其后的一个数来传送，或者用M-和一个数来传送。如果不带参量交互地调用这个函数，默认值1将被传送给这个函数。
+&lt;/li&gt;
+&lt;li&gt;“cZap to char: ”。小写的&quot;c&quot;是指交互表达式希望产生一个提示并且后续的参量将是一个字符。
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&quot;outline-container-sec-1-1-2&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1-1-2&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.1.2&lt;/span&gt; zap-to-char函数体&lt;/h4&gt;
+&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-1-2&quot;&gt;
+&lt;p&gt;
+zap-to-char函数体包含了从光标的当前位置到（并包含）指定字符的这一区域剪切文本的代码。
+(kill-region (point)……
+(point)就是光标所处的当前位置。
+代码的下一个部分是一个使用progn的表达式。progn表达式的主体由search-forward和point函数组成。
+学习了search-forward函数之后，就容易理解progn是如何工作的了。因此先学search-forward函数。
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&quot;outline-container-sec-1-1-3&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1-1-3&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.1.3&lt;/span&gt; search-forward函数&lt;/h4&gt;
+&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-1-3&quot;&gt;
+&lt;p&gt;
+此函数用于定位zap-to-char函数中被截取的字符的。查询成功，search-forward函数就在目标字符串中最后一个字符处设置位点。
+&lt;/p&gt;
+
+&lt;p&gt;
+search-forward函数如下：
+&lt;/p&gt;
+
+&lt;p&gt;
+(search-forward (char-to-string char) nil nil arg)
+&lt;/p&gt;
+
+&lt;p&gt;
+search-forward函数有4个参量：
+&lt;/p&gt;
+&lt;ol class=&quot;org-ol&quot;&gt;
+&lt;li&gt;第一个参量是目标，就是所要查找的内容。此参量必须是一个字符串。char-to-string用于转换字符串。
+&lt;/li&gt;
+&lt;li&gt;第二个参量绑定查询范围;nil表示到达缓冲区末尾。
+&lt;/li&gt;
+&lt;li&gt;第三个参量告诉这个函数如果查询失败应该怎么办——可以发出一个出错信号，也可返回nil。nil表示发出一个出错信号。
+&lt;/li&gt;
+&lt;li&gt;第四个参量是重复计数值——待查找字符串出现的次数的计数。此参量可选。如未给，则默认为1,如为负，则查询就朝后进行。
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&quot;outline-container-sec-1-1-4&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1-1-4&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.1.4&lt;/span&gt; progn函数&lt;/h4&gt;
+&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-1-4&quot;&gt;
+&lt;p&gt;
+progn函数使其每一个参量顺序求值并返回最后一个参量的值。此例中progn有两个参量，一个是search-forward，表示在文本中查询目标字符串，如查到就在目标字符串后设置位点。第二个参量point表达式返回位点的值。传送给kill-region函数作为其第二个参量。
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&quot;outline-container-sec-1-1-5&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1-1-5&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.1.5&lt;/span&gt; 总结zap-to-char函数&lt;/h4&gt;
+&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-1-5&quot;&gt;
+&lt;p&gt;
+当zap-to-char函数被调用时，给kill-region的第一个参量是光标所在的位置，search-forward函数将位点移到查找到的字符后，point返回位点的值。然后kill-region将区域内的文本剪切掉。
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-sec-1-2&quot; class=&quot;outline-3&quot;&gt;
+&lt;h3 id=&quot;sec-1-2&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.2&lt;/span&gt; kill-region函数&lt;/h3&gt;
+&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-2&quot;&gt;
+&lt;p&gt;
+kill-region函数功能就是删去文档字符串的一部分。代码如下：
+&lt;/p&gt;
+&lt;div class=&quot;org-src-container&quot;&gt;
+
+&lt;pre class=&quot;src src-lisp&quot;&gt;(&lt;span style=&quot;color: #00ffff;&quot;&gt;defun&lt;/span&gt; &lt;span style=&quot;color: #00fa9a;&quot;&gt;kill-region&lt;/span&gt; (beg end)
+    &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;Kill between point and mark.&lt;/span&gt;
+&lt;span style=&quot;color: #ffa500;&quot;&gt;The text is deleted but saved in the kill ring.&quot;&lt;/span&gt;
+(interactive &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;*r&quot;&lt;/span&gt;)
+(copy-region-as-kill beg end)
+(delete-region beg end))
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&quot;outline-container-sec-1-3&quot; class=&quot;outline-3&quot;&gt;
+&lt;h3 id=&quot;sec-1-3&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.3&lt;/span&gt; delete-region函数：接触c&lt;/h3&gt;
+&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-3&quot;&gt;
+&lt;p&gt;
+delete-region函数删除一个区域中的内容，而且你永远无法找回它。此函数是用c语言写成的。
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&quot;outline-container-sec-1-4&quot; class=&quot;outline-3&quot;&gt;
+&lt;h3 id=&quot;sec-1-4&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.4&lt;/span&gt; 用defvar初始化变量&lt;/h3&gt;
+&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-4&quot;&gt;
+&lt;p&gt;
+defvar是创建一个变量并可以赋初值用的。它跟setq函数相似。但有两点不同。
+&lt;/p&gt;
+
+&lt;p&gt;
+defvar与setq的不同之处：
+&lt;/p&gt;
+
+&lt;ul class=&quot;org-ul&quot;&gt;
+&lt;li&gt;第一，defvar只对无值的变量赋值。如果变量已经有一个值，defvar不会覆盖已经存在的值。
+&lt;/li&gt;
+&lt;li&gt;第二，defvar特殊表有一个文档字符串。
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&quot;outline-container-sec-1-5&quot; class=&quot;outline-3&quot;&gt;
+&lt;h3 id=&quot;sec-1-5&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.5&lt;/span&gt; copy-region-as-kill函数&lt;/h3&gt;
+&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-5&quot;&gt;
+&lt;p&gt;
+此函数拷贝缓冲区中的一个文本区域，并将其保存到kill-ring变量中。
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&quot;outline-container-sec-1-6&quot; class=&quot;outline-3&quot;&gt;
+&lt;h3 id=&quot;sec-1-6&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.6&lt;/span&gt; 回顾&lt;/h3&gt;
+&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-6&quot;&gt;
+&lt;ul class=&quot;org-ul&quot;&gt;
+&lt;li&gt;progn 
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;
+这个函数依次对其第一个参量求值，并返回最后一个参量的值。例如：
+(progn 1 2 3 4 )
+结果返回4。
+&lt;/p&gt;
+&lt;ul class=&quot;org-ul&quot;&gt;
+&lt;li&gt;searchforward
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;
+这个函数查找一个字符串，并且如果找到这个字符串就移动位点。
+这个函数有4个参量：
+&lt;/p&gt;
+&lt;ol class=&quot;org-ol&quot;&gt;
+&lt;li&gt;要查找的字符串
+&lt;/li&gt;
+&lt;li&gt;查找的限制范围（可选）
+&lt;/li&gt;
+&lt;li&gt;如果查找失败是返回nil还是返回一个错误消息（可选）
+&lt;/li&gt;
+&lt;li&gt;重复查找多少次，如果这个参量是负的，就是往后查找（可选）
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</description>
+        <pubDate>Thu, 23 Oct 2014 00:00:00 +0800</pubDate>
+        <link>http://xep007.github.io/emacs/lisp/2014/10/23/gnu%20emacs%20lisp%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%83%EF%BC%89.html</link>
+        <guid isPermaLink="true">http://xep007.github.io/emacs/lisp/2014/10/23/gnu%20emacs%20lisp%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%83%EF%BC%89.html</guid>
+        
+        
+        <category>emacs</category>
+        
+        <category>lisp</category>
+        
+      </item>
     
       <item>
         <title>Go语言程序设计读书笔记（一）</title>
@@ -1825,109 +2054,6 @@ OK.
         
         
         <category>linux</category>
-        
-      </item>
-    
-      <item>
-        <title>org-jekyll-mode安装及配置</title>
-        <description>&lt;div id=&quot;table-of-contents&quot;&gt;
-&lt;h2&gt;Table of Contents&lt;/h2&gt;
-&lt;div id=&quot;text-table-of-contents&quot;&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1&quot;&gt;1. 安装org-jekyll-mode&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-2&quot;&gt;2. 设置org-jekyll-mode&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-3&quot;&gt;3. 使用org-jekyll-mode&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;p&gt;
-前几天测试使用octopress创建github静态博客时，有个org-octopress的emacs插件非常好用。如今使用jekyll/bootstrap来建站，用emacs写博客就成了一个麻烦的问题。在github上找了一下，居然找到一个org-jekyll-mode，得好好试试。
-&lt;/p&gt;
-&lt;div id=&quot;outline-container-sec-1&quot; class=&quot;outline-2&quot;&gt;
-&lt;h2 id=&quot;sec-1&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;1&lt;/span&gt; 安装org-jekyll-mode&lt;/h2&gt;
-&lt;div class=&quot;outline-text-2&quot; id=&quot;text-1&quot;&gt;
-&lt;div class=&quot;org-src-container&quot;&gt;
-
-&lt;pre class=&quot;src src-git&quot;&gt;git clone https://github.com/jsuper/org-jekyll-mode org-jekyll-mode
-&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id=&quot;outline-container-sec-2&quot; class=&quot;outline-2&quot;&gt;
-&lt;h2 id=&quot;sec-2&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;2&lt;/span&gt; 设置org-jekyll-mode&lt;/h2&gt;
-&lt;div class=&quot;outline-text-2&quot; id=&quot;text-2&quot;&gt;
-&lt;p&gt;
-我把org-jekyll-mode文件夹拷贝到~/.emacs.d，然后按照作者主页(&lt;a href=&quot;http://jsuper.github.io/blog/using-org-mode-to-write-jekyll-post.html&quot;&gt;http://jsuper.github.io/blog/using-org-mode-to-write-jekyll-post.html&lt;/a&gt;)上的说明,在~/.emacs中加入以下设置。
-&lt;/p&gt;
-&lt;pre class=&quot;example&quot;&gt;
-(add-to-list &#39;load-path &quot;your-org-jekyll-mode-root&quot;)
-(require &#39;org-jekyll-mode)
-(setq org-jekyll/jekyll-project-root &quot;your-jekyll-root&quot;)
-(setq org-jekyll/org-mode-project-root &quot;your-org-mode-project-root&quot;)
-&lt;/pre&gt;
-
-&lt;p&gt;
-在使用org-jekyll-mode之前，你必须要先定义一些变量的值:
-&lt;/p&gt;
-&lt;pre class=&quot;example&quot;&gt;
-org-jekyll/jekyll-project-root
-&lt;/pre&gt;
-&lt;p&gt;
-这个变量指定了你的jekyll项目的根目录。因为org-jekyll-mode会根据这个路径，将其文件发布 到这个目录的相应子目录下。
-&lt;/p&gt;
-&lt;pre class=&quot;example&quot;&gt;
-org-jekyll/org-mode-project-root
-&lt;/pre&gt;
-&lt;p&gt;
-该变量指定了你的org-mode文件存放的目录。一般我喜欢将我的文件放在一个单独的网盘里面， 这样方便管理和随时查看。
-&lt;/p&gt;
-&lt;pre class=&quot;example&quot;&gt;
-org-jekyll/org-mode-static-files-folder-name
-&lt;/pre&gt;
-&lt;p&gt;
-这个变量指定了你在org-mode项目目录下，用于存放静态文件，如：图片、css等文件的目录名。 默认是你的org-mode项目的根目录。我个人比较喜欢将其放在一个叫assets的目录下。所以我的 org-mode 项目目录结构:
-&lt;/p&gt;
-&lt;pre class=&quot;example&quot;&gt;
--Notes
- --assets
-  ----img
-  ----css
-*.org
-&lt;/pre&gt;
-&lt;p&gt;
-关于更多的介绍，请参见项目WIKI。
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div id=&quot;outline-container-sec-3&quot; class=&quot;outline-2&quot;&gt;
-&lt;h2 id=&quot;sec-3&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;3&lt;/span&gt; 使用org-jekyll-mode&lt;/h2&gt;
-&lt;div class=&quot;outline-text-2&quot; id=&quot;text-3&quot;&gt;
-&lt;p&gt;
-打开emacs,键入M-x，然后输入org-jekyll-mode,按照提示输入文件名。
-以org-mode语法书写博客。以下是几个快捷键：
-&lt;/p&gt;
-&lt;pre class=&quot;example&quot;&gt;
-C-c C-d   创建新文件
-&lt;/pre&gt;
-&lt;pre class=&quot;example&quot;&gt;
-C-c C-p   发布文件
-&lt;/pre&gt;
-
-&lt;p&gt;
-不知道是不是安装的姿势不对，C-c C-p居然没反应。有空再好好看看。
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-</description>
-        <pubDate>Wed, 08 Oct 2014 00:00:00 +0800</pubDate>
-        <link>http://xep007.github.io/jekyll/org/2014/10/08/org-jekyll-mode%E5%AE%89%E8%A3%85%E5%8F%8A%E9%85%8D%E7%BD%AE.html</link>
-        <guid isPermaLink="true">http://xep007.github.io/jekyll/org/2014/10/08/org-jekyll-mode%E5%AE%89%E8%A3%85%E5%8F%8A%E9%85%8D%E7%BD%AE.html</guid>
-        
-        
-        <category>jekyll</category>
-        
-        <category>org</category>
         
       </item>
     
