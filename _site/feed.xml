@@ -5,9 +5,247 @@
     <description>Linux / C / golang / Emacs</description>
     <link>http://xep007.github.io/</link>
     <atom:link href="http://xep007.github.io/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Wed, 22 Oct 2014 21:45:06 +0800</pubDate>
-    <lastBuildDate>Wed, 22 Oct 2014 21:45:06 +0800</lastBuildDate>
+    <pubDate>Thu, 23 Oct 2014 20:05:11 +0800</pubDate>
+    <lastBuildDate>Thu, 23 Oct 2014 20:05:11 +0800</lastBuildDate>
     <generator>Jekyll v2.4.0</generator>
+    
+      <item>
+        <title>Go语言程序设计读书笔记（一）</title>
+        <description>&lt;div id=&quot;table-of-contents&quot;&gt;
+&lt;h2&gt;Table of Contents&lt;/h2&gt;
+&lt;div id=&quot;text-table-of-contents&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1&quot;&gt;1. 第1章 5个例子&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-1&quot;&gt;1.1. 开始&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-1-1&quot;&gt;1.1.1. 下载Go并配置&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-1-2&quot;&gt;1.1.2. 安装gocode及配置&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-1-3&quot;&gt;1.1.3. 配置Emacs&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-2&quot;&gt;1.2. 编辑、编译和运行&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-3&quot;&gt;1.3. 原著接下去示范了5个小程序。对于没有其他语言基础的人来说，还是有点难。我也不准备做笔记。等到学会了基本的Go语法后再来分析这5个例子。&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;p&gt;
+《Go语言程序设计》，[英] Mark Summerfield著，许式伟、吕桂华、徐立、何李石译。国外最权威的Go语言编程书籍。
+&lt;/p&gt;
+
+&lt;p&gt;
+&lt;b&gt;本书的结构&lt;/b&gt;
+&lt;/p&gt;
+&lt;ul class=&quot;org-ul&quot;&gt;
+&lt;li&gt;第1章 开始讲解如何建立和运行Go程序，通过介绍5个简短的示例简要介绍了Go语言的语法与特性，以及一些标准库。
+&lt;/li&gt;
+&lt;li&gt;第2章至第7章更深入地讲解了Go语言的方方面面。其中有三章讲解了Go语言的内置数据类型：第2章涵盖了标识符、布尔型和数值类型，第3章涵盖了字符串，第4章涵盖了Go语言内置的集合类型。
+&lt;/li&gt;
+&lt;li&gt;第5章描述并讲解了Go语言的语句和控制结构，还解释了如何创建和使用自定义函数。最后展示了如何使用Go语言创建一个过程式的非并发程序。
+&lt;/li&gt;
+&lt;li&gt;第6章展示了如何在Go语言中进行面向对象编程。
+&lt;/li&gt;
+&lt;li&gt;第7章讲解了Go语言的并发特性。
+&lt;/li&gt;
+&lt;li&gt;第8章展示了如何读取和写入自定义的二进制文件，Go二进制文件、文本、、JSON以及XML文件。
+&lt;/li&gt;
+&lt;li&gt;最后一章展示了导入和使用标准库包，自定义包以及第三方软件包。
+&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div id=&quot;outline-container-sec-1&quot; class=&quot;outline-2&quot;&gt;
+&lt;h2 id=&quot;sec-1&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;1&lt;/span&gt; 第1章 5个例子&lt;/h2&gt;
+&lt;div class=&quot;outline-text-2&quot; id=&quot;text-1&quot;&gt;
+&lt;p&gt;
+这一章作者使用了5个例子简洁概览了Go语言的一些特性和核心包（其他语言称作模块或标准库）。
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&quot;outline-container-sec-1-1&quot; class=&quot;outline-3&quot;&gt;
+&lt;h3 id=&quot;sec-1-1&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.1&lt;/span&gt; 开始&lt;/h3&gt;
+&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-1&quot;&gt;
+&lt;p&gt;
+&lt;b&gt;debian+Emacs构建Go编程环境&lt;/b&gt;
+&lt;/p&gt;
+
+&lt;p&gt;
+这不是原著内容，是我的配置过程。不同系统请baidu。
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&quot;outline-container-sec-1-1-1&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1-1-1&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.1.1&lt;/span&gt; 下载Go并配置&lt;/h4&gt;
+&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-1-1&quot;&gt;
+&lt;ul class=&quot;org-ul&quot;&gt;
+&lt;li&gt;因go.googlecode.com被墙。所以到国内&lt;a href=&quot;http://www.golangtc.com/download&quot;&gt;golang中国下载。&lt;/a&gt;
+&lt;/li&gt;
+&lt;li&gt;解压到~/家目录。
+&lt;/li&gt;
+&lt;li&gt;配置goroot和gopath。打开~/.profile文件。在结尾加入以下内容。
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&quot;org-src-container&quot;&gt;
+
+&lt;pre class=&quot;src src-sh&quot;&gt;&lt;span style=&quot;color: #b0c4de;&quot;&gt;export&lt;/span&gt; &lt;span style=&quot;color: #ffa07a;&quot;&gt;GOROOT&lt;/span&gt;=$&lt;span style=&quot;color: #ffa07a;&quot;&gt;HOME&lt;/span&gt;/go  
+&lt;span style=&quot;color: #b0c4de;&quot;&gt;export&lt;/span&gt; &lt;span style=&quot;color: #ffa07a;&quot;&gt;GOARCH&lt;/span&gt;=amd64
+&lt;span style=&quot;color: #b0c4de;&quot;&gt;export&lt;/span&gt; &lt;span style=&quot;color: #ffa07a;&quot;&gt;GOOS&lt;/span&gt;=linux
+&lt;span style=&quot;color: #b0c4de;&quot;&gt;export&lt;/span&gt; &lt;span style=&quot;color: #ffa07a;&quot;&gt;GOBIN&lt;/span&gt;=$&lt;span style=&quot;color: #ffa07a;&quot;&gt;GOROOT&lt;/span&gt;/bin
+&lt;span style=&quot;color: #b0c4de;&quot;&gt;export&lt;/span&gt; &lt;span style=&quot;color: #ffa07a;&quot;&gt;GOPATH&lt;/span&gt;=$&lt;span style=&quot;color: #ffa07a;&quot;&gt;HOME&lt;/span&gt;/gopro
+&lt;span style=&quot;color: #b0c4de;&quot;&gt;export&lt;/span&gt; &lt;span style=&quot;color: #ffa07a;&quot;&gt;PATH&lt;/span&gt;=$&lt;span style=&quot;color: #ffa07a;&quot;&gt;PATH&lt;/span&gt;:$&lt;span style=&quot;color: #ffa07a;&quot;&gt;GOBIN&lt;/span&gt;
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;
+保存，然后在xterm或gnome-terminal中运行go version。如显示版本号及系统，则表示安装成功。
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-sec-1-1-2&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1-1-2&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.1.2&lt;/span&gt; 安装gocode及配置&lt;/h4&gt;
+&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-1-2&quot;&gt;
+&lt;p&gt;
+在xterm或gnome-terminal里输入:
+&lt;/p&gt;
+&lt;div class=&quot;org-src-container&quot;&gt;
+
+&lt;pre class=&quot;src src-sh&quot;&gt;go get github.com/nsf/gocode
+&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;
+配置gocode:
+xterm或gnome-terminal下输入: 
+&lt;/p&gt;
+&lt;div class=&quot;org-src-container&quot;&gt;
+
+&lt;pre class=&quot;src src-sh&quot;&gt;gocode set propose-builtins true
+gocode set lib-path &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;/home/user/go/pkg/linux_amd64&quot;&lt;/span&gt;
+gocode set autobuild true
+&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;
+然后输入: gocode set ，如显示以下内容则表示配置成功。
+&lt;/p&gt;
+&lt;div class=&quot;org-src-container&quot;&gt;
+
+&lt;pre class=&quot;src src-sh&quot;&gt;user@debian:~$ gocode set
+propose-builtins true
+lib-path &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;/home/user/go/pkg/linux_amd64&quot;&lt;/span&gt;
+autobuild true
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-sec-1-1-3&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1-1-3&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.1.3&lt;/span&gt; 配置Emacs&lt;/h4&gt;
+&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-1-3&quot;&gt;
+&lt;p&gt;
+在Emacs中通过elpa安装auto-complete、go-autocomplete、yasnippet、ecb插件，并进行配置。以下是我的.emacs中相关设置。
+&lt;/p&gt;
+&lt;div class=&quot;org-src-container&quot;&gt;
+
+&lt;pre class=&quot;src src-sh&quot;&gt;;;;;auto-complete
+(add-to-list &lt;span style=&quot;color: #ffa500;&quot;&gt;&#39;load-path &quot;~/.emacs.d/elpa/auto-complete-20140824.1658&quot;)&lt;/span&gt;
+&lt;span style=&quot;color: #ffa500;&quot;&gt;(require &#39;&lt;/span&gt;auto-complete)
+(require &lt;span style=&quot;color: #ffa500;&quot;&gt;&#39;auto-complete-config)&lt;/span&gt;
+&lt;span style=&quot;color: #ffa500;&quot;&gt;(add-to-list &#39;&lt;/span&gt;ac-dictionary-directories &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;~/.emacs.d/elpa/auto-complete-20140824.1658/ac-dict&quot;&lt;/span&gt;)
+(ac-config-default)
+;(define-key ac-complete-mode-map &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;\C-n&quot;&lt;/span&gt; &lt;span style=&quot;color: #ffa500;&quot;&gt;&#39;ac-next)&lt;/span&gt;
+&lt;span style=&quot;color: #ffa500;&quot;&gt;;(define-key ac-complete-mode-map &quot;\C-p&quot; &#39;&lt;/span&gt;ac-previous)
+
+;;;;yasnippet
+(require &lt;span style=&quot;color: #ffa500;&quot;&gt;&#39;yasnippet)&lt;/span&gt;
+&lt;span style=&quot;color: #ffa500;&quot;&gt;(yas-global-mode 1)&lt;/span&gt;
+
+&lt;span style=&quot;color: #ffa500;&quot;&gt;;;;;ecb&lt;/span&gt;
+&lt;span style=&quot;color: #ffa500;&quot;&gt;(require &#39;&lt;/span&gt;ecb)
+(setq ecb-tip-of-the-day nil)
+;;&amp;#33258;&amp;#21160;&amp;#32553;&amp;#36827;
+(global-set-key (kbd &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;RET&quot;&lt;/span&gt;) &lt;span style=&quot;color: #ffa500;&quot;&gt;&#39;newline-and-indent)&lt;/span&gt;
+&lt;span style=&quot;color: #ffa500;&quot;&gt;;;;;go-autocomplete--------go&amp;#32534;&amp;#31243;&lt;/span&gt;
+&lt;span style=&quot;color: #ffa500;&quot;&gt;(add-to-list &#39;&lt;/span&gt;load-path &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;~/.emacs.d/elpa/go-mode-20140905.2210&quot;&lt;/span&gt;)
+(require &lt;span style=&quot;color: #ffa500;&quot;&gt;&#39;go-mode-autoloads)&lt;/span&gt;
+&lt;span style=&quot;color: #ffa500;&quot;&gt;(add-to-list &#39;&lt;/span&gt;load-path &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;~/.emacs.d/elpa/go-autocomplete-20140527.2104&quot;&lt;/span&gt;)
+(require &lt;span style=&quot;color: #ffa500;&quot;&gt;&#39;go-autocomplete)&lt;/span&gt;
+&lt;span style=&quot;color: #ffa500;&quot;&gt;(require &#39;&lt;/span&gt;auto-complete-config)
+(add-hook &lt;span style=&quot;color: #ffa500;&quot;&gt;&#39;before-save-hook &#39;&lt;/span&gt;gofmt-before-save)
+&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;
+&lt;b&gt;Go语言文档&lt;/b&gt;
+&lt;/p&gt;
+
+&lt;p&gt;
+golang.org被墙，上不了。可在本地查找golang文档。具体做法如下：
+&lt;/p&gt;
+&lt;ul class=&quot;org-ul&quot;&gt;
+&lt;li&gt;在xterm或gnome-terminal中运行
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&quot;org-src-container&quot;&gt;
+
+&lt;pre class=&quot;src src-sh&quot;&gt;godoc -http:=8000
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;ul class=&quot;org-ul&quot;&gt;
+&lt;li&gt;然后在浏览器中打开localhost:8000就行了。
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-sec-1-2&quot; class=&quot;outline-3&quot;&gt;
+&lt;h3 id=&quot;sec-1-2&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.2&lt;/span&gt; 编辑、编译和运行&lt;/h3&gt;
+&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-2&quot;&gt;
+&lt;p&gt;
+随便打开一个编辑器就可以进行Go代码编辑。如果是简单的小程序，随便在什么方创建程序都可以。如果是工程，一般要在go-path中创建以下文件夹，源代码放在src文件夹中。
+&lt;/p&gt;
+&lt;div class=&quot;org-src-container&quot;&gt;
+
+&lt;pre class=&quot;src src-sh&quot;&gt;mkdir ~/gopro/bin ~/gopro/src ~/gopro/pkg
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;
+我们先来个hello world。打开Emacs,C-x C-f新建hello.go文件，在文件中输入以下代码。
+&lt;/p&gt;
+&lt;div class=&quot;org-src-container&quot;&gt;
+
+&lt;pre class=&quot;src src-go&quot;&gt;&lt;span style=&quot;color: #00ffff;&quot;&gt;package&lt;/span&gt; main
+
+&lt;span style=&quot;color: #00ffff;&quot;&gt;import&lt;/span&gt; (
+        &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;fmt&quot;&lt;/span&gt;
+)
+
+&lt;span style=&quot;color: #00ffff;&quot;&gt;func&lt;/span&gt; &lt;span style=&quot;color: #00fa9a;&quot;&gt;main&lt;/span&gt;() {
+        fmt.&lt;span style=&quot;color: #00fa9a;&quot;&gt;Println&lt;/span&gt;(&lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;Hello,World.&quot;&lt;/span&gt;)
+}
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;
+保存后，运行go build hello.go，如果没有错误提示，就表示编译成功了。
+输入./hello就可以运行程序了。
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-sec-1-3&quot; class=&quot;outline-3&quot;&gt;
+&lt;h3 id=&quot;sec-1-3&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.3&lt;/span&gt; 原著接下去示范了5个小程序。对于没有其他语言基础的人来说，还是有点难。我也不准备做笔记。等到学会了基本的Go语法后再来分析这5个例子。&lt;/h3&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</description>
+        <pubDate>Thu, 23 Oct 2014 00:00:00 +0800</pubDate>
+        <link>http://xep007.github.io/golang/2014/10/23/Go%E8%AF%AD%E8%A8%80%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%80%EF%BC%89.html</link>
+        <guid isPermaLink="true">http://xep007.github.io/golang/2014/10/23/Go%E8%AF%AD%E8%A8%80%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%80%EF%BC%89.html</guid>
+        
+        
+        <category>golang</category>
+        
+      </item>
     
       <item>
         <title>GNU Emacs Lisp编程入门笔记（六）</title>
@@ -233,8 +471,8 @@ copy-to-buffer函数拷贝文本到一个缓冲区，替换原有缓冲区中的
 &lt;span class=&quot;linenr&quot;&gt; 5: &lt;/span&gt;  (&lt;span style=&quot;color: #00ffff;&quot;&gt;let&lt;/span&gt; (start end newmark)
 &lt;span class=&quot;linenr&quot;&gt; 6: &lt;/span&gt;    (&lt;span style=&quot;color: #00ffff;&quot;&gt;save-excursion&lt;/span&gt;
 &lt;span class=&quot;linenr&quot;&gt; 7: &lt;/span&gt;      (&lt;span style=&quot;color: #00ffff;&quot;&gt;save-excursion&lt;/span&gt;
-&lt;span class=&quot;linenr&quot;&gt; 8: &lt;/span&gt;      (set-buffer buffer)
-&lt;span class=&quot;linenr&quot;&gt; 9: &lt;/span&gt;      (setq start (point-min) end (point max)))
+&lt;span class=&quot;linenr&quot;&gt; 8: &lt;/span&gt;        (set-buffer buffer)
+&lt;span class=&quot;linenr&quot;&gt; 9: &lt;/span&gt;        (setq start (point-min) end (point-max)))
 &lt;span class=&quot;linenr&quot;&gt;10: &lt;/span&gt;      (insert-buffer-substring buffer start end)
 &lt;span class=&quot;linenr&quot;&gt;11: &lt;/span&gt;      (setq newmark (point)))
 &lt;span class=&quot;linenr&quot;&gt;12: &lt;/span&gt;    (push-mark newmark)))
@@ -1690,99 +1928,6 @@ C-c C-p   发布文件
         <category>jekyll</category>
         
         <category>org</category>
-        
-      </item>
-    
-      <item>
-        <title>debian7搭建hexo博客</title>
-        <description>&lt;div id=&quot;table-of-contents&quot;&gt;
-&lt;h2&gt;Table of Contents&lt;/h2&gt;
-&lt;div id=&quot;text-table-of-contents&quot;&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1&quot;&gt;1. 安装nodejs和npm&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-2&quot;&gt;2. 安装hexo&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-3&quot;&gt;3. 创建hexo文件夹&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-4&quot;&gt;4. 安装依赖包&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-5&quot;&gt;5. 本地预览&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div id=&quot;outline-container-sec-1&quot; class=&quot;outline-2&quot;&gt;
-&lt;h2 id=&quot;sec-1&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;1&lt;/span&gt; 安装nodejs和npm&lt;/h2&gt;
-&lt;div class=&quot;outline-text-2&quot; id=&quot;text-1&quot;&gt;
-&lt;pre class=&quot;example&quot;&gt;
-sudo aptitude install nodejs npm
-&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div id=&quot;outline-container-sec-2&quot; class=&quot;outline-2&quot;&gt;
-&lt;h2 id=&quot;sec-2&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;2&lt;/span&gt; 安装hexo&lt;/h2&gt;
-&lt;div class=&quot;outline-text-2&quot; id=&quot;text-2&quot;&gt;
-&lt;pre class=&quot;example&quot;&gt;
-sudo npm install -g hexo
-&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div id=&quot;outline-container-sec-3&quot; class=&quot;outline-2&quot;&gt;
-&lt;h2 id=&quot;sec-3&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;3&lt;/span&gt; 创建hexo文件夹&lt;/h2&gt;
-&lt;div class=&quot;outline-text-2&quot; id=&quot;text-3&quot;&gt;
-&lt;p&gt;
-如果不在家目录建立文件夹，那么等下执行hexo init时会提示&quot;Error: Theme landscape does not exist.&quot;
-&lt;/p&gt;
-
-&lt;pre class=&quot;example&quot;&gt;
-mkdir ~/hexo
-&lt;/pre&gt;
-
-&lt;p&gt;
-进入hexo文件夹
-&lt;/p&gt;
-&lt;pre class=&quot;example&quot;&gt;
-cd hexo
-hexo init
-&lt;/pre&gt;
-&lt;p&gt;
-如果提示/usr/bin/env: node:没有那个文件或目录,就执行以下命令。然后再执行hexo init。
-&lt;/p&gt;
-&lt;pre class=&quot;example&quot;&gt;
-sudo ln -s /usr/bin/nodejs /usr/bin/node
-&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div id=&quot;outline-container-sec-4&quot; class=&quot;outline-2&quot;&gt;
-&lt;h2 id=&quot;sec-4&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;4&lt;/span&gt; 安装依赖包&lt;/h2&gt;
-&lt;div class=&quot;outline-text-2&quot; id=&quot;text-4&quot;&gt;
-&lt;pre class=&quot;example&quot;&gt;
-npm install
-&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div id=&quot;outline-container-sec-5&quot; class=&quot;outline-2&quot;&gt;
-&lt;h2 id=&quot;sec-5&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;5&lt;/span&gt; 本地预览&lt;/h2&gt;
-&lt;div class=&quot;outline-text-2&quot; id=&quot;text-5&quot;&gt;
-&lt;p&gt;
-与octopress大同小异。进入hexo文件夹，运行以下命令。然后就可以在浏览器中通过localhost:4000进行预览。
-&lt;/p&gt;
-&lt;pre class=&quot;example&quot;&gt;
-hexo generate
-hexo server
-&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-</description>
-        <pubDate>Wed, 08 Oct 2014 00:00:00 +0800</pubDate>
-        <link>http://xep007.github.io/linux/hexo/2014/10/08/debian7%E6%9E%84%E5%BB%BAhexo+github%E5%8D%9A%E5%AE%A2.html</link>
-        <guid isPermaLink="true">http://xep007.github.io/linux/hexo/2014/10/08/debian7%E6%9E%84%E5%BB%BAhexo+github%E5%8D%9A%E5%AE%A2.html</guid>
-        
-        
-        <category>linux</category>
-        
-        <category>hexo</category>
         
       </item>
     

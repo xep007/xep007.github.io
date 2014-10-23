@@ -1,0 +1,233 @@
+---
+layout     : post
+title      : Go语言程序设计读书笔记（一）
+categories : [golang , ]
+tags       : 
+description: 
+---
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1. 第1章 5个例子</a>
+<ul>
+<li><a href="#sec-1-1">1.1. 开始</a>
+<ul>
+<li><a href="#sec-1-1-1">1.1.1. 下载Go并配置</a></li>
+<li><a href="#sec-1-1-2">1.1.2. 安装gocode及配置</a></li>
+<li><a href="#sec-1-1-3">1.1.3. 配置Emacs</a></li>
+</ul>
+</li>
+<li><a href="#sec-1-2">1.2. 编辑、编译和运行</a></li>
+<li><a href="#sec-1-3">1.3. 原著接下去示范了5个小程序。对于没有其他语言基础的人来说，还是有点难。我也不准备做笔记。等到学会了基本的Go语法后再来分析这5个例子。</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+<p>
+《Go语言程序设计》，[英] Mark Summerfield著，许式伟、吕桂华、徐立、何李石译。国外最权威的Go语言编程书籍。
+</p>
+
+<p>
+<b>本书的结构</b>
+</p>
+<ul class="org-ul">
+<li>第1章 开始讲解如何建立和运行Go程序，通过介绍5个简短的示例简要介绍了Go语言的语法与特性，以及一些标准库。
+</li>
+<li>第2章至第7章更深入地讲解了Go语言的方方面面。其中有三章讲解了Go语言的内置数据类型：第2章涵盖了标识符、布尔型和数值类型，第3章涵盖了字符串，第4章涵盖了Go语言内置的集合类型。
+</li>
+<li>第5章描述并讲解了Go语言的语句和控制结构，还解释了如何创建和使用自定义函数。最后展示了如何使用Go语言创建一个过程式的非并发程序。
+</li>
+<li>第6章展示了如何在Go语言中进行面向对象编程。
+</li>
+<li>第7章讲解了Go语言的并发特性。
+</li>
+<li>第8章展示了如何读取和写入自定义的二进制文件，Go二进制文件、文本、、JSON以及XML文件。
+</li>
+<li>最后一章展示了导入和使用标准库包，自定义包以及第三方软件包。
+</li>
+</ul>
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> 第1章 5个例子</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+这一章作者使用了5个例子简洁概览了Go语言的一些特性和核心包（其他语言称作模块或标准库）。
+</p>
+</div>
+<div id="outline-container-sec-1-1" class="outline-3">
+<h3 id="sec-1-1"><span class="section-number-3">1.1</span> 开始</h3>
+<div class="outline-text-3" id="text-1-1">
+<p>
+<b>debian+Emacs构建Go编程环境</b>
+</p>
+
+<p>
+这不是原著内容，是我的配置过程。不同系统请baidu。
+</p>
+</div>
+<div id="outline-container-sec-1-1-1" class="outline-4">
+<h4 id="sec-1-1-1"><span class="section-number-4">1.1.1</span> 下载Go并配置</h4>
+<div class="outline-text-4" id="text-1-1-1">
+<ul class="org-ul">
+<li>因go.googlecode.com被墙。所以到国内<a href="http://www.golangtc.com/download">golang中国下载。</a>
+</li>
+<li>解压到~/家目录。
+</li>
+<li>配置goroot和gopath。打开~/.profile文件。在结尾加入以下内容。
+</li>
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-sh"><span style="color: #b0c4de;">export</span> <span style="color: #ffa07a;">GOROOT</span>=$<span style="color: #ffa07a;">HOME</span>/go  
+<span style="color: #b0c4de;">export</span> <span style="color: #ffa07a;">GOARCH</span>=amd64
+<span style="color: #b0c4de;">export</span> <span style="color: #ffa07a;">GOOS</span>=linux
+<span style="color: #b0c4de;">export</span> <span style="color: #ffa07a;">GOBIN</span>=$<span style="color: #ffa07a;">GOROOT</span>/bin
+<span style="color: #b0c4de;">export</span> <span style="color: #ffa07a;">GOPATH</span>=$<span style="color: #ffa07a;">HOME</span>/gopro
+<span style="color: #b0c4de;">export</span> <span style="color: #ffa07a;">PATH</span>=$<span style="color: #ffa07a;">PATH</span>:$<span style="color: #ffa07a;">GOBIN</span>
+</pre>
+</div>
+<p>
+保存，然后在xterm或gnome-terminal中运行go version。如显示版本号及系统，则表示安装成功。
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-1-1-2" class="outline-4">
+<h4 id="sec-1-1-2"><span class="section-number-4">1.1.2</span> 安装gocode及配置</h4>
+<div class="outline-text-4" id="text-1-1-2">
+<p>
+在xterm或gnome-terminal里输入:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-sh">go get github.com/nsf/gocode
+</pre>
+</div>
+
+<p>
+配置gocode:
+xterm或gnome-terminal下输入: 
+</p>
+<div class="org-src-container">
+
+<pre class="src src-sh">gocode set propose-builtins true
+gocode set lib-path <span style="color: #ffa500;">"/home/user/go/pkg/linux_amd64"</span>
+gocode set autobuild true
+</pre>
+</div>
+
+<p>
+然后输入: gocode set ，如显示以下内容则表示配置成功。
+</p>
+<div class="org-src-container">
+
+<pre class="src src-sh">user@debian:~$ gocode set
+propose-builtins true
+lib-path <span style="color: #ffa500;">"/home/user/go/pkg/linux_amd64"</span>
+autobuild true
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-1-1-3" class="outline-4">
+<h4 id="sec-1-1-3"><span class="section-number-4">1.1.3</span> 配置Emacs</h4>
+<div class="outline-text-4" id="text-1-1-3">
+<p>
+在Emacs中通过elpa安装auto-complete、go-autocomplete、yasnippet、ecb插件，并进行配置。以下是我的.emacs中相关设置。
+</p>
+<div class="org-src-container">
+
+<pre class="src src-sh">;;;;auto-complete
+(add-to-list <span style="color: #ffa500;">'load-path "~/.emacs.d/elpa/auto-complete-20140824.1658")</span>
+<span style="color: #ffa500;">(require '</span>auto-complete)
+(require <span style="color: #ffa500;">'auto-complete-config)</span>
+<span style="color: #ffa500;">(add-to-list '</span>ac-dictionary-directories <span style="color: #ffa500;">"~/.emacs.d/elpa/auto-complete-20140824.1658/ac-dict"</span>)
+(ac-config-default)
+;(define-key ac-complete-mode-map <span style="color: #ffa500;">"\C-n"</span> <span style="color: #ffa500;">'ac-next)</span>
+<span style="color: #ffa500;">;(define-key ac-complete-mode-map "\C-p" '</span>ac-previous)
+
+;;;;yasnippet
+(require <span style="color: #ffa500;">'yasnippet)</span>
+<span style="color: #ffa500;">(yas-global-mode 1)</span>
+
+<span style="color: #ffa500;">;;;;ecb</span>
+<span style="color: #ffa500;">(require '</span>ecb)
+(setq ecb-tip-of-the-day nil)
+;;&#33258;&#21160;&#32553;&#36827;
+(global-set-key (kbd <span style="color: #ffa500;">"RET"</span>) <span style="color: #ffa500;">'newline-and-indent)</span>
+<span style="color: #ffa500;">;;;;go-autocomplete--------go&#32534;&#31243;</span>
+<span style="color: #ffa500;">(add-to-list '</span>load-path <span style="color: #ffa500;">"~/.emacs.d/elpa/go-mode-20140905.2210"</span>)
+(require <span style="color: #ffa500;">'go-mode-autoloads)</span>
+<span style="color: #ffa500;">(add-to-list '</span>load-path <span style="color: #ffa500;">"~/.emacs.d/elpa/go-autocomplete-20140527.2104"</span>)
+(require <span style="color: #ffa500;">'go-autocomplete)</span>
+<span style="color: #ffa500;">(require '</span>auto-complete-config)
+(add-hook <span style="color: #ffa500;">'before-save-hook '</span>gofmt-before-save)
+</pre>
+</div>
+
+<p>
+<b>Go语言文档</b>
+</p>
+
+<p>
+golang.org被墙，上不了。可在本地查找golang文档。具体做法如下：
+</p>
+<ul class="org-ul">
+<li>在xterm或gnome-terminal中运行
+</li>
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-sh">godoc -http:=8000
+</pre>
+</div>
+<ul class="org-ul">
+<li>然后在浏览器中打开localhost:8000就行了。
+</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-1-2" class="outline-3">
+<h3 id="sec-1-2"><span class="section-number-3">1.2</span> 编辑、编译和运行</h3>
+<div class="outline-text-3" id="text-1-2">
+<p>
+随便打开一个编辑器就可以进行Go代码编辑。如果是简单的小程序，随便在什么方创建程序都可以。如果是工程，一般要在go-path中创建以下文件夹，源代码放在src文件夹中。
+</p>
+<div class="org-src-container">
+
+<pre class="src src-sh">mkdir ~/gopro/bin ~/gopro/src ~/gopro/pkg
+</pre>
+</div>
+<p>
+我们先来个hello world。打开Emacs,C-x C-f新建hello.go文件，在文件中输入以下代码。
+</p>
+<div class="org-src-container">
+
+<pre class="src src-go"><span style="color: #00ffff;">package</span> main
+
+<span style="color: #00ffff;">import</span> (
+        <span style="color: #ffa500;">"fmt"</span>
+)
+
+<span style="color: #00ffff;">func</span> <span style="color: #00fa9a;">main</span>() {
+        fmt.<span style="color: #00fa9a;">Println</span>(<span style="color: #ffa500;">"Hello,World."</span>)
+}
+</pre>
+</div>
+<p>
+保存后，运行go build hello.go，如果没有错误提示，就表示编译成功了。
+输入./hello就可以运行程序了。
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-1-3" class="outline-3">
+<h3 id="sec-1-3"><span class="section-number-3">1.3</span> 原著接下去示范了5个小程序。对于没有其他语言基础的人来说，还是有点难。我也不准备做笔记。等到学会了基本的Go语法后再来分析这5个例子。</h3>
+</div>
+</div>
