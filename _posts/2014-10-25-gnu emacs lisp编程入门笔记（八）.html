@@ -1,0 +1,90 @@
+---
+layout     : post
+title      : GNU Emacs Lisp编程入门笔记（八）
+categories : [emacs ,lisp ]
+tags       : lisp
+description: emacs lisp
+author: xep007
+---
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1. 第10章 找回文本</a>
+<ul>
+<li><a href="#sec-1-1">1.1. kill环总览</a></li>
+<li><a href="#sec-1-2">1.2. kill-ring-yank-pointer变量</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> 第10章 找回文本</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+在GNU Emacs中，无论你何时用"kill"命令从缓冲区中剪切了文本，都能用一个"yank"命令将其找回。
+</p>
+
+<p>
+一个简单的C-y(yank)命令，就从kill-ring(kill环)中取出第一个元素插入到当前缓冲区中。如果C-y后紧跟一个M-y命令，则不是第一个元素而是第二个元素被插入到当前缓冲区中。连续使用M-y则会把第三个、第四个……等代替第二个元素插入到当前缓冲区。
+</p>
+</div>
+
+<div id="outline-container-sec-1-1" class="outline-3">
+<h3 id="sec-1-1"><span class="section-number-3">1.1</span> kill环总览</h3>
+<div class="outline-text-3" id="text-1-1">
+<p>
+kill环是文本字符串的一个列表。它类似于下面的列表：
+("some text" "a different piece of text" "yet more text")
+</p>
+
+<p>
+能将文本从kill环中找回的函数有三个：yank函数，通常绑定到C-y; yank-pop函数，通常绑定到M-y;rotate-yank-pointer函数，这个函数被前面两个函数使用。
+</p>
+
+<p>
+这些函数通过一个被称为kill-ring-ynak-pointer的变量指向kill环。事实上，yank函数和yank-pop函数中插入文本的代码都是下面这个表达式。
+</p>
+
+<p>
+(insert (car kill-ring-yank-pointer))
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-1-2" class="outline-3">
+<h3 id="sec-1-2"><span class="section-number-3">1.2</span> kill-ring-yank-pointer变量</h3>
+<div class="outline-text-3" id="text-1-2">
+<p>
+跟kill-ring一样，kill-ring-yank-pointer也是一个变量。它通过被绑定到相应的值来指向某些东西，这一点与其他Lisp变量没有什么两样。
+</p>
+
+<p>
+因而，如果kill环的值是：
+</p>
+
+<p>
+("some text" "a different piece of text" "yet more text")
+</p>
+
+<p>
+并且kill-ring-yank-pointer变量指向其中的第二个元素，则kill-ring-yank-pointer变量的值就是：
+</p>
+
+<p>
+("a different piece of text" "yet more text")
+</p>
+
+<p>
+变量kill-ring和kill-ring-yank-pointer都是指针，第一个指向被剪切文本列表的第一个元素，第二个指向第二个元素。
+</p>
+
+<p>
+rotate-yank-pointer函数改变kill-ring-yank-pointer变量指向的kill环中的元素。当这个元素指向的下一个元素超出了kill环的末尾，它自动将这个指针指向kill环的第一个元素。这就将一个列表自动转化为一个环的方法。
+</p>
+</div>
+</div>
+</div>
