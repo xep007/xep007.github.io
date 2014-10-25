@@ -5,8 +5,8 @@
     <description>Linux / C / golang / Emacs</description>
     <link>http://xep007.github.io/</link>
     <atom:link href="http://xep007.github.io/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Thu, 23 Oct 2014 22:10:58 +0800</pubDate>
-    <lastBuildDate>Thu, 23 Oct 2014 22:10:58 +0800</lastBuildDate>
+    <pubDate>Sat, 25 Oct 2014 10:14:14 +0800</pubDate>
+    <lastBuildDate>Sat, 25 Oct 2014 10:14:14 +0800</lastBuildDate>
     <generator>Jekyll v2.4.0</generator>
     
       <item>
@@ -56,7 +56,7 @@
 &lt;pre class=&quot;src src-lisp&quot;&gt;(&lt;span style=&quot;color: #00ffff;&quot;&gt;defun&lt;/span&gt; &lt;span style=&quot;color: #00fa9a;&quot;&gt;zap-to-char&lt;/span&gt; (arg char) &lt;span style=&quot;color: #ffd700;&quot;&gt;;&lt;/span&gt;&lt;span style=&quot;color: #ffd700;&quot;&gt;version 19 implementation&lt;/span&gt;
   &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;Kill up to and including ARG&#39;th occurrence of CHAR.&lt;/span&gt;
 &lt;span style=&quot;color: #ffa500;&quot;&gt;Goes backward if ARG is engative; error if CHAR not found.&quot;&lt;/span&gt;
-  (interactive &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;*[\ncZap to char: &quot;&lt;/span&gt;)
+  (interactive &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;*p\ncZap to char: &quot;&lt;/span&gt;)
   (kill-region (point)
                (&lt;span style=&quot;color: #00ffff;&quot;&gt;progn&lt;/span&gt;
                  (search-forward (char-to-string char) nil nil arg)

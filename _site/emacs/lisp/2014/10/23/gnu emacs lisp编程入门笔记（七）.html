@@ -116,7 +116,7 @@
 <pre class="src src-lisp">(<span style="color: #00ffff;">defun</span> <span style="color: #00fa9a;">zap-to-char</span> (arg char) <span style="color: #ffd700;">;</span><span style="color: #ffd700;">version 19 implementation</span>
   <span style="color: #ffa500;">"Kill up to and including ARG'th occurrence of CHAR.</span>
 <span style="color: #ffa500;">Goes backward if ARG is engative; error if CHAR not found."</span>
-  (interactive <span style="color: #ffa500;">"*[\ncZap to char: "</span>)
+  (interactive <span style="color: #ffa500;">"*p\ncZap to char: "</span>)
   (kill-region (point)
                (<span style="color: #00ffff;">progn</span>
                  (search-forward (char-to-string char) nil nil arg)

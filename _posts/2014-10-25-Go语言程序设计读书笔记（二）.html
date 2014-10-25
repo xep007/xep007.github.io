@@ -1,0 +1,587 @@
+---
+layout     : post
+title      : Go语言程序设计读书笔记（二）
+categories : [golang , ]
+tags       : golang
+description: golang
+author: xep007
+---
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1. 布尔与数值类型</a>
+<ul>
+<li><a href="#sec-1-1">1.1. 基础</a>
+<ul>
+<li><a href="#sec-1-1-1">1.1.1. Go语言的注释</a></li>
+<li><a href="#sec-1-1-2">1.1.2. Go语言的标识符与关键字</a></li>
+<li><a href="#sec-1-1-3">1.1.3. 常量和变量</a></li>
+</ul>
+</li>
+<li><a href="#sec-1-2">1.2. 布尔值和布尔表达式</a></li>
+<li><a href="#sec-1-3">1.3. 数值类型</a>
+<ul>
+<li><a href="#sec-1-3-1">1.3.1. 整形</a></li>
+<li><a href="#sec-1-3-2">1.3.2. 浮点类型</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> 布尔与数值类型</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+这是关于过程式编程的四章内容中的第一章，它是Go语言编程的基础。
+</p>
+</div>
+<div id="outline-container-sec-1-1" class="outline-3">
+<h3 id="sec-1-1"><span class="section-number-3">1.1</span> 基础</h3>
+<div class="outline-text-3" id="text-1-1">
+</div><div id="outline-container-sec-1-1-1" class="outline-4">
+<h4 id="sec-1-1-1"><span class="section-number-4">1.1.1</span> Go语言的注释</h4>
+<div class="outline-text-4" id="text-1-1-1">
+<p>
+行注释以“//”开始，块注释以 “/* */” 包裹。
+</p>
+</div>
+</div>
+<div id="outline-container-sec-1-1-2" class="outline-4">
+<h4 id="sec-1-1-2"><span class="section-number-4">1.1.2</span> Go语言的标识符与关键字</h4>
+<div class="outline-text-4" id="text-1-1-2">
+<p>
+Go语言的标识符是一个非空的字母或数字串，第一个字符必须是字母，但不能是关键字的名字。字母可以下划线，或者Unicode编码分类中的任何字符。
+</p>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<caption class="t-above"><span class="table-number">Table 1:</span> Go语言的关键字</caption>
+
+<colgroup>
+<col  class="left" />
+
+<col  class="left" />
+
+<col  class="left" />
+
+<col  class="left" />
+
+<col  class="left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="left">break</td>
+<td class="left">default</td>
+<td class="left">func</td>
+<td class="left">interface</td>
+<td class="left">select</td>
+</tr>
+
+<tr>
+<td class="left">case</td>
+<td class="left">defer</td>
+<td class="left">go</td>
+<td class="left">map</td>
+<td class="left">struct</td>
+</tr>
+
+<tr>
+<td class="left">chan</td>
+<td class="left">else</td>
+<td class="left">goto</td>
+<td class="left">package</td>
+<td class="left">switch</td>
+</tr>
+
+<tr>
+<td class="left">const</td>
+<td class="left">fallthrough</td>
+<td class="left">if</td>
+<td class="left">range</td>
+<td class="left">type</td>
+</tr>
+
+<tr>
+<td class="left">contiue</td>
+<td class="left">for</td>
+<td class="left">import</td>
+<td class="left">return</td>
+<td class="left">var</td>
+</tr>
+</tbody>
+</table>
+
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<caption class="t-above"><span class="table-number">Table 2:</span> Go语言预定义的标识符</caption>
+
+<colgroup>
+<col  class="left" />
+
+<col  class="left" />
+
+<col  class="left" />
+
+<col  class="left" />
+
+<col  class="left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="left">append</td>
+<td class="left">copy</td>
+<td class="left">int8</td>
+<td class="left">nil</td>
+<td class="left">true</td>
+</tr>
+
+<tr>
+<td class="left">bool</td>
+<td class="left">delete</td>
+<td class="left">int16</td>
+<td class="left">Panic</td>
+<td class="left">uint</td>
+</tr>
+
+<tr>
+<td class="left">byte</td>
+<td class="left">error</td>
+<td class="left">int32</td>
+<td class="left">print</td>
+<td class="left">uint8</td>
+</tr>
+
+<tr>
+<td class="left">cap</td>
+<td class="left">false</td>
+<td class="left">int64</td>
+<td class="left">println</td>
+<td class="left">uint16</td>
+</tr>
+
+<tr>
+<td class="left">close</td>
+<td class="left">float32</td>
+<td class="left">iota</td>
+<td class="left">real</td>
+<td class="left">uint32</td>
+</tr>
+
+<tr>
+<td class="left">complex</td>
+<td class="left">float64</td>
+<td class="left">len</td>
+<td class="left">recover</td>
+<td class="left">uint64</td>
+</tr>
+
+<tr>
+<td class="left">complex64</td>
+<td class="left">imag</td>
+<td class="left">make</td>
+<td class="left">rune</td>
+<td class="left">uintptr</td>
+</tr>
+
+<tr>
+<td class="left">complex128</td>
+<td class="left">int</td>
+<td class="left">new</td>
+<td class="left">string</td>
+<td class="left">&#xa0;</td>
+</tr>
+</tbody>
+</table>
+
+<p>
+标识符都是区分大小写的。
+空标识符(下划线)“ _ ”是一个占位符，用于在赋值操作的时候将某个值赋值给空标识符，从而达到丢弃该值的目的。
+</p>
+</div>
+</div>
+<div id="outline-container-sec-1-1-3" class="outline-4">
+<h4 id="sec-1-1-3"><span class="section-number-4">1.1.3</span> 常量和变量</h4>
+<div class="outline-text-4" id="text-1-1-3">
+<p>
+常量用const关键字声明，变量用var关键字声明，也可用快捷变量声明语法。
+以下是一些声明的例子：  
+</p>
+<pre class="example">
+const limit = 512               //常量，其类型兼容任何数字
+const top uint16 = 1421        //常量，类型为uint16
+start := -19                   //变量，推断类型，快捷变量声明
+end := int64(987654321)        //变量，类型为int64
+var i int                      //变量，值为0,类型为int
+var debug = false              //变量，推断类型 bool
+checkResults := true           //变量，推断类型 bool
+stepSize := 1.5                //变量，推断类型 float64
+acronym := "FOSS"              //变量， 推断类型 string
+</pre>
+
+<p>
+对于整形字面量Go语言推断其类型为int,对于浮点型字面量推断其为float64,对于复数推断其为complex128。通常的做法是不显式地声明其类型。
+在Go语言中，第一个数值常量的默认值都为0,每一个字符串都默认为空。
+</p>
+
+<p>
+<b>枚举</b>
+</p>
+
+<p>
+需要设置多个常量时，不必重复使用const关键字，只需使用const把它们组合在一起。而iota则为枚举。
+</p>
+<div class="org-src-container">
+
+<pre class="src src-go"><span style="color: #00ffff;">const</span> Cyan = 0
+<span style="color: #00ffff;">const</span> Magenta = 1
+<span style="color: #00ffff;">const</span> Yellow = 2
+</pre>
+</div>
+<div class="org-src-container">
+
+<pre class="src src-go"><span style="color: #00ffff;">const</span> (
+    Cyan = 0
+    Magenta = 1
+    Yellow = 2
+)
+</pre>
+</div>
+<div class="org-src-container">
+
+<pre class="src src-go"><span style="color: #00ffff;">const</span> (
+    Cyan = <span style="color: #fa8072;">iota</span>    <span style="color: #ffd700;">//</span><span style="color: #ffd700;">0</span>
+    Magenta        <span style="color: #ffd700;">//</span><span style="color: #ffd700;">1</span>
+    Yellow         <span style="color: #ffd700;">//</span><span style="color: #ffd700;">2</span>
+)
+</pre>
+</div>
+<p>
+以上3个代码片段的作用完全一样。
+声明一组变量的方式是：
+如果第一个常量的值没有显式设置，则它的值为0,第二个及以后的常量值默认为前一个常量的值。
+如果第一个常量的值设为iota,则它的值为0,第二个及以后的常量值默认递增1。
+关于iota,再来一个例子：
+</p>
+<div class="org-src-container">
+
+<pre class="src src-go"><span style="color: #00ffff;">type</span> <span style="color: #ffff00;">BitFlag</span> <span style="color: #ffff00;">int</span>
+<span style="color: #00ffff;">const</span> (
+    Active EitFlag = 1 &lt;&lt; <span style="color: #fa8072;">iota</span>             <span style="color: #ffd700;">//</span><span style="color: #ffd700;">1&lt;&lt;iota = 1 &lt;&lt; 0 == 1</span>
+    Send        <span style="color: #ffd700;">//</span><span style="color: #ffd700;">&#38544;&#24335;&#22320;&#35774;&#32622;&#25104;BitFlag = 1 &lt;&lt; iota, 1 &lt;&lt; 1 == 2</span>
+    Receive     <span style="color: #ffd700;">//</span><span style="color: #ffd700;">&#38544;&#24335;&#22320;&#35774;&#32622;&#25104;Receive = 1 &lt;&lt;iota,  1 &lt;&lt; 2 == 4</span>
+)
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-1-2" class="outline-3">
+<h3 id="sec-1-2"><span class="section-number-3">1.2</span> 布尔值和布尔表达式</h3>
+<div class="outline-text-3" id="text-1-2">
+<p>
+Go语言内置了布尔值true和false。不支持隐式转化。
+</p>
+<div class="org-src-container">
+
+<pre class="src src-go">-----------------------------------------------------------------
+&#35821;&#27861;                              &#25551;&#36848;/&#32467;&#26524;
+-----------------------------------------------------------------
+!b           &#36923;&#36753;&#38750;&#65292;&#22914;b&#20026;true,&#21017;&#32467;&#26524;&#20026;false
+a || b       &#21482;&#35201;a&#25110;b&#20219;&#19968;&#20010;&#20026;true,&#21017;&#32467;&#26524;&#20026;true
+a &amp;&amp; b       &#22914;&#26524;a&#21644;b&#37117;&#20026;true,&#21017;&#32467;&#26524;&#20026;true
+x &lt; y        &#22914;x&#30340;&#20540;&#23567;&#20110;y&#65292;&#21017;&#32467;&#26524;&#20026;true
+x &lt;= y       &#22914;x&#30340;&#20540;&#23567;&#20110;&#25110;&#31561;&#20110;y,&#21017;&#32467;&#26524;&#20026;true
+x == y       &#22914;x&#30340;&#20540;&#31561;&#20110;y&#65292;&#21017;&#32467;&#26524;&#20026;true
+x != y       &#22914;x&#30340;&#20540;&#19981;&#31561;&#20110;y,&#21017;&#32467;&#26524;&#20026;true
+x &gt;= y       &#22914;x&#30340;&#20540;&#22823;&#20110;&#25110;&#31561;&#20110;y,&#21017;&#32467;&#26524;&#20026;true
+x &gt; y        &#22914;x&#30340;&#20540;&#22823;&#20110;y&#65292;&#21017;&#32467;&#26524;&#20026;true
+-----------------------------------------------------------------
+</pre>
+</div>
+<p>
+布尔值和表达式可以用于if语句中，也可用于for语句的条件中，以及switch语句的case子句的条件判断中。
+</p>
+
+<p>
+二元逻辑操作符（||和&amp;&amp;）,使用短路逻辑。
+</p>
+
+<p>
+比较操作符（&lt;、&lt;=、==、!=、&gt;=、&gt;）进行比较的值，这两个值必须是相同类型的值。如果是接口，必须是实现了相同的接口类型。
+</p>
+
+<p>
+==、!=操作符可以用于任何可比较的类型，包括数组和结构体，只要它们的元素和成员变量与==和!=操作符相兼容。这些操作符不能用于比较切片(slice)。
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-1-3" class="outline-3">
+<h3 id="sec-1-3"><span class="section-number-3">1.3</span> 数值类型</h3>
+<div class="outline-text-3" id="text-1-3">
+<p>
+Go语言内置了大量数值类型，这些都是大小不限的（只受限于机器的内存）。每一个数值类型都不同，因此不能在不同数值类型（例如int和int32）之间进行二进制数值运算或者比较操作。无类型的数值常量可以兼容表达式中任何（内置的）类型的数值，因此可直接将一个无类型数值常量与另一个数值做加法，或者将一个无类型的常量与另一个数值进行比较，只要这个数值是内置类型的数值。
+</p>
+
+<p>
+如果非得在不同类型数值之间进行运算和比较操作，就必须进行类型转换，通常将类型转换成最大的类型以防止精度丢失。类型转换采用type(value)的形式，只要合法，就能转换成功——即使会导致数据丢失。请看以下例子：
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-go"><span style="color: #00ffff;">const</span> factor = 3                          <span style="color: #ffd700;">//</span><span style="color: #ffd700;">factor&#19982;&#20219;&#20309;&#25968;&#20540;&#31867;&#22411;&#20860;&#23481;</span>
+i := 20000                                <span style="color: #ffd700;">//</span><span style="color: #ffd700;">&#36890;&#36807;&#25512;&#26029;&#24471;&#20986;i&#30340;&#31867;&#22411;&#20026;int</span>
+i *= factor
+j := <span style="color: #00fa9a;">int16</span>(20)                           <span style="color: #ffd700;">//</span><span style="color: #ffd700;">j&#30340;&#31867;&#22411;&#20026;int16,&#19982;&#36825;&#26679;&#23450;&#20041;&#25928;&#26524;&#19968;&#26679;&#65306;var j int16 = 20</span>
+i += <span style="color: #00fa9a;">int</span>(j)                              <span style="color: #ffd700;">//</span><span style="color: #ffd700;">&#31867;&#22411;&#24517;&#39035;&#21305;&#37197;&#65292;&#22240;&#27492;&#38656;&#35201;&#36716;&#25442;</span>
+k := <span style="color: #00fa9a;">uint8</span>(0)                            <span style="color: #ffd700;">//</span><span style="color: #ffd700;">&#25928;&#26524;&#19982;&#36825;&#26679;&#23450;&#20041;&#19968;&#26679;&#65306;var k uint8</span>
+k = <span style="color: #00fa9a;">uint8</span>(i)                             <span style="color: #ffd700;">//</span><span style="color: #ffd700;">&#36716;&#25442;&#25104;&#21151;&#65292;&#20294;&#26159;k&#30340;&#20540;&#34987;&#25130;&#20026;8&#20301;</span>
+fmt.<span style="color: #00fa9a;">Println</span>(i, j, k)                     <span style="color: #ffd700;">//</span><span style="color: #ffd700;">&#25171;&#21360;&#65306;60020 20 16</span>
+</pre>
+</div>
+
+<p>
+Go语言的算术操作符可用于数值操作。
+</p>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<caption class="t-above"><span class="table-number">Table 3:</span> 可用于任何内置的数值的算术运算操作符</caption>
+
+<colgroup>
+<col  class="left" />
+
+<col  class="left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="left">语法</td>
+<td class="left">描述/结果</td>
+</tr>
+
+<tr>
+<td class="left">+x</td>
+<td class="left">正数x</td>
+</tr>
+
+<tr>
+<td class="left">-x</td>
+<td class="left">x的负值</td>
+</tr>
+
+<tr>
+<td class="left">x++</td>
+<td class="left">为x加一个无类型的常量1</td>
+</tr>
+
+<tr>
+<td class="left">x--</td>
+<td class="left">为x减去一个无类型的常量1</td>
+</tr>
+
+<tr>
+<td class="left">x += y</td>
+<td class="left">将x加上y</td>
+</tr>
+
+<tr>
+<td class="left">x -= y</td>
+<td class="left">将x减去y</td>
+</tr>
+
+<tr>
+<td class="left">x *= y</td>
+<td class="left">将x乘以y</td>
+</tr>
+
+<tr>
+<td class="left">x /= y</td>
+<td class="left">将x除以y，如果这些数字都是整数那么任何余数都被丢弃，除以0会导致运行时异常</td>
+</tr>
+
+<tr>
+<td class="left">x + y</td>
+<td class="left">x与y的和</td>
+</tr>
+
+<tr>
+<td class="left">x - y</td>
+<td class="left">x减去y的结果</td>
+</tr>
+
+<tr>
+<td class="left">x * y</td>
+<td class="left">x乘以y的结果</td>
+</tr>
+
+<tr>
+<td class="left">x / y</td>
+<td class="left">x除以y的结果，如果这些数字都是整数那么任何余数都被丢弃，除以0会导致运行时异常</td>
+</tr>
+</tbody>
+</table>
+
+<p>
+虽然Go语言的运算优先级比较合理，但是提倡进行多运算符操作进使用括号（）来清晰表达运算顺序。
+</p>
+</div>
+
+<div id="outline-container-sec-1-3-1" class="outline-4">
+<h4 id="sec-1-3-1"><span class="section-number-4">1.3.1</span> 整形</h4>
+<div class="outline-text-4" id="text-1-3-1">
+<p>
+Go语言提供11种整型，包括5种有符号，5种无符号，再加上一种用于存储指针的整型。byte是uint8的别名，rune是uint32的别名。正常情况下，我们用int整型。
+</p>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<caption class="t-above"><span class="table-number">Table 4:</span> Go语言的整数类型及其范围</caption>
+
+<colgroup>
+<col  class="left" />
+
+<col  class="left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="left">类型</td>
+<td class="left">取值范围</td>
+</tr>
+
+<tr>
+<td class="left">byte</td>
+<td class="left">等同于uint8</td>
+</tr>
+
+<tr>
+<td class="left">int</td>
+<td class="left">依赖不同平台，可以是int32或者int64</td>
+</tr>
+
+<tr>
+<td class="left">int8</td>
+<td class="left">[-128, 127]</td>
+</tr>
+
+<tr>
+<td class="left">int16</td>
+<td class="left">[-32768, 32767</td>
+</tr>
+
+<tr>
+<td class="left">int32</td>
+<td class="left">[-2147483648, 2147483647]</td>
+</tr>
+
+<tr>
+<td class="left">int64</td>
+<td class="left">[-9223372036854775808, 9223372036854775807]</td>
+</tr>
+
+<tr>
+<td class="left">rune</td>
+<td class="left">等同于int32</td>
+</tr>
+
+<tr>
+<td class="left">uint</td>
+<td class="left">依赖不同平台下的实现，可以是uint32或uint64</td>
+</tr>
+
+<tr>
+<td class="left">uint8</td>
+<td class="left">[0, 255]</td>
+</tr>
+
+<tr>
+<td class="left">uint16</td>
+<td class="left">[0, 65535</td>
+</tr>
+
+<tr>
+<td class="left">uint32</td>
+<td class="left">[0, 4294967295]</td>
+</tr>
+
+<tr>
+<td class="left">uint64</td>
+<td class="left">[0, 18446744073709551615]</td>
+</tr>
+
+<tr>
+<td class="left">uintptr</td>
+<td class="left">一个可以恰好容纳指针值的无符号整数类型，32位平台是uint32,64位平台是uint64</td>
+</tr>
+</tbody>
+</table>
+
+<p>
+Go语言整形支持“table 3”中所列的所有算术运算符，同时也支持下表所列的算术和位运算。
+</p>
+
+<p>
+<b>表2-6：只适用于内置的整数类型的算术运算操作符</b>
+</p>
+<pre class="example">
+语法                             含义/结果                              
+^x                   按位取反                              
+x %= y               将x的值设为x除以y的余数，除0会导致异常 
+x &amp;= y               将x的值设为x和y按位与(AND)的结果        
+x |= y               将x的值设为x和y按位或(OR)的结果
+x ^= y               将x的值设为x和y按位异或(XOR)的结果
+x &gt;&gt;= u              将x的值设为x右移u个位的结果
+x &lt;&lt;= u              将x的值设为x左移u个位的结果
+x % y                结果为x除以y的余数
+x &amp; y                结果为x和y按位与(AND)
+x | y                结果为x和y按位或(OR)
+x ^ y                结果为x和y按位异或(XOR)
+x &amp;^ y               结果为x和y按位与非(ANDNOT)
+x &lt;&lt; u               结果为x左移u个位
+x &gt;&gt; u　　　　　　　　　结果为x右称u个位
+</pre>
+
+<p>
+<b>大整数</b>
+</p>
+
+<p>
+有时我们需要使用甚至超过int64和uint64位的数进行完美计算。这时，Go语言标准库提供了big.Int型用于整数，big.Rat用于有理数。
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-1-3-2" class="outline-4">
+<h4 id="sec-1-3-2"><span class="section-number-4">1.3.2</span> 浮点类型</h4>
+<div class="outline-text-4" id="text-1-3-2">
+<p>
+Go语言提供了两种类型的浮点类型和两种类型的复数类型。
+</p>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<caption class="t-above"><span class="table-number">Table 5:</span> Go语言的浮点类型和复数类型</caption>
+
+<colgroup>
+<col  class="left" />
+
+<col  class="left" />
+
+<col  class="left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="left">浮点类型</td>
+<td class="left">float32</td>
+<td class="left">float64</td>
+</tr>
+
+<tr>
+<td class="left">复数类型</td>
+<td class="left">complex64</td>
+<td class="left">complex128</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
