@@ -209,17 +209,62 @@ Go语言的标识符是一个非空的字母或数字串，第一个字符必须
 常量用const关键字声明，变量用var关键字声明，也可用快捷变量声明语法。
 以下是一些声明的例子：  
 </p>
-<pre class="example">
-const limit = 512               //常量，其类型兼容任何数字
-const top uint16 = 1421        //常量，类型为uint16
-start := -19                   //变量，推断类型，快捷变量声明
-end := int64(987654321)        //变量，类型为int64
-var i int                      //变量，值为0,类型为int
-var debug = false              //变量，推断类型 bool
-checkResults := true           //变量，推断类型 bool
-stepSize := 1.5                //变量，推断类型 float64
-acronym := "FOSS"              //变量， 推断类型 string
-</pre>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="left" />
+
+<col  class="left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="left">const limit = 512</td>
+<td class="left">//常量，其类型兼容任何数字</td>
+</tr>
+
+<tr>
+<td class="left">const top uint16 = 1421</td>
+<td class="left">//常量，类型为uint16</td>
+</tr>
+
+<tr>
+<td class="left">start := -19</td>
+<td class="left">//变量，推断类型，快捷变量声明</td>
+</tr>
+
+<tr>
+<td class="left">end := int64(987654321)</td>
+<td class="left">//变量，类型为int64</td>
+</tr>
+
+<tr>
+<td class="left">var i int</td>
+<td class="left">//变量，值为0,类型为int</td>
+</tr>
+
+<tr>
+<td class="left">var debug = false</td>
+<td class="left">//变量，推断类型 bool</td>
+</tr>
+
+<tr>
+<td class="left">checkResults := true</td>
+<td class="left">//变量，推断类型 bool</td>
+</tr>
+
+<tr>
+<td class="left">stepSize := 1.5</td>
+<td class="left">//变量，推断类型 float64</td>
+</tr>
+
+<tr>
+<td class="left">acronym := "FOSS"</td>
+<td class="left">//变量， 推断类型 string</td>
+</tr>
+</tbody>
+</table>
+
 
 <p>
 对于整形字面量Go语言推断其类型为int,对于浮点型字面量推断其为float64,对于复数推断其为complex128。通常的做法是不显式地声明其类型。
@@ -285,23 +330,68 @@ acronym := "FOSS"              //变量， 推断类型 string
 <p>
 Go语言内置了布尔值true和false。不支持隐式转化。
 </p>
-<div class="org-src-container">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
-<pre class="src src-go">-----------------------------------------------------------------
-&#35821;&#27861;                              &#25551;&#36848;/&#32467;&#26524;
------------------------------------------------------------------
-!b           &#36923;&#36753;&#38750;&#65292;&#22914;b&#20026;true,&#21017;&#32467;&#26524;&#20026;false
-a || b       &#21482;&#35201;a&#25110;b&#20219;&#19968;&#20010;&#20026;true,&#21017;&#32467;&#26524;&#20026;true
-a &amp;&amp; b       &#22914;&#26524;a&#21644;b&#37117;&#20026;true,&#21017;&#32467;&#26524;&#20026;true
-x &lt; y        &#22914;x&#30340;&#20540;&#23567;&#20110;y&#65292;&#21017;&#32467;&#26524;&#20026;true
-x &lt;= y       &#22914;x&#30340;&#20540;&#23567;&#20110;&#25110;&#31561;&#20110;y,&#21017;&#32467;&#26524;&#20026;true
-x == y       &#22914;x&#30340;&#20540;&#31561;&#20110;y&#65292;&#21017;&#32467;&#26524;&#20026;true
-x != y       &#22914;x&#30340;&#20540;&#19981;&#31561;&#20110;y,&#21017;&#32467;&#26524;&#20026;true
-x &gt;= y       &#22914;x&#30340;&#20540;&#22823;&#20110;&#25110;&#31561;&#20110;y,&#21017;&#32467;&#26524;&#20026;true
-x &gt; y        &#22914;x&#30340;&#20540;&#22823;&#20110;y&#65292;&#21017;&#32467;&#26524;&#20026;true
------------------------------------------------------------------
-</pre>
-</div>
+
+<colgroup>
+<col  class="left" />
+
+<col  class="left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="left">语法</th>
+<th scope="col" class="left">描述/结果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="left">!b</td>
+<td class="left">逻辑非，如b为true,则结果为false</td>
+</tr>
+
+<tr>
+<td class="left">a &vert;&vert; b</td>
+<td class="left">只要a或b任一个为true,则结果为true</td>
+</tr>
+
+<tr>
+<td class="left">a &amp;&amp; b</td>
+<td class="left">如果a和b都为true,则结果为true</td>
+</tr>
+
+<tr>
+<td class="left">x &lt; y</td>
+<td class="left">如x的值小于y，则结果为true</td>
+</tr>
+
+<tr>
+<td class="left">x &lt;= y</td>
+<td class="left">如x的值小于或等于y,则结果为true</td>
+</tr>
+
+<tr>
+<td class="left">x == y</td>
+<td class="left">如x的值等于y，则结果为true</td>
+</tr>
+
+<tr>
+<td class="left">x != y</td>
+<td class="left">如x的值不等于y,则结果为true</td>
+</tr>
+
+<tr>
+<td class="left">x &gt;= y</td>
+<td class="left">如x的值大于或等于y,则结果为true</td>
+</tr>
+
+<tr>
+<td class="left">x &gt; y</td>
+<td class="left">如x的值大于y，则结果为true</td>
+</tr>
+</tbody>
+</table>
+
 <p>
 布尔值和表达式可以用于if语句中，也可用于for语句的条件中，以及switch语句的case子句的条件判断中。
 </p>
@@ -348,7 +438,7 @@ fmt.<span style="color: #00fa9a;">Println</span>(i, j, k)                     <s
 Go语言的算术操作符可用于数值操作。
 </p>
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
-<caption class="t-above"><span class="table-number">Table 3:</span> 可用于任何内置的数值的算术运算操作符</caption>
+<caption class="t-above"><span class="table-number">Table 4:</span> 可用于任何内置的数值的算术运算操作符</caption>
 
 <colgroup>
 <col  class="left" />
@@ -436,7 +526,7 @@ Go语言提供11种整型，包括5种有符号，5种无符号，再加上一�
 </p>
 
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
-<caption class="t-above"><span class="table-number">Table 4:</span> Go语言的整数类型及其范围</caption>
+<caption class="t-above"><span class="table-number">Table 5:</span> Go语言的整数类型及其范围</caption>
 
 <colgroup>
 <col  class="left" />
@@ -520,26 +610,91 @@ Go语言提供11种整型，包括5种有符号，5种无符号，再加上一�
 Go语言整形支持“table 3”中所列的所有算术运算符，同时也支持下表所列的算术和位运算。
 </p>
 
-<p>
-<b>表2-6：只适用于内置的整数类型的算术运算操作符</b>
-</p>
-<pre class="example">
-语法                             含义/结果                              
-^x                   按位取反                              
-x %= y               将x的值设为x除以y的余数，除0会导致异常 
-x &amp;= y               将x的值设为x和y按位与(AND)的结果        
-x |= y               将x的值设为x和y按位或(OR)的结果
-x ^= y               将x的值设为x和y按位异或(XOR)的结果
-x &gt;&gt;= u              将x的值设为x右移u个位的结果
-x &lt;&lt;= u              将x的值设为x左移u个位的结果
-x % y                结果为x除以y的余数
-x &amp; y                结果为x和y按位与(AND)
-x | y                结果为x和y按位或(OR)
-x ^ y                结果为x和y按位异或(XOR)
-x &amp;^ y               结果为x和y按位与非(ANDNOT)
-x &lt;&lt; u               结果为x左移u个位
-x &gt;&gt; u　　　　　　　　　结果为x右称u个位
-</pre>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="left" />
+
+<col  class="left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="left">语法</td>
+<td class="left">含义/结果</td>
+</tr>
+
+<tr>
+<td class="left">^x</td>
+<td class="left">按位取反</td>
+</tr>
+
+<tr>
+<td class="left">x %= y</td>
+<td class="left">将x的值设为x除以y的余数，除0会导致异常</td>
+</tr>
+
+<tr>
+<td class="left">x &amp;= y</td>
+<td class="left">将x的值设为x和y按位与(AND)的结果</td>
+</tr>
+
+<tr>
+<td class="left">x &vert;= y</td>
+<td class="left">将x的值设为x和y按位或(OR)的结果</td>
+</tr>
+
+<tr>
+<td class="left">x ^= y</td>
+<td class="left">将x的值设为x和y按位异或(XOR)的结果</td>
+</tr>
+
+<tr>
+<td class="left">x &gt;&gt;= u</td>
+<td class="left">将x的值设为x右移u个位的结果</td>
+</tr>
+
+<tr>
+<td class="left">x &lt;&lt;= u</td>
+<td class="left">将x的值设为x左移u个位的结果</td>
+</tr>
+
+<tr>
+<td class="left">x % y</td>
+<td class="left">结果为x除以y的余数</td>
+</tr>
+
+<tr>
+<td class="left">x &amp; y</td>
+<td class="left">结果为x和y按位与(AND)</td>
+</tr>
+
+<tr>
+<td class="left">x &vert; y</td>
+<td class="left">结果为x和y按位或(OR)</td>
+</tr>
+
+<tr>
+<td class="left">x ^ y</td>
+<td class="left">结果为x和y按位异或(XOR)</td>
+</tr>
+
+<tr>
+<td class="left">x &amp;^ y</td>
+<td class="left">结果为x和y按位与非(ANDNOT)</td>
+</tr>
+
+<tr>
+<td class="left">x &lt;&lt; u</td>
+<td class="left">结果为x左移u个位</td>
+</tr>
+
+<tr>
+<td class="left">x &gt;&gt; u　　</td>
+<td class="left">结果为x右称u个位</td>
+</tr>
+</tbody>
+</table>
 
 <p>
 <b>大整数</b>
@@ -558,7 +713,7 @@ x &gt;&gt; u　　　　　　　　　结果为x右称u个位
 Go语言提供了两种类型的浮点类型和两种类型的复数类型。
 </p>
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
-<caption class="t-above"><span class="table-number">Table 5:</span> Go语言的浮点类型和复数类型</caption>
+<caption class="t-above"><span class="table-number">Table 6:</span> Go语言的浮点类型和复数类型</caption>
 
 <colgroup>
 <col  class="left" />
