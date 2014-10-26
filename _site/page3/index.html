@@ -6,11 +6,11 @@
     <meta name="viewport" content="width=device-width initial-scale=1" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-    <title>debian7搭建hexo博客</title>
+    <title>行之博客</title>
     <meta name="description" content="Linux / C / golang / Emacs">
 
     <link rel="stylesheet" href="/css/main.css">
-    <link rel="canonical" href="http://xep007.github.io/linux/hexo/2014/10/08/debian7%E6%9E%84%E5%BB%BAhexo+github%E5%8D%9A%E5%AE%A2.html">
+    <link rel="canonical" href="http://xep007.github.io/page3/">
 </head>
 
 
@@ -65,128 +65,63 @@
 
     <div class="page-content">
       <div class="wrapper">
-        <div class="post">
+        <!-- 分页开始 -->
+<div class="home">
 
-  <header class="post-header">
-    <h1 class="post-title">debian7搭建hexo博客</h1>
-    <p class="post-meta">Oct 8, 2014 • xep007</p>
-  </header>
+  <h3 class="page-heading">最新文章</h3>
 
-  <article class="post-content">
-    <div id="table-of-contents">
-<h2>Table of Contents</h2>
-<div id="text-table-of-contents">
-<ul>
-<li><a href="#sec-1">1. 安装nodejs和npm</a></li>
-<li><a href="#sec-2">2. 安装hexo</a></li>
-<li><a href="#sec-3">3. 创建hexo文件夹</a></li>
-<li><a href="#sec-4">4. 安装依赖包</a></li>
-<li><a href="#sec-5">5. 本地预览</a></li>
-</ul>
-</div>
-</div>
-
-<div id="outline-container-sec-1" class="outline-2">
-<h2 id="sec-1"><span class="section-number-2">1</span> 安装nodejs和npm</h2>
-<div class="outline-text-2" id="text-1">
-<pre class="example">
-sudo aptitude install nodejs npm
-</pre>
-</div>
+  <ul class="post-list">
+    
+      <li>
+        <h4>
+          2014 Oct 04 
+          <a  href="/git/2014/10/04/git-everthing-up-to-date.html">git push提示everthing up to date,上传不成功</a>
+        </h4>
+      </li>
+    
+      <li>
+        <h4>
+          2014 Oct 01 
+          <a  href="/jekyll/update/2014/10/01/welcome-to-jekyll.html">Welcome to Jekyll!</a>
+        </h4>
+      </li>
+    
+  </ul>
 </div>
 
-<div id="outline-container-sec-2" class="outline-2">
-<h2 id="sec-2"><span class="section-number-2">2</span> 安装hexo</h2>
-<div class="outline-text-2" id="text-2">
-<pre class="example">
-sudo npm install -g hexo
-</pre>
-</div>
-</div>
 
-<div id="outline-container-sec-3" class="outline-2">
-<h2 id="sec-3"><span class="section-number-2">3</span> 创建hexo文件夹</h2>
-<div class="outline-text-2" id="text-3">
-<p>
-如果不在家目录建立文件夹，那么等下执行hexo init时会提示"Error: Theme landscape does not exist."
-</p>
 
-<pre class="example">
-mkdir ~/hexo
-</pre>
-
-<p>
-进入hexo文件夹
-</p>
-<pre class="example">
-cd hexo
-hexo init
-</pre>
-<p>
-如果提示/usr/bin/env: node:没有那个文件或目录,就执行以下命令。然后再执行hexo init。
-</p>
-<pre class="example">
-sudo ln -s /usr/bin/nodejs /usr/bin/node
-</pre>
-</div>
-</div>
-
-<div id="outline-container-sec-4" class="outline-2">
-<h2 id="sec-4"><span class="section-number-2">4</span> 安装依赖包</h2>
-<div class="outline-text-2" id="text-4">
-<pre class="example">
-npm install
-</pre>
-</div>
-</div>
-
-<div id="outline-container-sec-5" class="outline-2">
-<h2 id="sec-5"><span class="section-number-2">5</span> 本地预览</h2>
-<div class="outline-text-2" id="text-5">
-<p>
-与octopress大同小异。进入hexo文件夹，运行以下命令。然后就可以在浏览器中通过localhost:4000进行预览。
-</p>
-<pre class="example">
-hexo generate
-hexo server
-</pre>
-</div>
-</div>
-
-  </article>
+<div class="pagination">
+  
+    <a href="/page2">&laquo; 上一页</a>
+  
 
   
-<br />
-<!-- JiaThis Button BEGIN -->
-<div class="jiathis_style_32x32">
-	<a class="jiathis_button_qzone"></a>
-	<a class="jiathis_button_tsina"></a>
-	<a class="jiathis_button_tqq"></a>
-	<a class="jiathis_button_weixin"></a>
-	<a class="jiathis_button_renren"></a>
-	<a href="http://www.jiathis.com/share?uid=1975461" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
-	<a class="jiathis_counter_style"></a>
+    
+      <a href="/index.html">1</a>
+    
+  
+    
+      <a href="page2">2</a>
+    
+  
+    
+      <em>3</em>
+    
+  
+
+  
+    <span>下一页 &raquo;</span>
+  
 </div>
-<script type="text/javascript">
-var jiathis_config = {data_track_clickback:'true'};
-</script>
-<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1410620472538495" charset="utf-8"></script>
-<!-- JiaThis Button END -->
-<!-- UJian Button BEGIN -->
-	<div class="ujian-hook"></div>
-	<script type="text/javascript" src="http://v1.ujian.cc/code/ujian.js"></script>
-<!-- UJian Button END -->
 
-<br />
 
-<!-- UY BEGIN -->
-<div id="uyan_frame"></div>
-<script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=1975461"></script>
-<!-- UY END -->
 
-<h3 align="center"><a href="#top" target="_self">返回顶部</a></h3>
+<!-- 分页结束 -->
 
-</div>
+<!-- <p class="rss-subscribe">subscribe <a href="/feed.xml">via RSS</a></p>-->
+
+
 
       </div>
     </div>

@@ -1,0 +1,244 @@
+---
+layout     : post
+title      : GNU Emacs Lisp编程入门笔记（九）
+categories : [emacs ,lisp ]
+tags       : lisp
+description: emacs lisp
+author: xep007
+---
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1. 循环和递归</a>
+<ul>
+<li><a href="#sec-1-1">1.1. while</a>
+<ul>
+<li><a href="#sec-1-1-1">1.1.1. 一个例子：print-elements-of-list</a></li>
+<li><a href="#sec-1-1-2">1.1.2. 使用增量计数器的循环</a></li>
+<li><a href="#sec-1-1-3">1.1.3. 使用减量计数器的循环</a></li>
+</ul>
+</li>
+<li><a href="#sec-1-2">1.2. 递归</a>
+<ul>
+<li><a href="#sec-1-2-1">1.2.1. 使用列表的递归函数</a></li>
+<li><a href="#sec-1-2-2">1.2.2. 用递归算法代替计数器</a></li>
+<li><a href="#sec-1-2-3">1.2.3. 使用cond的递归例子</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> 循环和递归</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+Emacs Lisp有两种方式使一个表达式或一组表达式不断被求值：一是使用while循环，一是使用递归。
+</p>
+</div>
+
+<div id="outline-container-sec-1-1" class="outline-3">
+<h3 id="sec-1-1"><span class="section-number-3">1.1</span> while</h3>
+<div class="outline-text-3" id="text-1-1">
+<p>
+while特殊表对其第一个参量进行求值，并测试这个返回值的真假。如为假，则跳出这个表达式的其余部分。如为真则对表达式的主体进行求值，然后再次测试第一个参量的真假，重复进行。
+</p>
+
+<p>
+while表达式的模板如下：
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-lisp">(<span style="color: #00ffff;">while</span> true-of-false-test
+    body&#8230;&#8230;)
+</pre>
+</div>
+</div>
+
+<div id="outline-container-sec-1-1-1" class="outline-4">
+<h4 id="sec-1-1-1"><span class="section-number-4">1.1.1</span> 一个例子：print-elements-of-list</h4>
+<div class="outline-text-4" id="text-1-1-1">
+<div class="org-src-container">
+
+<pre class="src src-lisp">(setq animals '(giraffe gazelle lion tiger))
+(<span style="color: #00ffff;">defun</span> <span style="color: #00fa9a;">print-elements-of-list</span> (list)
+  <span style="color: #ffa500;">"Print each element of LIST on a line of its own."</span>
+  (<span style="color: #00ffff;">while</span> list
+          (print (car list))
+          (setq list (cdr list))))
+(print-elements-of-list animals)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-1-1-2" class="outline-4">
+<h4 id="sec-1-1-2"><span class="section-number-4">1.1.2</span> 使用增量计数器的循环</h4>
+<div class="outline-text-4" id="text-1-1-2">
+<p>
+来一个例子吧。
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-lisp">(<span style="color: #00ffff;">defun</span> <span style="color: #00fa9a;">sum</span> (number)
+  (<span style="color: #00ffff;">let</span> ((total 0)
+        (i 1))
+    (<span style="color: #00ffff;">while</span> (&lt;= i number)
+    (setq total (+ i total))
+    (setq i (1+ i)))
+    total))
+</pre>
+</div>
+<div class="org-src-container">
+
+<pre class="src src-lisp">(sum 100)          //&#24471;&#25968;&#20026;5050
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-1-1-3" class="outline-4">
+<h4 id="sec-1-1-3"><span class="section-number-4">1.1.3</span> 使用减量计数器的循环</h4>
+<div class="outline-text-4" id="text-1-1-3">
+<p>
+来一个例子吧。
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-lisp">(<span style="color: #00ffff;">defun</span> <span style="color: #00fa9a;">sum</span> (number)
+  (<span style="color: #00ffff;">let</span> ((total 0))
+    (<span style="color: #00ffff;">while</span> (&gt; number 0)
+    (setq total (+ number total))
+    (setq number (- number 1)))
+    total))
+</pre>
+</div>
+<div class="org-src-container">
+
+<pre class="src src-lisp">(sum 100)       //&#24471;&#25968;5050
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-1-2" class="outline-3">
+<h3 id="sec-1-2"><span class="section-number-3">1.2</span> 递归</h3>
+<div class="outline-text-3" id="text-1-2">
+<p>
+递归函数就是调用自身的函数。
+</p>
+
+<p>
+一个递归函数通常一个条件表达式，这个表达式有三个部分：
+</p>
+
+<ol class="org-ol">
+<li>一个真假测试
+</li>
+<li>函数名
+</li>
+<li>一个表达式
+</li>
+</ol>
+
+<p>
+递归的模板如下所示：
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-lisp">(<span style="color: #00ffff;">defun</span> <span style="color: #00fa9a;">name-of-recursive-function</span> (argument-list)
+    <span style="color: #ffa500;">"documentation&#8230;&#8230;"</span>
+    body&#8230;&#8230;
+    (<span style="color: #00ffff;">if</span> do-again-test
+        (name-of-recursive-function
+            next-step-expression)))
+</pre>
+</div>
+</div>
+
+<div id="outline-container-sec-1-2-1" class="outline-4">
+<h4 id="sec-1-2-1"><span class="section-number-4">1.2.1</span> 使用列表的递归函数</h4>
+<div class="outline-text-4" id="text-1-2-1">
+<div class="org-src-container">
+
+<pre class="src src-lisp">(setq animals '(giraffe gazelle lion tiger))
+(<span style="color: #00ffff;">defun</span> <span style="color: #00fa9a;">print-elements-recursively</span> (list)
+  (print (car list))
+  (<span style="color: #00ffff;">if</span> list
+      (print-elements-recursively
+       (cdr list))))
+(print-elements-recursively animals)
+</pre>
+</div>
+<p>
+(print-elements-recursively animals)会递归调用打印列表animals。
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-1-2-2" class="outline-4">
+<h4 id="sec-1-2-2"><span class="section-number-4">1.2.2</span> 用递归算法代替计数器</h4>
+<div class="outline-text-4" id="text-1-2-2">
+<div class="org-src-container">
+
+<pre class="src src-lisp">(<span style="color: #00ffff;">defun</span> <span style="color: #00fa9a;">sum</span> (number)
+  (<span style="color: #00ffff;">if</span> (= number 1)
+      1
+    (+ number
+       (sum
+        (1- number)))))
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-lisp">(sum 100)             //&#24471;&#25968;5050
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-1-2-3" class="outline-4">
+<h4 id="sec-1-2-3"><span class="section-number-4">1.2.3</span> 使用cond的递归例子</h4>
+<div class="outline-text-4" id="text-1-2-3">
+<p>
+上文sum函数中用if来判断，其实也可用cond(conditinal条件)特殊表来编写。
+</p>
+
+<p>
+cond表达式的模板如下所示：
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-lisp">(<span style="color: #00ffff;">cond</span>
+    body&#8230;&#8230;)
+</pre>
+</div>
+
+<p>
+重写sum函数：
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-lisp">(<span style="color: #00ffff;">defun</span> <span style="color: #00fa9a;">sum</span> (number)
+  (<span style="color: #00ffff;">cond</span> ((&lt;= number 0) 0)
+        ((= number 1) 1)
+        ((&gt; number 1)
+         (+ number (sum (1- number))))))
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>

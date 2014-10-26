@@ -5,9 +5,1436 @@
     <description>Linux / C / golang / Emacs</description>
     <link>http://xep007.github.io/</link>
     <atom:link href="http://xep007.github.io/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Sat, 25 Oct 2014 10:14:14 +0800</pubDate>
-    <lastBuildDate>Sat, 25 Oct 2014 10:14:14 +0800</lastBuildDate>
+    <pubDate>Sun, 26 Oct 2014 21:42:29 +0800</pubDate>
+    <lastBuildDate>Sun, 26 Oct 2014 21:42:29 +0800</lastBuildDate>
     <generator>Jekyll v2.4.0</generator>
+    
+      <item>
+        <title>GNU Emacs Lisp编程入门笔记（九）</title>
+        <description>&lt;div id=&quot;table-of-contents&quot;&gt;
+&lt;h2&gt;Table of Contents&lt;/h2&gt;
+&lt;div id=&quot;text-table-of-contents&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1&quot;&gt;1. 循环和递归&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-1&quot;&gt;1.1. while&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-1-1&quot;&gt;1.1.1. 一个例子：print-elements-of-list&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-1-2&quot;&gt;1.1.2. 使用增量计数器的循环&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-1-3&quot;&gt;1.1.3. 使用减量计数器的循环&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-2&quot;&gt;1.2. 递归&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-2-1&quot;&gt;1.2.1. 使用列表的递归函数&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-2-2&quot;&gt;1.2.2. 用递归算法代替计数器&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-2-3&quot;&gt;1.2.3. 使用cond的递归例子&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+
+&lt;div id=&quot;outline-container-sec-1&quot; class=&quot;outline-2&quot;&gt;
+&lt;h2 id=&quot;sec-1&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;1&lt;/span&gt; 循环和递归&lt;/h2&gt;
+&lt;div class=&quot;outline-text-2&quot; id=&quot;text-1&quot;&gt;
+&lt;p&gt;
+Emacs Lisp有两种方式使一个表达式或一组表达式不断被求值：一是使用while循环，一是使用递归。
+&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-sec-1-1&quot; class=&quot;outline-3&quot;&gt;
+&lt;h3 id=&quot;sec-1-1&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.1&lt;/span&gt; while&lt;/h3&gt;
+&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-1&quot;&gt;
+&lt;p&gt;
+while特殊表对其第一个参量进行求值，并测试这个返回值的真假。如为假，则跳出这个表达式的其余部分。如为真则对表达式的主体进行求值，然后再次测试第一个参量的真假，重复进行。
+&lt;/p&gt;
+
+&lt;p&gt;
+while表达式的模板如下：
+&lt;/p&gt;
+
+&lt;div class=&quot;org-src-container&quot;&gt;
+
+&lt;pre class=&quot;src src-lisp&quot;&gt;(&lt;span style=&quot;color: #00ffff;&quot;&gt;while&lt;/span&gt; true-of-false-test
+    body&amp;#8230;&amp;#8230;)
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-sec-1-1-1&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1-1-1&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.1.1&lt;/span&gt; 一个例子：print-elements-of-list&lt;/h4&gt;
+&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-1-1&quot;&gt;
+&lt;div class=&quot;org-src-container&quot;&gt;
+
+&lt;pre class=&quot;src src-lisp&quot;&gt;(setq animals &#39;(giraffe gazelle lion tiger))
+(&lt;span style=&quot;color: #00ffff;&quot;&gt;defun&lt;/span&gt; &lt;span style=&quot;color: #00fa9a;&quot;&gt;print-elements-of-list&lt;/span&gt; (list)
+  &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;Print each element of LIST on a line of its own.&quot;&lt;/span&gt;
+  (&lt;span style=&quot;color: #00ffff;&quot;&gt;while&lt;/span&gt; list
+          (print (car list))
+          (setq list (cdr list))))
+(print-elements-of-list animals)
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-sec-1-1-2&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1-1-2&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.1.2&lt;/span&gt; 使用增量计数器的循环&lt;/h4&gt;
+&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-1-2&quot;&gt;
+&lt;p&gt;
+来一个例子吧。
+&lt;/p&gt;
+
+&lt;div class=&quot;org-src-container&quot;&gt;
+
+&lt;pre class=&quot;src src-lisp&quot;&gt;(&lt;span style=&quot;color: #00ffff;&quot;&gt;defun&lt;/span&gt; &lt;span style=&quot;color: #00fa9a;&quot;&gt;sum&lt;/span&gt; (number)
+  (&lt;span style=&quot;color: #00ffff;&quot;&gt;let&lt;/span&gt; ((total 0)
+        (i 1))
+    (&lt;span style=&quot;color: #00ffff;&quot;&gt;while&lt;/span&gt; (&amp;lt;= i number)
+    (setq total (+ i total))
+    (setq i (1+ i)))
+    total))
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div class=&quot;org-src-container&quot;&gt;
+
+&lt;pre class=&quot;src src-lisp&quot;&gt;(sum 100)          //&amp;#24471;&amp;#25968;&amp;#20026;5050
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-sec-1-1-3&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1-1-3&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.1.3&lt;/span&gt; 使用减量计数器的循环&lt;/h4&gt;
+&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-1-3&quot;&gt;
+&lt;p&gt;
+来一个例子吧。
+&lt;/p&gt;
+
+&lt;div class=&quot;org-src-container&quot;&gt;
+
+&lt;pre class=&quot;src src-lisp&quot;&gt;(&lt;span style=&quot;color: #00ffff;&quot;&gt;defun&lt;/span&gt; &lt;span style=&quot;color: #00fa9a;&quot;&gt;sum&lt;/span&gt; (number)
+  (&lt;span style=&quot;color: #00ffff;&quot;&gt;let&lt;/span&gt; ((total 0))
+    (&lt;span style=&quot;color: #00ffff;&quot;&gt;while&lt;/span&gt; (&amp;gt; number 0)
+    (setq total (+ number total))
+    (setq number (- number 1)))
+    total))
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div class=&quot;org-src-container&quot;&gt;
+
+&lt;pre class=&quot;src src-lisp&quot;&gt;(sum 100)       //&amp;#24471;&amp;#25968;5050
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-sec-1-2&quot; class=&quot;outline-3&quot;&gt;
+&lt;h3 id=&quot;sec-1-2&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.2&lt;/span&gt; 递归&lt;/h3&gt;
+&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-2&quot;&gt;
+&lt;p&gt;
+递归函数就是调用自身的函数。
+&lt;/p&gt;
+
+&lt;p&gt;
+一个递归函数通常一个条件表达式，这个表达式有三个部分：
+&lt;/p&gt;
+
+&lt;ol class=&quot;org-ol&quot;&gt;
+&lt;li&gt;一个真假测试
+&lt;/li&gt;
+&lt;li&gt;函数名
+&lt;/li&gt;
+&lt;li&gt;一个表达式
+&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;
+递归的模板如下所示：
+&lt;/p&gt;
+
+&lt;div class=&quot;org-src-container&quot;&gt;
+
+&lt;pre class=&quot;src src-lisp&quot;&gt;(&lt;span style=&quot;color: #00ffff;&quot;&gt;defun&lt;/span&gt; &lt;span style=&quot;color: #00fa9a;&quot;&gt;name-of-recursive-function&lt;/span&gt; (argument-list)
+    &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;documentation&amp;#8230;&amp;#8230;&quot;&lt;/span&gt;
+    body&amp;#8230;&amp;#8230;
+    (&lt;span style=&quot;color: #00ffff;&quot;&gt;if&lt;/span&gt; do-again-test
+        (name-of-recursive-function
+            next-step-expression)))
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-sec-1-2-1&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1-2-1&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.2.1&lt;/span&gt; 使用列表的递归函数&lt;/h4&gt;
+&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-2-1&quot;&gt;
+&lt;div class=&quot;org-src-container&quot;&gt;
+
+&lt;pre class=&quot;src src-lisp&quot;&gt;(setq animals &#39;(giraffe gazelle lion tiger))
+(&lt;span style=&quot;color: #00ffff;&quot;&gt;defun&lt;/span&gt; &lt;span style=&quot;color: #00fa9a;&quot;&gt;print-elements-recursively&lt;/span&gt; (list)
+  (print (car list))
+  (&lt;span style=&quot;color: #00ffff;&quot;&gt;if&lt;/span&gt; list
+      (print-elements-recursively
+       (cdr list))))
+(print-elements-recursively animals)
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;
+(print-elements-recursively animals)会递归调用打印列表animals。
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-sec-1-2-2&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1-2-2&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.2.2&lt;/span&gt; 用递归算法代替计数器&lt;/h4&gt;
+&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-2-2&quot;&gt;
+&lt;div class=&quot;org-src-container&quot;&gt;
+
+&lt;pre class=&quot;src src-lisp&quot;&gt;(&lt;span style=&quot;color: #00ffff;&quot;&gt;defun&lt;/span&gt; &lt;span style=&quot;color: #00fa9a;&quot;&gt;sum&lt;/span&gt; (number)
+  (&lt;span style=&quot;color: #00ffff;&quot;&gt;if&lt;/span&gt; (= number 1)
+      1
+    (+ number
+       (sum
+        (1- number)))))
+&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;div class=&quot;org-src-container&quot;&gt;
+
+&lt;pre class=&quot;src src-lisp&quot;&gt;(sum 100)             //&amp;#24471;&amp;#25968;5050
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-sec-1-2-3&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1-2-3&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.2.3&lt;/span&gt; 使用cond的递归例子&lt;/h4&gt;
+&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-2-3&quot;&gt;
+&lt;p&gt;
+上文sum函数中用if来判断，其实也可用cond(conditinal条件)特殊表来编写。
+&lt;/p&gt;
+
+&lt;p&gt;
+cond表达式的模板如下所示：
+&lt;/p&gt;
+
+&lt;div class=&quot;org-src-container&quot;&gt;
+
+&lt;pre class=&quot;src src-lisp&quot;&gt;(&lt;span style=&quot;color: #00ffff;&quot;&gt;cond&lt;/span&gt;
+    body&amp;#8230;&amp;#8230;)
+&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;
+重写sum函数：
+&lt;/p&gt;
+
+&lt;div class=&quot;org-src-container&quot;&gt;
+
+&lt;pre class=&quot;src src-lisp&quot;&gt;(&lt;span style=&quot;color: #00ffff;&quot;&gt;defun&lt;/span&gt; &lt;span style=&quot;color: #00fa9a;&quot;&gt;sum&lt;/span&gt; (number)
+  (&lt;span style=&quot;color: #00ffff;&quot;&gt;cond&lt;/span&gt; ((&amp;lt;= number 0) 0)
+        ((= number 1) 1)
+        ((&amp;gt; number 1)
+         (+ number (sum (1- number))))))
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</description>
+        <pubDate>Sun, 26 Oct 2014 00:00:00 +0800</pubDate>
+        <link>http://xep007.github.io/emacs/lisp/2014/10/26/gnu%20emacs%20lisp%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B9%9D%EF%BC%89.html</link>
+        <guid isPermaLink="true">http://xep007.github.io/emacs/lisp/2014/10/26/gnu%20emacs%20lisp%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B9%9D%EF%BC%89.html</guid>
+        
+        <category>lisp</category>
+        
+        
+        <category>emacs</category>
+        
+        <category>lisp</category>
+        
+      </item>
+    
+      <item>
+        <title>Go语言程序设计读书笔记（三）</title>
+        <description>&lt;div id=&quot;table-of-contents&quot;&gt;
+&lt;h2&gt;Table of Contents&lt;/h2&gt;
+&lt;div id=&quot;text-table-of-contents&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1&quot;&gt;1. 第3章 字符串&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-1&quot;&gt;1.1. 字面量、操作符和转义&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-2&quot;&gt;1.2. 比较字符串&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-3&quot;&gt;1.3. 字符和字符串&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-4&quot;&gt;1.4. 字符串索引与切片&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-5&quot;&gt;1.5. 使用fmt包来格式化字符串&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-5-1&quot;&gt;1.5.1. 格式化布尔值&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-5-2&quot;&gt;1.5.2. 格式化整数&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-5-3&quot;&gt;1.5.3. 格式化字符&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-5-4&quot;&gt;1.5.4. 格式化浮点数&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-5-5&quot;&gt;1.5.5. 格式化字符串和切片&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-5-6&quot;&gt;1.5.6. 为调试格式化&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-6&quot;&gt;1.6. 其他字符处理相关的包&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-6-1&quot;&gt;1.6.1. string包&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-6-2&quot;&gt;1.6.2. strconv包&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-6-3&quot;&gt;1.6.3. utf8包&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-6-4&quot;&gt;1.6.4. unicode包&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-6-5&quot;&gt;1.6.5. regexp包&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+
+&lt;div id=&quot;outline-container-sec-1&quot; class=&quot;outline-2&quot;&gt;
+&lt;h2 id=&quot;sec-1&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;1&lt;/span&gt; 第3章 字符串&lt;/h2&gt;
+&lt;div class=&quot;outline-text-2&quot; id=&quot;text-1&quot;&gt;
+&lt;/div&gt;&lt;div id=&quot;outline-container-sec-1-1&quot; class=&quot;outline-3&quot;&gt;
+&lt;h3 id=&quot;sec-1-1&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.1&lt;/span&gt; 字面量、操作符和转义&lt;/h3&gt;
+&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-1&quot;&gt;
+&lt;p&gt;
+字符串字面量使用双引号(&quot;)或者反引号(`)来创建。双引号用来创建可解析的字符串，但不能用来引用多行。反引号用来创建原生的字符串字面量，可多行，不支持转义序列。
+&lt;/p&gt;
+
+&lt;div class=&quot;org-src-container&quot;&gt;
+
+&lt;pre class=&quot;src src-go&quot;&gt;text1 := &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;\&quot;what&#39;s that?\&quot;, he said&quot;&lt;/span&gt;    &lt;span style=&quot;color: #ffd700;&quot;&gt;//&lt;/span&gt;&lt;span style=&quot;color: #ffd700;&quot;&gt;&amp;#21487;&amp;#35299;&amp;#26512;&amp;#30340;&amp;#23383;&amp;#31526;&amp;#20018;&amp;#23383;&amp;#38754;&amp;#37327;&lt;/span&gt;
+text2 := &lt;span style=&quot;color: #ffa500;&quot;&gt;`&quot;what&#39;s that?&quot;, he said`&lt;/span&gt;      &lt;span style=&quot;color: #ffd700;&quot;&gt;//&lt;/span&gt;&lt;span style=&quot;color: #ffd700;&quot;&gt;&amp;#21407;&amp;#29983;&amp;#30340;&amp;#23383;&amp;#31526;&amp;#20018;&amp;#23383;&amp;#38754;&amp;#37327;&lt;/span&gt;
+radicais := &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;&amp;#8730;\u221A \U0000221A&quot;&lt;/span&gt;        &lt;span style=&quot;color: #ffd700;&quot;&gt;//&lt;/span&gt;&lt;span style=&quot;color: #ffd700;&quot;&gt;radicais == &quot;&amp;#8730; &amp;#8730; &amp;#8730;&quot;&lt;/span&gt;
+&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;table border=&quot;2&quot; cellspacing=&quot;0&quot; cellpadding=&quot;6&quot; rules=&quot;groups&quot; frame=&quot;hsides&quot;&gt;
+&lt;caption class=&quot;t-above&quot;&gt;&lt;span class=&quot;table-number&quot;&gt;Table 1:&lt;/span&gt; Go语言的字符串和字符转义&lt;/caption&gt;
+
+&lt;colgroup&gt;
+&lt;col  class=&quot;left&quot; /&gt;
+
+&lt;col  class=&quot;left&quot; /&gt;
+&lt;/colgroup&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;转义字符&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;含义&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;\\&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;反斜线&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;\ooo&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;3个8位数给定的八进制代码的Unicode字符&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;\&#39;&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;单引号，只用于字符字面量内&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;\&quot;&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;双引号，只用于可解析的字符串字面量内&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;\a&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;ASCII码响铃&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;\b&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;ASCII码退格&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;\f&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;ASCII码换页&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;\n&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;ASCII码换行&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;\r&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;ASCII码回车&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;\t&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;ASCII码制表&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;\uhhhh&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;4个16位数字给定的十六进制码点的Unicode字符&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;\Uhhhhhhhh&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;8个32位数字给定的十六进制码点的Unicode字符&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;\v&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;ASCII码的垂直制表符&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;\xhh&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;2个8位数字给定的十六进制码点的Unicode字符&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+
+&lt;table border=&quot;2&quot; cellspacing=&quot;0&quot; cellpadding=&quot;6&quot; rules=&quot;groups&quot; frame=&quot;hsides&quot;&gt;
+&lt;caption class=&quot;t-above&quot;&gt;&lt;span class=&quot;table-number&quot;&gt;Table 2:&lt;/span&gt; 字符串操作符&lt;/caption&gt;
+
+&lt;colgroup&gt;
+&lt;col  class=&quot;left&quot; /&gt;
+
+&lt;col  class=&quot;left&quot; /&gt;
+&lt;/colgroup&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;语法&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;描述/结果&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;s += t&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;将字符串t追加到字符串s的末尾&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;s + t&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;将字符串s和t级联&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;s[n]&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;字符串s中索引位置为n处的原始字节&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;s[n:m]&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;从位置n到位置m-1处取得的字符串&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;s[n:]&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;从位置n到位置len(s)-1处取得的字符串&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;s[:m]&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;从索引位置0到位置m-1处取得的字符串&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;len(s)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;字符串s中的字节数&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;len([]rune(s))&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;字符串s中字符的个数——可以使用更快的utf8.RuneCountInString()来代替&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;[]rune(s)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;将字符串s转换成一个Unicode码点&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;string(chars)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;将一个[]rune或者[]int32转换成字符串，这里假设rune和int32切片都是Unicode码点&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;[]byte(s)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;无副本地将字符串s转换成一个原始字节的切片数组，不保证转换的字节是合法的&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;string(bytes)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;无副本地将[]byte或者[]uint8转换成一个字符串类型，不保证转换的字节是合法的UTF8编码字节&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;string(i)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;将任意数字类型的i转换成字符串，假设i是一个Unicode码点。例如i的值是65,那返回值为A&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;strconv.Itoa(i)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;int类型i的字符串表示和一个错误值。&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;fmt.Sprint(x)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;任意类型x的字符串表示，例如，如果x是值为65的数字类型，那么返回值为65&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+
+
+&lt;div id=&quot;outline-container-sec-1-2&quot; class=&quot;outline-3&quot;&gt;
+&lt;h3 id=&quot;sec-1-2&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.2&lt;/span&gt; 比较字符串&lt;/h3&gt;
+&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-2&quot;&gt;
+&lt;p&gt;
+Go语言字符串支持常规的比较操作(&amp;lt;、&amp;lt;= 、==、!= 、&amp;gt; 、&amp;gt;=),这些比较操作符在内存中一个字节一个字节地比较字符串。
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-sec-1-3&quot; class=&quot;outline-3&quot;&gt;
+&lt;h3 id=&quot;sec-1-3&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.3&lt;/span&gt; 字符和字符串&lt;/h3&gt;
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-sec-1-4&quot; class=&quot;outline-3&quot;&gt;
+&lt;h3 id=&quot;sec-1-4&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.4&lt;/span&gt; 字符串索引与切片&lt;/h3&gt;
+&lt;/div&gt;
+&lt;div id=&quot;outline-container-sec-1-5&quot; class=&quot;outline-3&quot;&gt;
+&lt;h3 id=&quot;sec-1-5&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.5&lt;/span&gt; 使用fmt包来格式化字符串&lt;/h3&gt;
+&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-5&quot;&gt;
+&lt;/div&gt;&lt;div id=&quot;outline-container-sec-1-5-1&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1-5-1&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.5.1&lt;/span&gt; 格式化布尔值&lt;/h4&gt;
+&lt;/div&gt;
+&lt;div id=&quot;outline-container-sec-1-5-2&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1-5-2&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.5.2&lt;/span&gt; 格式化整数&lt;/h4&gt;
+&lt;/div&gt;
+&lt;div id=&quot;outline-container-sec-1-5-3&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1-5-3&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.5.3&lt;/span&gt; 格式化字符&lt;/h4&gt;
+&lt;/div&gt;
+&lt;div id=&quot;outline-container-sec-1-5-4&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1-5-4&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.5.4&lt;/span&gt; 格式化浮点数&lt;/h4&gt;
+&lt;/div&gt;
+&lt;div id=&quot;outline-container-sec-1-5-5&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1-5-5&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.5.5&lt;/span&gt; 格式化字符串和切片&lt;/h4&gt;
+&lt;/div&gt;
+&lt;div id=&quot;outline-container-sec-1-5-6&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1-5-6&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.5.6&lt;/span&gt; 为调试格式化&lt;/h4&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&quot;outline-container-sec-1-6&quot; class=&quot;outline-3&quot;&gt;
+&lt;h3 id=&quot;sec-1-6&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.6&lt;/span&gt; 其他字符处理相关的包&lt;/h3&gt;
+&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-6&quot;&gt;
+&lt;/div&gt;&lt;div id=&quot;outline-container-sec-1-6-1&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1-6-1&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.6.1&lt;/span&gt; string包&lt;/h4&gt;
+&lt;/div&gt;
+&lt;div id=&quot;outline-container-sec-1-6-2&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1-6-2&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.6.2&lt;/span&gt; strconv包&lt;/h4&gt;
+&lt;/div&gt;
+&lt;div id=&quot;outline-container-sec-1-6-3&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1-6-3&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.6.3&lt;/span&gt; utf8包&lt;/h4&gt;
+&lt;/div&gt;
+&lt;div id=&quot;outline-container-sec-1-6-4&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1-6-4&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.6.4&lt;/span&gt; unicode包&lt;/h4&gt;
+&lt;/div&gt;
+&lt;div id=&quot;outline-container-sec-1-6-5&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1-6-5&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.6.5&lt;/span&gt; regexp包&lt;/h4&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</description>
+        <pubDate>Sun, 26 Oct 2014 00:00:00 +0800</pubDate>
+        <link>http://xep007.github.io/golang/2014/10/26/Go%E8%AF%AD%E8%A8%80%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%89%EF%BC%89.html</link>
+        <guid isPermaLink="true">http://xep007.github.io/golang/2014/10/26/Go%E8%AF%AD%E8%A8%80%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%89%EF%BC%89.html</guid>
+        
+        <category>golang</category>
+        
+        
+        <category>golang</category>
+        
+      </item>
+    
+      <item>
+        <title>在org-mdoe表格中输入“|”符号</title>
+        <description>&lt;p&gt;
+今天在org-mode中制作表格，需要在单元格中输入“|”符号，可“|”符号是制表符，一直试都未能成功。没办法只好去找org-mode文档。终于在&lt;a href=&quot;http://orgmode.org/manual/Built_002din-table-editor.html#fnd-1&quot;&gt;org-mode文档&lt;/a&gt;最后一行找到了答案，记下来，备忘。
+&lt;/p&gt;
+
+&lt;p&gt;
+在需要输入“|”的地方输入\vert就行了。
+&lt;/p&gt;
+</description>
+        <pubDate>Sat, 25 Oct 2014 00:00:00 +0800</pubDate>
+        <link>http://xep007.github.io/org/2014/10/25/%E5%9C%A8org-mode%E8%A1%A8%E6%A0%BC%E4%B8%AD%E8%BE%93%E5%85%A5%7C%E7%AC%A6%E5%8F%B7.html</link>
+        <guid isPermaLink="true">http://xep007.github.io/org/2014/10/25/%E5%9C%A8org-mode%E8%A1%A8%E6%A0%BC%E4%B8%AD%E8%BE%93%E5%85%A5%7C%E7%AC%A6%E5%8F%B7.html</guid>
+        
+        <category>org</category>
+        
+        
+        <category>org</category>
+        
+      </item>
+    
+      <item>
+        <title>GNU Emacs Lisp编程入门笔记（八）</title>
+        <description>&lt;div id=&quot;table-of-contents&quot;&gt;
+&lt;h2&gt;Table of Contents&lt;/h2&gt;
+&lt;div id=&quot;text-table-of-contents&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1&quot;&gt;1. 第10章 找回文本&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-1&quot;&gt;1.1. kill环总览&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-2&quot;&gt;1.2. kill-ring-yank-pointer变量&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+
+&lt;div id=&quot;outline-container-sec-1&quot; class=&quot;outline-2&quot;&gt;
+&lt;h2 id=&quot;sec-1&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;1&lt;/span&gt; 第10章 找回文本&lt;/h2&gt;
+&lt;div class=&quot;outline-text-2&quot; id=&quot;text-1&quot;&gt;
+&lt;p&gt;
+在GNU Emacs中，无论你何时用&quot;kill&quot;命令从缓冲区中剪切了文本，都能用一个&quot;yank&quot;命令将其找回。
+&lt;/p&gt;
+
+&lt;p&gt;
+一个简单的C-y(yank)命令，就从kill-ring(kill环)中取出第一个元素插入到当前缓冲区中。如果C-y后紧跟一个M-y命令，则不是第一个元素而是第二个元素被插入到当前缓冲区中。连续使用M-y则会把第三个、第四个……等代替第二个元素插入到当前缓冲区。
+&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-sec-1-1&quot; class=&quot;outline-3&quot;&gt;
+&lt;h3 id=&quot;sec-1-1&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.1&lt;/span&gt; kill环总览&lt;/h3&gt;
+&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-1&quot;&gt;
+&lt;p&gt;
+kill环是文本字符串的一个列表。它类似于下面的列表：
+(&quot;some text&quot; &quot;a different piece of text&quot; &quot;yet more text&quot;)
+&lt;/p&gt;
+
+&lt;p&gt;
+能将文本从kill环中找回的函数有三个：yank函数，通常绑定到C-y; yank-pop函数，通常绑定到M-y;rotate-yank-pointer函数，这个函数被前面两个函数使用。
+&lt;/p&gt;
+
+&lt;p&gt;
+这些函数通过一个被称为kill-ring-ynak-pointer的变量指向kill环。事实上，yank函数和yank-pop函数中插入文本的代码都是下面这个表达式。
+&lt;/p&gt;
+
+&lt;p&gt;
+(insert (car kill-ring-yank-pointer))
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-sec-1-2&quot; class=&quot;outline-3&quot;&gt;
+&lt;h3 id=&quot;sec-1-2&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.2&lt;/span&gt; kill-ring-yank-pointer变量&lt;/h3&gt;
+&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-2&quot;&gt;
+&lt;p&gt;
+跟kill-ring一样，kill-ring-yank-pointer也是一个变量。它通过被绑定到相应的值来指向某些东西，这一点与其他Lisp变量没有什么两样。
+&lt;/p&gt;
+
+&lt;p&gt;
+因而，如果kill环的值是：
+&lt;/p&gt;
+
+&lt;p&gt;
+(&quot;some text&quot; &quot;a different piece of text&quot; &quot;yet more text&quot;)
+&lt;/p&gt;
+
+&lt;p&gt;
+并且kill-ring-yank-pointer变量指向其中的第二个元素，则kill-ring-yank-pointer变量的值就是：
+&lt;/p&gt;
+
+&lt;p&gt;
+(&quot;a different piece of text&quot; &quot;yet more text&quot;)
+&lt;/p&gt;
+
+&lt;p&gt;
+变量kill-ring和kill-ring-yank-pointer都是指针，第一个指向被剪切文本列表的第一个元素，第二个指向第二个元素。
+&lt;/p&gt;
+
+&lt;p&gt;
+rotate-yank-pointer函数改变kill-ring-yank-pointer变量指向的kill环中的元素。当这个元素指向的下一个元素超出了kill环的末尾，它自动将这个指针指向kill环的第一个元素。这就将一个列表自动转化为一个环的方法。
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</description>
+        <pubDate>Sat, 25 Oct 2014 00:00:00 +0800</pubDate>
+        <link>http://xep007.github.io/emacs/lisp/2014/10/25/gnu%20emacs%20lisp%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8%E7%AC%94%E8%AE%B0%EF%BC%88%E5%85%AB%EF%BC%89.html</link>
+        <guid isPermaLink="true">http://xep007.github.io/emacs/lisp/2014/10/25/gnu%20emacs%20lisp%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8%E7%AC%94%E8%AE%B0%EF%BC%88%E5%85%AB%EF%BC%89.html</guid>
+        
+        <category>lisp</category>
+        
+        
+        <category>emacs</category>
+        
+        <category>lisp</category>
+        
+      </item>
+    
+      <item>
+        <title>Go语言程序设计读书笔记（二）</title>
+        <description>&lt;div id=&quot;table-of-contents&quot;&gt;
+&lt;h2&gt;Table of Contents&lt;/h2&gt;
+&lt;div id=&quot;text-table-of-contents&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1&quot;&gt;1. 布尔与数值类型&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-1&quot;&gt;1.1. 基础&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-1-1&quot;&gt;1.1.1. Go语言的注释&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-1-2&quot;&gt;1.1.2. Go语言的标识符与关键字&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-1-3&quot;&gt;1.1.3. 常量和变量&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-2&quot;&gt;1.2. 布尔值和布尔表达式&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-3&quot;&gt;1.3. 数值类型&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-3-1&quot;&gt;1.3.1. 整形&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-3-2&quot;&gt;1.3.2. 浮点类型&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+
+&lt;div id=&quot;outline-container-sec-1&quot; class=&quot;outline-2&quot;&gt;
+&lt;h2 id=&quot;sec-1&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;1&lt;/span&gt; 布尔与数值类型&lt;/h2&gt;
+&lt;div class=&quot;outline-text-2&quot; id=&quot;text-1&quot;&gt;
+&lt;p&gt;
+这是关于过程式编程的四章内容中的第一章，它是Go语言编程的基础。
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&quot;outline-container-sec-1-1&quot; class=&quot;outline-3&quot;&gt;
+&lt;h3 id=&quot;sec-1-1&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.1&lt;/span&gt; 基础&lt;/h3&gt;
+&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-1&quot;&gt;
+&lt;/div&gt;&lt;div id=&quot;outline-container-sec-1-1-1&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1-1-1&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.1.1&lt;/span&gt; Go语言的注释&lt;/h4&gt;
+&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-1-1&quot;&gt;
+&lt;p&gt;
+行注释以“//”开始，块注释以 “/* */” 包裹。
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&quot;outline-container-sec-1-1-2&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1-1-2&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.1.2&lt;/span&gt; Go语言的标识符与关键字&lt;/h4&gt;
+&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-1-2&quot;&gt;
+&lt;p&gt;
+Go语言的标识符是一个非空的字母或数字串，第一个字符必须是字母，但不能是关键字的名字。字母可以下划线，或者Unicode编码分类中的任何字符。
+&lt;/p&gt;
+&lt;table border=&quot;2&quot; cellspacing=&quot;0&quot; cellpadding=&quot;6&quot; rules=&quot;groups&quot; frame=&quot;hsides&quot;&gt;
+&lt;caption class=&quot;t-above&quot;&gt;&lt;span class=&quot;table-number&quot;&gt;Table 1:&lt;/span&gt; Go语言的关键字&lt;/caption&gt;
+
+&lt;colgroup&gt;
+&lt;col  class=&quot;left&quot; /&gt;
+
+&lt;col  class=&quot;left&quot; /&gt;
+
+&lt;col  class=&quot;left&quot; /&gt;
+
+&lt;col  class=&quot;left&quot; /&gt;
+
+&lt;col  class=&quot;left&quot; /&gt;
+&lt;/colgroup&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;break&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;default&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;func&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;interface&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;select&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;case&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;defer&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;go&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;map&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;struct&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;chan&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;else&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;goto&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;package&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;switch&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;const&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;fallthrough&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;if&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;range&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;type&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;contiue&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;for&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;import&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;return&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;var&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+
+&lt;table border=&quot;2&quot; cellspacing=&quot;0&quot; cellpadding=&quot;6&quot; rules=&quot;groups&quot; frame=&quot;hsides&quot;&gt;
+&lt;caption class=&quot;t-above&quot;&gt;&lt;span class=&quot;table-number&quot;&gt;Table 2:&lt;/span&gt; Go语言预定义的标识符&lt;/caption&gt;
+
+&lt;colgroup&gt;
+&lt;col  class=&quot;left&quot; /&gt;
+
+&lt;col  class=&quot;left&quot; /&gt;
+
+&lt;col  class=&quot;left&quot; /&gt;
+
+&lt;col  class=&quot;left&quot; /&gt;
+
+&lt;col  class=&quot;left&quot; /&gt;
+&lt;/colgroup&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;append&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;copy&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;int8&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;nil&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;true&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;bool&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;delete&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;int16&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;Panic&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;uint&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;byte&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;error&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;int32&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;print&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;uint8&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;cap&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;false&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;int64&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;println&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;uint16&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;close&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;float32&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;iota&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;real&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;uint32&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;complex&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;float64&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;len&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;recover&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;uint64&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;complex64&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;imag&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;make&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;rune&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;uintptr&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;complex128&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;int&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;new&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;string&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;&amp;#xa0;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;
+标识符都是区分大小写的。
+空标识符(下划线)“ _ ”是一个占位符，用于在赋值操作的时候将某个值赋值给空标识符，从而达到丢弃该值的目的。
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&quot;outline-container-sec-1-1-3&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1-1-3&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.1.3&lt;/span&gt; 常量和变量&lt;/h4&gt;
+&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-1-3&quot;&gt;
+&lt;p&gt;
+常量用const关键字声明，变量用var关键字声明，也可用快捷变量声明语法。
+以下是一些声明的例子：  
+&lt;/p&gt;
+&lt;table border=&quot;2&quot; cellspacing=&quot;0&quot; cellpadding=&quot;6&quot; rules=&quot;groups&quot; frame=&quot;hsides&quot;&gt;
+
+
+&lt;colgroup&gt;
+&lt;col  class=&quot;left&quot; /&gt;
+
+&lt;col  class=&quot;left&quot; /&gt;
+&lt;/colgroup&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;const limit = 512&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;//常量，其类型兼容任何数字&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;const top uint16 = 1421&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;//常量，类型为uint16&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;start := -19&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;//变量，推断类型，快捷变量声明&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;end := int64(987654321)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;//变量，类型为int64&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;var i int&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;//变量，值为0,类型为int&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;var debug = false&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;//变量，推断类型 bool&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;checkResults := true&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;//变量，推断类型 bool&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;stepSize := 1.5&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;//变量，推断类型 float64&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;acronym := &quot;FOSS&quot;&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;//变量， 推断类型 string&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+
+&lt;p&gt;
+对于整形字面量Go语言推断其类型为int,对于浮点型字面量推断其为float64,对于复数推断其为complex128。通常的做法是不显式地声明其类型。
+在Go语言中，第一个数值常量的默认值都为0,每一个字符串都默认为空。
+&lt;/p&gt;
+
+&lt;p&gt;
+&lt;b&gt;枚举&lt;/b&gt;
+&lt;/p&gt;
+
+&lt;p&gt;
+需要设置多个常量时，不必重复使用const关键字，只需使用const把它们组合在一起。而iota则为枚举。
+&lt;/p&gt;
+&lt;div class=&quot;org-src-container&quot;&gt;
+
+&lt;pre class=&quot;src src-go&quot;&gt;&lt;span style=&quot;color: #00ffff;&quot;&gt;const&lt;/span&gt; Cyan = 0
+&lt;span style=&quot;color: #00ffff;&quot;&gt;const&lt;/span&gt; Magenta = 1
+&lt;span style=&quot;color: #00ffff;&quot;&gt;const&lt;/span&gt; Yellow = 2
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div class=&quot;org-src-container&quot;&gt;
+
+&lt;pre class=&quot;src src-go&quot;&gt;&lt;span style=&quot;color: #00ffff;&quot;&gt;const&lt;/span&gt; (
+    Cyan = 0
+    Magenta = 1
+    Yellow = 2
+)
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div class=&quot;org-src-container&quot;&gt;
+
+&lt;pre class=&quot;src src-go&quot;&gt;&lt;span style=&quot;color: #00ffff;&quot;&gt;const&lt;/span&gt; (
+    Cyan = &lt;span style=&quot;color: #fa8072;&quot;&gt;iota&lt;/span&gt;    &lt;span style=&quot;color: #ffd700;&quot;&gt;//&lt;/span&gt;&lt;span style=&quot;color: #ffd700;&quot;&gt;0&lt;/span&gt;
+    Magenta        &lt;span style=&quot;color: #ffd700;&quot;&gt;//&lt;/span&gt;&lt;span style=&quot;color: #ffd700;&quot;&gt;1&lt;/span&gt;
+    Yellow         &lt;span style=&quot;color: #ffd700;&quot;&gt;//&lt;/span&gt;&lt;span style=&quot;color: #ffd700;&quot;&gt;2&lt;/span&gt;
+)
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;
+以上3个代码片段的作用完全一样。
+声明一组变量的方式是：
+如果第一个常量的值没有显式设置，则它的值为0,第二个及以后的常量值默认为前一个常量的值。
+如果第一个常量的值设为iota,则它的值为0,第二个及以后的常量值默认递增1。
+关于iota,再来一个例子：
+&lt;/p&gt;
+&lt;div class=&quot;org-src-container&quot;&gt;
+
+&lt;pre class=&quot;src src-go&quot;&gt;&lt;span style=&quot;color: #00ffff;&quot;&gt;type&lt;/span&gt; &lt;span style=&quot;color: #ffff00;&quot;&gt;BitFlag&lt;/span&gt; &lt;span style=&quot;color: #ffff00;&quot;&gt;int&lt;/span&gt;
+&lt;span style=&quot;color: #00ffff;&quot;&gt;const&lt;/span&gt; (
+    Active EitFlag = 1 &amp;lt;&amp;lt; &lt;span style=&quot;color: #fa8072;&quot;&gt;iota&lt;/span&gt;             &lt;span style=&quot;color: #ffd700;&quot;&gt;//&lt;/span&gt;&lt;span style=&quot;color: #ffd700;&quot;&gt;1&amp;lt;&amp;lt;iota = 1 &amp;lt;&amp;lt; 0 == 1&lt;/span&gt;
+    Send        &lt;span style=&quot;color: #ffd700;&quot;&gt;//&lt;/span&gt;&lt;span style=&quot;color: #ffd700;&quot;&gt;&amp;#38544;&amp;#24335;&amp;#22320;&amp;#35774;&amp;#32622;&amp;#25104;BitFlag = 1 &amp;lt;&amp;lt; iota, 1 &amp;lt;&amp;lt; 1 == 2&lt;/span&gt;
+    Receive     &lt;span style=&quot;color: #ffd700;&quot;&gt;//&lt;/span&gt;&lt;span style=&quot;color: #ffd700;&quot;&gt;&amp;#38544;&amp;#24335;&amp;#22320;&amp;#35774;&amp;#32622;&amp;#25104;Receive = 1 &amp;lt;&amp;lt;iota,  1 &amp;lt;&amp;lt; 2 == 4&lt;/span&gt;
+)
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-sec-1-2&quot; class=&quot;outline-3&quot;&gt;
+&lt;h3 id=&quot;sec-1-2&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.2&lt;/span&gt; 布尔值和布尔表达式&lt;/h3&gt;
+&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-2&quot;&gt;
+&lt;p&gt;
+Go语言内置了布尔值true和false。不支持隐式转化。
+&lt;/p&gt;
+&lt;table border=&quot;2&quot; cellspacing=&quot;0&quot; cellpadding=&quot;6&quot; rules=&quot;groups&quot; frame=&quot;hsides&quot;&gt;
+
+
+&lt;colgroup&gt;
+&lt;col  class=&quot;left&quot; /&gt;
+
+&lt;col  class=&quot;left&quot; /&gt;
+&lt;/colgroup&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th scope=&quot;col&quot; class=&quot;left&quot;&gt;语法&lt;/th&gt;
+&lt;th scope=&quot;col&quot; class=&quot;left&quot;&gt;描述/结果&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;!b&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;逻辑非，如b为true,则结果为false&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;a &amp;vert;&amp;vert; b&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;只要a或b任一个为true,则结果为true&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;a &amp;amp;&amp;amp; b&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;如果a和b都为true,则结果为true&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;x &amp;lt; y&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;如x的值小于y，则结果为true&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;x &amp;lt;= y&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;如x的值小于或等于y,则结果为true&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;x == y&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;如x的值等于y，则结果为true&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;x != y&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;如x的值不等于y,则结果为true&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;x &amp;gt;= y&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;如x的值大于或等于y,则结果为true&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;x &amp;gt; y&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;如x的值大于y，则结果为true&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;
+布尔值和表达式可以用于if语句中，也可用于for语句的条件中，以及switch语句的case子句的条件判断中。
+&lt;/p&gt;
+
+&lt;p&gt;
+二元逻辑操作符（||和&amp;amp;&amp;amp;）,使用短路逻辑。
+&lt;/p&gt;
+
+&lt;p&gt;
+比较操作符（&amp;lt;、&amp;lt;=、==、!=、&amp;gt;=、&amp;gt;）进行比较的值，这两个值必须是相同类型的值。如果是接口，必须是实现了相同的接口类型。
+&lt;/p&gt;
+
+&lt;p&gt;
+==、!=操作符可以用于任何可比较的类型，包括数组和结构体，只要它们的元素和成员变量与==和!=操作符相兼容。这些操作符不能用于比较切片(slice)。
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-sec-1-3&quot; class=&quot;outline-3&quot;&gt;
+&lt;h3 id=&quot;sec-1-3&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.3&lt;/span&gt; 数值类型&lt;/h3&gt;
+&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-3&quot;&gt;
+&lt;p&gt;
+Go语言内置了大量数值类型，这些都是大小不限的（只受限于机器的内存）。每一个数值类型都不同，因此不能在不同数值类型（例如int和int32）之间进行二进制数值运算或者比较操作。无类型的数值常量可以兼容表达式中任何（内置的）类型的数值，因此可直接将一个无类型数值常量与另一个数值做加法，或者将一个无类型的常量与另一个数值进行比较，只要这个数值是内置类型的数值。
+&lt;/p&gt;
+
+&lt;p&gt;
+如果非得在不同类型数值之间进行运算和比较操作，就必须进行类型转换，通常将类型转换成最大的类型以防止精度丢失。类型转换采用type(value)的形式，只要合法，就能转换成功——即使会导致数据丢失。请看以下例子：
+&lt;/p&gt;
+
+&lt;div class=&quot;org-src-container&quot;&gt;
+
+&lt;pre class=&quot;src src-go&quot;&gt;&lt;span style=&quot;color: #00ffff;&quot;&gt;const&lt;/span&gt; factor = 3                          &lt;span style=&quot;color: #ffd700;&quot;&gt;//&lt;/span&gt;&lt;span style=&quot;color: #ffd700;&quot;&gt;factor&amp;#19982;&amp;#20219;&amp;#20309;&amp;#25968;&amp;#20540;&amp;#31867;&amp;#22411;&amp;#20860;&amp;#23481;&lt;/span&gt;
+i := 20000                                &lt;span style=&quot;color: #ffd700;&quot;&gt;//&lt;/span&gt;&lt;span style=&quot;color: #ffd700;&quot;&gt;&amp;#36890;&amp;#36807;&amp;#25512;&amp;#26029;&amp;#24471;&amp;#20986;i&amp;#30340;&amp;#31867;&amp;#22411;&amp;#20026;int&lt;/span&gt;
+i *= factor
+j := &lt;span style=&quot;color: #00fa9a;&quot;&gt;int16&lt;/span&gt;(20)                           &lt;span style=&quot;color: #ffd700;&quot;&gt;//&lt;/span&gt;&lt;span style=&quot;color: #ffd700;&quot;&gt;j&amp;#30340;&amp;#31867;&amp;#22411;&amp;#20026;int16,&amp;#19982;&amp;#36825;&amp;#26679;&amp;#23450;&amp;#20041;&amp;#25928;&amp;#26524;&amp;#19968;&amp;#26679;&amp;#65306;var j int16 = 20&lt;/span&gt;
+i += &lt;span style=&quot;color: #00fa9a;&quot;&gt;int&lt;/span&gt;(j)                              &lt;span style=&quot;color: #ffd700;&quot;&gt;//&lt;/span&gt;&lt;span style=&quot;color: #ffd700;&quot;&gt;&amp;#31867;&amp;#22411;&amp;#24517;&amp;#39035;&amp;#21305;&amp;#37197;&amp;#65292;&amp;#22240;&amp;#27492;&amp;#38656;&amp;#35201;&amp;#36716;&amp;#25442;&lt;/span&gt;
+k := &lt;span style=&quot;color: #00fa9a;&quot;&gt;uint8&lt;/span&gt;(0)                            &lt;span style=&quot;color: #ffd700;&quot;&gt;//&lt;/span&gt;&lt;span style=&quot;color: #ffd700;&quot;&gt;&amp;#25928;&amp;#26524;&amp;#19982;&amp;#36825;&amp;#26679;&amp;#23450;&amp;#20041;&amp;#19968;&amp;#26679;&amp;#65306;var k uint8&lt;/span&gt;
+k = &lt;span style=&quot;color: #00fa9a;&quot;&gt;uint8&lt;/span&gt;(i)                             &lt;span style=&quot;color: #ffd700;&quot;&gt;//&lt;/span&gt;&lt;span style=&quot;color: #ffd700;&quot;&gt;&amp;#36716;&amp;#25442;&amp;#25104;&amp;#21151;&amp;#65292;&amp;#20294;&amp;#26159;k&amp;#30340;&amp;#20540;&amp;#34987;&amp;#25130;&amp;#20026;8&amp;#20301;&lt;/span&gt;
+fmt.&lt;span style=&quot;color: #00fa9a;&quot;&gt;Println&lt;/span&gt;(i, j, k)                     &lt;span style=&quot;color: #ffd700;&quot;&gt;//&lt;/span&gt;&lt;span style=&quot;color: #ffd700;&quot;&gt;&amp;#25171;&amp;#21360;&amp;#65306;60020 20 16&lt;/span&gt;
+&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;
+Go语言的算术操作符可用于数值操作。
+&lt;/p&gt;
+&lt;table border=&quot;2&quot; cellspacing=&quot;0&quot; cellpadding=&quot;6&quot; rules=&quot;groups&quot; frame=&quot;hsides&quot;&gt;
+&lt;caption class=&quot;t-above&quot;&gt;&lt;span class=&quot;table-number&quot;&gt;Table 4:&lt;/span&gt; 可用于任何内置的数值的算术运算操作符&lt;/caption&gt;
+
+&lt;colgroup&gt;
+&lt;col  class=&quot;left&quot; /&gt;
+
+&lt;col  class=&quot;left&quot; /&gt;
+&lt;/colgroup&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;语法&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;描述/结果&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;+x&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;正数x&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;-x&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;x的负值&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;x++&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;为x加一个无类型的常量1&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;x--&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;为x减去一个无类型的常量1&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;x += y&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;将x加上y&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;x -= y&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;将x减去y&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;x *= y&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;将x乘以y&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;x /= y&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;将x除以y，如果这些数字都是整数那么任何余数都被丢弃，除以0会导致运行时异常&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;x + y&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;x与y的和&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;x - y&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;x减去y的结果&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;x * y&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;x乘以y的结果&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;x / y&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;x除以y的结果，如果这些数字都是整数那么任何余数都被丢弃，除以0会导致运行时异常&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;
+虽然Go语言的运算优先级比较合理，但是提倡进行多运算符操作进使用括号（）来清晰表达运算顺序。
+&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-sec-1-3-1&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1-3-1&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.3.1&lt;/span&gt; 整形&lt;/h4&gt;
+&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-3-1&quot;&gt;
+&lt;p&gt;
+Go语言提供11种整型，包括5种有符号，5种无符号，再加上一种用于存储指针的整型。byte是uint8的别名，rune是int32的别名。正常情况下，我们用int整型。
+&lt;/p&gt;
+
+&lt;table border=&quot;2&quot; cellspacing=&quot;0&quot; cellpadding=&quot;6&quot; rules=&quot;groups&quot; frame=&quot;hsides&quot;&gt;
+&lt;caption class=&quot;t-above&quot;&gt;&lt;span class=&quot;table-number&quot;&gt;Table 5:&lt;/span&gt; Go语言的整数类型及其范围&lt;/caption&gt;
+
+&lt;colgroup&gt;
+&lt;col  class=&quot;left&quot; /&gt;
+
+&lt;col  class=&quot;left&quot; /&gt;
+&lt;/colgroup&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;类型&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;取值范围&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;byte&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;等同于uint8&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;int&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;依赖不同平台，可以是int32或者int64&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;int8&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;[-128, 127]&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;int16&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;[-32768, 32767&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;int32&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;[-2147483648, 2147483647]&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;int64&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;[-9223372036854775808, 9223372036854775807]&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;rune&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;等同于int32&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;uint&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;依赖不同平台下的实现，可以是uint32或uint64&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;uint8&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;[0, 255]&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;uint16&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;[0, 65535&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;uint32&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;[0, 4294967295]&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;uint64&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;[0, 18446744073709551615]&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;uintptr&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;一个可以恰好容纳指针值的无符号整数类型，32位平台是uint32,64位平台是uint64&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;
+Go语言整形支持“table 3”中所列的所有算术运算符，同时也支持下表所列的算术和位运算。
+&lt;/p&gt;
+
+&lt;table border=&quot;2&quot; cellspacing=&quot;0&quot; cellpadding=&quot;6&quot; rules=&quot;groups&quot; frame=&quot;hsides&quot;&gt;
+
+
+&lt;colgroup&gt;
+&lt;col  class=&quot;left&quot; /&gt;
+
+&lt;col  class=&quot;left&quot; /&gt;
+&lt;/colgroup&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;语法&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;含义/结果&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;^x&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;按位取反&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;x %= y&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;将x的值设为x除以y的余数，除0会导致异常&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;x &amp;amp;= y&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;将x的值设为x和y按位与(AND)的结果&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;x &amp;vert;= y&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;将x的值设为x和y按位或(OR)的结果&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;x ^= y&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;将x的值设为x和y按位异或(XOR)的结果&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;x &amp;gt;&amp;gt;= u&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;将x的值设为x右移u个位的结果&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;x &amp;lt;&amp;lt;= u&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;将x的值设为x左移u个位的结果&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;x % y&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;结果为x除以y的余数&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;x &amp;amp; y&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;结果为x和y按位与(AND)&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;x &amp;vert; y&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;结果为x和y按位或(OR)&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;x ^ y&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;结果为x和y按位异或(XOR)&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;x &amp;amp;^ y&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;结果为x和y按位与非(ANDNOT)&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;x &amp;lt;&amp;lt; u&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;结果为x左移u个位&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;x &amp;gt;&amp;gt; u　　&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;结果为x右称u个位&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;
+&lt;b&gt;大整数&lt;/b&gt;
+&lt;/p&gt;
+
+&lt;p&gt;
+有时我们需要使用甚至超过int64和uint64位的数进行完美计算。这时，Go语言标准库提供了big.Int型用于整数，big.Rat用于有理数。
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-sec-1-3-2&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1-3-2&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.3.2&lt;/span&gt; 浮点类型&lt;/h4&gt;
+&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-3-2&quot;&gt;
+&lt;p&gt;
+Go语言提供了两种类型的浮点类型和两种类型的复数类型。
+&lt;/p&gt;
+&lt;table border=&quot;2&quot; cellspacing=&quot;0&quot; cellpadding=&quot;6&quot; rules=&quot;groups&quot; frame=&quot;hsides&quot;&gt;
+&lt;caption class=&quot;t-above&quot;&gt;&lt;span class=&quot;table-number&quot;&gt;Table 6:&lt;/span&gt; Go语言的浮点类型和复数类型&lt;/caption&gt;
+
+&lt;colgroup&gt;
+&lt;col  class=&quot;left&quot; /&gt;
+
+&lt;col  class=&quot;left&quot; /&gt;
+
+&lt;col  class=&quot;left&quot; /&gt;
+&lt;/colgroup&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;浮点类型&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;float32&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;float64&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;复数类型&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;complex64&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;complex128&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</description>
+        <pubDate>Sat, 25 Oct 2014 00:00:00 +0800</pubDate>
+        <link>http://xep007.github.io/golang/2014/10/25/Go%E8%AF%AD%E8%A8%80%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%EF%BC%89.html</link>
+        <guid isPermaLink="true">http://xep007.github.io/golang/2014/10/25/Go%E8%AF%AD%E8%A8%80%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%EF%BC%89.html</guid>
+        
+        <category>golang</category>
+        
+        
+        <category>golang</category>
+        
+      </item>
     
       <item>
         <title>GNU Emacs Lisp编程入门笔记（七）</title>
@@ -230,6 +1657,8 @@ defvar与setq的不同之处：
         <pubDate>Thu, 23 Oct 2014 00:00:00 +0800</pubDate>
         <link>http://xep007.github.io/emacs/lisp/2014/10/23/gnu%20emacs%20lisp%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%83%EF%BC%89.html</link>
         <guid isPermaLink="true">http://xep007.github.io/emacs/lisp/2014/10/23/gnu%20emacs%20lisp%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%83%EF%BC%89.html</guid>
+        
+        <category>lisp</category>
         
         
         <category>emacs</category>
@@ -470,6 +1899,8 @@ golang.org被墙，上不了。可在本地查找golang文档。具体做法如�
         <pubDate>Thu, 23 Oct 2014 00:00:00 +0800</pubDate>
         <link>http://xep007.github.io/golang/2014/10/23/Go%E8%AF%AD%E8%A8%80%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%80%EF%BC%89.html</link>
         <guid isPermaLink="true">http://xep007.github.io/golang/2014/10/23/Go%E8%AF%AD%E8%A8%80%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%80%EF%BC%89.html</guid>
+        
+        <category>golang</category>
         
         
         <category>golang</category>
@@ -927,1133 +2358,6 @@ let表达式的主体由一个save-excursion表达式组成。它保存位点和
         <category>emacs</category>
         
         <category>lisp</category>
-        
-      </item>
-    
-      <item>
-        <title>GNU Emacs Lisp编程入门笔记（二）</title>
-        <description>&lt;div id=&quot;table-of-contents&quot;&gt;
-&lt;h2&gt;Table of Contents&lt;/h2&gt;
-&lt;div id=&quot;text-table-of-contents&quot;&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1&quot;&gt;1. 第2章 求值实践&lt;/a&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-1&quot;&gt;1.1. 缓冲区名&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-2&quot;&gt;1.2. 获得缓冲区&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-3&quot;&gt;1.3. 切换缓冲区&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-4&quot;&gt;1.4. 缓冲区大小和位点的定位&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div id=&quot;outline-container-sec-1&quot; class=&quot;outline-2&quot;&gt;
-&lt;h2 id=&quot;sec-1&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;1&lt;/span&gt; 第2章 求值实践&lt;/h2&gt;
-&lt;div class=&quot;outline-text-2&quot; id=&quot;text-1&quot;&gt;
-&lt;/div&gt;&lt;div id=&quot;outline-container-sec-1-1&quot; class=&quot;outline-3&quot;&gt;
-&lt;h3 id=&quot;sec-1-1&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.1&lt;/span&gt; 缓冲区名&lt;/h3&gt;
-&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-1&quot;&gt;
-&lt;p&gt;
-缓冲区和文件是不同的概念。文件是永久保存在计算机中的信息。缓冲区则是Emacs内部的信息，如果不保存，则Emacs关闭后缓冲区中的内容将消失。
-打开Emacs,在&quot;&lt;b&gt;scratch&lt;/b&gt;&quot;缓冲区中对(buffer-name)求值将显示&quot;&lt;b&gt;scratch&lt;/b&gt;&quot;，对&quot;(buffer-file-name)&quot;进行求值则会显示&quot;nil&quot;。
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id=&quot;outline-container-sec-1-2&quot; class=&quot;outline-3&quot;&gt;
-&lt;h3 id=&quot;sec-1-2&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.2&lt;/span&gt; 获得缓冲区&lt;/h3&gt;
-&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-2&quot;&gt;
-&lt;p&gt;
-buffer-name函数返回缓冲区的名字。
-current-buffer函数获得缓冲区本身。
-other-buffer函数返回最近使用过的缓冲区。
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id=&quot;outline-container-sec-1-3&quot; class=&quot;outline-3&quot;&gt;
-&lt;h3 id=&quot;sec-1-3&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.3&lt;/span&gt; 切换缓冲区&lt;/h3&gt;
-&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-3&quot;&gt;
-&lt;p&gt;
-当other-buffer函数被一个函数用作参量时，通过switch-to-buffer加上other-buff函数可以切换到另外一个缓冲区。
-&lt;/p&gt;
-&lt;div class=&quot;org-src-container&quot;&gt;
-
-&lt;pre class=&quot;src src-lisp&quot;&gt;(switch-to-buffer (other-buffer))
-&lt;/pre&gt;
-&lt;/div&gt;
-&lt;p&gt;
-在实际应用中用到更多的函数是set-buffer。
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id=&quot;outline-container-sec-1-4&quot; class=&quot;outline-3&quot;&gt;
-&lt;h3 id=&quot;sec-1-4&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.4&lt;/span&gt; 缓冲区大小和位点的定位&lt;/h3&gt;
-&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-4&quot;&gt;
-&lt;ul class=&quot;org-ul&quot;&gt;
-&lt;li&gt;buffer-size函数。这个函数给出当前缓冲区的大小，即缓冲区中字符数的计数。
-&lt;/li&gt;
-&lt;li&gt;point函数。返回光标所处位置，即从缓冲区首字符到光标所在位置之间的字符数。
-&lt;/li&gt;
-&lt;li&gt;point-min函数。返回当前缓冲区中位点的最小可能值。一般是1。
-&lt;/li&gt;
-&lt;li&gt;point-max函数。返回当前缓冲区中位点的最大可能值。
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-</description>
-        <pubDate>Sun, 19 Oct 2014 00:00:00 +0800</pubDate>
-        <link>http://xep007.github.io/emacs/lisp/2014/10/19/gnu%20emacs%20lisp%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%EF%BC%89.html</link>
-        <guid isPermaLink="true">http://xep007.github.io/emacs/lisp/2014/10/19/gnu%20emacs%20lisp%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%EF%BC%89.html</guid>
-        
-        <category>emacs</category>
-        
-        
-        <category>emacs</category>
-        
-        <category>lisp</category>
-        
-      </item>
-    
-      <item>
-        <title>GNU Emacs Lisp编程入门笔记（三）</title>
-        <description>&lt;div id=&quot;table-of-contents&quot;&gt;
-&lt;h2&gt;Table of Contents&lt;/h2&gt;
-&lt;div id=&quot;text-table-of-contents&quot;&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1&quot;&gt;1. 第3章 如何编写函数定义&lt;/a&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-1&quot;&gt;1.1. defun特殊表&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-2&quot;&gt;1.2. 安装函数定义&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-3&quot;&gt;1.3. 使函数成为交互函数&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-4&quot;&gt;1.4. interactive函数的不同选项&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-5&quot;&gt;1.5. 永久地安装代码&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-6&quot;&gt;1.6. let函数&lt;/a&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-6-1&quot;&gt;1.6.1. let表达式的各个部分&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-6-2&quot;&gt;1.6.2. let表达式例子&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-6-3&quot;&gt;1.6.3. let语句中的未初始化变量&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-7&quot;&gt;1.7. if特殊表&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-8&quot;&gt;1.8. if-then-else表达式&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-9&quot;&gt;1.9. Lisp中的真和假&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-10&quot;&gt;1.10. save-excursion函数&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-11&quot;&gt;1.11. 小结&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div id=&quot;outline-container-sec-1&quot; class=&quot;outline-2&quot;&gt;
-&lt;h2 id=&quot;sec-1&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;1&lt;/span&gt; 第3章 如何编写函数定义&lt;/h2&gt;
-&lt;div class=&quot;outline-text-2&quot; id=&quot;text-1&quot;&gt;
-&lt;/div&gt;&lt;div id=&quot;outline-container-sec-1-1&quot; class=&quot;outline-3&quot;&gt;
-&lt;h3 id=&quot;sec-1-1&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.1&lt;/span&gt; defun特殊表&lt;/h3&gt;
-&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-1&quot;&gt;
-&lt;p&gt;
-在Lisp中，一个类似于mark-whole-buffer这样的符号已经有代码与之联系了，这告诉计算机当函数被调用时要做些什么。该代码被称作函数定义，它是通过对一个以符号defun开头的Lisp表达式求值而被建立的。因为defun不以通常的方式对它的参量求值，因此它被称为特殊表。
-一个函数定义在defun符号之后最多有五个部分：
-&lt;/p&gt;
-&lt;ul class=&quot;org-ul&quot;&gt;
-&lt;li&gt;符号名，这是函数定义将要依附的符号。
-&lt;/li&gt;
-&lt;li&gt;将要传送给函数的参量列表。如果无参量，那就是空列表（）。
-&lt;/li&gt;
-&lt;li&gt;描述这个函数的文档。
-&lt;/li&gt;
-&lt;li&gt;一个使函数成为交互函数的表达式，这是可选的。因此，可以通过键入M-x和函数名来使用它，或者键入一个事先设定的快捷键。
-&lt;/li&gt;
-&lt;li&gt;指导计算机如何运行的代码，这是函数定义的主体。
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;div class=&quot;org-src-container&quot;&gt;
-
-&lt;pre class=&quot;src src-lisp&quot;&gt;(&lt;span style=&quot;color: #00ffff;&quot;&gt;defun&lt;/span&gt; &lt;span style=&quot;color: #00fa9a;&quot;&gt;function-name&lt;/span&gt; (arguments...)
-    &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;optional-documentation...&quot;&lt;/span&gt;
-    (interactive argument-passing-info) &lt;span style=&quot;color: #ffd700;&quot;&gt;;&lt;/span&gt;&lt;span style=&quot;color: #ffd700;&quot;&gt;optional&lt;/span&gt;
-    body...)
-&lt;/pre&gt;
-&lt;/div&gt;
-&lt;p&gt;
-例子：
-&lt;/p&gt;
-&lt;div class=&quot;org-src-container&quot;&gt;
-
-&lt;pre class=&quot;src src-lisp&quot;&gt;(&lt;span style=&quot;color: #00ffff;&quot;&gt;defun&lt;/span&gt; &lt;span style=&quot;color: #00fa9a;&quot;&gt;multiply-by-seven&lt;/span&gt; (number)
-    &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;Multiply NUMBER by seven.&quot;&lt;/span&gt;
-    (* 7 number))
-&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div id=&quot;outline-container-sec-1-2&quot; class=&quot;outline-3&quot;&gt;
-&lt;h3 id=&quot;sec-1-2&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.2&lt;/span&gt; 安装函数定义&lt;/h3&gt;
-&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-2&quot;&gt;
-&lt;p&gt;
-对函数求值（即运行它，光标移到函数末尾执行C-j或者C-c C-e）将返回函数本身，这一动作就是函数的安装。不过这是临时安装，Emacs关闭后这个函数也将失去。
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id=&quot;outline-container-sec-1-3&quot; class=&quot;outline-3&quot;&gt;
-&lt;h3 id=&quot;sec-1-3&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.3&lt;/span&gt; 使函数成为交互函数&lt;/h3&gt;
-&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-3&quot;&gt;
-&lt;p&gt;
-使一个函数成为交互函数可以这样实现：在函数文档后面增加一个以特殊表interactive开始的列表。
-&lt;/p&gt;
-&lt;div class=&quot;org-src-container&quot;&gt;
-
-&lt;pre class=&quot;src src-lisp&quot;&gt;(&lt;span style=&quot;color: #00ffff;&quot;&gt;defun&lt;/span&gt; &lt;span style=&quot;color: #00fa9a;&quot;&gt;multiply-by-seven&lt;/span&gt; (number)
-    &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;Multiply NUMBER by seven.&quot;&lt;/span&gt;
-    (interactive &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;p&quot;&lt;/span&gt;)
-    (message &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;The result is %d.&quot;&lt;/span&gt; (* 7 number)))
-&lt;/pre&gt;
-&lt;/div&gt;
-&lt;p&gt;
-message是一个Emacs Lisp函数（应该可以叫库函数吧，就如printf）。其作用是将一行消息传递给用户。
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id=&quot;outline-container-sec-1-4&quot; class=&quot;outline-3&quot;&gt;
-&lt;h3 id=&quot;sec-1-4&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.4&lt;/span&gt; interactive函数的不同选项&lt;/h3&gt;
-&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-4&quot;&gt;
-&lt;p&gt;
-在上面的例子中，myltiply-by-seven函数使用&quot;p&quot;作为交互命令interactive的参量。这个参量告诉Emacs将你正在键入的C-u加上一个数字或META加上一个数字解释为一个命令，用来将这个数字作为参量传递给函数。Emacs有多于20个为interactive预先定义好的字符。interactive可以有多个参量。
-&lt;/p&gt;
-&lt;div class=&quot;org-src-container&quot;&gt;
-
-&lt;pre class=&quot;src src-lisp&quot;&gt;(&lt;span style=&quot;color: #00ffff;&quot;&gt;defun&lt;/span&gt; &lt;span style=&quot;color: #00fa9a;&quot;&gt;name-of-function&lt;/span&gt; (buffer start end)
-    &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;documentation...&quot;&lt;/span&gt;
-    (interactive &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;BAppend to buffer: \nr&quot;&lt;/span&gt;)
-    boy-of-function...)
-&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id=&quot;outline-container-sec-1-5&quot; class=&quot;outline-3&quot;&gt;
-&lt;h3 id=&quot;sec-1-5&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.5&lt;/span&gt; 永久地安装代码&lt;/h3&gt;
-&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-5&quot;&gt;
-&lt;p&gt;
-永久安装代码有三种办法：
-&lt;/p&gt;
-&lt;ul class=&quot;org-ul&quot;&gt;
-&lt;li&gt;个人使用，可以写入.emacs中。
-&lt;/li&gt;
-&lt;li&gt;可以将函数定义放在一个或多个文件中（一般以el作为后缀），然后使用load函数让Emacs对它们求值。
-&lt;/li&gt;
-&lt;li&gt;所有用户使用的，一般将它放在site-init.el文件中，它在Emacs启动时被加载。
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id=&quot;outline-container-sec-1-6&quot; class=&quot;outline-3&quot;&gt;
-&lt;h3 id=&quot;sec-1-6&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.6&lt;/span&gt; let函数&lt;/h3&gt;
-&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-6&quot;&gt;
-&lt;p&gt;
-let是一个特殊表，用于将一个符号绑定到一个值上。可以理解为声明局部变量，它的作用域为let表达式。
-let可以创建一个或多个变量。也可给每一个变量赋初值。初值可以是数字、字符串或nil(空)。
-let表达式返回值为表达式主体中最后一个表达式的值。
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;div id=&quot;outline-container-sec-1-6-1&quot; class=&quot;outline-4&quot;&gt;
-&lt;h4 id=&quot;sec-1-6-1&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.6.1&lt;/span&gt; let表达式的各个部分&lt;/h4&gt;
-&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-6-1&quot;&gt;
-&lt;p&gt;
-let表达式是一个具有三个部分的列表。
-&lt;/p&gt;
-&lt;ul class=&quot;org-ul&quot;&gt;
-&lt;li&gt;let符号
-&lt;/li&gt;
-&lt;li&gt;列表，称为变量列表(varlist),这个列表的每个元素是一个符号或一个两元素的列表，而它的第一个元素一定是一个符号。
-&lt;/li&gt;
-&lt;li&gt;表达式主体，由一个或多个列表组成。
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;
-let表达式的模板如下：
-&lt;/p&gt;
-&lt;div class=&quot;org-src-container&quot;&gt;
-
-&lt;pre class=&quot;src src-lisp&quot;&gt;(&lt;span style=&quot;color: #00ffff;&quot;&gt;let&lt;/span&gt; varlist body...)
-&lt;/pre&gt;
-&lt;/div&gt;
-&lt;p&gt;
-如果变量列表是由两元素列表组成，其模板如下：
-&lt;/p&gt;
-&lt;div class=&quot;org-src-container&quot;&gt;
-
-&lt;pre class=&quot;src src-lisp&quot;&gt;(&lt;span style=&quot;color: #00ffff;&quot;&gt;let&lt;/span&gt; ((variable value)
-     (variable value)
-     ...)
-     body...)
-&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id=&quot;outline-container-sec-1-6-2&quot; class=&quot;outline-4&quot;&gt;
-&lt;h4 id=&quot;sec-1-6-2&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.6.2&lt;/span&gt; let表达式例子&lt;/h4&gt;
-&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-6-2&quot;&gt;
-&lt;div class=&quot;org-src-container&quot;&gt;
-
-&lt;pre class=&quot;src src-lisp&quot;&gt;(&lt;span style=&quot;color: #00ffff;&quot;&gt;let&lt;/span&gt; ((zebra &#39;stripes)
-      (tiger &#39;fierce))
-    (message &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;One kind of animal has %s and another is %s.&quot;&lt;/span&gt; 
-         zebra tiger))
-&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id=&quot;outline-container-sec-1-6-3&quot; class=&quot;outline-4&quot;&gt;
-&lt;h4 id=&quot;sec-1-6-3&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.6.3&lt;/span&gt; let语句中的未初始化变量&lt;/h4&gt;
-&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-6-3&quot;&gt;
-&lt;p&gt;
-如果let语句中未对变量赋初值，则默认为nil。
-&lt;/p&gt;
-&lt;div class=&quot;org-src-container&quot;&gt;
-
-&lt;pre class=&quot;src src-lisp&quot;&gt;(&lt;span style=&quot;color: #00ffff;&quot;&gt;let&lt;/span&gt; ((birch 3)
-      pine
-      fir
-      (oak &#39;some))
-    (message
-     &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;Here are %d variables with %s, %s, and %s value.&quot;&lt;/span&gt;
-      birch pine fir oak))
-&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id=&quot;outline-container-sec-1-7&quot; class=&quot;outline-3&quot;&gt;
-&lt;h3 id=&quot;sec-1-7&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.7&lt;/span&gt; if特殊表&lt;/h3&gt;
-&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-7&quot;&gt;
-&lt;p&gt;
-if是个条件特殊表。编写一个if表达式时，真假测试经常与if写在同一行，执行语句则另起一行。
-例子:
-&lt;/p&gt;
-&lt;div class=&quot;org-src-container&quot;&gt;
-
-&lt;pre class=&quot;src src-lisp&quot;&gt;(&lt;span style=&quot;color: #00ffff;&quot;&gt;defun&lt;/span&gt; &lt;span style=&quot;color: #00fa9a;&quot;&gt;type-of-animal&lt;/span&gt; (characteristic)
-    &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;Print message in echo area depending on CHARACTERISTIC.&lt;/span&gt;
-&lt;span style=&quot;color: #ffa500;&quot;&gt;    If the CHARACTERISTIC is the symbol &#39;fierce&#39;,&lt;/span&gt;
-&lt;span style=&quot;color: #ffa500;&quot;&gt;    then warn of a tiger.&quot;&lt;/span&gt;
-    (&lt;span style=&quot;color: #00ffff;&quot;&gt;if&lt;/span&gt; (equal characteristic &#39;fierce)
-        (message &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;It&#39;t a tiger&quot;&lt;/span&gt;)))
-&lt;/pre&gt;
-&lt;/div&gt;
-&lt;p&gt;
-在Lisp中，equal是判定它的第一个参量是否等于第二个参量的函数。
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id=&quot;outline-container-sec-1-8&quot; class=&quot;outline-3&quot;&gt;
-&lt;h3 id=&quot;sec-1-8&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.8&lt;/span&gt; if-then-else表达式&lt;/h3&gt;
-&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-8&quot;&gt;
-&lt;p&gt;
-在elisp中，if-then-else判断只出现if,默认第二个参量为then部，第三个为else部。else部的缩进比then部的小。
-模板如下：
-&lt;/p&gt;
-&lt;div class=&quot;org-src-container&quot;&gt;
-
-&lt;pre class=&quot;src src-lisp&quot;&gt;(&lt;span style=&quot;color: #00ffff;&quot;&gt;if&lt;/span&gt; true-or-false-test
-    (action-to-carry-out-if-the-test-returns-true)
-  (action-to-carry-out-if-the-test-returns-false))
-&lt;/pre&gt;
-&lt;/div&gt;
-&lt;p&gt;
-例子：
-&lt;/p&gt;
-&lt;div class=&quot;org-src-container&quot;&gt;
-
-&lt;pre class=&quot;src src-lisp&quot;&gt;(&lt;span style=&quot;color: #00ffff;&quot;&gt;let&lt;/span&gt; ((zebra &#39;stripes)
-      (tiger &#39;fierce)))
-
-(&lt;span style=&quot;color: #00ffff;&quot;&gt;defun&lt;/span&gt; &lt;span style=&quot;color: #00fa9a;&quot;&gt;type-of-animal&lt;/span&gt; (char) &lt;span style=&quot;color: #ffd700;&quot;&gt;;&lt;/span&gt;&lt;span style=&quot;color: #ffd700;&quot;&gt;second version&lt;/span&gt;
-    (&lt;span style=&quot;color: #00ffff;&quot;&gt;if&lt;/span&gt; (equal char &#39;fierce)
-        (message &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;It&#39;s a tiger&quot;&lt;/span&gt;)
-      (message &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;It&#39;s not fierce!&quot;&lt;/span&gt;)))
-&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id=&quot;outline-container-sec-1-9&quot; class=&quot;outline-3&quot;&gt;
-&lt;h3 id=&quot;sec-1-9&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.9&lt;/span&gt; Lisp中的真和假&lt;/h3&gt;
-&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-9&quot;&gt;
-&lt;p&gt;
-如果值为nil，则为假。非nil,则为真。在Lisp中，nil有两种含义，一为假，一为空列表()。
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id=&quot;outline-container-sec-1-10&quot; class=&quot;outline-3&quot;&gt;
-&lt;h3 id=&quot;sec-1-10&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.10&lt;/span&gt; save-excursion函数&lt;/h3&gt;
-&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-10&quot;&gt;
-&lt;p&gt;
-这个函数是将当前的位点和标记保存起来，执行函数体，然后，如果位点和标记发生改变就将位点和标记恢复成原来的值。
-&lt;/p&gt;
-
-&lt;p&gt;
-&lt;b&gt;复习：&lt;/b&gt;
-&lt;/p&gt;
-&lt;ul class=&quot;org-ul&quot;&gt;
-&lt;li&gt;位点：就是光标所处的位置。光标在什么位置，位点就是光标的前一位。位点是个整数。位点(point)函数返回光标的当前位置，每一个缓冲区都有它的位点。
-&lt;/li&gt;
-&lt;li&gt;标记：是缓冲区的另外一个位置。它的值可以用set-mark-command来设置。
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;
-位点和标记之间的缓冲区称为区域(region)。save-excursion特殊表可以将位点和标记的当前位置保存起来，并当特殊表主体代码由Lisp解释器执行完毕后恢复到原来的位点和标记的位置。
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id=&quot;outline-container-sec-1-11&quot; class=&quot;outline-3&quot;&gt;
-&lt;h3 id=&quot;sec-1-11&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.11&lt;/span&gt; 小结&lt;/h3&gt;
-&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-11&quot;&gt;
-&lt;ul class=&quot;org-ul&quot;&gt;
-&lt;li&gt;defun
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;
-定义函数。最多可以有5个部分：函数名、传送给函数的参量的模板、文档、一个可选的交互函数声明以及函数体。
-&lt;/p&gt;
-&lt;div class=&quot;org-src-container&quot;&gt;
-
-&lt;pre class=&quot;src src-lisp&quot;&gt;(&lt;span style=&quot;color: #00ffff;&quot;&gt;defun&lt;/span&gt; &lt;span style=&quot;color: #00fa9a;&quot;&gt;back-to-indentation&lt;/span&gt; ()
-    &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;Point to first visible character on line.&quot;&lt;/span&gt;
-    (interactive)
-    (beginning-of-line 1)
-    (skip-chars-forward &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot; \t&quot;&lt;/span&gt;))
-&lt;/pre&gt;
-&lt;/div&gt;
-&lt;ul class=&quot;org-ul&quot;&gt;
-&lt;li&gt;interactive
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;
-向Lisp解释器声明这个函数可以被交互地使用。这个特殊表可以用一个字符串，分成一个部分或几个部分，依次传递信息到这个函数的参数。这些部分也可以告诉Lisp解释器提示这些信息。字符串的每一个部分用换行符&quot; \n&quot;分开。
-其中常用到的控制字符是：
-b 一个已经存在的缓冲区的名字
-f 一个已经存在的文件的名字
-p 数字前缀参量
-r 位点和标记，作为两个数字参量，小的在前。这是唯一定义两个连续参量而不是一个参量的控制符。
-&lt;/p&gt;
-&lt;ul class=&quot;org-ul&quot;&gt;
-&lt;li&gt;let
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;
-声明在let表达式主体中使用的变量列表并给它们赋初值，初值要么是nil,要么是一个指定的值。
-&lt;/p&gt;
-&lt;ul class=&quot;org-ul&quot;&gt;
-&lt;li&gt;save-excursion
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;
-在对这个特殊表主体求值前，记录位点和标记的值以及当前缓冲区。求值之后恢复原来的位点和标记。
-&lt;/p&gt;
-&lt;div class=&quot;org-src-container&quot;&gt;
-
-&lt;pre class=&quot;src src-lisp&quot;&gt;(message &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;We are %d characters into this buffer.&quot;&lt;/span&gt;
-        (- (point)
-            (&lt;span style=&quot;color: #00ffff;&quot;&gt;save-excursion&lt;/span&gt;
-                (goto-char (poing-min)) (poing))))
-&lt;/pre&gt;
-&lt;/div&gt;
-&lt;ul class=&quot;org-ul&quot;&gt;
-&lt;li&gt;if
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;
-对函数的第一个参量求值;如果为真，则对第二个参量求值;否则，如果有第三个参量，就对第三个参量求值。
-&lt;/p&gt;
-&lt;ul class=&quot;org-ul&quot;&gt;
-&lt;li&gt;equal和eq
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;
-测试两个对象是否相同。如果两个对象有相似的结构和内容，equal则返回“真”。如果两个参量确实是完全相同的对象，则另一个函数eq返回“真”。
-&lt;/p&gt;
-&lt;ul class=&quot;org-ul&quot;&gt;
-&lt;li&gt;&amp;lt; 、 &amp;gt; 、&amp;lt;= 、 &amp;gt;=
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;
-这个比较容易理解。
-&lt;/p&gt;
-&lt;ul class=&quot;org-ul&quot;&gt;
-&lt;li&gt;message
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;
-用于回显区打印一条消息。打印消息只可以有一行。可以包含%s、%d、%c。
-&lt;/p&gt;
-&lt;ul class=&quot;org-ul&quot;&gt;
-&lt;li&gt;setq、set
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;
-setq函数将其第一个参量的值设为第二个参量的值。这个函数对后续的成对参量执行相同的赋值操作。set函数则只接受两个参量，并且第二个参量前要加单引号。
-&lt;/p&gt;
-&lt;ul class=&quot;org-ul&quot;&gt;
-&lt;li&gt;buffer-name
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;
-这个函数不需要参量，返回缓冲区的名字。
-&lt;/p&gt;
-&lt;ul class=&quot;org-ul&quot;&gt;
-&lt;li&gt;buffer-file-name
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;
-这个函数也不需要参量，返回当前缓冲区正在访问的文件的名字
-&lt;/p&gt;
-&lt;ul class=&quot;org-ul&quot;&gt;
-&lt;li&gt;current-buffer
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;
-返回Emacs中当前缓冲区的名字，这个缓冲区可能并不是屏幕上看到的缓冲区。
-&lt;/p&gt;
-&lt;ul class=&quot;org-ul&quot;&gt;
-&lt;li&gt;other-buffer
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;
-返回最近选择过的缓冲区。
-&lt;/p&gt;
-&lt;ul class=&quot;org-ul&quot;&gt;
-&lt;li&gt;switch-to-buffer
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;
-这个函数为Emacs选择一个活动的缓冲区，并将它显示在当前的窗口。
-&lt;/p&gt;
-&lt;ul class=&quot;org-ul&quot;&gt;
-&lt;li&gt;set-buffer
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;
-将Emacsr注意力切换到另外一个运行程序的缓冲区。不要改变当前窗口正在显示的内容。
-&lt;/p&gt;
-&lt;ul class=&quot;org-ul&quot;&gt;
-&lt;li&gt;buffer-size
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;
-返回当前缓冲区中的字符数。
-&lt;/p&gt;
-&lt;ul class=&quot;org-ul&quot;&gt;
-&lt;li&gt;point
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;
-返回当前光标对应的值，这个值是从缓冲区的开始处直到光标所在位置所占的总字符数。
-&lt;/p&gt;
-&lt;ul class=&quot;org-ul&quot;&gt;
-&lt;li&gt;point-min
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;
-返回当前缓冲区中位点的最小可能值，如果变窄没有开启，这个值就是1。
-&lt;/p&gt;
-&lt;ul class=&quot;org-ul&quot;&gt;
-&lt;li&gt;point-max
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;
-返回当前缓冲区中位点的最大可能值。如果变窄没有开启，这个值就是缓冲区末尾对应的值。
-&lt;/p&gt;
-&lt;ul class=&quot;org-ul&quot;&gt;
-&lt;li&gt;eval-last-sexp
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;
-对光标所处的位点前的最后一个符号表达式求值。如果这个函数被激活时没有带参量，返回输出在回显区中。如果这个函数被激活时带有参量，其输出打印在当前缓冲区中。
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-</description>
-        <pubDate>Sun, 19 Oct 2014 00:00:00 +0800</pubDate>
-        <link>http://xep007.github.io/emacs/lisp/2014/10/19/gnu%20emacs%20lisp%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%89%EF%BC%89.html</link>
-        <guid isPermaLink="true">http://xep007.github.io/emacs/lisp/2014/10/19/gnu%20emacs%20lisp%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%89%EF%BC%89.html</guid>
-        
-        <category>emacs</category>
-        
-        
-        <category>emacs</category>
-        
-        <category>lisp</category>
-        
-      </item>
-    
-      <item>
-        <title>GNU Emacs Lisp 编程入门笔记（一)</title>
-        <description>&lt;div id=&quot;table-of-contents&quot;&gt;
-&lt;h2&gt;Table of Contents&lt;/h2&gt;
-&lt;div id=&quot;text-table-of-contents&quot;&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1&quot;&gt;1. 第1章 列表处理&lt;/a&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-1&quot;&gt;1.1. Lisp列表&lt;/a&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-1-1&quot;&gt;1.1.1. Lisp原子&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-1-2&quot;&gt;1.1.2. 列表中的空格&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-1-3&quot;&gt;1.1.3. GNU Emacs帮助你输入列表&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-2&quot;&gt;1.2. 运行一个程序&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-3&quot;&gt;1.3. 产生错误的消息&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-4&quot;&gt;1.4. 符号名和函数定义&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-5&quot;&gt;1.5. Lisp解释器&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-6&quot;&gt;1.6. 求值&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-7&quot;&gt;1.7. 变量&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-8&quot;&gt;1.8. 参量&lt;/a&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-8-1&quot;&gt;1.8.1. 参量的数据类型&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-8-2&quot;&gt;1.8.2. 作为变量和列表的值的参量&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-8-3&quot;&gt;1.8.3. 可变参量&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-9&quot;&gt;1.9. 给一个变量赋值&lt;/a&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-9-1&quot;&gt;1.9.1. 使用set函数&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-9-2&quot;&gt;1.9.2. 使用setq函数&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-9-3&quot;&gt;1.9.3. 计数&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-10&quot;&gt;1.10. 小结&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-
-&lt;div id=&quot;outline-container-sec-1&quot; class=&quot;outline-2&quot;&gt;
-&lt;h2 id=&quot;sec-1&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;1&lt;/span&gt; 第1章 列表处理&lt;/h2&gt;
-&lt;div class=&quot;outline-text-2&quot; id=&quot;text-1&quot;&gt;
-&lt;p&gt;
-Lisp是指&quot;LISt Processing&quot;(列表处理)。是一种通过把列表放置在括号中进行处理的编程语言。
-列表是Lisp的基础。
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;div id=&quot;outline-container-sec-1-1&quot; class=&quot;outline-3&quot;&gt;
-&lt;h3 id=&quot;sec-1-1&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.1&lt;/span&gt; Lisp列表&lt;/h3&gt;
-&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-1&quot;&gt;
-&lt;p&gt;
-&lt;b&gt;列表的基本样式&lt;/b&gt;
-&lt;/p&gt;
-&lt;ul class=&quot;org-ul&quot;&gt;
-&lt;li&gt;&#39;(rose violet daisy buttercup)
-&lt;/li&gt;
-&lt;li&gt;(+ 2 2)
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;
-&lt;b&gt;列表可以嵌套&lt;/b&gt;
-&lt;/p&gt;
-&lt;div class=&quot;org-src-container&quot;&gt;
-
-&lt;pre class=&quot;src src-n&quot;&gt;&#39;(this is has (a list inside of it))
-&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id=&quot;outline-container-sec-1-1-1&quot; class=&quot;outline-4&quot;&gt;
-&lt;h4 id=&quot;sec-1-1-1&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.1.1&lt;/span&gt; Lisp原子&lt;/h4&gt;
-&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-1-1&quot;&gt;
-&lt;p&gt;
-Lisp原子，不可分的元素。原子有以下几种：
-&lt;/p&gt;
-&lt;ul class=&quot;org-ul&quot;&gt;
-&lt;li&gt;数字。比如 &quot;35&quot; &quot;511&quot;
-&lt;/li&gt;
-&lt;li&gt;符号。比如 &quot;+&quot; &quot;foo&quot; &quot;forward-line&quot;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;
-双引号中的文本，不论是句子或者段落都是一个原子。
-列表有三种组成方式：
-&lt;/p&gt;
-&lt;ul class=&quot;org-ul&quot;&gt;
-&lt;li&gt;括号和原子
-&lt;/li&gt;
-&lt;li&gt;括号和列表
-&lt;/li&gt;
-&lt;li&gt;括号和其他列表及原子
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;
-原子和列表的书面表示都被称作符号表达式，s-表达式（s-expression）。
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id=&quot;outline-container-sec-1-1-2&quot; class=&quot;outline-4&quot;&gt;
-&lt;h4 id=&quot;sec-1-1-2&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.1.2&lt;/span&gt; 列表中的空格&lt;/h4&gt;
-&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-1-2&quot;&gt;
-&lt;p&gt;
-列表中的原子以空格分隔，多个空格只等同于一个。
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id=&quot;outline-container-sec-1-1-3&quot; class=&quot;outline-4&quot;&gt;
-&lt;h4 id=&quot;sec-1-1-3&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.1.3&lt;/span&gt; GNU Emacs帮助你输入列表&lt;/h4&gt;
-&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-1-3&quot;&gt;
-&lt;p&gt;
-TAB键和M-C-\自动缩排,有助于程序结构更加清晰。
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id=&quot;outline-container-sec-1-2&quot; class=&quot;outline-3&quot;&gt;
-&lt;h3 id=&quot;sec-1-2&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.2&lt;/span&gt; 运行一个程序&lt;/h3&gt;
-&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-2&quot;&gt;
-&lt;p&gt;
-在emacs书写elisp程序的步骤：
-&lt;/p&gt;
-&lt;ul class=&quot;org-ul&quot;&gt;
-&lt;li&gt;打开emacs
-&lt;/li&gt;
-&lt;li&gt;M-x 键入lisp-interaction-mode
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;
-就可进入lisp mode，进行程序书写。
-Lisp中任何列表都是一个可运行的程序。要运行该列表，先把光标放置于列表之后，键入C-j或者C-x C-e就可以了。
-运行他，计算机将完成三件事情：
-&lt;/p&gt;
-&lt;ul class=&quot;org-ul&quot;&gt;
-&lt;li&gt;只返回列表
-&lt;/li&gt;
-&lt;li&gt;告诉你一个出错消息
-&lt;/li&gt;
-&lt;li&gt;将列表中的第一个符号当作一个命令，然后执行这个命令。
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;
-单引号&quot; &#39; &quot;，被称作一个引用（quote）。当单引号位于一个列表之前时，它告诉Lisp不要对这个列表做任何操作。如果列表前没有单引号，那么列表的第一个符号就是一条计算机可以执行的命令。
-（+ 2 2 ）这个列表前没有引号，所以+号就是命令，执行2+2。
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id=&quot;outline-container-sec-1-3&quot; class=&quot;outline-3&quot;&gt;
-&lt;h3 id=&quot;sec-1-3&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.3&lt;/span&gt; 产生错误的消息&lt;/h3&gt;
-&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-3&quot;&gt;
-&lt;p&gt;
-运行程序时，如果发生错误，错误信息会在mini-buffer中显示。
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id=&quot;outline-container-sec-1-4&quot; class=&quot;outline-3&quot;&gt;
-&lt;h3 id=&quot;sec-1-4&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.4&lt;/span&gt; 符号名和函数定义&lt;/h3&gt;
-&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-4&quot;&gt;
-&lt;p&gt;
-在Lisp中，一组指令可以连到几个名字，例如加法指令可以连接到符号&quot;Plus&quot;，也可连接到符号&quot;+&quot;。另一方面，一个符号一次只能有一个函数定义与其相连。
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id=&quot;outline-container-sec-1-5&quot; class=&quot;outline-3&quot;&gt;
-&lt;h3 id=&quot;sec-1-5&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.5&lt;/span&gt; Lisp解释器&lt;/h3&gt;
-&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-5&quot;&gt;
-&lt;p&gt;
-&lt;b&gt;Lisp工作方式&lt;/b&gt;
-&lt;/p&gt;
-&lt;ul class=&quot;org-ul&quot;&gt;
-&lt;li&gt;首先，它一列表前面是否有单引号。如有，就给出这个列表。
-&lt;/li&gt;
-&lt;li&gt;其次，列表前无单引号，就查看列表第一个元素，判断其是否是一个函数定义。如进，则解释执行函数定义中的指令。否则就打印条错误消息。
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;
-Lisp解释嵌套列表是由内往外执行的。
-&lt;/p&gt;
-
-&lt;p&gt;
-&lt;b&gt;字节编译&lt;/b&gt;
-运行编译命令(byte-compile-file)可以将.el代码编译成字节编码(.elc)。
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id=&quot;outline-container-sec-1-6&quot; class=&quot;outline-3&quot;&gt;
-&lt;h3 id=&quot;sec-1-6&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.6&lt;/span&gt; 求值&lt;/h3&gt;
-&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-6&quot;&gt;
-&lt;p&gt;
-当Lisp解释器处理一个表达式时，这个动作被称作“求值”。求值总是从内部列表开始，逐层往外进行。求值会返回一个值，同时可能产生一个附带效果，不然，就产生一个错误消息。
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id=&quot;outline-container-sec-1-7&quot; class=&quot;outline-3&quot;&gt;
-&lt;h3 id=&quot;sec-1-7&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.7&lt;/span&gt; 变量&lt;/h3&gt;
-&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-7&quot;&gt;
-&lt;p&gt;
-有值的可变的符号称作变量。变量应该赋值。如试图对一个没有赋值的变量求值，将收到一个错误消息（Symbol&#39;s value as variable is void: ）。
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id=&quot;outline-container-sec-1-8&quot; class=&quot;outline-3&quot;&gt;
-&lt;h3 id=&quot;sec-1-8&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.8&lt;/span&gt; 参量&lt;/h3&gt;
-&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-8&quot;&gt;
-&lt;p&gt;
-传递给函数的信息被称作参量。相当于C语言的实参吧。在Lisp中，一个函数的参量是函数后面的原子或者列表。
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;div id=&quot;outline-container-sec-1-8-1&quot; class=&quot;outline-4&quot;&gt;
-&lt;h4 id=&quot;sec-1-8-1&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.8.1&lt;/span&gt; 参量的数据类型&lt;/h4&gt;
-&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-8-1&quot;&gt;
-&lt;p&gt;
-传递给函数的参量的数据类型取决于它使用什么信息。
-&lt;/p&gt;
-&lt;ul class=&quot;org-ul&quot;&gt;
-&lt;li&gt;像“+”函数，其参量必须是数字类型的值。
-&lt;/li&gt;
-&lt;li&gt;像“concat”函数（连接两个或多个字符串的函数），其参量必须是字符串。
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;div class=&quot;org-src-container&quot;&gt;
-
-&lt;pre class=&quot;src src-lisp&quot;&gt;(concat &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;abc&quot;&lt;/span&gt; &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;def&quot;&lt;/span&gt;)
-&lt;/pre&gt;
-&lt;/div&gt;
-&lt;p&gt;
-求值结果为：
-&lt;/p&gt;
-&lt;div class=&quot;org-src-container&quot;&gt;
-
-&lt;pre class=&quot;src src-lisp&quot;&gt;&lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;abcdef&quot;&lt;/span&gt;
-&lt;/pre&gt;
-&lt;/div&gt;
-&lt;ul class=&quot;org-ul&quot;&gt;
-&lt;li&gt;有些函数（如substring）,其参量既有字符串也有数字。
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;div class=&quot;org-src-container&quot;&gt;
-
-&lt;pre class=&quot;src src-lisp&quot;&gt;(substring &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;The quick brown fox jumped.&quot;&lt;/span&gt; 16 19)
-&lt;/pre&gt;
-&lt;/div&gt;
-&lt;p&gt;
-求值结果为
-&lt;/p&gt;
-&lt;div class=&quot;org-src-container&quot;&gt;
-
-&lt;pre class=&quot;src src-lisp&quot;&gt;fox
-&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id=&quot;outline-container-sec-1-8-2&quot; class=&quot;outline-4&quot;&gt;
-&lt;h4 id=&quot;sec-1-8-2&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.8.2&lt;/span&gt; 作为变量和列表的值的参量&lt;/h4&gt;
-&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-8-2&quot;&gt;
-&lt;p&gt;
-参量可以是一个符号。对这个符号求值将返回一个值。例如：
-&lt;/p&gt;
-&lt;div class=&quot;org-src-container&quot;&gt;
-
-&lt;pre class=&quot;src src-lisp&quot;&gt;(+ 2 fill-column)
-&lt;/pre&gt;
-&lt;/div&gt;
-&lt;p&gt;
-返回74。(不同机器可能值不同，因fill-column值不同。)
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id=&quot;outline-container-sec-1-8-3&quot; class=&quot;outline-4&quot;&gt;
-&lt;h4 id=&quot;sec-1-8-3&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.8.3&lt;/span&gt; 可变参量&lt;/h4&gt;
-&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-8-3&quot;&gt;
-&lt;p&gt;
-Lisp可变参量很简单。比如：
-&lt;/p&gt;
-&lt;pre class=&quot;example&quot;&gt;
-(+ 3)
-(+ 3 4 5 6)
-&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id=&quot;outline-container-sec-1-9&quot; class=&quot;outline-3&quot;&gt;
-&lt;h3 id=&quot;sec-1-9&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.9&lt;/span&gt; 给一个变量赋值&lt;/h3&gt;
-&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-9&quot;&gt;
-&lt;p&gt;
-给参量赋值可使用“set” “setq” “let”函数。
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;div id=&quot;outline-container-sec-1-9-1&quot; class=&quot;outline-4&quot;&gt;
-&lt;h4 id=&quot;sec-1-9-1&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.9.1&lt;/span&gt; 使用set函数&lt;/h4&gt;
-&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-9-1&quot;&gt;
-&lt;div class=&quot;org-src-container&quot;&gt;
-
-&lt;pre class=&quot;src src-lisp&quot;&gt;(set &#39;flowers &#39;(rose violet daisy buttercup))
-&lt;/pre&gt;
-&lt;/div&gt;
-&lt;p&gt;
-使用set函数给变量赋值时应在列表前加单引号(&quot; &#39; &quot;)。
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id=&quot;outline-container-sec-1-9-2&quot; class=&quot;outline-4&quot;&gt;
-&lt;h4 id=&quot;sec-1-9-2&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.9.2&lt;/span&gt; 使用setq函数&lt;/h4&gt;
-&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-9-2&quot;&gt;
-&lt;p&gt;
-使用setq函数时，第一个参量不必加单引号。
-&lt;/p&gt;
-&lt;div class=&quot;org-src-container&quot;&gt;
-
-&lt;pre class=&quot;src src-lisp&quot;&gt;(setq  flowers &#39;(rose violet daisy buttercup))
-&lt;/pre&gt;
-&lt;/div&gt;
-&lt;p&gt;
-setq同样可以为多个变量赋值。
-&lt;/p&gt;
-&lt;div class=&quot;org-src-container&quot;&gt;
-
-&lt;pre class=&quot;src src-lisp&quot;&gt;(setq trees &#39;(pine fir oak maple)
-      herbivores &#39;(gazelle antelope zebra))
-&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id=&quot;outline-container-sec-1-9-3&quot; class=&quot;outline-4&quot;&gt;
-&lt;h4 id=&quot;sec-1-9-3&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.9.3&lt;/span&gt; 计数&lt;/h4&gt;
-&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-9-3&quot;&gt;
-&lt;div class=&quot;org-src-container&quot;&gt;
-
-&lt;pre class=&quot;src src-lisp&quot;&gt;(setq count 0)
-(setq count (+ count 1))
-count
-&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id=&quot;outline-container-sec-1-10&quot; class=&quot;outline-3&quot;&gt;
-&lt;h3 id=&quot;sec-1-10&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.10&lt;/span&gt; 小结&lt;/h3&gt;
-&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-10&quot;&gt;
-&lt;ul class=&quot;org-ul&quot;&gt;
-&lt;li&gt;Lisp程序由表达式组成，表达式是列表或单个原子。
-&lt;/li&gt;
-&lt;li&gt;列表由0个或多个原子或内部列表组成，原子或列表之间用空格分隔，并由括号括起来。列表可以是空的。
-&lt;/li&gt;
-&lt;li&gt;原子是多字符的符号(如forward-paragraph)、单字符符号(如＋)、双引号之间的字符串、或者数字。
-&lt;/li&gt;
-&lt;li&gt;对数字求值就是它本身。
-&lt;/li&gt;
-&lt;li&gt;对双引号之间的字符串求值也是其本身。
-&lt;/li&gt;
-&lt;li&gt;当对一个符号求值时，返回它的值。
-&lt;/li&gt;
-&lt;li&gt;对一个列表求值时，Lisp解数器查看列表中的第一个符号以及绑定在其上的函数定义。然后这个函数定义中的指令将被执行。
-&lt;/li&gt;
-&lt;li&gt;单引号告诉Lisp解释器返回后续表达式的字面值。
-&lt;/li&gt;
-&lt;li&gt;参量是传递给函数的信息。除了作为列表的第一个元素的函数之外，通过对列表的其余元素求值来计算函数的参量。
-&lt;/li&gt;
-&lt;li&gt;当对一个函数求值时总是返回一个值（除非是一个错误消息）。另外，它也可以完成一些被称作附带效果的操作。在许多情况下，一个函数的主要目的是产生一个附带效果。
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-</description>
-        <pubDate>Sat, 18 Oct 2014 00:00:00 +0800</pubDate>
-        <link>http://xep007.github.io/emacs/lisp/2014/10/18/gnu%20emacs%20lisp%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%80%EF%BC%89.html</link>
-        <guid isPermaLink="true">http://xep007.github.io/emacs/lisp/2014/10/18/gnu%20emacs%20lisp%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%80%EF%BC%89.html</guid>
-        
-        <category>emacs</category>
-        
-        
-        <category>emacs</category>
-        
-        <category>lisp</category>
-        
-      </item>
-    
-      <item>
-        <title>用org-capture-templates创建带时间戳的文档</title>
-        <description>&lt;div id=&quot;table-of-contents&quot;&gt;
-&lt;h2&gt;Table of Contents&lt;/h2&gt;
-&lt;div id=&quot;text-table-of-contents&quot;&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1&quot;&gt;1. 创建符合jekyll要求的yaml格式的文件很麻烦&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-2&quot;&gt;2. 我的org-capture templates配置&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-3&quot;&gt;3. 如何使用&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-4&quot;&gt;4. 存在的问题&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-5&quot;&gt;5. 问题的解决&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-
-&lt;div id=&quot;outline-container-sec-1&quot; class=&quot;outline-2&quot;&gt;
-&lt;h2 id=&quot;sec-1&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;1&lt;/span&gt; 创建符合jekyll要求的yaml格式的文件很麻烦&lt;/h2&gt;
-&lt;div class=&quot;outline-text-2&quot; id=&quot;text-1&quot;&gt;
-&lt;p&gt;
-自从使用orgmode和jekyll写博客后，最麻烦的事就是用(C-x C-f)新建一个文档时得按&quot;y-m-d-文档名.org&quot;格式输入文件名。org-octopress倒是做得不错，功能齐全，不但可以新建“日期+文档名.org”的文档，还可以自行选择日期；不仅如此，它还能编辑和删除已存在的文档。org-jekyll-mode也很好，虽然功能不如org-octopress那么多。但是这两个插件都需要下载并配置。而我只想方便地创建带时间戳的文件，因而并未采用这两个插件。我就到网上四处搜寻，功夫不负有心人，终于找到了两篇文档，利用自定义org-capture templates很笨拙地解决了问题。
-&lt;/p&gt;
-
-&lt;ul class=&quot;org-ul&quot;&gt;
-&lt;li&gt;&lt;a href=&quot;http://www.robsyme.com/blog/2013/04/27/Blogging-from-your-text-editor-with-orgmode-and-middleman/&quot;&gt;http://www.robsyme.com/blog/2013/04/27/Blogging-from-your-text-editor-with-orgmode-and-middleman/&lt;/a&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;http://orgmode.org/manual/Capture-templates.html&quot;&gt;http://orgmode.org/manual/Capture-templates.html&lt;/a&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div id=&quot;outline-container-sec-2&quot; class=&quot;outline-2&quot;&gt;
-&lt;h2 id=&quot;sec-2&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;2&lt;/span&gt; 我的org-capture templates配置&lt;/h2&gt;
-&lt;div class=&quot;outline-text-2&quot; id=&quot;text-2&quot;&gt;
-&lt;p&gt;
-上面提到的两篇文档都很简略，第一篇给出的代码是层递创建以日期分割的文件夹，然后在最后一个文件夹里创建index.org文件。第二个文档并未给出创建带日期的文件的方法。我瞎试着修改第一个文档给出的代码，得到如下配置。把以下代码写入&quot;.emacs&quot;。
-&lt;/p&gt;
-&lt;div class=&quot;org-src-container&quot;&gt;
-
-&lt;pre class=&quot;src src-emacs&quot;&gt;;;;;org-capture-templates
-(setq org-capture-templates
-      &#39;((&quot;t&quot; &quot;Todo&quot; entry (file+headline &quot;~/org/notes/gtd.org&quot; &quot;Tasks&quot;)
-	 &quot;* TODO %?\n  %i\n  %a&quot;)
-	(&quot;b&quot; &quot;Blog draft&quot; entry (file (create-new-post &quot;~/org/documents/&quot;)))
-	(&quot;j&quot; &quot;Journal&quot; entry (file+datetree+prompt &quot;~/org/notes/journal.org&quot;)
-	 &quot;* %?\n -- %T\n&quot;)))
-
-(defun create-new-post (base-path)
-  (let* ((date (org-read-date &quot;&quot; &#39;totime nil nil (current-time) &quot;&quot;)) 
-	 (title (read-string &quot;Post title: &quot;))                       
-	 (path (format &quot;%s%s-%s.org&quot; base-path (format-time-string &quot;%Y-%m-%d&quot;) title))) 
-    (make-directory (file-name-directory path) t)
-    path))
-
-(define-key global-map &quot;\C-cc&quot; &#39;org-capture)
-&lt;/pre&gt;
-&lt;/div&gt;
-&lt;p&gt;
-列表中的“t”和&quot;j&quot;没用，因为我没有用todo来做gtd。列表中的&quot;b&quot;，表示blog,create-new-post后面的地址为存放org文件的目录，请改为你自己的。
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id=&quot;outline-container-sec-3&quot; class=&quot;outline-2&quot;&gt;
-&lt;h2 id=&quot;sec-3&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;3&lt;/span&gt; 如何使用&lt;/h2&gt;
-&lt;div class=&quot;outline-text-2&quot; id=&quot;text-3&quot;&gt;
-&lt;p&gt;
-打开emacs,按下快捷键(C-cc),跳出一个日期表，默认选中当天，回车。接着输入文件名(不用输入org后缀)，回车。然后开始写博文，最后保存。
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id=&quot;outline-container-sec-4&quot; class=&quot;outline-2&quot;&gt;
-&lt;h2 id=&quot;sec-4&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;4&lt;/span&gt; 存在的问题&lt;/h2&gt;
-&lt;div class=&quot;outline-text-2&quot; id=&quot;text-4&quot;&gt;
-&lt;p&gt;
-利用org-capture templates来创建带时间戳的文件是取巧的办法。我使用之后，发现存在两个问题，不知如何解决。请大大教我。
-&lt;/p&gt;
-&lt;ul class=&quot;org-ul&quot;&gt;
-&lt;li&gt;创建文件后打开的窗口只有整个窗口的一半，除了手动杀死另一个窗口之外，不知有什么办法。
-&lt;/li&gt;
-&lt;li&gt;创建新文件后，文件头有一个*号，除了手工删除，不知还有什么别的办法。
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id=&quot;outline-container-sec-5&quot; class=&quot;outline-2&quot;&gt;
-&lt;h2 id=&quot;sec-5&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;5&lt;/span&gt; 问题的解决&lt;/h2&gt;
-&lt;div class=&quot;outline-text-2&quot; id=&quot;text-5&quot;&gt;
-&lt;p&gt;
-哈哈，在不经意间，找到了《Linusp&#39;s blog》，然后找到他的&lt;a href=&quot;https://github.com/Linusp/Linusp.github.io&quot;&gt;Linusp.github.io&lt;/a&gt;项目。高手啊，很优雅地解决了这个问题。谢谢Linusp。看来，应该学一学elisp了。
-Linusp的代码如下：
-&lt;/p&gt;
-&lt;pre class=&quot;example&quot;&gt;
-;; Write Blog
-(defvar post-dir &quot;~/Dropbox/org/blog/_posts/&quot;)
-(defun blog-post (title)
-  (interactive &quot;sEnter title: &quot;)
-  (let ((post-file (concat post-dir
-                           (format-time-string &quot;%Y-%m-%d&quot;)
-                           &quot;-&quot;
-                           title
-                           &quot;.org&quot;)))
-    (progn
-      (switch-to-buffer (find-file-noselect post-file))
-      (insert (concat &quot;#+startup: showall\n&quot;
-                      &quot;#+options: toc:nil\n&quot;
-                      &quot;#+begin_html\n&quot;
-                      &quot;---\n&quot;
-                      &quot;layout     : post\n&quot;
-                      &quot;title      : \n&quot;
-                      &quot;categories : \n&quot;
-                      &quot;tags       : \n&quot;
-                      &quot;description: \n&quot;
-                      &quot;---\n&quot;
-                      &quot;#+end_html\n&quot;))))
-  )
-(define-key global-map &quot;\C-cp&quot; &#39;blog-post)
-&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-</description>
-        <pubDate>Fri, 17 Oct 2014 00:00:00 +0800</pubDate>
-        <link>http://xep007.github.io/org/jekyll/2014/10/17/%E7%94%A8org-capture-templates%E5%88%9B%E5%BB%BA%E5%B8%A6%E6%97%B6%E9%97%B4%E6%88%B3%E7%9A%84%E6%96%87%E6%A1%A3.html</link>
-        <guid isPermaLink="true">http://xep007.github.io/org/jekyll/2014/10/17/%E7%94%A8org-capture-templates%E5%88%9B%E5%BB%BA%E5%B8%A6%E6%97%B6%E9%97%B4%E6%88%B3%E7%9A%84%E6%96%87%E6%A1%A3.html</guid>
-        
-        
-        <category>org</category>
-        
-        <category>jekyll</category>
-        
-      </item>
-    
-      <item>
-        <title>aptitude被锁定无法升级软件</title>
-        <description>&lt;div id=&quot;table-of-contents&quot;&gt;
-&lt;h2&gt;Table of Contents&lt;/h2&gt;
-&lt;div id=&quot;text-table-of-contents&quot;&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1&quot;&gt;1. 解决办法1:温柔解决，不一定有效果&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-2&quot;&gt;2. 解决办法2：强制解锁&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;p&gt;
-今天sudo aptitude update时，终端提示如下错误：
-&lt;/p&gt;
-
-&lt;p&gt;
-E: 无法获得锁 /var/lib/dpkg/lock - open (11: 资源暂时不可用)
-&lt;/p&gt;
-
-&lt;p&gt;
-E: 无法锁定管理目录(&lt;i&gt;var/lib/dpkg&lt;/i&gt;)，是否有其他进程正占用它？
-&lt;/p&gt;
-
-&lt;p&gt;
-W: 无法锁定缓存文件；这通常意味着 dpkg 或另一个 apt 工具已经在安装软件包。正在以只读方式打开；您对软件包状态所作的任何改变都“不会”被保存！
-&lt;/p&gt;
-
-&lt;div id=&quot;outline-container-sec-1&quot; class=&quot;outline-2&quot;&gt;
-&lt;h2 id=&quot;sec-1&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;1&lt;/span&gt; 解决办法1:温柔解决，不一定有效果&lt;/h2&gt;
-&lt;div class=&quot;outline-text-2&quot; id=&quot;text-1&quot;&gt;
-&lt;p&gt;
-运行ps ax,找出aptitude进程，杀死。我这边找不到aptitude相关进程，只好采用第二种办法。
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div id=&quot;outline-container-sec-2&quot; class=&quot;outline-2&quot;&gt;
-&lt;h2 id=&quot;sec-2&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;2&lt;/span&gt; 解决办法2：强制解锁&lt;/h2&gt;
-&lt;div class=&quot;outline-text-2&quot; id=&quot;text-2&quot;&gt;
-&lt;pre class=&quot;example&quot;&gt;
-sudo rm /var/cache/apt/archives/lock
-sudo rm /var/lib/dpkg/lock
-OK.
-&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-</description>
-        <pubDate>Sun, 12 Oct 2014 00:00:00 +0800</pubDate>
-        <link>http://xep007.github.io/linux/2014/10/12/aptitude%E8%A2%AB%E9%94%81%E5%AE%9A%E7%9A%84%E9%94%99%E8%AF%AF%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%95.html</link>
-        <guid isPermaLink="true">http://xep007.github.io/linux/2014/10/12/aptitude%E8%A2%AB%E9%94%81%E5%AE%9A%E7%9A%84%E9%94%99%E8%AF%AF%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%95.html</guid>
-        
-        
-        <category>linux</category>
         
       </item>
     
