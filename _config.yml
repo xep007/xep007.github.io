@@ -11,6 +11,6 @@ github_username:  xep007
 markdown: kramdown
 
 #paginate
-paginate: 10
+paginate: 15
 paginate_path: "page:num"
 

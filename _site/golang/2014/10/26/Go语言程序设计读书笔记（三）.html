@@ -77,31 +77,12 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#sec-1">1. 第3章 字符串</a>
+<li><a href="#sec-1">1. 第3章 字符串(一)</a>
 <ul>
 <li><a href="#sec-1-1">1.1. 字面量、操作符和转义</a></li>
 <li><a href="#sec-1-2">1.2. 比较字符串</a></li>
 <li><a href="#sec-1-3">1.3. 字符和字符串</a></li>
 <li><a href="#sec-1-4">1.4. 字符串索引与切片</a></li>
-<li><a href="#sec-1-5">1.5. 使用fmt包来格式化字符串</a>
-<ul>
-<li><a href="#sec-1-5-1">1.5.1. 格式化布尔值</a></li>
-<li><a href="#sec-1-5-2">1.5.2. 格式化整数</a></li>
-<li><a href="#sec-1-5-3">1.5.3. 格式化字符</a></li>
-<li><a href="#sec-1-5-4">1.5.4. 格式化浮点数</a></li>
-<li><a href="#sec-1-5-5">1.5.5. 格式化字符串和切片</a></li>
-<li><a href="#sec-1-5-6">1.5.6. 为调试格式化</a></li>
-</ul>
-</li>
-<li><a href="#sec-1-6">1.6. 其他字符处理相关的包</a>
-<ul>
-<li><a href="#sec-1-6-1">1.6.1. string包</a></li>
-<li><a href="#sec-1-6-2">1.6.2. strconv包</a></li>
-<li><a href="#sec-1-6-3">1.6.3. utf8包</a></li>
-<li><a href="#sec-1-6-4">1.6.4. unicode包</a></li>
-<li><a href="#sec-1-6-5">1.6.5. regexp包</a></li>
-</ul>
-</li>
 </ul>
 </li>
 </ul>
@@ -110,7 +91,7 @@
 
 
 <div id="outline-container-sec-1" class="outline-2">
-<h2 id="sec-1"><span class="section-number-2">1</span> 第3章 字符串</h2>
+<h2 id="sec-1"><span class="section-number-2">1</span> 第3章 字符串(一)</h2>
 <div class="outline-text-2" id="text-1">
 </div><div id="outline-container-sec-1-1" class="outline-3">
 <h3 id="sec-1-1"><span class="section-number-3">1.1</span> 字面量、操作符和转义</h3>
@@ -320,50 +301,134 @@ Go语言字符串支持常规的比较操作(&lt;、&lt;= 、==、!= 、&gt; 、
 
 <div id="outline-container-sec-1-3" class="outline-3">
 <h3 id="sec-1-3"><span class="section-number-3">1.3</span> 字符和字符串</h3>
+<div class="outline-text-3" id="text-1-3">
+<p>
+在Go语言中，字符使用两种不同的方式（可以很容易相互转换）来表示。一个单一的字符可以用一个单一的rune（或int32）来表示。
+</p>
+
+<p>
+字符串表示一个包含0个或多个字符序列的串。在一个字符串内部，每个字符都表示成一个或多个UTF-8编码的字节。
+</p>
+
+<p>
+字符串和rune切片互相转换：
+</p>
+
+<ul class="org-ul">
+<li>chars := []rune(s)   //字符串转换成一个rune（即码点）切片。
+</li>
+<li>s := string(chars)   //字符转换成字符串。
+</li>
+</ul>
+
+<p>
+在一个字符串末尾追加字符串有三种方法：
+</p>
+
+<ol class="org-ol">
+<li>使用"+="（不包括引号）操作符。s += s1
+</li>
+<li>准备一个字符串切片([]string),然后使用strings.Join()函数一次性把所有的字符串串联起来。
+</li>
+</ol>
+<div class="org-src-container">
+
+<pre class="src src-go"><span style="color: #00ffff;">package</span> main
+<span style="color: #00ffff;">import</span> (
+        <span style="color: #ffa500;">"fmt"</span>
+        <span style="color: #ffa500;">"strings"</span>
+)
+<span style="color: #00ffff;">func</span> <span style="color: #00fa9a;">main</span>() {
+        s := []<span style="color: #ffff00;">string</span>{<span style="color: #ffa500;">"abc"</span>, <span style="color: #ffa500;">"def"</span>, <span style="color: #ffa500;">"ghi"</span>}
+        fmt.<span style="color: #00fa9a;">Println</span>(strings.<span style="color: #00fa9a;">Join</span>(s, <span style="color: #ffa500;">""</span>))
+}
+</pre>
+</div>
+<p>
+输出：abcdefghi
+</p>
+
+<ol class="org-ol">
+<li>利用bytes.Buffer.WriteString()方法
+</li>
+</ol>
+<div class="org-src-container">
+
+<pre class="src src-go"><span style="color: #00ffff;">var</span> buffer bytes.Buffer
+<span style="color: #00ffff;">for</span> {
+        <span style="color: #00ffff;">if</span> piece, ok := <span style="color: #00fa9a;">getNextValidString</span>(); ok { <span style="color: #ffd700;">//</span><span style="color: #ffd700;">getNextValidString()&#24471;&#33258;&#24049;&#23454;&#29616;</span>
+                buffer.<span style="color: #00fa9a;">WriteString</span>(piece)
+        } <span style="color: #00ffff;">else</span> {
+                <span style="color: #00ffff;">break</span>
+        }
+}
+fmt.<span style="color: #00fa9a;">Print</span>(buffer.<span style="color: #00fa9a;">String</span>(), <span style="color: #ffa500;">"\n"</span>)
+</pre>
+</div>
+<p>
+创建一个空的bytes.Buffer类型的值，然后使用bytes.Buffer.WriteString()方法将需要串联的字符串写入到buffer中，最后，bytes.Buffer.String()方法可以取回字符串。这个办法比前两个办法更高效。
+</p>
+
+<p>
+Go语言的for……range循环可以用于一个字符一个字符的迭代字符串。
+</p>
+<div class="org-src-container">
+
+<pre class="src src-go"><span style="color: #00ffff;">package</span> main
+<span style="color: #00ffff;">import</span> <span style="color: #ffa500;">"fmt"</span>
+<span style="color: #00ffff;">func</span> <span style="color: #00fa9a;">main</span>() {
+        phrase := <span style="color: #ffa500;">"I am a boy. &#25105;&#26159;&#20013;&#22269;&#20154;&#12290;"</span>
+        fmt.<span style="color: #00fa9a;">Printf</span>(<span style="color: #ffa500;">"string: \"%s\"\n"</span>, phrase)
+        <span style="color: #00ffff;">for</span> index, char := <span style="color: #00ffff;">range</span> phrase {
+                fmt.<span style="color: #00fa9a;">Printf</span>(<span style="color: #ffa500;">"%-2d    %U    '%c'    %X\n"</span>, index, char, char, []<span style="color: #00fa9a;">byte</span>(<span style="color: #00fa9a;">string</span>(char)))
+        }
+}
+</pre>
+</div>
+<p>
+运行结果为：
+</p>
+<div class="org-src-container">
+
+<pre class="src src-go"><span style="color: #fa8072;">string</span>: <span style="color: #ffa500;">"I am a boy. &#25105;&#26159;&#20013;&#22269;&#20154;&#12290;"</span>
+0     U+0049    <span style="color: #ffa500;">'I'</span>    49
+1     U+0020    <span style="color: #ffa500;">' '</span>    20
+2     U+0061    <span style="color: #ffa500;">'a'</span>    61
+3     U+006D    <span style="color: #ffa500;">'m'</span>    6D
+4     U+0020    <span style="color: #ffa500;">' '</span>    20
+5     U+0061    <span style="color: #ffa500;">'a'</span>    61
+6     U+0020    <span style="color: #ffa500;">' '</span>    20
+7     U+0062    <span style="color: #ffa500;">'b'</span>    62
+8     U+006F    <span style="color: #ffa500;">'o'</span>    6F
+9     U+0079    <span style="color: #ffa500;">'y'</span>    79
+10    U+002E    <span style="color: #ffa500;">'.'</span>    2E
+11    U+0020    <span style="color: #ffa500;">' '</span>    20
+12    U+6211    <span style="color: #ffa500;">'&#25105;'</span>    E68891
+15    U+662F    <span style="color: #ffa500;">'&#26159;'</span>    E698AF
+18    U+4E2D    <span style="color: #ffa500;">'&#20013;'</span>    E4B8AD
+21    U+56FD    <span style="color: #ffa500;">'&#22269;'</span>    E59BBD
+24    U+4EBA    <span style="color: #ffa500;">'&#20154;'</span>    E4BABA
+27    U+3002    <span style="color: #ffa500;">'&#12290;'</span>    E38082
+</pre>
+</div>
+</div>
 </div>
 
 <div id="outline-container-sec-1-4" class="outline-3">
 <h3 id="sec-1-4"><span class="section-number-3">1.4</span> 字符串索引与切片</h3>
-</div>
-<div id="outline-container-sec-1-5" class="outline-3">
-<h3 id="sec-1-5"><span class="section-number-3">1.5</span> 使用fmt包来格式化字符串</h3>
-<div class="outline-text-3" id="text-1-5">
-</div><div id="outline-container-sec-1-5-1" class="outline-4">
-<h4 id="sec-1-5-1"><span class="section-number-4">1.5.1</span> 格式化布尔值</h4>
-</div>
-<div id="outline-container-sec-1-5-2" class="outline-4">
-<h4 id="sec-1-5-2"><span class="section-number-4">1.5.2</span> 格式化整数</h4>
-</div>
-<div id="outline-container-sec-1-5-3" class="outline-4">
-<h4 id="sec-1-5-3"><span class="section-number-4">1.5.3</span> 格式化字符</h4>
-</div>
-<div id="outline-container-sec-1-5-4" class="outline-4">
-<h4 id="sec-1-5-4"><span class="section-number-4">1.5.4</span> 格式化浮点数</h4>
-</div>
-<div id="outline-container-sec-1-5-5" class="outline-4">
-<h4 id="sec-1-5-5"><span class="section-number-4">1.5.5</span> 格式化字符串和切片</h4>
-</div>
-<div id="outline-container-sec-1-5-6" class="outline-4">
-<h4 id="sec-1-5-6"><span class="section-number-4">1.5.6</span> 为调试格式化</h4>
-</div>
-</div>
-<div id="outline-container-sec-1-6" class="outline-3">
-<h3 id="sec-1-6"><span class="section-number-3">1.6</span> 其他字符处理相关的包</h3>
-<div class="outline-text-3" id="text-1-6">
-</div><div id="outline-container-sec-1-6-1" class="outline-4">
-<h4 id="sec-1-6-1"><span class="section-number-4">1.6.1</span> string包</h4>
-</div>
-<div id="outline-container-sec-1-6-2" class="outline-4">
-<h4 id="sec-1-6-2"><span class="section-number-4">1.6.2</span> strconv包</h4>
-</div>
-<div id="outline-container-sec-1-6-3" class="outline-4">
-<h4 id="sec-1-6-3"><span class="section-number-4">1.6.3</span> utf8包</h4>
-</div>
-<div id="outline-container-sec-1-6-4" class="outline-4">
-<h4 id="sec-1-6-4"><span class="section-number-4">1.6.4</span> unicode包</h4>
-</div>
-<div id="outline-container-sec-1-6-5" class="outline-4">
-<h4 id="sec-1-6-5"><span class="section-number-4">1.6.5</span> regexp包</h4>
+<div class="outline-text-3" id="text-1-4">
+<p>
+索引字符串的单个字符，有多种方法：
+</p>
+
+<ol class="org-ol">
+<li>对于只包含7位ASCII字符的字符串，只需要简单使用[]索引操作符。
+</li>
+<li>对于包含非ASCII字符组成的字符串，我们可以将其转换成[]rune再使用[]索引操作符。以上二者的性能都为O(1)。
+</li>
+<li>对于任意字符串（即那些可能包含有非ASCII字符的字符串），更好的方法是使用字符串切片。请参照3.6.1(下一个笔记)中的string包。
+</li>
+</ol>
 </div>
 </div>
 </div>
