@@ -1,0 +1,456 @@
+---
+layout     : post
+title      : Go语言程序设计读书笔记（四）
+categories : [golang , ]
+tags       : golang
+description: golang
+author: xep007
+---
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1. 第3章 字符串（二）</a>
+<ul>
+<li><a href="#sec-1-1">1.1. 使用fmt包来格式化字符串</a>
+<ul>
+<li><a href="#sec-1-1-1">1.1.1. 格式化布尔值</a></li>
+<li><a href="#sec-1-1-2">1.1.2. 格式化整数</a></li>
+<li><a href="#sec-1-1-3">1.1.3. 格式化字符</a></li>
+<li><a href="#sec-1-1-4">1.1.4. 格式化浮点数</a></li>
+<li><a href="#sec-1-1-5">1.1.5. 格式化字符串和切片</a></li>
+<li><a href="#sec-1-1-6">1.1.6. 为调试格式化</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> 第3章 字符串（二）</h2>
+<div class="outline-text-2" id="text-1">
+</div><div id="outline-container-sec-1-1" class="outline-3">
+<h3 id="sec-1-1"><span class="section-number-3">1.1</span> 使用fmt包来格式化字符串</h3>
+<div class="outline-text-3" id="text-1-1">
+<p>
+Go语言标准库中的fmt包提供了打印函数将数据以字符串形式输出到控制台、文件、其他满足io.Writer接口的值以及其他字符串中。有些输出函数的返回值为error,当将数据打印到控制台时，常常将该错误值忽略，但是如果打印到文件和网络连接等地方时，则一定要检查该错误值。
+</p>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<caption class="t-above"><span class="table-number">Table 1:</span> fmt包中的打印函数</caption>
+
+<colgroup>
+<col  class="left" />
+
+<col  class="left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="left">语法</th>
+<th scope="col" class="left">含义/结果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="left">fmt.Errorf(format, args&#x2026;)</td>
+<td class="left">返回一个包含所给定的格式化字符串以及args参数的错误值</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">fmt.Fprint(writer, args&#x2026;)</td>
+<td class="left">按照格式%v和空格分隔的非字符串将args写入writer中，</td>
+</tr>
+
+<tr>
+<td class="left">&#xa0;</td>
+<td class="left">返回写入的字节数和一个值为error或nil的错误值</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">fmt.Fprintf(writer, format, args&#x2026;)</td>
+<td class="left">按照字符串格式format将args参数写入writer,</td>
+</tr>
+
+<tr>
+<td class="left">&#xa0;</td>
+<td class="left">返回写入的字节数和一个值为error或nil的错误值</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">fmt.Fprintln(writer, args&#x2026;)</td>
+<td class="left">按照格式%v以空格分隔以换行符结尾将参数args写入writer,</td>
+</tr>
+
+<tr>
+<td class="left">&#xa0;</td>
+<td class="left">返回写入的字节数和一个值为error或nil的错误值</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">fmt.Print(args&#x2026;)</td>
+<td class="left">使用格式%v以空格分隔的非字符串将args写入os.Stdout,</td>
+</tr>
+
+<tr>
+<td class="left">&#xa0;</td>
+<td class="left">返回写入的字节数和一个值为error或nil的错误值</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">fmt.Printf(format, args&#x2026;)</td>
+<td class="left">使用格式化字符串format将args写入os.Stdout,</td>
+</tr>
+
+<tr>
+<td class="left">&#xa0;</td>
+<td class="left">返回写入的字节数和一个值为error或nil的错误值</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">fmt.Println(args&#x2026;)</td>
+<td class="left">使用格式%v以空格分隔以换行符结尾将args写入os.Stdout,</td>
+</tr>
+
+<tr>
+<td class="left">&#xa0;</td>
+<td class="left">返回写入的字节数和一个值为error或nil的错误值</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">fmt.Sprint(args&#x2026;)</td>
+<td class="left">返回args参数组成的字符串，每个参数都使用%v进行格式化的使用空格分离的非字符串</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">fmt.Sprintf(format, args&#x2026;)</td>
+<td class="left">返回使用格式format格式化的args字符串</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">fmt.Sprintln(args&#x2026;)</td>
+<td class="left">返回使用格式%v格式化args后的字符串，以空格分隔以换行符结尾</td>
+</tr>
+</tbody>
+</table>
+
+
+<p>
+输出值的最简单方式是使用fmt.Print()函数和fmt.Println()函数输出到os.Stdout,或者使用fmt.Fprint()函数来输出到给定的io.Writer(如一个文件)，或者使用fmt.Sprint()函数和fmt.Sprintln()函数来输出到一个字符串。
+</p>
+
+<p>
+用于fmt.Errorf()、fmt.Printff()、fmt.Fprintf()以及fmt.Sprintf()函数的格式字符串包含一个或多个格式指令，这些格式指令的形式是%ML，其中M表示一个或多个可选的格式指令修饰符，而L则表示一个特定的格式指令符，这些格式指令见下表。有些格式指令可以接收一个或者多个修饰符，这些修饰符见再下一个表。
+</p>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<caption class="t-above"><span class="table-number">Table 2:</span> fmt包中的格式指令</caption>
+
+<colgroup>
+<col  class="left" />
+
+<col  class="left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="left">格式指令</th>
+<th scope="col" class="left">含义/结果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="left">%%</td>
+<td class="left">一个%字面量</td>
+</tr>
+
+<tr>
+<td class="left">%b</td>
+<td class="left">一个二进制整数值（基数为２），或者是一个（高级的）用科学计数法表示的指数为２的浮点数</td>
+</tr>
+
+<tr>
+<td class="left">%c</td>
+<td class="left">一个Unicode字符的码点值</td>
+</tr>
+
+<tr>
+<td class="left">%d</td>
+<td class="left">一个十进制数值（基数为0）</td>
+</tr>
+
+<tr>
+<td class="left">%e</td>
+<td class="left">以科学计数法e表示的浮点数或者复数值</td>
+</tr>
+
+<tr>
+<td class="left">%E</td>
+<td class="left">以科学计数法E表示的浮点数或者复数值</td>
+</tr>
+
+<tr>
+<td class="left">%f</td>
+<td class="left">以标准记数法表示的浮点数或者复数值</td>
+</tr>
+
+<tr>
+<td class="left">%g</td>
+<td class="left">以%e或者%f表示的浮点数或者复数，任何一个都以最为紧凑的方式输出</td>
+</tr>
+
+<tr>
+<td class="left">%G</td>
+<td class="left">以%E或者%f表示的浮点数或者复数，任何一个都以最为紧凑的方式输出</td>
+</tr>
+
+<tr>
+<td class="left">%o</td>
+<td class="left">一个以八进制表示的数字（基数为8）</td>
+</tr>
+
+<tr>
+<td class="left">%p</td>
+<td class="left">以十六进制（基数为16）表示的一个值的地址，前缀为Ox，字母使用小写民的a~f表示（用于高度）</td>
+</tr>
+
+<tr>
+<td class="left">%q</td>
+<td class="left">使用Go语法以及必要时使用转义，以双引号括起来的字符串或字节切片[]byte,或是以单引号括起来的数字</td>
+</tr>
+
+<tr>
+<td class="left">%s</td>
+<td class="left">以原生的UTF-8字节表示的字符串或[]byte切片，对于一个给定的文本文件或在一个能够显示UTF-8编码的</td>
+</tr>
+
+<tr>
+<td class="left">&#xa0;</td>
+<td class="left">控制台，它会产生正确的Unicode输出</td>
+</tr>
+
+<tr>
+<td class="left">%t</td>
+<td class="left">以true或false输出的布尔值</td>
+</tr>
+
+<tr>
+<td class="left">%T</td>
+<td class="left">使用Go语法输出的值的类型</td>
+</tr>
+
+<tr>
+<td class="left">%U</td>
+<td class="left">一个用Unicode表示法表示的整数码点，默认值为4个数字字符。</td>
+</tr>
+
+<tr>
+<td class="left">%v</td>
+<td class="left">使用默认格式输出的内置或自定义类型的值，或者是使用其类型的String()方法输出的自定义值，如果该方法存在的话</td>
+</tr>
+
+<tr>
+<td class="left">%x</td>
+<td class="left">以十六进制表示的整型值（基数为十六），或者是以十六进制数字表示的字符串或</td>
+</tr>
+
+<tr>
+<td class="left">&#xa0;</td>
+<td class="left">[]byte数组（每个字节用两个数字表示），数字a~f使用小写表示</td>
+</tr>
+
+<tr>
+<td class="left">%X</td>
+<td class="left">以十六进制表示的整型值（基数为十六），或者是以十六进制数字表示的字符串或</td>
+</tr>
+
+<tr>
+<td class="left">&#xa0;</td>
+<td class="left">[]byte数组（每个字节用两个数字表示），数字A~F使用大写表示</td>
+</tr>
+</tbody>
+</table>
+
+
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<caption class="t-above"><span class="table-number">Table 3:</span> fmt 包中的格式指令修饰符</caption>
+
+<colgroup>
+<col  class="left" />
+
+<col  class="left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="left">修饰符</td>
+<td class="left">含义/结果</td>
+</tr>
+
+<tr>
+<td class="left">空白</td>
+<td class="left">如果输出的数字为负数，则在其前面加上一个减号"-"。如果输出的是正数，则在其前面</td>
+</tr>
+
+<tr>
+<td class="left">&#xa0;</td>
+<td class="left">加上一个空格。使用%x或者%X格式指令输出时，会在结果之间添加一个空格，例如，</td>
+</tr>
+
+<tr>
+<td class="left">&#xa0;</td>
+<td class="left">fmt.Printf("% X", "←")输出E2 86 92</td>
+</tr>
+
+<tr>
+<td class="left">#</td>
+<td class="left">让格式指令以另外一种格式输出数据：</td>
+</tr>
+
+<tr>
+<td class="left">&#xa0;</td>
+<td class="left">%#o输出以0打头的八进制数据</td>
+</tr>
+
+<tr>
+<td class="left">&#xa0;</td>
+<td class="left">%#p输出一个不含0x打头的指针</td>
+</tr>
+
+<tr>
+<td class="left">&#xa0;</td>
+<td class="left">%#q尽可能以原始字符串的形式输出一个字符串或者[]byte切片（使用反引号），否则输出以双引号引起来的字符串</td>
+</tr>
+
+<tr>
+<td class="left">&#xa0;</td>
+<td class="left">%#v使用Go语法将值自身输出</td>
+</tr>
+
+<tr>
+<td class="left">&#xa0;</td>
+<td class="left">%#x输出以0x打头的十六进制数据</td>
+</tr>
+
+<tr>
+<td class="left">&#xa0;</td>
+<td class="left">%#X输出以0X打头的十六进制数据</td>
+</tr>
+
+<tr>
+<td class="left">+</td>
+<td class="left">让格式指令在数值前面输出+号或者-号，为字符串输出ASCII字符（别的字符会被转义），为结构体输出其字段名</td>
+</tr>
+
+<tr>
+<td class="left">-</td>
+<td class="left">让格式指令将值进行向左对齐（默认值为右对齐）</td>
+</tr>
+
+<tr>
+<td class="left">0</td>
+<td class="left">让格式指令以数字0而非空白进行填充</td>
+</tr>
+
+<tr>
+<td class="left">n.m</td>
+<td class="left">对于数字，这个修饰符会使用n（int值）个字符输出浮点数或者复数（为避免截断可以输出更多个），并在小数点后面</td>
+</tr>
+
+<tr>
+<td class="left">n</td>
+<td class="left">输出m（int值）个数字。对于字符串，n声明了其最小宽度，并且如果字符串太小则会以空格填充，而m则声明了输出</td>
+</tr>
+
+<tr>
+<td class="left">m</td>
+<td class="left">的字符串所能使用的最长字符个数（从左至右），如果太长则可能会导致字符被截断。m和n两个都可以使用'*'来代替，</td>
+</tr>
+
+<tr>
+<td class="left">&#xa0;</td>
+<td class="left">这种情况下它们的值就可以从参数中获取。n或m都可以被省略</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+
+
+<div id="outline-container-sec-1-1-1" class="outline-4">
+<h4 id="sec-1-1-1"><span class="section-number-4">1.1.1</span> 格式化布尔值</h4>
+<div class="outline-text-4" id="text-1-1-1">
+<p>
+布尔值使用%t（真值，truth value）格式指令来输出。
+</p>
+<div class="org-src-container">
+
+<pre class="src src-go">fmt.<span style="color: #00fa9a;">Printf</span>(<span style="color: #ffa500;">"%t %t\n"</span>, <span style="color: #fa8072;">true</span>, <span style="color: #fa8072;">false</span>)
+&#36755;&#20986;&#65306;true <span style="color: #fa8072;">false</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-1-1-2" class="outline-4">
+<h4 id="sec-1-1-2"><span class="section-number-4">1.1.2</span> 格式化整数</h4>
+<div class="outline-text-4" id="text-1-1-2">
+<p>
+二进制格式指令为%b,八进制为%o,十六进制为%x，八进制和十六进制都可使用#修饰符。十进制整数使用%d，字符串使用%s。
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-1-1-3" class="outline-4">
+<h4 id="sec-1-1-3"><span class="section-number-4">1.1.3</span> 格式化字符</h4>
+<div class="outline-text-4" id="text-1-1-3">
+<p>
+Go语言的字符都是rune(即int32值)，它们可以以数字或者Unicode字符的形式输出。
+</p>
+<div class="org-src-container">
+
+<pre class="src src-go">fmt.<span style="color: #00fa9a;">Printf</span>(<span style="color: #ffa500;">"%d %#o4x %U '%c'\n"</span>, 0x3A6, 934, <span style="color: #ffa500;">'\u03A6'</span>, <span style="color: #ffa500;">'\U000003A6'</span>)
+&#36755;&#20986;&#65306;934 016464x U+03A6 <span style="color: #ffa500;">'&#934;'</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-1-1-4" class="outline-4">
+<h4 id="sec-1-1-4"><span class="section-number-4">1.1.4</span> 格式化浮点数</h4>
+<div class="outline-text-4" id="text-1-1-4">
+<p>
+浮点数格式可以指定整体长度、小数位数，以及使用标准计数法还是科学计数法。
+</p>
+</div>
+</div>
+<div id="outline-container-sec-1-1-5" class="outline-4">
+<h4 id="sec-1-1-5"><span class="section-number-4">1.1.5</span> 格式化字符串和切片</h4>
+<div class="outline-text-4" id="text-1-1-5">
+<p>
+字符串输出时可以指定一个最小宽度（如果字符串太短，打印函数会以空格填充）或者一个最大输出字符数（会将太长的字符串截断）。字符串可以以Unicode编码（即字符）、一个码点序列（即rune）或者表示它们的UTF-8字节码的形式输出。
+</p>
+</div>
+</div>
+<div id="outline-container-sec-1-1-6" class="outline-4">
+<h4 id="sec-1-1-6"><span class="section-number-4">1.1.6</span> 为调试格式化</h4>
+<div class="outline-text-4" id="text-1-1-6">
+<p>
+%T（类型）格式指令用于打印一个内置的或者自定义值的类型，而%v格式指令则用于打印一个内置值的类型。事实上%v也可以打印自定义类型的值。
+</p>
+
+<p>
+为了更好地调试，使用%#v格式指令可以以编程的形式输出Go语言代码。
+</p>
+</div>
+</div>
+</div>
+</div>

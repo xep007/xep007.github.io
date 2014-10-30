@@ -5,9 +5,535 @@
     <description>Linux / C / golang / Emacs</description>
     <link>http://xep007.github.io/</link>
     <atom:link href="http://xep007.github.io/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Tue, 28 Oct 2014 23:26:29 +0800</pubDate>
-    <lastBuildDate>Tue, 28 Oct 2014 23:26:29 +0800</lastBuildDate>
+    <pubDate>Thu, 30 Oct 2014 20:50:28 +0800</pubDate>
+    <lastBuildDate>Thu, 30 Oct 2014 20:50:28 +0800</lastBuildDate>
     <generator>Jekyll v2.4.0</generator>
+    
+      <item>
+        <title>Go语言程序设计读书笔记（五）</title>
+        <description>&lt;div id=&quot;table-of-contents&quot;&gt;
+&lt;h2&gt;Table of Contents&lt;/h2&gt;
+&lt;div id=&quot;text-table-of-contents&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1&quot;&gt;1. 字符串（三）&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-1&quot;&gt;1.1. 其他字符处理相关的包&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-1-1&quot;&gt;1.1.1. string包&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-1-2&quot;&gt;1.1.2. strconv包&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-1-3&quot;&gt;1.1.3. utf8包&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-1-4&quot;&gt;1.1.4. unicode包&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-1-5&quot;&gt;1.1.5. regexp包&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+
+&lt;div id=&quot;outline-container-sec-1&quot; class=&quot;outline-2&quot;&gt;
+&lt;h2 id=&quot;sec-1&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;1&lt;/span&gt; 字符串（三）&lt;/h2&gt;
+&lt;div class=&quot;outline-text-2&quot; id=&quot;text-1&quot;&gt;
+&lt;/div&gt;&lt;div id=&quot;outline-container-sec-1-1&quot; class=&quot;outline-3&quot;&gt;
+&lt;h3 id=&quot;sec-1-1&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.1&lt;/span&gt; 其他字符处理相关的包&lt;/h3&gt;
+&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-1&quot;&gt;
+&lt;p&gt;
+Go语言处理字符串的强大之处不仅限于对索引和切片的支持，也不限于fmt的格式化功能。string包提供了非常强大的功能，此外，strconv、unicode/utf8、unicode等也提供了大量实用的函数。
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&quot;outline-container-sec-1-1-1&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1-1-1&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.1.1&lt;/span&gt; string包&lt;/h4&gt;
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-sec-1-1-2&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1-1-2&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.1.2&lt;/span&gt; strconv包&lt;/h4&gt;
+&lt;/div&gt;
+&lt;div id=&quot;outline-container-sec-1-1-3&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1-1-3&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.1.3&lt;/span&gt; utf8包&lt;/h4&gt;
+&lt;/div&gt;
+&lt;div id=&quot;outline-container-sec-1-1-4&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1-1-4&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.1.4&lt;/span&gt; unicode包&lt;/h4&gt;
+&lt;/div&gt;
+&lt;div id=&quot;outline-container-sec-1-1-5&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1-1-5&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.1.5&lt;/span&gt; regexp包&lt;/h4&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</description>
+        <pubDate>Thu, 30 Oct 2014 00:00:00 +0800</pubDate>
+        <link>http://xep007.github.io/golang/2014/10/30/Go%E8%AF%AD%E8%A8%80%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%94%EF%BC%89.html</link>
+        <guid isPermaLink="true">http://xep007.github.io/golang/2014/10/30/Go%E8%AF%AD%E8%A8%80%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%94%EF%BC%89.html</guid>
+        
+        <category>golang</category>
+        
+        
+        <category>golang</category>
+        
+      </item>
+    
+      <item>
+        <title>Go语言程序设计读书笔记（四）</title>
+        <description>&lt;div id=&quot;table-of-contents&quot;&gt;
+&lt;h2&gt;Table of Contents&lt;/h2&gt;
+&lt;div id=&quot;text-table-of-contents&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1&quot;&gt;1. 第3章 字符串（二）&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-1&quot;&gt;1.1. 使用fmt包来格式化字符串&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-1-1&quot;&gt;1.1.1. 格式化布尔值&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-1-2&quot;&gt;1.1.2. 格式化整数&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-1-3&quot;&gt;1.1.3. 格式化字符&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-1-4&quot;&gt;1.1.4. 格式化浮点数&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-1-5&quot;&gt;1.1.5. 格式化字符串和切片&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-1-6&quot;&gt;1.1.6. 为调试格式化&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-sec-1&quot; class=&quot;outline-2&quot;&gt;
+&lt;h2 id=&quot;sec-1&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;1&lt;/span&gt; 第3章 字符串（二）&lt;/h2&gt;
+&lt;div class=&quot;outline-text-2&quot; id=&quot;text-1&quot;&gt;
+&lt;/div&gt;&lt;div id=&quot;outline-container-sec-1-1&quot; class=&quot;outline-3&quot;&gt;
+&lt;h3 id=&quot;sec-1-1&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.1&lt;/span&gt; 使用fmt包来格式化字符串&lt;/h3&gt;
+&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-1&quot;&gt;
+&lt;p&gt;
+Go语言标准库中的fmt包提供了打印函数将数据以字符串形式输出到控制台、文件、其他满足io.Writer接口的值以及其他字符串中。有些输出函数的返回值为error,当将数据打印到控制台时，常常将该错误值忽略，但是如果打印到文件和网络连接等地方时，则一定要检查该错误值。
+&lt;/p&gt;
+&lt;table border=&quot;2&quot; cellspacing=&quot;0&quot; cellpadding=&quot;6&quot; rules=&quot;groups&quot; frame=&quot;hsides&quot;&gt;
+&lt;caption class=&quot;t-above&quot;&gt;&lt;span class=&quot;table-number&quot;&gt;Table 1:&lt;/span&gt; fmt包中的打印函数&lt;/caption&gt;
+
+&lt;colgroup&gt;
+&lt;col  class=&quot;left&quot; /&gt;
+
+&lt;col  class=&quot;left&quot; /&gt;
+&lt;/colgroup&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th scope=&quot;col&quot; class=&quot;left&quot;&gt;语法&lt;/th&gt;
+&lt;th scope=&quot;col&quot; class=&quot;left&quot;&gt;含义/结果&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;fmt.Errorf(format, args&amp;#x2026;)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;返回一个包含所给定的格式化字符串以及args参数的错误值&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;fmt.Fprint(writer, args&amp;#x2026;)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;按照格式%v和空格分隔的非字符串将args写入writer中，&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;&amp;#xa0;&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;返回写入的字节数和一个值为error或nil的错误值&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;fmt.Fprintf(writer, format, args&amp;#x2026;)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;按照字符串格式format将args参数写入writer,&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;&amp;#xa0;&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;返回写入的字节数和一个值为error或nil的错误值&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;fmt.Fprintln(writer, args&amp;#x2026;)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;按照格式%v以空格分隔以换行符结尾将参数args写入writer,&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;&amp;#xa0;&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;返回写入的字节数和一个值为error或nil的错误值&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;fmt.Print(args&amp;#x2026;)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;使用格式%v以空格分隔的非字符串将args写入os.Stdout,&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;&amp;#xa0;&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;返回写入的字节数和一个值为error或nil的错误值&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;fmt.Printf(format, args&amp;#x2026;)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;使用格式化字符串format将args写入os.Stdout,&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;&amp;#xa0;&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;返回写入的字节数和一个值为error或nil的错误值&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;fmt.Println(args&amp;#x2026;)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;使用格式%v以空格分隔以换行符结尾将args写入os.Stdout,&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;&amp;#xa0;&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;返回写入的字节数和一个值为error或nil的错误值&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;fmt.Sprint(args&amp;#x2026;)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;返回args参数组成的字符串，每个参数都使用%v进行格式化的使用空格分离的非字符串&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;fmt.Sprintf(format, args&amp;#x2026;)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;返回使用格式format格式化的args字符串&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;fmt.Sprintln(args&amp;#x2026;)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;返回使用格式%v格式化args后的字符串，以空格分隔以换行符结尾&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+
+&lt;p&gt;
+输出值的最简单方式是使用fmt.Print()函数和fmt.Println()函数输出到os.Stdout,或者使用fmt.Fprint()函数来输出到给定的io.Writer(如一个文件)，或者使用fmt.Sprint()函数和fmt.Sprintln()函数来输出到一个字符串。
+&lt;/p&gt;
+
+&lt;p&gt;
+用于fmt.Errorf()、fmt.Printff()、fmt.Fprintf()以及fmt.Sprintf()函数的格式字符串包含一个或多个格式指令，这些格式指令的形式是%ML，其中M表示一个或多个可选的格式指令修饰符，而L则表示一个特定的格式指令符，这些格式指令见下表。有些格式指令可以接收一个或者多个修饰符，这些修饰符见再下一个表。
+&lt;/p&gt;
+
+&lt;table border=&quot;2&quot; cellspacing=&quot;0&quot; cellpadding=&quot;6&quot; rules=&quot;groups&quot; frame=&quot;hsides&quot;&gt;
+&lt;caption class=&quot;t-above&quot;&gt;&lt;span class=&quot;table-number&quot;&gt;Table 2:&lt;/span&gt; fmt包中的格式指令&lt;/caption&gt;
+
+&lt;colgroup&gt;
+&lt;col  class=&quot;left&quot; /&gt;
+
+&lt;col  class=&quot;left&quot; /&gt;
+&lt;/colgroup&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th scope=&quot;col&quot; class=&quot;left&quot;&gt;格式指令&lt;/th&gt;
+&lt;th scope=&quot;col&quot; class=&quot;left&quot;&gt;含义/结果&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;%%&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;一个%字面量&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;%b&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;一个二进制整数值（基数为２），或者是一个（高级的）用科学计数法表示的指数为２的浮点数&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;%c&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;一个Unicode字符的码点值&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;%d&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;一个十进制数值（基数为0）&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;%e&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;以科学计数法e表示的浮点数或者复数值&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;%E&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;以科学计数法E表示的浮点数或者复数值&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;%f&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;以标准记数法表示的浮点数或者复数值&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;%g&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;以%e或者%f表示的浮点数或者复数，任何一个都以最为紧凑的方式输出&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;%G&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;以%E或者%f表示的浮点数或者复数，任何一个都以最为紧凑的方式输出&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;%o&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;一个以八进制表示的数字（基数为8）&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;%p&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;以十六进制（基数为16）表示的一个值的地址，前缀为Ox，字母使用小写民的a~f表示（用于高度）&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;%q&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;使用Go语法以及必要时使用转义，以双引号括起来的字符串或字节切片[]byte,或是以单引号括起来的数字&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;%s&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;以原生的UTF-8字节表示的字符串或[]byte切片，对于一个给定的文本文件或在一个能够显示UTF-8编码的&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;&amp;#xa0;&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;控制台，它会产生正确的Unicode输出&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;%t&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;以true或false输出的布尔值&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;%T&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;使用Go语法输出的值的类型&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;%U&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;一个用Unicode表示法表示的整数码点，默认值为4个数字字符。&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;%v&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;使用默认格式输出的内置或自定义类型的值，或者是使用其类型的String()方法输出的自定义值，如果该方法存在的话&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;%x&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;以十六进制表示的整型值（基数为十六），或者是以十六进制数字表示的字符串或&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;&amp;#xa0;&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;[]byte数组（每个字节用两个数字表示），数字a~f使用小写表示&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;%X&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;以十六进制表示的整型值（基数为十六），或者是以十六进制数字表示的字符串或&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;&amp;#xa0;&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;[]byte数组（每个字节用两个数字表示），数字A~F使用大写表示&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+
+
+&lt;table border=&quot;2&quot; cellspacing=&quot;0&quot; cellpadding=&quot;6&quot; rules=&quot;groups&quot; frame=&quot;hsides&quot;&gt;
+&lt;caption class=&quot;t-above&quot;&gt;&lt;span class=&quot;table-number&quot;&gt;Table 3:&lt;/span&gt; fmt 包中的格式指令修饰符&lt;/caption&gt;
+
+&lt;colgroup&gt;
+&lt;col  class=&quot;left&quot; /&gt;
+
+&lt;col  class=&quot;left&quot; /&gt;
+&lt;/colgroup&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;修饰符&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;含义/结果&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;空白&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;如果输出的数字为负数，则在其前面加上一个减号&quot;-&quot;。如果输出的是正数，则在其前面&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;&amp;#xa0;&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;加上一个空格。使用%x或者%X格式指令输出时，会在结果之间添加一个空格，例如，&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;&amp;#xa0;&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;fmt.Printf(&quot;% X&quot;, &quot;←&quot;)输出E2 86 92&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;#&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;让格式指令以另外一种格式输出数据：&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;&amp;#xa0;&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;%#o输出以0打头的八进制数据&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;&amp;#xa0;&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;%#p输出一个不含0x打头的指针&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;&amp;#xa0;&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;%#q尽可能以原始字符串的形式输出一个字符串或者[]byte切片（使用反引号），否则输出以双引号引起来的字符串&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;&amp;#xa0;&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;%#v使用Go语法将值自身输出&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;&amp;#xa0;&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;%#x输出以0x打头的十六进制数据&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;&amp;#xa0;&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;%#X输出以0X打头的十六进制数据&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;+&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;让格式指令在数值前面输出+号或者-号，为字符串输出ASCII字符（别的字符会被转义），为结构体输出其字段名&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;-&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;让格式指令将值进行向左对齐（默认值为右对齐）&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;0&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;让格式指令以数字0而非空白进行填充&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;n.m&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;对于数字，这个修饰符会使用n（int值）个字符输出浮点数或者复数（为避免截断可以输出更多个），并在小数点后面&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;n&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;输出m（int值）个数字。对于字符串，n声明了其最小宽度，并且如果字符串太小则会以空格填充，而m则声明了输出&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;m&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;的字符串所能使用的最长字符个数（从左至右），如果太长则可能会导致字符被截断。m和n两个都可以使用&#39;*&#39;来代替，&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;&amp;#xa0;&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;这种情况下它们的值就可以从参数中获取。n或m都可以被省略&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+
+
+
+&lt;div id=&quot;outline-container-sec-1-1-1&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1-1-1&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.1.1&lt;/span&gt; 格式化布尔值&lt;/h4&gt;
+&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-1-1&quot;&gt;
+&lt;p&gt;
+布尔值使用%t（真值，truth value）格式指令来输出。
+&lt;/p&gt;
+&lt;div class=&quot;org-src-container&quot;&gt;
+
+&lt;pre class=&quot;src src-go&quot;&gt;fmt.&lt;span style=&quot;color: #00fa9a;&quot;&gt;Printf&lt;/span&gt;(&lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;%t %t\n&quot;&lt;/span&gt;, &lt;span style=&quot;color: #fa8072;&quot;&gt;true&lt;/span&gt;, &lt;span style=&quot;color: #fa8072;&quot;&gt;false&lt;/span&gt;)
+&amp;#36755;&amp;#20986;&amp;#65306;true &lt;span style=&quot;color: #fa8072;&quot;&gt;false&lt;/span&gt;
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-sec-1-1-2&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1-1-2&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.1.2&lt;/span&gt; 格式化整数&lt;/h4&gt;
+&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-1-2&quot;&gt;
+&lt;p&gt;
+二进制格式指令为%b,八进制为%o,十六进制为%x，八进制和十六进制都可使用#修饰符。十进制整数使用%d，字符串使用%s。
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-sec-1-1-3&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1-1-3&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.1.3&lt;/span&gt; 格式化字符&lt;/h4&gt;
+&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-1-3&quot;&gt;
+&lt;p&gt;
+Go语言的字符都是rune(即int32值)，它们可以以数字或者Unicode字符的形式输出。
+&lt;/p&gt;
+&lt;div class=&quot;org-src-container&quot;&gt;
+
+&lt;pre class=&quot;src src-go&quot;&gt;fmt.&lt;span style=&quot;color: #00fa9a;&quot;&gt;Printf&lt;/span&gt;(&lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;%d %#o4x %U &#39;%c&#39;\n&quot;&lt;/span&gt;, 0x3A6, 934, &lt;span style=&quot;color: #ffa500;&quot;&gt;&#39;\u03A6&#39;&lt;/span&gt;, &lt;span style=&quot;color: #ffa500;&quot;&gt;&#39;\U000003A6&#39;&lt;/span&gt;)
+&amp;#36755;&amp;#20986;&amp;#65306;934 016464x U+03A6 &lt;span style=&quot;color: #ffa500;&quot;&gt;&#39;&amp;#934;&#39;&lt;/span&gt;
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-sec-1-1-4&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1-1-4&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.1.4&lt;/span&gt; 格式化浮点数&lt;/h4&gt;
+&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-1-4&quot;&gt;
+&lt;p&gt;
+浮点数格式可以指定整体长度、小数位数，以及使用标准计数法还是科学计数法。
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&quot;outline-container-sec-1-1-5&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1-1-5&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.1.5&lt;/span&gt; 格式化字符串和切片&lt;/h4&gt;
+&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-1-5&quot;&gt;
+&lt;p&gt;
+字符串输出时可以指定一个最小宽度（如果字符串太短，打印函数会以空格填充）或者一个最大输出字符数（会将太长的字符串截断）。字符串可以以Unicode编码（即字符）、一个码点序列（即rune）或者表示它们的UTF-8字节码的形式输出。
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&quot;outline-container-sec-1-1-6&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1-1-6&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.1.6&lt;/span&gt; 为调试格式化&lt;/h4&gt;
+&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-1-6&quot;&gt;
+&lt;p&gt;
+%T（类型）格式指令用于打印一个内置的或者自定义值的类型，而%v格式指令则用于打印一个内置值的类型。事实上%v也可以打印自定义类型的值。
+&lt;/p&gt;
+
+&lt;p&gt;
+为了更好地调试，使用%#v格式指令可以以编程的形式输出Go语言代码。
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</description>
+        <pubDate>Tue, 28 Oct 2014 00:00:00 +0800</pubDate>
+        <link>http://xep007.github.io/golang/2014/10/28/Go%E8%AF%AD%E8%A8%80%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0%EF%BC%88%E5%9B%9B%EF%BC%89.html</link>
+        <guid isPermaLink="true">http://xep007.github.io/golang/2014/10/28/Go%E8%AF%AD%E8%A8%80%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0%EF%BC%88%E5%9B%9B%EF%BC%89.html</guid>
+        
+        <category>golang</category>
+        
+        
+        <category>golang</category>
+        
+      </item>
     
       <item>
         <title>GNU Emacs Lisp编程入门笔记（九）</title>
@@ -639,6 +1165,7 @@ Go语言的for……range循环可以用于一个字符一个字符的迭代字�
         <description>&lt;p&gt;
 今天在org-mode中制作表格，需要在单元格中输入“|”符号，可“|”符号是制表符，一直试都未能成功。没办法只好去找org-mode文档。终于在&lt;a href=&quot;http://orgmode.org/manual/Built_002din-table-editor.html#fnd-1&quot;&gt;org-mode文档&lt;/a&gt;最后一行找到了答案，记下来，备忘。
 &lt;/p&gt;
+
 
 &lt;p&gt;
 在需要输入“|”的地方输入\vert就行了。
@@ -2125,299 +2652,6 @@ setcar函数会改变列表的值。
         <pubDate>Wed, 22 Oct 2014 00:00:00 +0800</pubDate>
         <link>http://xep007.github.io/emacs/lisp/2014/10/22/gnu%20emacs%20lisp%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8%E7%AC%94%E8%AE%B0%EF%BC%88%E5%85%AD%EF%BC%89.html</link>
         <guid isPermaLink="true">http://xep007.github.io/emacs/lisp/2014/10/22/gnu%20emacs%20lisp%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8%E7%AC%94%E8%AE%B0%EF%BC%88%E5%85%AD%EF%BC%89.html</guid>
-        
-        
-        <category>emacs</category>
-        
-        <category>lisp</category>
-        
-      </item>
-    
-      <item>
-        <title>GNU Emacs Lisp编程入门笔记（五）</title>
-        <description>&lt;div id=&quot;table-of-contents&quot;&gt;
-&lt;h2&gt;Table of Contents&lt;/h2&gt;
-&lt;div id=&quot;text-table-of-contents&quot;&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1&quot;&gt;1. 第5章 更复杂的函数&lt;/a&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-1&quot;&gt;1.1. copy-to-buffer函数的定义&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-2&quot;&gt;1.2. insert-buffer函数&lt;/a&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-2-1&quot;&gt;1.2.1. insert-buff函数中的交互表达式&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-2-2&quot;&gt;1.2.2. insert-buffer函数体&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-3&quot;&gt;1.3. 其余略&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div id=&quot;outline-container-sec-1&quot; class=&quot;outline-2&quot;&gt;
-&lt;h2 id=&quot;sec-1&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;1&lt;/span&gt; 第5章 更复杂的函数&lt;/h2&gt;
-&lt;div class=&quot;outline-text-2&quot; id=&quot;text-1&quot;&gt;
-&lt;/div&gt;&lt;div id=&quot;outline-container-sec-1-1&quot; class=&quot;outline-3&quot;&gt;
-&lt;h3 id=&quot;sec-1-1&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.1&lt;/span&gt; copy-to-buffer函数的定义&lt;/h3&gt;
-&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-1&quot;&gt;
-&lt;p&gt;
-copy-to-buffer函数拷贝文本到一个缓冲区，替换原有缓冲区中的文本。
-&lt;/p&gt;
-&lt;div class=&quot;org-src-container&quot;&gt;
-
-&lt;pre class=&quot;src src-lisp&quot;&gt;&lt;span class=&quot;linenr&quot;&gt;1: &lt;/span&gt;(&lt;span style=&quot;color: #00ffff;&quot;&gt;defun&lt;/span&gt; &lt;span style=&quot;color: #00fa9a;&quot;&gt;copy-to-buffer&lt;/span&gt; buffer start end
-&lt;span class=&quot;linenr&quot;&gt;2: &lt;/span&gt;    (interactive &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;BCopy to buffer: \nr&quot;&lt;/span&gt;)
-&lt;span class=&quot;linenr&quot;&gt;3: &lt;/span&gt;        (&lt;span style=&quot;color: #00ffff;&quot;&gt;let&lt;/span&gt; ((oldbuf (current-buffer)))
-&lt;span class=&quot;linenr&quot;&gt;4: &lt;/span&gt;            (&lt;span style=&quot;color: #00ffff;&quot;&gt;save-excursion&lt;/span&gt;
-&lt;span class=&quot;linenr&quot;&gt;5: &lt;/span&gt;               (set-buffer (get-buffer-create buffer))
-&lt;span class=&quot;linenr&quot;&gt;6: &lt;/span&gt;               (erase-buffer)
-&lt;span class=&quot;linenr&quot;&gt;7: &lt;/span&gt;               (&lt;span style=&quot;color: #00ffff;&quot;&gt;save-excursion&lt;/span&gt;
-&lt;span class=&quot;linenr&quot;&gt;8: &lt;/span&gt;                  (insert-buffer-substring oldbuf start end)))))
-&lt;/pre&gt;
-&lt;/div&gt;
-&lt;p&gt;
-(erase-buffer)删除了缓冲区原有的内容。第一次使用save-excurision函数返回到将要拷贝文本的缓冲区。第二次使用是使Emacs在被插入内容的缓冲区的域的开始设置位点。
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id=&quot;outline-container-sec-1-2&quot; class=&quot;outline-3&quot;&gt;
-&lt;h3 id=&quot;sec-1-2&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.2&lt;/span&gt; insert-buffer函数&lt;/h3&gt;
-&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-2&quot;&gt;
-&lt;p&gt;
-此命令将另外一个缓冲区的内容拷贝到当前缓冲区中。
-&lt;/p&gt;
-&lt;div class=&quot;org-src-container&quot;&gt;
-
-&lt;pre class=&quot;src src-lisp&quot;&gt;&lt;span class=&quot;linenr&quot;&gt; 1: &lt;/span&gt;(&lt;span style=&quot;color: #00ffff;&quot;&gt;defun&lt;/span&gt; &lt;span style=&quot;color: #00fa9a;&quot;&gt;insert-buffer&lt;/span&gt; (buffer)
-&lt;span class=&quot;linenr&quot;&gt; 2: &lt;/span&gt;  (interactive &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;*bInsert buffer: &quot;&lt;/span&gt;)
-&lt;span class=&quot;linenr&quot;&gt; 3: &lt;/span&gt;  (or (bufferp buffer)
-&lt;span class=&quot;linenr&quot;&gt; 4: &lt;/span&gt;      (setq buffer (get-buffer buffer)))
-&lt;span class=&quot;linenr&quot;&gt; 5: &lt;/span&gt;  (&lt;span style=&quot;color: #00ffff;&quot;&gt;let&lt;/span&gt; (start end newmark)
-&lt;span class=&quot;linenr&quot;&gt; 6: &lt;/span&gt;    (&lt;span style=&quot;color: #00ffff;&quot;&gt;save-excursion&lt;/span&gt;
-&lt;span class=&quot;linenr&quot;&gt; 7: &lt;/span&gt;      (&lt;span style=&quot;color: #00ffff;&quot;&gt;save-excursion&lt;/span&gt;
-&lt;span class=&quot;linenr&quot;&gt; 8: &lt;/span&gt;        (set-buffer buffer)
-&lt;span class=&quot;linenr&quot;&gt; 9: &lt;/span&gt;        (setq start (point-min) end (point-max)))
-&lt;span class=&quot;linenr&quot;&gt;10: &lt;/span&gt;      (insert-buffer-substring buffer start end)
-&lt;span class=&quot;linenr&quot;&gt;11: &lt;/span&gt;      (setq newmark (point)))
-&lt;span class=&quot;linenr&quot;&gt;12: &lt;/span&gt;    (push-mark newmark)))
-&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id=&quot;outline-container-sec-1-2-1&quot; class=&quot;outline-4&quot;&gt;
-&lt;h4 id=&quot;sec-1-2-1&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.2.1&lt;/span&gt; insert-buff函数中的交互表达式&lt;/h4&gt;
-&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-2-1&quot;&gt;
-&lt;p&gt;
-interactive表达式的参量有两个部分：一部分是一个星号“*”， 另一部分是“bInsert buffer: ”。
-&lt;/p&gt;
-&lt;ol class=&quot;org-ol&quot;&gt;
-&lt;li&gt;只读缓冲区。星号用于缓冲区是一个只读缓冲区的情况。如果insert-buffer被一个只读缓冲区调用，一条消息将打印在回显区。警告不允许往这个缓冲区写入任何东西。
-&lt;/li&gt;
-&lt;li&gt;交互表达式的中“b”
-&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;
-小写的“b”告诉lisp解释器传送给insert-buffer函数的参量应是一个存在缓冲区或者这个缓冲区的名字。大写的“B”可以允许参量传送不存在的缓冲区。
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id=&quot;outline-container-sec-1-2-2&quot; class=&quot;outline-4&quot;&gt;
-&lt;h4 id=&quot;sec-1-2-2&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.2.2&lt;/span&gt; insert-buffer函数体&lt;/h4&gt;
-&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-2-2&quot;&gt;
-&lt;p&gt;
-函数体有两个主要部分：一个or表达式和一个let表达式。or表达式的目的是为了确保buffer参量真正与一个缓冲区绑定在一起，而不是绑定到缓冲区的名字。let表达式包含了将另外一个缓冲区的内容拷贝到当前缓冲区所需的代码。
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id=&quot;outline-container-sec-1-3&quot; class=&quot;outline-3&quot;&gt;
-&lt;h3 id=&quot;sec-1-3&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.3&lt;/span&gt; 其余略&lt;/h3&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-</description>
-        <pubDate>Wed, 22 Oct 2014 00:00:00 +0800</pubDate>
-        <link>http://xep007.github.io/emacs/lisp/2014/10/22/gnu%20emacs%20lisp%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%94%EF%BC%89.html</link>
-        <guid isPermaLink="true">http://xep007.github.io/emacs/lisp/2014/10/22/gnu%20emacs%20lisp%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%94%EF%BC%89.html</guid>
-        
-        
-        <category>emacs</category>
-        
-        <category>lisp</category>
-        
-      </item>
-    
-      <item>
-        <title>GNU Emacs Lisp 编程入门笔记（四）</title>
-        <description>&lt;div id=&quot;table-of-contents&quot;&gt;
-&lt;h2&gt;Table of Contents&lt;/h2&gt;
-&lt;div id=&quot;text-table-of-contents&quot;&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1&quot;&gt;1. 第4章 与缓冲区有关的函数&lt;/a&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-1&quot;&gt;1.1. 查找更多的信息&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-2&quot;&gt;1.2. 简化的beginning-of-buffer函数定义&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-3&quot;&gt;1.3. make-whole-buffer函数的定义&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-4&quot;&gt;1.4. append-to-buffer函数的定义&lt;/a&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-4-1&quot;&gt;1.4.1. append-to-buffer函数的交互表达式&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-4-2&quot;&gt;1.4.2. append-to-buffer函数体&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-4-3&quot;&gt;1.4.3. append-to-buffer函数中的save-excursion&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-5&quot;&gt;1.5. 回顾&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div id=&quot;outline-container-sec-1&quot; class=&quot;outline-2&quot;&gt;
-&lt;h2 id=&quot;sec-1&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;1&lt;/span&gt; 第4章 与缓冲区有关的函数&lt;/h2&gt;
-&lt;div class=&quot;outline-text-2&quot; id=&quot;text-1&quot;&gt;
-&lt;/div&gt;&lt;div id=&quot;outline-container-sec-1-1&quot; class=&quot;outline-3&quot;&gt;
-&lt;h3 id=&quot;sec-1-1&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.1&lt;/span&gt; 查找更多的信息&lt;/h3&gt;
-&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-1&quot;&gt;
-&lt;p&gt;
-在任何时候，你都可以键入C-h f以及函数名，得到Emacs Lisp函数的全部文档。键入C-h v 和变量名得到任何变量的全部文档。
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id=&quot;outline-container-sec-1-2&quot; class=&quot;outline-3&quot;&gt;
-&lt;h3 id=&quot;sec-1-2&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.2&lt;/span&gt; 简化的beginning-of-buffer函数定义&lt;/h3&gt;
-&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-2&quot;&gt;
-&lt;p&gt;
-完整版的beginning-of-buffer函数见下一章。以下是简化版的。代码如下：
-&lt;/p&gt;
-&lt;div class=&quot;org-src-container&quot;&gt;
-
-&lt;pre class=&quot;src src-lisp&quot;&gt;&lt;span class=&quot;linenr&quot;&gt;1: &lt;/span&gt;(&lt;span style=&quot;color: #00ffff;&quot;&gt;defun&lt;/span&gt; &lt;span style=&quot;color: #00fa9a;&quot;&gt;beginning-of-buffer&lt;/span&gt; ()
-&lt;span class=&quot;linenr&quot;&gt;2: &lt;/span&gt;    &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;Move point to the beginning of the buffer;&lt;/span&gt;
-&lt;span class=&quot;linenr&quot;&gt;3: &lt;/span&gt;&lt;span style=&quot;color: #ffa500;&quot;&gt;leave mark at previous position.&quot;&lt;/span&gt;
-&lt;span class=&quot;linenr&quot;&gt;4: &lt;/span&gt;    (interactive)
-&lt;span class=&quot;linenr&quot;&gt;5: &lt;/span&gt;    (push-mark)
-&lt;span class=&quot;linenr&quot;&gt;6: &lt;/span&gt;    (goto-char (point-min)))
-&lt;/pre&gt;
-&lt;/div&gt;
-&lt;p&gt;
-(push-mark)表达式表示在光标的当前位置设置一个标记。这个标记被保存在标记环中。
-(goto-char)表达式表示将光标跳到本缓冲区的最小可能位点处，也就是缓冲区的开始处。
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id=&quot;outline-container-sec-1-3&quot; class=&quot;outline-3&quot;&gt;
-&lt;h3 id=&quot;sec-1-3&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.3&lt;/span&gt; make-whole-buffer函数的定义&lt;/h3&gt;
-&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-3&quot;&gt;
-&lt;p&gt;
-make-whole-buffer函数将整个缓冲区作为一个域来标记，方法是将位点置于缓冲区开始的位置，在缓冲区的末尾放一个标记。其完整代码如下：
-&lt;/p&gt;
-&lt;div class=&quot;org-src-container&quot;&gt;
-
-&lt;pre class=&quot;src src-lisp&quot;&gt;&lt;span class=&quot;linenr&quot;&gt;1: &lt;/span&gt;(&lt;span style=&quot;color: #00ffff;&quot;&gt;defun&lt;/span&gt; &lt;span style=&quot;color: #00fa9a;&quot;&gt;mark-whole-buffer&lt;/span&gt; () 
-&lt;span class=&quot;linenr&quot;&gt;2: &lt;/span&gt;    &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;Put point at beginning and mark at end of buffer.&quot;&lt;/span&gt;
-&lt;span class=&quot;linenr&quot;&gt;3: &lt;/span&gt;    (interactive)
-&lt;span class=&quot;linenr&quot;&gt;4: &lt;/span&gt;    (push-mark (point))
-&lt;span class=&quot;linenr&quot;&gt;5: &lt;/span&gt;    (push-mark (point-max))
-&lt;span class=&quot;linenr&quot;&gt;6: &lt;/span&gt;    (goto-char (point-min)))
-&lt;/pre&gt;
-&lt;/div&gt;
-&lt;p&gt;
-函数体有三行。
-((push-mark (point)),这一行与(push-mark)的作用一样。即在当前位置设置一个标记。不加(point)也是可以的。
-(push-mark (point-max)),这个表达式在缓冲区中数值最大的位点处（缓冲区末尾）设置一个标记。设置好这一标记后，原来的标记就不是标记了，但Emacs记住了它的位置。
-(goto-char (point-min)),这个表达式与上一个函数中的一样。
-这个函数的作用就是标记了整个缓冲区。
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id=&quot;outline-container-sec-1-4&quot; class=&quot;outline-3&quot;&gt;
-&lt;h3 id=&quot;sec-1-4&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.4&lt;/span&gt; append-to-buffer函数的定义&lt;/h3&gt;
-&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-4&quot;&gt;
-&lt;p&gt;
-append-to-buffer函数功能是从当前缓冲区中拷贝一个域（即缓冲区中介于位点和标记之间的域）到一个指定的缓冲区。代码如下：
-&lt;/p&gt;
-&lt;div class=&quot;org-src-container&quot;&gt;
-
-&lt;pre class=&quot;src src-lisp&quot;&gt;&lt;span class=&quot;linenr&quot;&gt; 1: &lt;/span&gt;(&lt;span style=&quot;color: #00ffff;&quot;&gt;defun&lt;/span&gt; &lt;span style=&quot;color: #00fa9a;&quot;&gt;append-to-buffer&lt;/span&gt; (buffer start end)
-&lt;span class=&quot;linenr&quot;&gt; 2: &lt;/span&gt;    &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;Append to specified buffer the text of the region.&lt;/span&gt;
-&lt;span class=&quot;linenr&quot;&gt; 3: &lt;/span&gt;&lt;span style=&quot;color: #ffa500;&quot;&gt;     It is inserted into that buffer before its point.&lt;/span&gt;
-&lt;span class=&quot;linenr&quot;&gt; 4: &lt;/span&gt;&lt;span style=&quot;color: #ffa500;&quot;&gt;    When calling from a program, give three arguments:&lt;/span&gt;
-&lt;span class=&quot;linenr&quot;&gt; 5: &lt;/span&gt;&lt;span style=&quot;color: #ffa500;&quot;&gt;    a buffer or the name of one, and two charactre number&lt;/span&gt;
-&lt;span class=&quot;linenr&quot;&gt; 6: &lt;/span&gt;&lt;span style=&quot;color: #ffa500;&quot;&gt;    apecifying the portion of the current buffer to be copied.&quot;&lt;/span&gt;
-&lt;span class=&quot;linenr&quot;&gt; 7: &lt;/span&gt;    (interactive &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;BAppend to buffer: \nr&quot;&lt;/span&gt;)
-&lt;span class=&quot;linenr&quot;&gt; 8: &lt;/span&gt;    (&lt;span style=&quot;color: #00ffff;&quot;&gt;let&lt;/span&gt; ((oldbuf (current-buffer)))
-&lt;span class=&quot;linenr&quot;&gt; 9: &lt;/span&gt;       (&lt;span style=&quot;color: #00ffff;&quot;&gt;save-excursion&lt;/span&gt;
-&lt;span class=&quot;linenr&quot;&gt;10: &lt;/span&gt;           (set-buffer (get-buffer-create buffer))
-&lt;span class=&quot;linenr&quot;&gt;11: &lt;/span&gt;           (insert-buffer-substring oldbuf start end))))
-&lt;/pre&gt;
-&lt;/div&gt;
-&lt;p&gt;
-函数定义的第一行包含了函数名以及三个参量。buffer参量是指拷贝文本的目的缓冲区，start和end参量是指将要被拷贝的当前缓冲区中指定域的起始和终止位点。
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;div id=&quot;outline-container-sec-1-4-1&quot; class=&quot;outline-4&quot;&gt;
-&lt;h4 id=&quot;sec-1-4-1&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.4.1&lt;/span&gt; append-to-buffer函数的交互表达式&lt;/h4&gt;
-&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-4-1&quot;&gt;
-&lt;p&gt;
-交互表达式interactive的参量有两个部分，用&quot;\n&quot;分隔。
-参量第一部分是&quot;BAppend to buffer:&quot;。&quot;B&quot;控制符告诉Emacs要求输入缓冲区的名字并将这个名字传送给函数。Emacs将在minibuffer中打印出&quot;B&quot;字符后面的字符串&quot;Append to buffer:&quot;来提示用户输入这个缓冲区名。然后Emacs将函数参量列表中的参量buffer绑定到指定的缓冲区.
-&quot;r&quot;,告诉Emacs将函数参量列表中符号&quot;buffer&quot;之后的两个参量（即start和end）绑定到位点和标记上。
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id=&quot;outline-container-sec-1-4-2&quot; class=&quot;outline-4&quot;&gt;
-&lt;h4 id=&quot;sec-1-4-2&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.4.2&lt;/span&gt; append-to-buffer函数体&lt;/h4&gt;
-&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-4-2&quot;&gt;
-&lt;p&gt;
-函数体从let开始。let表达式有三个元素：
-&lt;/p&gt;
-&lt;ul class=&quot;org-ul&quot;&gt;
-&lt;li&gt;符号let;
-&lt;/li&gt;
-&lt;li&gt;一个变量列表，本例中，变量列表包含一个两元素列表（variable value）;
-&lt;/li&gt;
-&lt;li&gt;let表达式主体。
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id=&quot;outline-container-sec-1-4-3&quot; class=&quot;outline-4&quot;&gt;
-&lt;h4 id=&quot;sec-1-4-3&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.4.3&lt;/span&gt; append-to-buffer函数中的save-excursion&lt;/h4&gt;
-&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-4-3&quot;&gt;
-&lt;p&gt;
-let表达式的主体由一个save-excursion表达式组成。它保存位点和标记的位置，并当这个函数体的其他表达式都被求值之后恢复位点和标记到相应的位置。
-(set-buffer (get-buffer-create buffer))列表中，(get-buffer-create buffer)函数要么获得已经命名的缓冲区，要么用给定的名字创建一个缓冲区。
-(insert-buffer-substring oldbuf start end)函数从作为其第一个参量指定的缓冲区中拷贝一个字符串，并将其插入到当前的缓冲区中。
-(insert-buffer-substring)函数执行完之后，save-excursion将恢复对原来缓冲区的操作，并且append-to-buffer将完成其工作。
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id=&quot;outline-container-sec-1-5&quot; class=&quot;outline-3&quot;&gt;
-&lt;h3 id=&quot;sec-1-5&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.5&lt;/span&gt; 回顾&lt;/h3&gt;
-&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-5&quot;&gt;
-&lt;ul class=&quot;org-ul&quot;&gt;
-&lt;li&gt;find-tag
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;
-找到某个函数或者变量的源代码的文件，并切换到这个缓冲区，将位点（光标）置于相应函数或者变量的开始处。
-&lt;/p&gt;
-&lt;ul class=&quot;org-ul&quot;&gt;
-&lt;li&gt;set-buffer
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;
-将Emacs的注意力转移到另一个缓冲区，但是不改变显示的窗口。
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-</description>
-        <pubDate>Mon, 20 Oct 2014 00:00:00 +0800</pubDate>
-        <link>http://xep007.github.io/emacs/lisp/2014/10/20/gnu%20emacs%20lisp%20%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8%E7%AC%94%E8%AE%B0%EF%BC%88%E5%9B%9B%EF%BC%89.html</link>
-        <guid isPermaLink="true">http://xep007.github.io/emacs/lisp/2014/10/20/gnu%20emacs%20lisp%20%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8%E7%AC%94%E8%AE%B0%EF%BC%88%E5%9B%9B%EF%BC%89.html</guid>
-        
-        <category>lisp</category>
         
         
         <category>emacs</category>
