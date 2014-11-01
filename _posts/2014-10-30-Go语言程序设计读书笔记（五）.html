@@ -1,0 +1,828 @@
+---
+layout     : post
+title      : Go语言程序设计读书笔记（五）
+categories : [golang , ]
+tags       : golang
+description: golang
+author: xep007
+---
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1. 字符串（三）</a>
+<ul>
+<li><a href="#sec-1-1">1.1. 其他字符处理相关的包</a>
+<ul>
+<li><a href="#sec-1-1-1">1.1.1. string包</a></li>
+<li><a href="#sec-1-1-2">1.1.2. strconv包</a></li>
+<li><a href="#sec-1-1-3">1.1.3. utf8包</a></li>
+<li><a href="#sec-1-1-4">1.1.4. unicode包</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> 字符串（三）</h2>
+<div class="outline-text-2" id="text-1">
+</div><div id="outline-container-sec-1-1" class="outline-3">
+<h3 id="sec-1-1"><span class="section-number-3">1.1</span> 其他字符处理相关的包</h3>
+<div class="outline-text-3" id="text-1-1">
+<p>
+Go语言处理字符串的强大之处不仅限于对索引和切片的支持，也不限于fmt的格式化功能。string包提供了非常强大的功能，此外，strconv、unicode/utf8、unicode等也提供了大量实用的函数。
+</p>
+</div>
+<div id="outline-container-sec-1-1-1" class="outline-4">
+<h4 id="sec-1-1-1"><span class="section-number-4">1.1.1</span> string包</h4>
+<div class="outline-text-4" id="text-1-1-1">
+<p>
+下表中：变量s和t都是字符串类型，xs是字符串切片，i是int类型，f是一个签名为func (rune)bool的函数引用，索引位置是指位置匹配Unicode码点或者字符串的第一个UTF-8字节的位置，如果没找到匹配的字符串则为-1。 
+</p>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<caption class="t-above"><span class="table-number">Table 1:</span> strings包里的列表 #1</caption>
+
+<colgroup>
+<col  class="left" />
+
+<col  class="left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="left">语法</th>
+<th scope="col" class="left">含义/结果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="left">strings.Contains(s, t)</td>
+<td class="left">如果t在s中则返回true</td>
+</tr>
+
+<tr>
+<td class="left">strings.Count(s, t)</td>
+<td class="left">t在s中出现了几多少次</td>
+</tr>
+
+<tr>
+<td class="left">strings.EqualFold(s, t)</td>
+<td class="left">如果字符串相等的话则返回true,注意此函数比较时是区分大小写的</td>
+</tr>
+
+<tr>
+<td class="left">strings.Fields(s)</td>
+<td class="left">在字符串空白处进行切分，返回字符串切片</td>
+</tr>
+
+<tr>
+<td class="left">strings.FieldsFunc(s, f)</td>
+<td class="left">按照f函数的返回结果进行切分，如果f返回true,就在那个字符上进行切分</td>
+</tr>
+
+<tr>
+<td class="left">strings.HasPrefix(s, t)</td>
+<td class="left">如果字符串s是以t开头的则返回true</td>
+</tr>
+
+<tr>
+<td class="left">strings.HasSuffix(s, t)</td>
+<td class="left">如果字符串s是以t结尾的则返回true</td>
+</tr>
+
+<tr>
+<td class="left">strings.Index(s, t)</td>
+<td class="left">t在s中第一次出现的索引位置</td>
+</tr>
+
+<tr>
+<td class="left">strings.IndexAny(s, t)</td>
+<td class="left">s中第一个出现在t中的字符的索引位置</td>
+</tr>
+
+<tr>
+<td class="left">strings.IndexFunc(s, f)</td>
+<td class="left">s中第一次令f函数返回true的字符的索引位置</td>
+</tr>
+
+<tr>
+<td class="left">strings.IndexRune(s, char)</td>
+<td class="left">返回字符char在s中第一次出现的索引位置</td>
+</tr>
+
+<tr>
+<td class="left">strings.Join(xs, t)</td>
+<td class="left">将xs中的所有字符串按照t分隔符进行合并（t可以为""）</td>
+</tr>
+
+<tr>
+<td class="left">strings.LastIndex(s, t)</td>
+<td class="left">t在s中最后一次出现的位置</td>
+</tr>
+
+<tr>
+<td class="left">strings.LastIndexAny(s, t)</td>
+<td class="left">s中最后一个出现在t中的字符的索引位置</td>
+</tr>
+
+<tr>
+<td class="left">strings.LastIndexFunc(s, f)</td>
+<td class="left">s中最后一个f返回true的字符的索引位置</td>
+</tr>
+
+<tr>
+<td class="left">strings.Map(mf, t)</td>
+<td class="left">按照mf函数规则(func(rune)rune)替换t中所有对应的字符</td>
+</tr>
+
+<tr>
+<td class="left">strings.NewReader(s)</td>
+<td class="left">创建一个字符串s的对象，支持Read()、ReadByte()和ReadRune()方法</td>
+</tr>
+
+<tr>
+<td class="left">strings.NewReplacer(&#x2026;)</td>
+<td class="left">创建一个替换器能够处理多对旧新字符串的替换</td>
+</tr>
+
+<tr>
+<td class="left">strings.Repeat(s, i)</td>
+<td class="left">重复i次字符串s</td>
+</tr>
+</tbody>
+</table>
+
+
+
+<p>
+下表中：变量r是unicode类型的，SpecialCase是用来指定Unicode规则的（高级用法）
+</p>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<caption class="t-above"><span class="table-number">Table 2:</span> strings包里的函数列表 #2</caption>
+
+<colgroup>
+<col  class="left" />
+
+<col  class="left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="left">语法</th>
+<th scope="col" class="left">含义/结果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="left">strings.Replace(s, old, new, i)</td>
+<td class="left">返回一个新的字符串，对s中旧的非重叠字符串用新的字符串进行替换，</td>
+</tr>
+
+<tr>
+<td class="left">&#xa0;</td>
+<td class="left">执行i次操作，如果i = -1则全部替换</td>
+</tr>
+
+<tr>
+<td class="left">strings.Split(s, t)</td>
+<td class="left">返回一个新的字符串切片，在原s上所有出现t的位置进行切分</td>
+</tr>
+
+<tr>
+<td class="left">strings.SplitAfter(s, t)</td>
+<td class="left">同上，但是保留分隔符</td>
+</tr>
+
+<tr>
+<td class="left">strings.SplitAfterN(s, t, i)</td>
+<td class="left">同上，但是只进行前i次分割操作</td>
+</tr>
+
+<tr>
+<td class="left">strings.SplitN(s, t, i)</td>
+<td class="left">同strings.Split()，但是只执行前i次分割操作</td>
+</tr>
+
+<tr>
+<td class="left">strings.Title(s)</td>
+<td class="left">返回一个新字符串，对原字符串中每一个单词进行标题首字母大写</td>
+</tr>
+
+<tr>
+<td class="left">strings.ToLower(s)</td>
+<td class="left">返回一个新字符串，对原s进行字母小写转换</td>
+</tr>
+
+<tr>
+<td class="left">strings.ToLowerSpecial(r, s)</td>
+<td class="left">返回一个新字符串，按照指定的优先规则对原s中的相应的Unicode字母进行小写转换</td>
+</tr>
+
+<tr>
+<td class="left">strings.ToTitle(s)</td>
+<td class="left">返回一个新字符串，对原s进行标题格式转换</td>
+</tr>
+
+<tr>
+<td class="left">strings.ToTitleSpecial(r, s)</td>
+<td class="left">返回一个新字符串，对原s按照指定的优先规则r进行标题格式转换</td>
+</tr>
+
+<tr>
+<td class="left">strings.ToUpper(r, s)</td>
+<td class="left">返回一个新字符串，对原s中所有的字母进行大写转换处理</td>
+</tr>
+
+<tr>
+<td class="left">strings.ToUpperSpecial(r, s)</td>
+<td class="left">返回一个新字符串，按照指定的优先规则对原s中的相应的Unicode字母进行大写转换</td>
+</tr>
+
+<tr>
+<td class="left">strings.Trim(s, t)</td>
+<td class="left">返回一个新字符串，从s两端过滤掉t</td>
+</tr>
+
+<tr>
+<td class="left">strings.TrimFunc(s, f)</td>
+<td class="left">返回一个新字符串，从s两端开始过滤掉f返回true的每一个字符</td>
+</tr>
+
+<tr>
+<td class="left">strings.TrimLeft(s, t)</td>
+<td class="left">返回一个新字符串，从s左边开始过滤掉t</td>
+</tr>
+
+<tr>
+<td class="left">strings.TrimLeftFunc(s, f)</td>
+<td class="left">返回一个新字符串，从s左边开始过滤掉f返回true的每一个字符</td>
+</tr>
+
+<tr>
+<td class="left">strings.TrimRight(s, t)</td>
+<td class="left">返回一个新字符串，从s右边开始过滤掉t</td>
+</tr>
+
+<tr>
+<td class="left">strings.TrimRightFunc(s, f)</td>
+<td class="left">返回一个新字符串，从s右边开始过滤掉f返回true的每一个字符</td>
+</tr>
+
+<tr>
+<td class="left">strings.TrimSpace(s)</td>
+<td class="left">返回一个新字符串，从s左右两端开始过滤掉空格</td>
+</tr>
+</tbody>
+</table>
+
+
+<p>
+来几个例子：
+</p>
+<ul class="org-ul">
+<li>字符串分割:strings.Split()
+</li>
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-go"><span style="color: #00ffff;">package</span> main
+
+<span style="color: #00ffff;">import</span> (
+        <span style="color: #ffa500;">"fmt"</span>
+        <span style="color: #ffa500;">"strings"</span>
+)
+
+<span style="color: #00ffff;">func</span> <span style="color: #00fa9a;">main</span>() {
+        names := <span style="color: #ffa500;">"cat&#183;dog&#183;pig&#183;horse&#183;bull&#183;sheep"</span>
+        fmt.<span style="color: #00fa9a;">Print</span>(<span style="color: #ffa500;">"|"</span>)
+        <span style="color: #00ffff;">for</span> _, name := <span style="color: #00ffff;">range</span> strings.<span style="color: #00fa9a;">Split</span>(names, <span style="color: #ffa500;">"&#183;"</span>) {
+                fmt.<span style="color: #00fa9a;">Printf</span>(<span style="color: #ffa500;">"%s|"</span>, name)
+        }
+
+        fmt.<span style="color: #00fa9a;">Println</span>()
+}
+</pre>
+</div>
+
+<ul class="org-ul">
+<li>去掉字符串首尾空白: 
+</li>
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-go"><span style="color: #00ffff;">package</span> main
+
+<span style="color: #00ffff;">import</span> (
+        <span style="color: #ffa500;">"fmt"</span>
+        <span style="color: #ffa500;">"strings"</span>
+)
+
+<span style="color: #00ffff;">func</span> <span style="color: #00fa9a;">main</span>() {
+        names := <span style="color: #ffa500;">"  I am come from china.  "</span>
+        fmt.<span style="color: #00fa9a;">Printf</span>(<span style="color: #ffa500;">"|%s|\n"</span>, <span style="color: #00fa9a;">SimpleSimplifyWhitespace</span>(names))
+}
+
+<span style="color: #00ffff;">func</span> <span style="color: #00fa9a;">SimpleSimplifyWhitespace</span>(s <span style="color: #ffff00;">string</span>) <span style="color: #ffff00;">string</span> {
+        <span style="color: #00ffff;">return</span> strings.<span style="color: #00fa9a;">Join</span>(strings.<span style="color: #00fa9a;">Fields</span>(strings.<span style="color: #00fa9a;">TrimSpace</span>(s)), <span style="color: #ffa500;">" "</span>)
+}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-1-1-2" class="outline-4">
+<h4 id="sec-1-1-2"><span class="section-number-4">1.1.2</span> strconv包</h4>
+<div class="outline-text-4" id="text-1-1-2">
+<p>
+strconv包提供了许多可以在字符串和其他类型的数据之间进行转换的函数。
+</p>
+
+
+<p>
+下表中：参数bs是一个[]byte切片，base是一个进制单位（2～36），bits是指其结果必须满足比位数（对于int型的数据而言，可以是8、16、32、64或者0，对于float64型数据而言，可能是32或64），而s是一个字符串。
+</p>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<caption class="t-above"><span class="table-number">Table 3:</span> strconv包函数列表#1</caption>
+
+<colgroup>
+<col  class="left" />
+
+<col  class="left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="left">语法</th>
+<th scope="col" class="left">含义/结果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="left">strconv.AppendBool(bs, b)</td>
+<td class="left">根据布尔变量b的值，在bs后追加"true"或者"false"字符</td>
+</tr>
+
+<tr>
+<td class="left">strconv.AppendFloat(bs, f, fmt, prec, bits)</td>
+<td class="left">在bs后面追加浮点数f,其他参数请参考strconv.Format.Float()函数</td>
+</tr>
+
+<tr>
+<td class="left">strconv.AppendInt(bs, i, base)</td>
+<td class="left">根据base指定的进制在bs后追加int64数字i</td>
+</tr>
+
+<tr>
+<td class="left">strconv.AppendQuote(bs, s)</td>
+<td class="left">使用strconv.Quote()追加s到bs后面</td>
+</tr>
+
+<tr>
+<td class="left">strconv.AppendQuoteRune(bs, char)</td>
+<td class="left">使用strconv.QuoteRune(char)追加char到bs后面</td>
+</tr>
+
+<tr>
+<td class="left">strconv.AppendQuoteRuneToASCII(bs, char)</td>
+<td class="left">使用strconv.QuoteRuneToASCII(char)追加char到bs后面</td>
+</tr>
+
+<tr>
+<td class="left">strconf.AppendouotetoASCII(bs, s)</td>
+<td class="left">使用strconv.QuotetoASCII(char)追加s到bs后面</td>
+</tr>
+
+<tr>
+<td class="left">strconv.AppendUInt(bs, u, base)</td>
+<td class="left">将uint64类型的变量u按照指定的进制base追加到bs后面</td>
+</tr>
+
+<tr>
+<td class="left">strconv.Atoi(s)</td>
+<td class="left">返回转换后的int类型值和一个error（出错时error不为空）</td>
+</tr>
+
+<tr>
+<td class="left">strconv.CanBackquote(s)</td>
+<td class="left">检查s是否是一个符合Go语言语法的字符串常量，s中不能出现反引号</td>
+</tr>
+
+<tr>
+<td class="left">strconv.FormatBool(tf)</td>
+<td class="left">格式化布尔变量tf，返回"true"或"false"字符串</td>
+</tr>
+
+<tr>
+<td class="left">strconv.FormatFloat(f, fmt, prec, bits)</td>
+<td class="left">将浮点数f格式化成字符串。fmt是格式化动作，一个字节，如'b'表示%b,</td>
+</tr>
+
+<tr>
+<td class="left">&#xa0;</td>
+<td class="left">'e'表示%e等等。如果fmt指定为'e'、'E''、f'时，prec参数表示小数点</td>
+</tr>
+
+<tr>
+<td class="left">&#xa0;</td>
+<td class="left">后面至多保留多少位，或者当fmt指定为'g'或'G'时，prec = -1可以获得</td>
+</tr>
+
+<tr>
+<td class="left">&#xa0;</td>
+<td class="left">能用的最少的数字个数，同时使用其他方法保留精度损失。bits通常是64</td>
+</tr>
+
+<tr>
+<td class="left">strconv.FormatInt(i, base)</td>
+<td class="left">将整数i以base指定的进制形式转换成字符串</td>
+</tr>
+
+<tr>
+<td class="left">strconv.FormatUInt(u, base)</td>
+<td class="left">将整数u以base指定的进制形式转换成字符串</td>
+</tr>
+
+<tr>
+<td class="left">strconv.IsPrint(c)</td>
+<td class="left">判断c是否为可打印字符</td>
+</tr>
+
+<tr>
+<td class="left">strconv.Itoa(i)</td>
+<td class="left">将十进制数i转换成字符串。</td>
+</tr>
+</tbody>
+</table>
+
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<caption class="t-above"><span class="table-number">Table 4:</span> strconv包函数列表 #2</caption>
+
+<colgroup>
+<col  class="left" />
+
+<col  class="left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="left">语法</th>
+<th scope="col" class="left">含义/结果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="left">strconv.ParseBool(s)</td>
+<td class="left">如果s是“1”、"T"、"True"、"TRUE"则返回true和nil，如果s是"0"、"f"、"F"、"false"、"False"</td>
+</tr>
+
+<tr>
+<td class="left">&#xa0;</td>
+<td class="left">或者"FALSE"则返回false和nil,否则返回flase和一个error</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">strconv.ParseFloat(s, bits)</td>
+<td class="left">如果s能够转换成浮点数，则返回一个float64类型的值和nil,否则返回0和error;</td>
+</tr>
+
+<tr>
+<td class="left">&#xa0;</td>
+<td class="left">bits应该是64，但是如果想转换成float32的话可以设置为32</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">strconf.ParseInt(s, base, bits)</td>
+<td class="left">如果s能够转换成一个整数，则返回int64值和nil，否则返回0和error;如果base为0,则表示要从s</td>
+</tr>
+
+<tr>
+<td class="left">&#xa0;</td>
+<td class="left">中判断进制的大小（字符串开头是“0x”或"0X"表示这是十六进制的，开头只有"0"表示八进制，</td>
+</tr>
+
+<tr>
+<td class="left">&#xa0;</td>
+<td class="left">否则其他的都是十进制），或者在base中指定进制的大小（2～36）;如果需要转换成int型的话</td>
+</tr>
+
+<tr>
+<td class="left">&#xa0;</td>
+<td class="left">bits应该为0,否则需要转换成带有长度的整形（如bits为16的话将会转换成int16）</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">strconv.ParseUint(s, base, bits)</td>
+<td class="left">同上，唯一不同的只是转换成无符号整数</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">strconv.Quote(s)</td>
+<td class="left">使用Go语言双引号字符串语法形式来表示一个字符串。</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">strconv.QuoteRune(char)</td>
+<td class="left">使用Go语言单引号字符语法来表示一个rune类型的Unicode码字符char</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">strconv.QuoteRuneToASCII(char)</td>
+<td class="left">同上，但是对于非ASCII码字符进行转义</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">strconv.QuoteToASCII(s)</td>
+<td class="left">同strconv.Quote(),但是对非ASCII码字符进行转义</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">strconv.Unquote(s)</td>
+<td class="left">对于一个用Go语法如单引号、双引号、反引号等表示的字符或字符串，</td>
+</tr>
+
+<tr>
+<td class="left">&#xa0;</td>
+<td class="left">返回引号中的字符串和一个error变量</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">strconv.UnquoteChar(s, b)</td>
+<td class="left">一个rune(第一个字符)、一个bool（表示第一个字符的UTF-8表示需要多个字节）、一个string</td>
+</tr>
+
+<tr>
+<td class="left">&#xa0;</td>
+<td class="left">(剩下的字符串)以及一个error；如果b被设置为一个单引号或双引号，那么引号须转义</td>
+</tr>
+</tbody>
+</table>
+
+<p>
+所有的strconv转换函数返回一个结果和error变量，如果转换成功的话error为nil。
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-1-1-3" class="outline-4">
+<h4 id="sec-1-1-3"><span class="section-number-4">1.1.3</span> utf8包</h4>
+<div class="outline-text-4" id="text-1-1-3">
+<p>
+unicode/utf8包里的几个有用的函数，主要用来查询和操作UTF-8编码的字符串或字符切片。
+</p>
+
+<p>
+使用utf8包里的函数需要在程序中导入"unicode/utf",下表中，变量b是一个[]byte类型的切片，s是字符串，c是一个rune类型的Unicode码点。
+</p>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<caption class="t-above"><span class="table-number">Table 5:</span> utf8包</caption>
+
+<colgroup>
+<col  class="left" />
+
+<col  class="left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="left">语法</th>
+<th scope="col" class="left">含义/结果</th>
+</tr>
+
+<tr>
+<th scope="col" class="left">utf8.DecodeLastRune(b)</th>
+<th scope="col" class="left">返回b中最后一个rune和它占用的字节数，或者U+FFED(Unicode替换字符？)和0,如果最后一个rune</th>
+</tr>
+
+<tr>
+<th scope="col" class="left">&#xa0;</th>
+<th scope="col" class="left">是非法的话</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="left">utf8.DecodeLastRuneInString(s)</td>
+<td class="left">同上，但它输入的是字符串</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">utf8.DecodeRune(b)</td>
+<td class="left">返回b中的第一个rune和它占用的字节数，或者U+FFED(Unicode替换字符？)和0,如果b开始rune</td>
+</tr>
+
+<tr>
+<td class="left">&#xa0;</td>
+<td class="left">是非法的话</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">utf8.DecodeRuneIntString(s)</td>
+<td class="left">同上，但它输入的是字符串</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">utf8.EncodeRune(b, c)</td>
+<td class="left">将c作为一个UTF-8字符并返回写入的字节数（b必须有足够的存储空间）</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">utf8.FullRune(b)</td>
+<td class="left">如果b的第一个rune是UTF-8编码的话，返回ture</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">utf8.FullRuneInString(s)</td>
+<td class="left">如果s的第一个rune是UTF-8编码，返回ture</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">utf8.RuneCount(b)</td>
+<td class="left">返回b中的rune个数，如果存在非ASCII字符的话，这个值可能小于len(s)</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">utf8.RuneCountInString(s)</td>
+<td class="left">同上，但它输入的是字符串</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">utf8.RuneLen(c)</td>
+<td class="left">对c进行编码需要的字节数</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">utf8.RuneStart(x)</td>
+<td class="left">如果x可以作为一个rune的第一个字节的话，返回ture</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">utf8.RuneValid(b)</td>
+<td class="left">如果b中的字节能正确表示一个UTF-8字符串，返回ture</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">utf8.ValidString(s)</td>
+<td class="left">如果s中的字节能正确表示一个UTF-8编码的字符串，返回ture</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+<div id="outline-container-sec-1-1-4" class="outline-4">
+<h4 id="sec-1-1-4"><span class="section-number-4">1.1.4</span> unicode包</h4>
+<div class="outline-text-4" id="text-1-1-4">
+<p>
+unicode包主要提供了一些用来检查Unicode码点是否符合主要标准的函数。
+</p>
+
+<p>
+下表中，变量c是一个rune类型变量，表示一个Unicode码点。
+</p>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<caption class="t-above"><span class="table-number">Table 6:</span> unicode包</caption>
+
+<colgroup>
+<col  class="left" />
+
+<col  class="left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="left">语法</td>
+<td class="left">含义/结果</td>
+</tr>
+
+<tr>
+<td class="left">unicode.Is(table, c)</td>
+<td class="left">如果c在table中，返回ture</td>
+</tr>
+
+<tr>
+<td class="left">unicode.IsControl(c)</td>
+<td class="left">如果c是一个控制字符，返回ture</td>
+</tr>
+
+<tr>
+<td class="left">unicode.IsDigit(c)</td>
+<td class="left">如果c是一个十进制数字，返回ture</td>
+</tr>
+
+<tr>
+<td class="left">unicode.IsGraphic(c)</td>
+<td class="left">如果c是一个“图形”字符，如字母、数字、标记、符号或空格返回ture</td>
+</tr>
+
+<tr>
+<td class="left">unicode.IsLetter(c)</td>
+<td class="left">如果c是一个字母，返回ture</td>
+</tr>
+
+<tr>
+<td class="left">unicode.IsLower(c)</td>
+<td class="left">如果c是一小写字母，返回ture</td>
+</tr>
+
+<tr>
+<td class="left">unicode.IsMark(c)</td>
+<td class="left">如果c是一个标记，返回ture</td>
+</tr>
+
+<tr>
+<td class="left">unicode.IsOneOf(tables, c)</td>
+<td class="left">如果c在tables中的任何一个table中，返回ture</td>
+</tr>
+
+<tr>
+<td class="left">unicode.IsPrint(c)</td>
+<td class="left">如果c是一个可打印的字符，返回ture</td>
+</tr>
+
+<tr>
+<td class="left">unicode.IsPunct(c)</td>
+<td class="left">如果c是一个标点符号，返回ture</td>
+</tr>
+
+<tr>
+<td class="left">unicode.IsSpace(c)</td>
+<td class="left">如果c是一个空格，返回ture</td>
+</tr>
+
+<tr>
+<td class="left">unicode.IsSymbol(c)</td>
+<td class="left">如果c是一个符号，返回ture</td>
+</tr>
+
+<tr>
+<td class="left">unicode.IsTitle(c)</td>
+<td class="left">如果c是一个标题大写字符，返回ture</td>
+</tr>
+
+<tr>
+<td class="left">unicode.IsUpper(c)</td>
+<td class="left">如果c是一个大写字母，返回ture</td>
+</tr>
+
+<tr>
+<td class="left">unicode.SimpleFold(c)</td>
+<td class="left">在与c的码点等价的码点集中，该方法返回最小的大于等于c的码点，否则如果不存在与其等价的码点，</td>
+</tr>
+
+<tr>
+<td class="left">&#xa0;</td>
+<td class="left">则返回最小的大于等于0的码点</td>
+</tr>
+
+<tr>
+<td class="left">&#xa0;</td>
+<td class="left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="left">unicode.To(case, c)</td>
+<td class="left">字符c的case版本，其中case可以是unicode.LowerCase、unicode.TitleCase或unicode.UpperCasw</td>
+</tr>
+
+<tr>
+<td class="left">unicode.ToLower(c)</td>
+<td class="left">字母c的小写形式</td>
+</tr>
+
+<tr>
+<td class="left">unicode.ToTitle(c)</td>
+<td class="left">字符c的标题形式</td>
+</tr>
+
+<tr>
+<td class="left">unicode.ToUpper(c)</td>
+<td class="left">字母c的大写形式</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
