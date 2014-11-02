@@ -599,17 +599,18 @@ unicode/utf8包里的几个有用的函数，主要用来查询和操作UTF-8编
 <th scope="col" class="left">语法</th>
 <th scope="col" class="left">含义/结果</th>
 </tr>
-
-<tr>
-<th scope="col" class="left">utf8.DecodeLastRune(b)</th>
-<th scope="col" class="left">返回b中最后一个rune和它占用的字节数，或者U+FFED(Unicode替换字符？)和0,如果最后一个rune</th>
-</tr>
-
-<tr>
-<th scope="col" class="left">&#xa0;</th>
-<th scope="col" class="left">是非法的话</th>
-</tr>
 </thead>
+<tbody>
+<tr>
+<td class="left">utf8.DecodeLastRune(b)</td>
+<td class="left">返回b中最后一个rune和它占用的字节数，或者U+FFED(Unicode替换字符？)和0,如果最后一个rune</td>
+</tr>
+
+<tr>
+<td class="left">&#xa0;</td>
+<td class="left">是非法的话</td>
+</tr>
+</tbody>
 <tbody>
 <tr>
 <td class="left">utf8.DecodeLastRuneInString(s)</td>
