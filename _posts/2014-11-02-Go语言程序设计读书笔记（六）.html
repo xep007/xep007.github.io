@@ -205,7 +205,7 @@ regexp包的是Russ Cox 的RE2正则表达式引擎的Go语言实现。这个引
 </tbody>
 <tbody>
 <tr>
-<td class="left">[<sup>chars]</sup></td>
+<td class="left">[^ chars]</td>
 <td class="left">任何不在chars中的字符</td>
 <td class="left">&#xa0;</td>
 </tr>
@@ -261,7 +261,7 @@ regexp包的是Russ Cox 的RE2正则表达式引擎的Go语言实现。这个引
 </tbody>
 <tbody>
 <tr>
-<td class="left">[:<sup>name</sup>:]</td>
+<td class="left">[:^ name:]</td>
 <td class="left">任何不在name字符类中的ASCII字符</td>
 <td class="left">&#xa0;</td>
 </tr>
@@ -296,7 +296,7 @@ regexp包的是Russ Cox 的RE2正则表达式引擎的Go语言实现。这个引
 </tbody>
 <tbody>
 <tr>
-<td class="left">&sect;</td>
+<td class="left">\ S</td>
 <td class="left">任何ASCII码的非空白字符[^ \t\n\f\r]</td>
 <td class="left">&#xa0;</td>
 </tr>
