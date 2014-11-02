@@ -205,7 +205,7 @@ regexp包的是Russ Cox 的RE2正则表达式引擎的Go语言实现。这个引
 </tbody>
 <tbody>
 <tr>
-<td class="left">[^ chars]</td>
+<td class="left">[^chars]</td>
 <td class="left">任何不在chars中的字符</td>
 <td class="left">&#xa0;</td>
 </tr>
@@ -250,7 +250,7 @@ regexp包的是Russ Cox 的RE2正则表达式引擎的Go语言实现。这个引
 <tr>
 <td class="left">&#xa0;</td>
 <td class="left">[ [:digit:] ]三[0-9]</td>
-<td class="left">[ [:word:] ]三[0-9A-Za-z<sub>]</sub></td>
+<td class="left">[ [:word:] ]三[0-9A-Za-z_]</td>
 </tr>
 
 <tr>
@@ -261,7 +261,7 @@ regexp包的是Russ Cox 的RE2正则表达式引擎的Go语言实现。这个引
 </tbody>
 <tbody>
 <tr>
-<td class="left">[:^ name:]</td>
+<td class="left">[:^name:]</td>
 <td class="left">任何不在name字符类中的ASCII字符</td>
 <td class="left">&#xa0;</td>
 </tr>
@@ -283,7 +283,7 @@ regexp包的是Russ Cox 的RE2正则表达式引擎的Go语言实现。这个引
 <tbody>
 <tr>
 <td class="left">\D</td>
-<td class="left">任何非数字的ASCII码：[<sup>0</sup>-9]</td>
+<td class="left">任何非数字的ASCII码：[^0-9]</td>
 <td class="left">&#xa0;</td>
 </tr>
 </tbody>
@@ -304,14 +304,14 @@ regexp包的是Russ Cox 的RE2正则表达式引擎的Go语言实现。这个引
 <tbody>
 <tr>
 <td class="left">\w</td>
-<td class="left">任何ASCII码的单词字符[0-9A-Za-z<sub>]</sub></td>
+<td class="left">任何ASCII码的单词字符[0-9A-Za-z_]</td>
 <td class="left">&#xa0;</td>
 </tr>
 </tbody>
 <tbody>
 <tr>
 <td class="left">\W</td>
-<td class="left">任何ASCII码的非单词字符[<sup>0</sup>-9A-Za-z<sub>]</sub></td>
+<td class="left">任何ASCII码的非单词字符[^0-9A-Za-z_]</td>
 <td class="left">&#xa0;</td>
 </tr>
 </tbody>
