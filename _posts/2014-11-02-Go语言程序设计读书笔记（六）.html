@@ -38,25 +38,809 @@ regexp包的是Russ Cox 的RE2正则表达式引擎的Go语言实现。这个引
 
 <col  class="left" />
 </colgroup>
-<tbody>
+<thead>
 <tr>
-<td class="left">语法</td>
-<td class="left">含义/结果</td>
+<th scope="col" class="left">语法</th>
+<th scope="col" class="left">含义/结果</th>
 </tr>
-
+</thead>
+<tbody>
 <tr>
 <td class="left">regexp.Match(p, b)</td>
 <td class="left">如果[]byte类型的b和模式p匹配，返回true和nil</td>
 </tr>
-
+</tbody>
+<tbody>
 <tr>
 <td class="left">regexp.MatchReader(p, r)</td>
 <td class="left">如果从r中读取的数据和模式p匹配，返回true和nil,r是一个io.RuneReader</td>
 </tr>
-
+</tbody>
+<tbody>
 <tr>
 <td class="left">regexp.MatchString(p, s)</td>
 <td class="left">如果s和模式p匹配，返回true和nil</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">regexp.QuoteMeta(s)</td>
+<td class="left">用引号安全地括起来的与正则表达式元字符相匹配的字符串</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">regexp.Compile(p)</td>
+<td class="left">如果模式p编译成功，返回一个*regexp.Regexp和nil，参见表6、7</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">regexp.CompilePOSIX(p)</td>
+<td class="left">如果模式p编译成功，返回一个*regexp.Regexp和nil,参见表6、7</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">regexp.MustCompile(p)</td>
+<td class="left">如果模式p编译成功，返回一个*regexp.Regexp,否则发生异常，通见表6、7</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">regexp.MustCompilePOSIX(p)</td>
+<td class="left">如果模式p编译成功，返回一个*regexp.Regexp,否则发生异常</td>
+</tr>
+</tbody>
+</table>
+
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<caption class="t-above"><span class="table-number">Table 2:</span> regexp包支持的转义符号</caption>
+
+<colgroup>
+<col  class="left" />
+
+<col  class="left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="left">语法</th>
+<th scope="col" class="left">含义/结果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="left">\c</td>
+<td class="left">原生字符c，例如\*是一个原生字符而不是一个量词</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">\000</td>
+<td class="left">表示一个八进制的码点</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">\xHH</td>
+<td class="left">表示指定的两个数字是十六进制</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">\x{HHHH}</td>
+<td class="left">表示给定1～16个数字是十六进制的</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">\a</td>
+<td class="left">ASCII码的响铃字符，等于\007</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">\f</td>
+<td class="left">ASCII码的换页符，等于\014</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">\n</td>
+<td class="left">ASCII码的换行符，等于\012</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">\r</td>
+<td class="left">ASCII码回车符，等于\015</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">\t</td>
+<td class="left">ASCII码制表符，等于\011</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">\v</td>
+<td class="left">ASCII码垂直制表符，等于\013</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">\Q&#x2026;\E</td>
+<td class="left">原生匹配&#x2026;中的所有字符即使它包含 *</td>
+</tr>
+</tbody>
+</table>
+
+
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<caption class="t-above"><span class="table-number">Table 3:</span> regexp包支持的字符类</caption>
+
+<colgroup>
+<col  class="left" />
+
+<col  class="left" />
+
+<col  class="left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="left">语法</th>
+<th scope="col" class="left">含义/结果</th>
+<th scope="col" class="left">&#xa0;</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="left">[chars]</td>
+<td class="left">chars中的任何字符</td>
+<td class="left">&#xa0;</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">[<sup>chars]</sup></td>
+<td class="left">任何不在chars中的字符</td>
+<td class="left">&#xa0;</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">[:name:]</td>
+<td class="left">任何在name字符类中的ASCII字符</td>
+<td class="left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="left">&#xa0;</td>
+<td class="left">[ [:alnum:] ]三[0-9A-Za-z]</td>
+<td class="left">[ [:lower:] ]三[a-z]</td>
+</tr>
+
+<tr>
+<td class="left">&#xa0;</td>
+<td class="left">[ [:alpha:] ]三[A-Za-z]</td>
+<td class="left">[ [:print:] ]三[ -~]</td>
+</tr>
+
+<tr>
+<td class="left">&#xa0;</td>
+<td class="left">[ [:ascii:] ]三[\x00-\xx7F]</td>
+<td class="left">[ [:punct:] ]三[!-/:-@[-'{-~}</td>
+</tr>
+
+<tr>
+<td class="left">&#xa0;</td>
+<td class="left">[ [:blank:] ]三[ \t]</td>
+<td class="left">[ [:space:] ]三[ \t\n\v\f\r]</td>
+</tr>
+
+<tr>
+<td class="left">&#xa0;</td>
+<td class="left">[ [:cntrl:] ]三[\x00-\x1F\x7F]</td>
+<td class="left">[ [:upper:] ]三[A-Z]</td>
+</tr>
+
+<tr>
+<td class="left">&#xa0;</td>
+<td class="left">[ [:digit:] ]三[0-9]</td>
+<td class="left">[ [:word:] ]三[0-9A-Za-z<sub>]</sub></td>
+</tr>
+
+<tr>
+<td class="left">&#xa0;</td>
+<td class="left">[ [:graph:] ]三[!-～]</td>
+<td class="left">[ [:xdigit:] ]三[0-9A-Fa-z]</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">[:<sup>name</sup>:]</td>
+<td class="left">任何不在name字符类中的ASCII字符</td>
+<td class="left">&#xa0;</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">.</td>
+<td class="left">任何字符（如果指定s标识的话，还包括换行符）</td>
+<td class="left">&#xa0;</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">\d</td>
+<td class="left">任何ASCII码数字：[0-9]</td>
+<td class="left">&#xa0;</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">\D</td>
+<td class="left">任何非数字的ASCII码：[<sup>0</sup>-9]</td>
+<td class="left">&#xa0;</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">\s</td>
+<td class="left">任何ASCII码的空白字符[ \t\n\f\r]</td>
+<td class="left">&#xa0;</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">&sect;</td>
+<td class="left">任何ASCII码的非空白字符[^ \t\n\f\r]</td>
+<td class="left">&#xa0;</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">\w</td>
+<td class="left">任何ASCII码的单词字符[0-9A-Za-z<sub>]</sub></td>
+<td class="left">&#xa0;</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">\W</td>
+<td class="left">任何ASCII码的非单词字符[<sup>0</sup>-9A-Za-z<sub>]</sub></td>
+<td class="left">&#xa0;</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">\pN</td>
+<td class="left">任何一个在N指定的的字符类里的Unicode字符，</td>
+<td class="left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="left">&#xa0;</td>
+<td class="left">N是一个单字母字符类，例如\pL匹配一个Unicode字母</td>
+<td class="left">&#xa0;</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">\PN</td>
+<td class="left">任何一个不在N指定的字符类里的Unicode字符，</td>
+<td class="left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="left">&#xa0;</td>
+<td class="left">N是一个单字母符类，例如\PL匹配所有非Unicode字母的字符</td>
+<td class="left">&#xa0;</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">\p{Name}</td>
+<td class="left">任何在Name指定的字符类里的Unicode字符，例如\p{L}</td>
+<td class="left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="left">&#xa0;</td>
+<td class="left">将匹配小写字母，\p{Lu}匹配大写字母</td>
+<td class="left">&#xa0;</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">P{Name}</td>
+<td class="left">任何不在Name字符类里的Unicode字符</td>
+<td class="left">&#xa0;</td>
+</tr>
+</tbody>
+</table>
+
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<caption class="t-above"><span class="table-number">Table 4:</span> regexp包的零宽断言</caption>
+
+<colgroup>
+<col  class="left" />
+
+<col  class="left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="left">语法</th>
+<th scope="col" class="left">含义/结果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="left">^</td>
+<td class="left">文本开始处（m标识指定的话，表示行首）</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">$</td>
+<td class="left">文本末尾处（m标识指定的话，表示行尾）</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">\A</td>
+<td class="left">文本开始处</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">\z</td>
+<td class="left">文本结尾处</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">\b</td>
+<td class="left">单词标界（\W和\w之间的字符，或\A和\z之间的字符，反过来也行）</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">\B</td>
+<td class="left">不是一个单词标界</td>
+</tr>
+</tbody>
+</table>
+
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<caption class="t-above"><span class="table-number">Table 5:</span> regexp包的数量匹配</caption>
+
+<colgroup>
+<col  class="left" />
+
+<col  class="left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="left">语法</th>
+<th scope="col" class="left">含义/结果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="left">e? or e {0,1}</td>
+<td class="left">贪婪匹配：e出现0次或1次</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">e + or e {1, }</td>
+<td class="left">贪婪匹配：e出现1次或多次</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">e* or e{0, }</td>
+<td class="left">贪婪匹配：e出现0次或多次</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">e{m, }</td>
+<td class="left">贪婪匹配：e至少出现m次</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">e{, n}</td>
+<td class="left">贪婪匹配：e最多出现n次</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">e{m, n}</td>
+<td class="left">贪婪匹配：e最多出现n次，最少出现m次</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">e{m} or e{m}?</td>
+<td class="left">e只出现m次</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">e?? or e{0,1}?</td>
+<td class="left">惰性匹配：e出现0次或1次</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">e+? or e{1, }?</td>
+<td class="left">惰性匹配：e出现1次或多次</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">e*? or e{0, }?</td>
+<td class="left">惰性匹配：e出现0次或多次</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">e{m, }?</td>
+<td class="left">惰性匹配：e至少出现m次</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">e{，n}?</td>
+<td class="left">惰性匹配：e最多出现n次</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">e{m, n}?</td>
+<td class="left">惰性匹配：e最少出现m次，最多出现n次</td>
+</tr>
+</tbody>
+</table>
+
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<caption class="t-above"><span class="table-number">Table 6:</span> regexp包的标识和分组</caption>
+
+<colgroup>
+<col  class="left" />
+
+<col  class="left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="left">语法</th>
+<th scope="col" class="left">含义/结果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="left">i</td>
+<td class="left">匹配大小写不第三的（默认是区分大小写的）</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">m</td>
+<td class="left">开启多行模式，使^ 和$能在每一行进行匹配（默认是单向模式的）</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">s</td>
+<td class="left">使.能够匹配换行符（默认.是不匹配换行符的）</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">U</td>
+<td class="left">将贪婪匹配和惰性匹配进行反转（例如通常题词后面带？表示惰性匹配，指定U之后，这种规则将表示贪婪匹配，</td>
+</tr>
+
+<tr>
+<td class="left">&#xa0;</td>
+<td class="left">而原表示贪婪匹配的将表示惰性匹配）</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">(?flags)</td>
+<td class="left">flags标识从这一点开始生效（flags标记前面加上-符号表示相反）</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">(?flags:e)</td>
+<td class="left">将给定的flags标记作用于表达式e（在flags标记前面加上-号符表示相反）</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">(e)</td>
+<td class="left">表达式e的组和捕获</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">(?P&lt;name&gt;e)</td>
+<td class="left">表达式e的组和捕获，并显示的使用name来命名</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">(?:e)</td>
+<td class="left">表达式e的组但不包括捕获</td>
+</tr>
+</tbody>
+</table>
+
+
+<p>
+下表是 *regexp.Regexp类型的方法 #1，rx是*regexp.Regexp类型的变量，s是用以匹配的字符串，b是用以匹配的字节切片，r是用以匹配的io.RuneReader类型变量，还有n是最大匹配的次数（-1表示不做限制），返回nil的话表示没有匹配成功。
+</p>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<caption class="t-above"><span class="table-number">Table 7:</span> *regexp.Regexp类型的方法 #1</caption>
+
+<colgroup>
+<col  class="left" />
+
+<col  class="left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="left">语法</th>
+<th scope="col" class="left">含义/结果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="left">rx.Expand(&#x2026;)</td>
+<td class="left">由ReplaceAll()方法执行$替换，很少直接使用(高级用法)</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">rx.ExpandString(&#x2026;)</td>
+<td class="left">由ReplaceAllString()方法执行$替换，很少直接使用（高级用法）</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">rx.Find(b)</td>
+<td class="left">使用最左匹配策略返回一个[]byte类型的切片或者nil</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">rx.FindAll(b, n)</td>
+<td class="left">返回所有非重叠匹配的[][]byte类型切片或nil</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">rx.FindAllIndex(b, n)</td>
+<td class="left">返回一个[][]int类型的切片（每一个元素是一个包含2项的切片），</td>
+</tr>
+
+<tr>
+<td class="left">&#xa0;</td>
+<td class="left">其中每一个元素标识一个匹配或nil。</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">rx.FindAllString(s, n)</td>
+<td class="left">返回[]string类型的非重叠匹配或nil</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">rx.FindAllStringIndex(s, n)</td>
+<td class="left">返回一个[][]int类型的切片(每一个元素是一个包含2项的切片)，其中每一个元素标识一个匹配或nil</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">rx.FindAllStringSubmatch(s, n)</td>
+<td class="left">返回一个[][]string类型的切片（一个字符串切片的切片，其中每个字符串对应一个捕获）或nil</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">rx.FindAllStringSubmatchIndex(s, n)</td>
+<td class="left">返回一个[][]int类型的切片（每一个元素为包含2项的int类型切片，每个元素对应一个匹配）</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">rx.FindAllSubmatch(b, n)</td>
+<td class="left">返回一个类型为[][][]byte的三维切片（该切片的元素是一个切片，其中每个切片又是一个[]byte</td>
+</tr>
+
+<tr>
+<td class="left">&#xa0;</td>
+<td class="left">类型的切片，其中每一个切片对应一个捕获）或nil</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">rx.FindAllSubmatchIndex(b, n)</td>
+<td class="left">返回一个类型为[][]int的二维切片（一个元素为包含2项的int类型切片，每个元素对应一个匹配）</td>
+</tr>
+
+<tr>
+<td class="left">&#xa0;</td>
+<td class="left">或者nil</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">rx.FindIndex(b)</td>
+<td class="left">返回一个每个元素含有2项的[]int类型切片，每个元素对应一个最左匹配或nil。</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">rx.FindReaderIndex(r)</td>
+<td class="left">返回一个每个元素含有2项的[]int类型的切片，每个元素对应一个最左匹配或nil</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">rx.FindReaderSubmatchIndex(r)</td>
+<td class="left">返回一个[]int类型的切片或nil，对应最左匹配和捕获</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">rx.FindString(s)</td>
+<td class="left">返回一个最左匹配值或空字符串</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">rx.FindStringIndex(s)</td>
+<td class="left">返回一个每个元素含有2项的[]int类型切片，每个元素对应一个最左匹配或nil</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">rx.FindStringSubmatch(s)</td>
+<td class="left">返回一个[]string类型的切片或nil，对应最左匹配和捕获</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">rx.FindStringSubmatchIndex(s)</td>
+<td class="left">返回一个[]int类型的切片或nil,对应最左匹配和捕获</td>
+</tr>
+</tbody>
+</table>
+
+
+<p>
+下表为*regexp.Regexp类型的方法#2。rx是*regexp.Regexp类型的变量，s是用以匹配的字符串，b是用以匹配的字节切片。
+</p>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<caption class="t-above"><span class="table-number">Table 8:</span> *regexp.Regexp类型的方法  #2</caption>
+
+<colgroup>
+<col  class="left" />
+
+<col  class="left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="left">语法</th>
+<th scope="col" class="left">含义/结果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="left">rx.FindSubmatch(b)</td>
+<td class="left">返回最左的匹配或捕获或nil</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">rx.FindSubmatchIndex(b)</td>
+<td class="left">返回最左匹配或者捕获的索引或nil</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">rx.LiteralPrefix()</td>
+<td class="left">返回所有匹配共有的原生前缀，和一个布尔变量（表明原生前缀能否匹配整个正则表达式）</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">rx.Match(b)</td>
+<td class="left">如果正则表达式匹配b,返回true</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">rx.MatchReader(r)</td>
+<td class="left">同rx.Match(),但是从io.RuneReader里读取待匹配的数据</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">rx.MatchString(s)</td>
+<td class="left">同rx.Match(),但是匹配字符串</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">rx.NumSubexp()</td>
+<td class="left">返回正则表达式中有多少括起来的组（子表达式）</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">rx.ReplaceAll(b, br)</td>
+<td class="left">返回一个[]byte类型的b的副本，其中b中被匹配的部分都使用[]byte类型的br进行$置换</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">rx.ReplaceAllFunc(b, f)</td>
+<td class="left">返回一个[]byte类型的b副本，其中b中被匹配的部分都使用函数f的返回值来替代，</td>
+</tr>
+
+<tr>
+<td class="left">&#xa0;</td>
+<td class="left">f的原型为func([]byte) []byte，其参数为一个匹配项</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">rx.ReplaceAllLiteral(b, br)</td>
+<td class="left">返回一个[]byte类型的b的副本，其中b中被匹配的部分都使用[]byte类型的br进行替换</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">rx.ReplaceAllLiteralString(s, sr)</td>
+<td class="left">返回一个字符串类型的s副本，其中s中被匹配的部分都使用字符中类型的sr进行$替换</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">rx.ReplaceAllStringFunc(s, f)</td>
+<td class="left">返回一个字符串类型的s的副本，其中s中被匹配的部分都使用函数f的返回值来替代，</td>
+</tr>
+
+<tr>
+<td class="left">&#xa0;</td>
+<td class="left">f的原型为func (string) string,其参数为一个匹配项s</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">rx.String()</td>
+<td class="left">返回正则表达式的字符串表示形式</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">rx.SubexpNames()</td>
+<td class="left">返回一个字符串（不能用于修改目的），包含所有已命名的字符类子表达式</td>
 </tr>
 </tbody>
 </table>
