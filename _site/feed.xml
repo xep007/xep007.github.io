@@ -5,9 +5,1139 @@
     <description>Linux / C / golang / Emacs</description>
     <link>http://xep007.github.io/</link>
     <atom:link href="http://xep007.github.io/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Thu, 30 Oct 2014 20:50:28 +0800</pubDate>
-    <lastBuildDate>Thu, 30 Oct 2014 20:50:28 +0800</lastBuildDate>
+    <pubDate>Fri, 07 Nov 2014 12:29:11 +0800</pubDate>
+    <lastBuildDate>Fri, 07 Nov 2014 12:29:11 +0800</lastBuildDate>
     <generator>Jekyll v2.4.0</generator>
+    
+      <item>
+        <title>org-publish被ox-publish替换了</title>
+        <description>&lt;p&gt;
+系统debian/testing,今天upgrade后，emacs变成了24.2+1-4，结果打开emacs时。
+&lt;/p&gt;
+
+&lt;p&gt;
+提示“File error: Cannot open load file, 没有那个文件或目录, org-publish”，
+&lt;/p&gt;
+
+&lt;p&gt;
+解决办法：打开.emacs，把org-publish修改为ox-publish，保存，完工。
+&lt;/p&gt;
+</description>
+        <pubDate>Fri, 07 Nov 2014 00:00:00 +0800</pubDate>
+        <link>http://xep007.github.io/org/2014/11/07/org-publish%E8%BF%87%E6%97%B6%E4%BA%86.html</link>
+        <guid isPermaLink="true">http://xep007.github.io/org/2014/11/07/org-publish%E8%BF%87%E6%97%B6%E4%BA%86.html</guid>
+        
+        <category>org</category>
+        
+        
+        <category>org</category>
+        
+      </item>
+    
+      <item>
+        <title>Go语言程序设计读书笔记（六）</title>
+        <description>&lt;div id=&quot;table-of-contents&quot;&gt;
+&lt;h2&gt;Table of Contents&lt;/h2&gt;
+&lt;div id=&quot;text-table-of-contents&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1&quot;&gt;1. 字符串（四）&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-1&quot;&gt;1.1. regexp包（正则表达式）&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+
+&lt;div id=&quot;outline-container-sec-1&quot; class=&quot;outline-2&quot;&gt;
+&lt;h2 id=&quot;sec-1&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;1&lt;/span&gt; 字符串（四）&lt;/h2&gt;
+&lt;div class=&quot;outline-text-2&quot; id=&quot;text-1&quot;&gt;
+&lt;/div&gt;&lt;div id=&quot;outline-container-sec-1-1&quot; class=&quot;outline-3&quot;&gt;
+&lt;h3 id=&quot;sec-1-1&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.1&lt;/span&gt; regexp包（正则表达式）&lt;/h3&gt;
+&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-1&quot;&gt;
+&lt;p&gt;
+regexp包的是Russ Cox 的RE2正则表达式引擎的Go语言实现。这个引擎非常快而且是线程安全的。但不使用回溯，执行行时间为O（n）。
+&lt;/p&gt;
+
+&lt;table border=&quot;2&quot; cellspacing=&quot;0&quot; cellpadding=&quot;6&quot; rules=&quot;groups&quot; frame=&quot;hsides&quot;&gt;
+&lt;caption class=&quot;t-above&quot;&gt;&lt;span class=&quot;table-number&quot;&gt;Table 1:&lt;/span&gt; regexp包函数列表 变量p和s都是字符串类型，p表示正则匹配的模式&lt;/caption&gt;
+
+&lt;colgroup&gt;
+&lt;col  class=&quot;left&quot; /&gt;
+
+&lt;col  class=&quot;left&quot; /&gt;
+&lt;/colgroup&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th scope=&quot;col&quot; class=&quot;left&quot;&gt;语法&lt;/th&gt;
+&lt;th scope=&quot;col&quot; class=&quot;left&quot;&gt;含义/结果&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;regexp.Match(p, b)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;如果[]byte类型的b和模式p匹配，返回true和nil&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;regexp.MatchReader(p, r)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;如果从r中读取的数据和模式p匹配，返回true和nil,r是一个io.RuneReader&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;regexp.MatchString(p, s)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;如果s和模式p匹配，返回true和nil&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;regexp.QuoteMeta(s)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;用引号安全地括起来的与正则表达式元字符相匹配的字符串&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;regexp.Compile(p)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;如果模式p编译成功，返回一个*regexp.Regexp和nil，参见表6、7&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;regexp.CompilePOSIX(p)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;如果模式p编译成功，返回一个*regexp.Regexp和nil,参见表6、7&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;regexp.MustCompile(p)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;如果模式p编译成功，返回一个*regexp.Regexp,否则发生异常，通见表6、7&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;regexp.MustCompilePOSIX(p)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;如果模式p编译成功，返回一个*regexp.Regexp,否则发生异常&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+
+&lt;table border=&quot;2&quot; cellspacing=&quot;0&quot; cellpadding=&quot;6&quot; rules=&quot;groups&quot; frame=&quot;hsides&quot;&gt;
+&lt;caption class=&quot;t-above&quot;&gt;&lt;span class=&quot;table-number&quot;&gt;Table 2:&lt;/span&gt; regexp包支持的转义符号&lt;/caption&gt;
+
+&lt;colgroup&gt;
+&lt;col  class=&quot;left&quot; /&gt;
+
+&lt;col  class=&quot;left&quot; /&gt;
+&lt;/colgroup&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th scope=&quot;col&quot; class=&quot;left&quot;&gt;语法&lt;/th&gt;
+&lt;th scope=&quot;col&quot; class=&quot;left&quot;&gt;含义/结果&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;\c&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;原生字符c，例如\*是一个原生字符而不是一个量词&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;\000&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;表示一个八进制的码点&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;\xHH&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;表示指定的两个数字是十六进制&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;\x{HHHH}&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;表示给定1～16个数字是十六进制的&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;\a&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;ASCII码的响铃字符，等于\007&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;\f&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;ASCII码的换页符，等于\014&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;\n&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;ASCII码的换行符，等于\012&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;\r&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;ASCII码回车符，等于\015&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;\t&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;ASCII码制表符，等于\011&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;\v&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;ASCII码垂直制表符，等于\013&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;\Q&amp;#x2026;\E&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;原生匹配&amp;#x2026;中的所有字符即使它包含 *&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+
+
+&lt;table border=&quot;2&quot; cellspacing=&quot;0&quot; cellpadding=&quot;6&quot; rules=&quot;groups&quot; frame=&quot;hsides&quot;&gt;
+&lt;caption class=&quot;t-above&quot;&gt;&lt;span class=&quot;table-number&quot;&gt;Table 3:&lt;/span&gt; regexp包支持的字符类&lt;/caption&gt;
+
+&lt;colgroup&gt;
+&lt;col  class=&quot;left&quot; /&gt;
+
+&lt;col  class=&quot;left&quot; /&gt;
+
+&lt;col  class=&quot;left&quot; /&gt;
+&lt;/colgroup&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th scope=&quot;col&quot; class=&quot;left&quot;&gt;语法&lt;/th&gt;
+&lt;th scope=&quot;col&quot; class=&quot;left&quot;&gt;含义/结果&lt;/th&gt;
+&lt;th scope=&quot;col&quot; class=&quot;left&quot;&gt;&amp;#xa0;&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;[chars]&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;chars中的任何字符&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;&amp;#xa0;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;[^chars]&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;任何不在chars中的字符&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;&amp;#xa0;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;[:name:]&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;任何在name字符类中的ASCII字符&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;&amp;#xa0;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;&amp;#xa0;&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;[ [:alnum:] ]三[0-9A-Za-z]&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;[ [:lower:] ]三[a-z]&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;&amp;#xa0;&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;[ [:alpha:] ]三[A-Za-z]&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;[ [:print:] ]三[ -~]&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;&amp;#xa0;&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;[ [:ascii:] ]三[\x00-\xx7F]&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;[ [:punct:] ]三[!-/:-@[-&#39;{-~}&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;&amp;#xa0;&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;[ [:blank:] ]三[ \t]&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;[ [:space:] ]三[ \t\n\v\f\r]&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;&amp;#xa0;&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;[ [:cntrl:] ]三[\x00-\x1F\x7F]&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;[ [:upper:] ]三[A-Z]&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;&amp;#xa0;&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;[ [:digit:] ]三[0-9]&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;[ [:word:] ]三[0-9A-Za-z_]&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;&amp;#xa0;&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;[ [:graph:] ]三[!-～]&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;[ [:xdigit:] ]三[0-9A-Fa-z]&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;[:^name:]&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;任何不在name字符类中的ASCII字符&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;&amp;#xa0;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;.&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;任何字符（如果指定s标识的话，还包括换行符）&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;&amp;#xa0;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;\d&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;任何ASCII码数字：[0-9]&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;&amp;#xa0;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;\D&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;任何非数字的ASCII码：[^0-9]&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;&amp;#xa0;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;\s&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;任何ASCII码的空白字符[ \t\n\f\r]&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;&amp;#xa0;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;\ S&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;任何ASCII码的非空白字符[^ \t\n\f\r]&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;&amp;#xa0;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;\w&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;任何ASCII码的单词字符[0-9A-Za-z_]&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;&amp;#xa0;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;\W&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;任何ASCII码的非单词字符[^0-9A-Za-z_]&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;&amp;#xa0;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;\pN&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;任何一个在N指定的的字符类里的Unicode字符，&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;&amp;#xa0;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;&amp;#xa0;&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;N是一个单字母字符类，例如\pL匹配一个Unicode字母&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;&amp;#xa0;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;\PN&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;任何一个不在N指定的字符类里的Unicode字符，&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;&amp;#xa0;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;&amp;#xa0;&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;N是一个单字母符类，例如\PL匹配所有非Unicode字母的字符&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;&amp;#xa0;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;\p{Name}&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;任何在Name指定的字符类里的Unicode字符，例如\p{L}&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;&amp;#xa0;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;&amp;#xa0;&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;将匹配小写字母，\p{Lu}匹配大写字母&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;&amp;#xa0;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;P{Name}&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;任何不在Name字符类里的Unicode字符&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;&amp;#xa0;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+
+&lt;table border=&quot;2&quot; cellspacing=&quot;0&quot; cellpadding=&quot;6&quot; rules=&quot;groups&quot; frame=&quot;hsides&quot;&gt;
+&lt;caption class=&quot;t-above&quot;&gt;&lt;span class=&quot;table-number&quot;&gt;Table 4:&lt;/span&gt; regexp包的零宽断言&lt;/caption&gt;
+
+&lt;colgroup&gt;
+&lt;col  class=&quot;left&quot; /&gt;
+
+&lt;col  class=&quot;left&quot; /&gt;
+&lt;/colgroup&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th scope=&quot;col&quot; class=&quot;left&quot;&gt;语法&lt;/th&gt;
+&lt;th scope=&quot;col&quot; class=&quot;left&quot;&gt;含义/结果&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;^&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;文本开始处（m标识指定的话，表示行首）&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;$&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;文本末尾处（m标识指定的话，表示行尾）&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;\A&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;文本开始处&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;\z&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;文本结尾处&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;\b&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;单词标界（\W和\w之间的字符，或\A和\z之间的字符，反过来也行）&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;\B&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;不是一个单词标界&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+
+&lt;table border=&quot;2&quot; cellspacing=&quot;0&quot; cellpadding=&quot;6&quot; rules=&quot;groups&quot; frame=&quot;hsides&quot;&gt;
+&lt;caption class=&quot;t-above&quot;&gt;&lt;span class=&quot;table-number&quot;&gt;Table 5:&lt;/span&gt; regexp包的数量匹配&lt;/caption&gt;
+
+&lt;colgroup&gt;
+&lt;col  class=&quot;left&quot; /&gt;
+
+&lt;col  class=&quot;left&quot; /&gt;
+&lt;/colgroup&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th scope=&quot;col&quot; class=&quot;left&quot;&gt;语法&lt;/th&gt;
+&lt;th scope=&quot;col&quot; class=&quot;left&quot;&gt;含义/结果&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;e? or e {0,1}&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;贪婪匹配：e出现0次或1次&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;e + or e {1, }&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;贪婪匹配：e出现1次或多次&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;e* or e{0, }&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;贪婪匹配：e出现0次或多次&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;e{m, }&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;贪婪匹配：e至少出现m次&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;e{, n}&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;贪婪匹配：e最多出现n次&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;e{m, n}&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;贪婪匹配：e最多出现n次，最少出现m次&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;e{m} or e{m}?&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;e只出现m次&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;e?? or e{0,1}?&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;惰性匹配：e出现0次或1次&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;e+? or e{1, }?&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;惰性匹配：e出现1次或多次&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;e*? or e{0, }?&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;惰性匹配：e出现0次或多次&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;e{m, }?&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;惰性匹配：e至少出现m次&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;e{，n}?&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;惰性匹配：e最多出现n次&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;e{m, n}?&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;惰性匹配：e最少出现m次，最多出现n次&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+
+&lt;table border=&quot;2&quot; cellspacing=&quot;0&quot; cellpadding=&quot;6&quot; rules=&quot;groups&quot; frame=&quot;hsides&quot;&gt;
+&lt;caption class=&quot;t-above&quot;&gt;&lt;span class=&quot;table-number&quot;&gt;Table 6:&lt;/span&gt; regexp包的标识和分组&lt;/caption&gt;
+
+&lt;colgroup&gt;
+&lt;col  class=&quot;left&quot; /&gt;
+
+&lt;col  class=&quot;left&quot; /&gt;
+&lt;/colgroup&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th scope=&quot;col&quot; class=&quot;left&quot;&gt;语法&lt;/th&gt;
+&lt;th scope=&quot;col&quot; class=&quot;left&quot;&gt;含义/结果&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;i&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;匹配大小写不第三的（默认是区分大小写的）&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;m&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;开启多行模式，使^ 和$能在每一行进行匹配（默认是单向模式的）&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;s&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;使.能够匹配换行符（默认.是不匹配换行符的）&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;U&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;将贪婪匹配和惰性匹配进行反转（例如通常题词后面带？表示惰性匹配，指定U之后，这种规则将表示贪婪匹配，&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;&amp;#xa0;&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;而原表示贪婪匹配的将表示惰性匹配）&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;(?flags)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;flags标识从这一点开始生效（flags标记前面加上-符号表示相反）&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;(?flags:e)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;将给定的flags标记作用于表达式e（在flags标记前面加上-号符表示相反）&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;(e)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;表达式e的组和捕获&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;(?P&amp;lt;name&amp;gt;e)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;表达式e的组和捕获，并显示的使用name来命名&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;(?:e)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;表达式e的组但不包括捕获&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+
+&lt;p&gt;
+下表是 *regexp.Regexp类型的方法 #1，rx是*regexp.Regexp类型的变量，s是用以匹配的字符串，b是用以匹配的字节切片，r是用以匹配的io.RuneReader类型变量，还有n是最大匹配的次数（-1表示不做限制），返回nil的话表示没有匹配成功。
+&lt;/p&gt;
+&lt;table border=&quot;2&quot; cellspacing=&quot;0&quot; cellpadding=&quot;6&quot; rules=&quot;groups&quot; frame=&quot;hsides&quot;&gt;
+&lt;caption class=&quot;t-above&quot;&gt;&lt;span class=&quot;table-number&quot;&gt;Table 7:&lt;/span&gt; *regexp.Regexp类型的方法 #1&lt;/caption&gt;
+
+&lt;colgroup&gt;
+&lt;col  class=&quot;left&quot; /&gt;
+
+&lt;col  class=&quot;left&quot; /&gt;
+&lt;/colgroup&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th scope=&quot;col&quot; class=&quot;left&quot;&gt;语法&lt;/th&gt;
+&lt;th scope=&quot;col&quot; class=&quot;left&quot;&gt;含义/结果&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;rx.Expand(&amp;#x2026;)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;由ReplaceAll()方法执行$替换，很少直接使用(高级用法)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;rx.ExpandString(&amp;#x2026;)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;由ReplaceAllString()方法执行$替换，很少直接使用（高级用法）&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;rx.Find(b)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;使用最左匹配策略返回一个[]byte类型的切片或者nil&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;rx.FindAll(b, n)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;返回所有非重叠匹配的[][]byte类型切片或nil&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;rx.FindAllIndex(b, n)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;返回一个[][]int类型的切片（每一个元素是一个包含2项的切片），&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;&amp;#xa0;&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;其中每一个元素标识一个匹配或nil。&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;rx.FindAllString(s, n)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;返回[]string类型的非重叠匹配或nil&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;rx.FindAllStringIndex(s, n)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;返回一个[][]int类型的切片(每一个元素是一个包含2项的切片)，其中每一个元素标识一个匹配或nil&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;rx.FindAllStringSubmatch(s, n)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;返回一个[][]string类型的切片（一个字符串切片的切片，其中每个字符串对应一个捕获）或nil&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;rx.FindAllStringSubmatchIndex(s, n)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;返回一个[][]int类型的切片（每一个元素为包含2项的int类型切片，每个元素对应一个匹配）&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;rx.FindAllSubmatch(b, n)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;返回一个类型为[][][]byte的三维切片（该切片的元素是一个切片，其中每个切片又是一个[]byte&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;&amp;#xa0;&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;类型的切片，其中每一个切片对应一个捕获）或nil&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;rx.FindAllSubmatchIndex(b, n)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;返回一个类型为[][]int的二维切片（一个元素为包含2项的int类型切片，每个元素对应一个匹配）&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;&amp;#xa0;&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;或者nil&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;rx.FindIndex(b)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;返回一个每个元素含有2项的[]int类型切片，每个元素对应一个最左匹配或nil。&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;rx.FindReaderIndex(r)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;返回一个每个元素含有2项的[]int类型的切片，每个元素对应一个最左匹配或nil&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;rx.FindReaderSubmatchIndex(r)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;返回一个[]int类型的切片或nil，对应最左匹配和捕获&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;rx.FindString(s)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;返回一个最左匹配值或空字符串&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;rx.FindStringIndex(s)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;返回一个每个元素含有2项的[]int类型切片，每个元素对应一个最左匹配或nil&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;rx.FindStringSubmatch(s)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;返回一个[]string类型的切片或nil，对应最左匹配和捕获&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;rx.FindStringSubmatchIndex(s)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;返回一个[]int类型的切片或nil,对应最左匹配和捕获&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+
+&lt;p&gt;
+下表为*regexp.Regexp类型的方法#2。rx是*regexp.Regexp类型的变量，s是用以匹配的字符串，b是用以匹配的字节切片。
+&lt;/p&gt;
+
+&lt;table border=&quot;2&quot; cellspacing=&quot;0&quot; cellpadding=&quot;6&quot; rules=&quot;groups&quot; frame=&quot;hsides&quot;&gt;
+&lt;caption class=&quot;t-above&quot;&gt;&lt;span class=&quot;table-number&quot;&gt;Table 8:&lt;/span&gt; *regexp.Regexp类型的方法  #2&lt;/caption&gt;
+
+&lt;colgroup&gt;
+&lt;col  class=&quot;left&quot; /&gt;
+
+&lt;col  class=&quot;left&quot; /&gt;
+&lt;/colgroup&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th scope=&quot;col&quot; class=&quot;left&quot;&gt;语法&lt;/th&gt;
+&lt;th scope=&quot;col&quot; class=&quot;left&quot;&gt;含义/结果&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;rx.FindSubmatch(b)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;返回最左的匹配或捕获或nil&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;rx.FindSubmatchIndex(b)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;返回最左匹配或者捕获的索引或nil&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;rx.LiteralPrefix()&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;返回所有匹配共有的原生前缀，和一个布尔变量（表明原生前缀能否匹配整个正则表达式）&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;rx.Match(b)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;如果正则表达式匹配b,返回true&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;rx.MatchReader(r)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;同rx.Match(),但是从io.RuneReader里读取待匹配的数据&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;rx.MatchString(s)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;同rx.Match(),但是匹配字符串&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;rx.NumSubexp()&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;返回正则表达式中有多少括起来的组（子表达式）&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;rx.ReplaceAll(b, br)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;返回一个[]byte类型的b的副本，其中b中被匹配的部分都使用[]byte类型的br进行$置换&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;rx.ReplaceAllFunc(b, f)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;返回一个[]byte类型的b副本，其中b中被匹配的部分都使用函数f的返回值来替代，&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;&amp;#xa0;&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;f的原型为func([]byte) []byte，其参数为一个匹配项&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;rx.ReplaceAllLiteral(b, br)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;返回一个[]byte类型的b的副本，其中b中被匹配的部分都使用[]byte类型的br进行替换&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;rx.ReplaceAllLiteralString(s, sr)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;返回一个字符串类型的s副本，其中s中被匹配的部分都使用字符中类型的sr进行$替换&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;rx.ReplaceAllStringFunc(s, f)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;返回一个字符串类型的s的副本，其中s中被匹配的部分都使用函数f的返回值来替代，&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;&amp;#xa0;&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;f的原型为func (string) string,其参数为一个匹配项s&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;rx.String()&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;返回正则表达式的字符串表示形式&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;rx.SubexpNames()&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;返回一个字符串（不能用于修改目的），包含所有已命名的字符类子表达式&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</description>
+        <pubDate>Sun, 02 Nov 2014 00:00:00 +0800</pubDate>
+        <link>http://xep007.github.io/golang/2014/11/02/Go%E8%AF%AD%E8%A8%80%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0%EF%BC%88%E5%85%AD%EF%BC%89.html</link>
+        <guid isPermaLink="true">http://xep007.github.io/golang/2014/11/02/Go%E8%AF%AD%E8%A8%80%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0%EF%BC%88%E5%85%AD%EF%BC%89.html</guid>
+        
+        <category>golang</category>
+        
+        
+        <category>golang</category>
+        
+      </item>
+    
+      <item>
+        <title>Go语言程序设计读书笔记（七）</title>
+        <description>&lt;div id=&quot;table-of-contents&quot;&gt;
+&lt;h2&gt;Table of Contents&lt;/h2&gt;
+&lt;div id=&quot;text-table-of-contents&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1&quot;&gt;1. 第4章 集合类型&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-1&quot;&gt;1.1. 值、指针和引用类型&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-2&quot;&gt;1.2. 数组和切片&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-2-1&quot;&gt;1.2.1. 数组&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-2-2&quot;&gt;1.2.2. 切片&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-2-2-1&quot;&gt;1.2.2.1. 索引与分割切片&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+
+&lt;div id=&quot;outline-container-sec-1&quot; class=&quot;outline-2&quot;&gt;
+&lt;h2 id=&quot;sec-1&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;1&lt;/span&gt; 第4章 集合类型&lt;/h2&gt;
+&lt;div class=&quot;outline-text-2&quot; id=&quot;text-1&quot;&gt;
+&lt;/div&gt;&lt;div id=&quot;outline-container-sec-1-1&quot; class=&quot;outline-3&quot;&gt;
+&lt;h3 id=&quot;sec-1-1&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.1&lt;/span&gt; 值、指针和引用类型&lt;/h3&gt;
+&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-1&quot;&gt;
+&lt;p&gt;
+通常情况下，Go语言的变量持有相应的值。也就是说，我们可以将一个变量想像成它所持有的值来使用。其中有些例外，对于通道、函数、方法、映射及切片的引用变量，它们持有的都是引用，也即保存指针的变量。
+&lt;/p&gt;
+
+&lt;p&gt;
+Go语言中函数和方法是值传递的。
+&lt;/p&gt;
+&lt;ul class=&quot;org-ul&quot;&gt;
+&lt;li&gt;对于布尔变量、数值类型和字符串按值传递是非常廉价的，也就1～16个字节（视机器而定）。但是如果修改了一个传入的字符串（例如使用+=操作符），因需创建一个新的字符串，并且复制原始的字符串并将其加到该字符串之后，所以这对于大字符串来说代价将非常大。
+&lt;/li&gt;
+&lt;li&gt;数组也是值传递，因此传递一个大数组代价也很大。在Go中，一般使用切片代替数组来传递。
+&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;
+如果需要一个函数修改我们传入的值。由于值类型是复制的，因此任何修改只作用于其副本，原始值不会被改变。同时传值的成本也较大。这种情况下，一般使用指针。
+&lt;/p&gt;
+
+&lt;p&gt;
+Go语言的指针跟c/c++大致一样，但不支持指针运算。
+&lt;/p&gt;
+
+
+&lt;p&gt;
+常用情况：
+&lt;/p&gt;
+&lt;ul class=&quot;org-ul&quot;&gt;
+&lt;li&gt;需要在一个函数或方法中返回超过四五个值的情况时，如果这些值是同一类型的，最好使用一个切片来传递。
+&lt;/li&gt;
+&lt;li&gt;如果值类型各异最好传递一个指向结构体的指针。
+&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;
+除了值和指针外，Go语言还有引用类型（另外还有接口类型，但大多数实际使用中可以把接口看成某种类型的引用，引用类型将地6.3节接触）。Go语言中的引用类型主要有：映射、切片、通道、函数和方法。
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-sec-1-2&quot; class=&quot;outline-3&quot;&gt;
+&lt;h3 id=&quot;sec-1-2&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.2&lt;/span&gt; 数组和切片&lt;/h3&gt;
+&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-2&quot;&gt;
+&lt;/div&gt;&lt;div id=&quot;outline-container-sec-1-2-1&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1-2-1&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.2.1&lt;/span&gt; 数组&lt;/h4&gt;
+&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-2-1&quot;&gt;
+&lt;p&gt;
+Go语言的数组是一个定长的序列，其中的元素类型相同。多维数组可以简单地使用自身为数组的元素来创建。
+&lt;/p&gt;
+
+&lt;p&gt;
+数组的元素使用操作符[]来索引，索引从0开始。数组是可以更改的（字符串不能更改）。
+&lt;/p&gt;
+
+&lt;p&gt;
+数组使用以下方法来创建：
+&lt;/p&gt;
+&lt;div class=&quot;org-src-container&quot;&gt;
+
+&lt;pre class=&quot;src src-go&quot;&gt;[length]Type
+[N]&lt;span style=&quot;color: #ffff00;&quot;&gt;Type&lt;/span&gt;{value1, value2, value3..., valueN}
+[...]&lt;span style=&quot;color: #ffff00;&quot;&gt;Type&lt;/span&gt;{value1, value2, ...,valueN} &lt;span style=&quot;color: #ffd700;&quot;&gt;//&lt;/span&gt;&lt;span style=&quot;color: #ffd700;&quot;&gt;&amp;#30465;&amp;#30053;&amp;#31526;...&amp;#65292;Go&amp;#20250;&amp;#33258;&amp;#21160;&amp;#35745;&amp;#31639;&amp;#25968;&amp;#32452;&amp;#38271;&amp;#24230;&lt;/span&gt;
+&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;
+以下示例展示了如何创建和索引数组：
+&lt;/p&gt;
+&lt;div class=&quot;org-src-container&quot;&gt;
+
+&lt;pre class=&quot;src src-go&quot;&gt;&lt;span style=&quot;color: #00ffff;&quot;&gt;package&lt;/span&gt; main
+&lt;span style=&quot;color: #00ffff;&quot;&gt;import&lt;/span&gt; &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;fmt&quot;&lt;/span&gt;
+&lt;span style=&quot;color: #00ffff;&quot;&gt;func&lt;/span&gt; &lt;span style=&quot;color: #00fa9a;&quot;&gt;main&lt;/span&gt;() {
+        &lt;span style=&quot;color: #00ffff;&quot;&gt;var&lt;/span&gt; buffer [20]&lt;span style=&quot;color: #ffff00;&quot;&gt;byte&lt;/span&gt;
+        &lt;span style=&quot;color: #00ffff;&quot;&gt;var&lt;/span&gt; grid1 [3][3]&lt;span style=&quot;color: #ffff00;&quot;&gt;int&lt;/span&gt;
+        grid1[1][0], grid1[1][1], grid1[1][2] = 8, 6, 2
+        grid2 := [3][3]&lt;span style=&quot;color: #ffff00;&quot;&gt;int&lt;/span&gt;{ 
+                            {4, 3}, 
+                            {8, 6, 2} 
+                          }
+
+        fmt.&lt;span style=&quot;color: #00fa9a;&quot;&gt;Println&lt;/span&gt;(grid1, grid2)
+
+        cities := [...]&lt;span style=&quot;color: #ffff00;&quot;&gt;string&lt;/span&gt;{&lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;Shanghai&quot;&lt;/span&gt;, &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;Mumbai&quot;&lt;/span&gt;, &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;Istanbul&quot;&lt;/span&gt;, &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;Beijing&quot;&lt;/span&gt;}
+        cities[&lt;span style=&quot;color: #b0c4de;&quot;&gt;len&lt;/span&gt;(cities)-1] = &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;Karachi&quot;&lt;/span&gt;
+
+        fmt.&lt;span style=&quot;color: #00fa9a;&quot;&gt;Println&lt;/span&gt;(&lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;Type Len Contents&quot;&lt;/span&gt;)
+        fmt.&lt;span style=&quot;color: #00fa9a;&quot;&gt;Printf&lt;/span&gt;(&lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;%-8T %2d %v\n&quot;&lt;/span&gt;, buffer, &lt;span style=&quot;color: #b0c4de;&quot;&gt;len&lt;/span&gt;(buffer), buffer)
+        fmt.&lt;span style=&quot;color: #00fa9a;&quot;&gt;Printf&lt;/span&gt;(&lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;%-8T %2d %q\n&quot;&lt;/span&gt;, cities, &lt;span style=&quot;color: #b0c4de;&quot;&gt;len&lt;/span&gt;(cities), cities)
+}
+&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;div class=&quot;org-src-container&quot;&gt;
+
+&lt;pre class=&quot;src src-go&quot;&gt;&amp;#36816;&amp;#34892;&amp;#32467;&amp;#26524;&amp;#20026;&amp;#65306;
+
+[[0 0 0] [8 6 2] [0 0 0]] [[4 3 0] [8 6 2] [0 0 0]]
+Type Len Contents
+[20]&lt;span style=&quot;color: #ffff00;&quot;&gt;uint8&lt;/span&gt; 20 [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0]
+[4]&lt;span style=&quot;color: #ffff00;&quot;&gt;string&lt;/span&gt;  4 [&lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;Shanghai&quot;&lt;/span&gt; &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;Mumbai&quot;&lt;/span&gt; &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;Istanbul&quot;&lt;/span&gt; &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;Karachi&quot;&lt;/span&gt;]
+&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;
+未初始化的数组元素都为0。
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-sec-1-2-2&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1-2-2&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.2.2&lt;/span&gt; 切片&lt;/h4&gt;
+&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-2-2&quot;&gt;
+&lt;p&gt;
+一般而言，切片比数组更加灵活、强大而且方便。数组是值传递的，切片是引用传递，效率更高。Go语言标准库中的所有公开函数使用的都是切片而非数组。除非特别情况，不然的话都使用切片而非数组。
+&lt;/p&gt;
+
+&lt;p&gt;
+Go语言的切片是长度可变、容量固定（可以通过将切片来收缩或使用内置的append()函数来增长）的相同类型元素的序列。
+&lt;/p&gt;
+
+&lt;p&gt;
+切片的创建：
+&lt;/p&gt;
+&lt;div class=&quot;org-src-container&quot;&gt;
+
+&lt;pre class=&quot;src src-go&quot;&gt;&lt;span style=&quot;color: #b0c4de;&quot;&gt;make&lt;/span&gt;([]&lt;span style=&quot;color: #ffff00;&quot;&gt;Type&lt;/span&gt;, length, capacity)
+&lt;span style=&quot;color: #b0c4de;&quot;&gt;make&lt;/span&gt;([]&lt;span style=&quot;color: #ffff00;&quot;&gt;Type&lt;/span&gt;, length)
+[]&lt;span style=&quot;color: #ffff00;&quot;&gt;Type&lt;/span&gt;{}
+[]&lt;span style=&quot;color: #ffff00;&quot;&gt;Type&lt;/span&gt;{value1, value2, value3, ... , valueN}
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;
+内置函数make()用于创建切片、映射和通道。当用于创建切片时，它会创建一个隐藏的初始化为零值的数组，然后返回一个引用该隐藏数组的切片。
+&lt;/p&gt;
+
+&lt;table border=&quot;2&quot; cellspacing=&quot;0&quot; cellpadding=&quot;6&quot; rules=&quot;groups&quot; frame=&quot;hsides&quot;&gt;
+&lt;caption class=&quot;t-above&quot;&gt;&lt;span class=&quot;table-number&quot;&gt;Table 1:&lt;/span&gt; 切片的操作&lt;/caption&gt;
+
+&lt;colgroup&gt;
+&lt;col  class=&quot;left&quot; /&gt;
+
+&lt;col  class=&quot;left&quot; /&gt;
+&lt;/colgroup&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th scope=&quot;col&quot; class=&quot;left&quot;&gt;语法&lt;/th&gt;
+&lt;th scope=&quot;col&quot; class=&quot;left&quot;&gt;含义/结果&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;s[n]&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;切片s中索引位置为n的项&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;s[n:m]&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;从切片s的索引位置n到m-1处所获得的切片&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;s[n:]&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;从切片s的索引位置n到len(s)-1处所获得的切片&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;s[:m]&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;从切片s的索引位置0到m-1处所获得的切片&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;s[:]&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;从切片s的索引位置0到len(s)-1处所获得的切片&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;cap(s)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;切片s的容量&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;len(s)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;切片s中所包含项的个数;总是&amp;lt;=cap(s)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;s[:cap(s)]&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;增加切片s的长度到其容量，如果两者不同的话&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-sec-1-2-2-1&quot; class=&quot;outline-5&quot;&gt;
+&lt;h5 id=&quot;sec-1-2-2-1&quot;&gt;&lt;span class=&quot;section-number-5&quot;&gt;1.2.2.1&lt;/span&gt; 索引与分割切片&lt;/h5&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</description>
+        <pubDate>Sun, 02 Nov 2014 00:00:00 +0800</pubDate>
+        <link>http://xep007.github.io/golang/2014/11/02/Go%E8%AF%AD%E8%A8%80%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%83%EF%BC%89.html</link>
+        <guid isPermaLink="true">http://xep007.github.io/golang/2014/11/02/Go%E8%AF%AD%E8%A8%80%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%83%EF%BC%89.html</guid>
+        
+        <category>golang</category>
+        
+        
+        <category>golang</category>
+        
+      </item>
     
       <item>
         <title>Go语言程序设计读书笔记（五）</title>
@@ -23,7 +1153,6 @@
 &lt;li&gt;&lt;a href=&quot;#sec-1-1-2&quot;&gt;1.1.2. strconv包&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&quot;#sec-1-1-3&quot;&gt;1.1.3. utf8包&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&quot;#sec-1-1-4&quot;&gt;1.1.4. unicode包&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-1-5&quot;&gt;1.1.5. regexp包&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
@@ -45,19 +1174,791 @@ Go语言处理字符串的强大之处不仅限于对索引和切片的支持，
 &lt;/div&gt;
 &lt;div id=&quot;outline-container-sec-1-1-1&quot; class=&quot;outline-4&quot;&gt;
 &lt;h4 id=&quot;sec-1-1-1&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.1.1&lt;/span&gt; string包&lt;/h4&gt;
+&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-1-1&quot;&gt;
+&lt;p&gt;
+下表中：变量s和t都是字符串类型，xs是字符串切片，i是int类型，f是一个签名为func (rune)bool的函数引用，索引位置是指位置匹配Unicode码点或者字符串的第一个UTF-8字节的位置，如果没找到匹配的字符串则为-1。 
+&lt;/p&gt;
+&lt;table border=&quot;2&quot; cellspacing=&quot;0&quot; cellpadding=&quot;6&quot; rules=&quot;groups&quot; frame=&quot;hsides&quot;&gt;
+&lt;caption class=&quot;t-above&quot;&gt;&lt;span class=&quot;table-number&quot;&gt;Table 1:&lt;/span&gt; strings包里的列表 #1&lt;/caption&gt;
+
+&lt;colgroup&gt;
+&lt;col  class=&quot;left&quot; /&gt;
+
+&lt;col  class=&quot;left&quot; /&gt;
+&lt;/colgroup&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th scope=&quot;col&quot; class=&quot;left&quot;&gt;语法&lt;/th&gt;
+&lt;th scope=&quot;col&quot; class=&quot;left&quot;&gt;含义/结果&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;strings.Contains(s, t)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;如果t在s中则返回true&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;strings.Count(s, t)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;t在s中出现了几多少次&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;strings.EqualFold(s, t)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;如果字符串相等的话则返回true,注意此函数比较时是区分大小写的&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;strings.Fields(s)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;在字符串空白处进行切分，返回字符串切片&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;strings.FieldsFunc(s, f)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;按照f函数的返回结果进行切分，如果f返回true,就在那个字符上进行切分&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;strings.HasPrefix(s, t)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;如果字符串s是以t开头的则返回true&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;strings.HasSuffix(s, t)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;如果字符串s是以t结尾的则返回true&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;strings.Index(s, t)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;t在s中第一次出现的索引位置&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;strings.IndexAny(s, t)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;s中第一个出现在t中的字符的索引位置&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;strings.IndexFunc(s, f)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;s中第一次令f函数返回true的字符的索引位置&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;strings.IndexRune(s, char)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;返回字符char在s中第一次出现的索引位置&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;strings.Join(xs, t)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;将xs中的所有字符串按照t分隔符进行合并（t可以为&quot;&quot;）&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;strings.LastIndex(s, t)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;t在s中最后一次出现的位置&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;strings.LastIndexAny(s, t)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;s中最后一个出现在t中的字符的索引位置&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;strings.LastIndexFunc(s, f)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;s中最后一个f返回true的字符的索引位置&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;strings.Map(mf, t)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;按照mf函数规则(func(rune)rune)替换t中所有对应的字符&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;strings.NewReader(s)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;创建一个字符串s的对象，支持Read()、ReadByte()和ReadRune()方法&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;strings.NewReplacer(&amp;#x2026;)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;创建一个替换器能够处理多对旧新字符串的替换&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;strings.Repeat(s, i)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;重复i次字符串s&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+
+
+&lt;p&gt;
+下表中：变量r是unicode类型的，SpecialCase是用来指定Unicode规则的（高级用法）
+&lt;/p&gt;
+
+&lt;table border=&quot;2&quot; cellspacing=&quot;0&quot; cellpadding=&quot;6&quot; rules=&quot;groups&quot; frame=&quot;hsides&quot;&gt;
+&lt;caption class=&quot;t-above&quot;&gt;&lt;span class=&quot;table-number&quot;&gt;Table 2:&lt;/span&gt; strings包里的函数列表 #2&lt;/caption&gt;
+
+&lt;colgroup&gt;
+&lt;col  class=&quot;left&quot; /&gt;
+
+&lt;col  class=&quot;left&quot; /&gt;
+&lt;/colgroup&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th scope=&quot;col&quot; class=&quot;left&quot;&gt;语法&lt;/th&gt;
+&lt;th scope=&quot;col&quot; class=&quot;left&quot;&gt;含义/结果&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;strings.Replace(s, old, new, i)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;返回一个新的字符串，对s中旧的非重叠字符串用新的字符串进行替换，&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;&amp;#xa0;&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;执行i次操作，如果i = -1则全部替换&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;strings.Split(s, t)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;返回一个新的字符串切片，在原s上所有出现t的位置进行切分&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;strings.SplitAfter(s, t)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;同上，但是保留分隔符&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;strings.SplitAfterN(s, t, i)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;同上，但是只进行前i次分割操作&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;strings.SplitN(s, t, i)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;同strings.Split()，但是只执行前i次分割操作&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;strings.Title(s)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;返回一个新字符串，对原字符串中每一个单词进行标题首字母大写&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;strings.ToLower(s)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;返回一个新字符串，对原s进行字母小写转换&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;strings.ToLowerSpecial(r, s)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;返回一个新字符串，按照指定的优先规则对原s中的相应的Unicode字母进行小写转换&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;strings.ToTitle(s)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;返回一个新字符串，对原s进行标题格式转换&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;strings.ToTitleSpecial(r, s)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;返回一个新字符串，对原s按照指定的优先规则r进行标题格式转换&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;strings.ToUpper(r, s)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;返回一个新字符串，对原s中所有的字母进行大写转换处理&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;strings.ToUpperSpecial(r, s)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;返回一个新字符串，按照指定的优先规则对原s中的相应的Unicode字母进行大写转换&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;strings.Trim(s, t)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;返回一个新字符串，从s两端过滤掉t&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;strings.TrimFunc(s, f)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;返回一个新字符串，从s两端开始过滤掉f返回true的每一个字符&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;strings.TrimLeft(s, t)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;返回一个新字符串，从s左边开始过滤掉t&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;strings.TrimLeftFunc(s, f)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;返回一个新字符串，从s左边开始过滤掉f返回true的每一个字符&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;strings.TrimRight(s, t)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;返回一个新字符串，从s右边开始过滤掉t&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;strings.TrimRightFunc(s, f)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;返回一个新字符串，从s右边开始过滤掉f返回true的每一个字符&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;strings.TrimSpace(s)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;返回一个新字符串，从s左右两端开始过滤掉空格&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+
+&lt;p&gt;
+来几个例子：
+&lt;/p&gt;
+&lt;ul class=&quot;org-ul&quot;&gt;
+&lt;li&gt;字符串分割:strings.Split()
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&quot;org-src-container&quot;&gt;
+
+&lt;pre class=&quot;src src-go&quot;&gt;&lt;span style=&quot;color: #00ffff;&quot;&gt;package&lt;/span&gt; main
+
+&lt;span style=&quot;color: #00ffff;&quot;&gt;import&lt;/span&gt; (
+        &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;fmt&quot;&lt;/span&gt;
+        &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;strings&quot;&lt;/span&gt;
+)
+
+&lt;span style=&quot;color: #00ffff;&quot;&gt;func&lt;/span&gt; &lt;span style=&quot;color: #00fa9a;&quot;&gt;main&lt;/span&gt;() {
+        names := &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;cat&amp;#183;dog&amp;#183;pig&amp;#183;horse&amp;#183;bull&amp;#183;sheep&quot;&lt;/span&gt;
+        fmt.&lt;span style=&quot;color: #00fa9a;&quot;&gt;Print&lt;/span&gt;(&lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;|&quot;&lt;/span&gt;)
+        &lt;span style=&quot;color: #00ffff;&quot;&gt;for&lt;/span&gt; _, name := &lt;span style=&quot;color: #00ffff;&quot;&gt;range&lt;/span&gt; strings.&lt;span style=&quot;color: #00fa9a;&quot;&gt;Split&lt;/span&gt;(names, &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;&amp;#183;&quot;&lt;/span&gt;) {
+                fmt.&lt;span style=&quot;color: #00fa9a;&quot;&gt;Printf&lt;/span&gt;(&lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;%s|&quot;&lt;/span&gt;, name)
+        }
+
+        fmt.&lt;span style=&quot;color: #00fa9a;&quot;&gt;Println&lt;/span&gt;()
+}
+&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;ul class=&quot;org-ul&quot;&gt;
+&lt;li&gt;去掉字符串首尾空白: 
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&quot;org-src-container&quot;&gt;
+
+&lt;pre class=&quot;src src-go&quot;&gt;&lt;span style=&quot;color: #00ffff;&quot;&gt;package&lt;/span&gt; main
+
+&lt;span style=&quot;color: #00ffff;&quot;&gt;import&lt;/span&gt; (
+        &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;fmt&quot;&lt;/span&gt;
+        &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;strings&quot;&lt;/span&gt;
+)
+
+&lt;span style=&quot;color: #00ffff;&quot;&gt;func&lt;/span&gt; &lt;span style=&quot;color: #00fa9a;&quot;&gt;main&lt;/span&gt;() {
+        names := &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;  I am come from china.  &quot;&lt;/span&gt;
+        fmt.&lt;span style=&quot;color: #00fa9a;&quot;&gt;Printf&lt;/span&gt;(&lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;|%s|\n&quot;&lt;/span&gt;, &lt;span style=&quot;color: #00fa9a;&quot;&gt;SimpleSimplifyWhitespace&lt;/span&gt;(names))
+}
+
+&lt;span style=&quot;color: #00ffff;&quot;&gt;func&lt;/span&gt; &lt;span style=&quot;color: #00fa9a;&quot;&gt;SimpleSimplifyWhitespace&lt;/span&gt;(s &lt;span style=&quot;color: #ffff00;&quot;&gt;string&lt;/span&gt;) &lt;span style=&quot;color: #ffff00;&quot;&gt;string&lt;/span&gt; {
+        &lt;span style=&quot;color: #00ffff;&quot;&gt;return&lt;/span&gt; strings.&lt;span style=&quot;color: #00fa9a;&quot;&gt;Join&lt;/span&gt;(strings.&lt;span style=&quot;color: #00fa9a;&quot;&gt;Fields&lt;/span&gt;(strings.&lt;span style=&quot;color: #00fa9a;&quot;&gt;TrimSpace&lt;/span&gt;(s)), &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot; &quot;&lt;/span&gt;)
+}
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
 &lt;/div&gt;
 
 &lt;div id=&quot;outline-container-sec-1-1-2&quot; class=&quot;outline-4&quot;&gt;
 &lt;h4 id=&quot;sec-1-1-2&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.1.2&lt;/span&gt; strconv包&lt;/h4&gt;
+&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-1-2&quot;&gt;
+&lt;p&gt;
+strconv包提供了许多可以在字符串和其他类型的数据之间进行转换的函数。
+&lt;/p&gt;
+
+
+&lt;p&gt;
+下表中：参数bs是一个[]byte切片，base是一个进制单位（2～36），bits是指其结果必须满足比位数（对于int型的数据而言，可以是8、16、32、64或者0，对于float64型数据而言，可能是32或64），而s是一个字符串。
+&lt;/p&gt;
+
+&lt;table border=&quot;2&quot; cellspacing=&quot;0&quot; cellpadding=&quot;6&quot; rules=&quot;groups&quot; frame=&quot;hsides&quot;&gt;
+&lt;caption class=&quot;t-above&quot;&gt;&lt;span class=&quot;table-number&quot;&gt;Table 3:&lt;/span&gt; strconv包函数列表#1&lt;/caption&gt;
+
+&lt;colgroup&gt;
+&lt;col  class=&quot;left&quot; /&gt;
+
+&lt;col  class=&quot;left&quot; /&gt;
+&lt;/colgroup&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th scope=&quot;col&quot; class=&quot;left&quot;&gt;语法&lt;/th&gt;
+&lt;th scope=&quot;col&quot; class=&quot;left&quot;&gt;含义/结果&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;strconv.AppendBool(bs, b)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;根据布尔变量b的值，在bs后追加&quot;true&quot;或者&quot;false&quot;字符&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;strconv.AppendFloat(bs, f, fmt, prec, bits)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;在bs后面追加浮点数f,其他参数请参考strconv.Format.Float()函数&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;strconv.AppendInt(bs, i, base)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;根据base指定的进制在bs后追加int64数字i&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;strconv.AppendQuote(bs, s)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;使用strconv.Quote()追加s到bs后面&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;strconv.AppendQuoteRune(bs, char)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;使用strconv.QuoteRune(char)追加char到bs后面&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;strconv.AppendQuoteRuneToASCII(bs, char)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;使用strconv.QuoteRuneToASCII(char)追加char到bs后面&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;strconf.AppendouotetoASCII(bs, s)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;使用strconv.QuotetoASCII(char)追加s到bs后面&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;strconv.AppendUInt(bs, u, base)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;将uint64类型的变量u按照指定的进制base追加到bs后面&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;strconv.Atoi(s)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;返回转换后的int类型值和一个error（出错时error不为空）&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;strconv.CanBackquote(s)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;检查s是否是一个符合Go语言语法的字符串常量，s中不能出现反引号&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;strconv.FormatBool(tf)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;格式化布尔变量tf，返回&quot;true&quot;或&quot;false&quot;字符串&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;strconv.FormatFloat(f, fmt, prec, bits)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;将浮点数f格式化成字符串。fmt是格式化动作，一个字节，如&#39;b&#39;表示%b,&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;&amp;#xa0;&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;&#39;e&#39;表示%e等等。如果fmt指定为&#39;e&#39;、&#39;E&#39;&#39;、f&#39;时，prec参数表示小数点&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;&amp;#xa0;&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;后面至多保留多少位，或者当fmt指定为&#39;g&#39;或&#39;G&#39;时，prec = -1可以获得&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;&amp;#xa0;&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;能用的最少的数字个数，同时使用其他方法保留精度损失。bits通常是64&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;strconv.FormatInt(i, base)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;将整数i以base指定的进制形式转换成字符串&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;strconv.FormatUInt(u, base)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;将整数u以base指定的进制形式转换成字符串&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;strconv.IsPrint(c)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;判断c是否为可打印字符&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;strconv.Itoa(i)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;将十进制数i转换成字符串。&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+
+&lt;table border=&quot;2&quot; cellspacing=&quot;0&quot; cellpadding=&quot;6&quot; rules=&quot;groups&quot; frame=&quot;hsides&quot;&gt;
+&lt;caption class=&quot;t-above&quot;&gt;&lt;span class=&quot;table-number&quot;&gt;Table 4:&lt;/span&gt; strconv包函数列表 #2&lt;/caption&gt;
+
+&lt;colgroup&gt;
+&lt;col  class=&quot;left&quot; /&gt;
+
+&lt;col  class=&quot;left&quot; /&gt;
+&lt;/colgroup&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th scope=&quot;col&quot; class=&quot;left&quot;&gt;语法&lt;/th&gt;
+&lt;th scope=&quot;col&quot; class=&quot;left&quot;&gt;含义/结果&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;strconv.ParseBool(s)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;如果s是“1”、&quot;T&quot;、&quot;True&quot;、&quot;TRUE&quot;则返回true和nil，如果s是&quot;0&quot;、&quot;f&quot;、&quot;F&quot;、&quot;false&quot;、&quot;False&quot;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;&amp;#xa0;&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;或者&quot;FALSE&quot;则返回false和nil,否则返回flase和一个error&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;strconv.ParseFloat(s, bits)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;如果s能够转换成浮点数，则返回一个float64类型的值和nil,否则返回0和error;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;&amp;#xa0;&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;bits应该是64，但是如果想转换成float32的话可以设置为32&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;strconf.ParseInt(s, base, bits)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;如果s能够转换成一个整数，则返回int64值和nil，否则返回0和error;如果base为0,则表示要从s&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;&amp;#xa0;&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;中判断进制的大小（字符串开头是“0x”或&quot;0X&quot;表示这是十六进制的，开头只有&quot;0&quot;表示八进制，&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;&amp;#xa0;&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;否则其他的都是十进制），或者在base中指定进制的大小（2～36）;如果需要转换成int型的话&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;&amp;#xa0;&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;bits应该为0,否则需要转换成带有长度的整形（如bits为16的话将会转换成int16）&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;strconv.ParseUint(s, base, bits)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;同上，唯一不同的只是转换成无符号整数&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;strconv.Quote(s)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;使用Go语言双引号字符串语法形式来表示一个字符串。&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;strconv.QuoteRune(char)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;使用Go语言单引号字符语法来表示一个rune类型的Unicode码字符char&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;strconv.QuoteRuneToASCII(char)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;同上，但是对于非ASCII码字符进行转义&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;strconv.QuoteToASCII(s)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;同strconv.Quote(),但是对非ASCII码字符进行转义&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;strconv.Unquote(s)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;对于一个用Go语法如单引号、双引号、反引号等表示的字符或字符串，&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;&amp;#xa0;&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;返回引号中的字符串和一个error变量&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;strconv.UnquoteChar(s, b)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;一个rune(第一个字符)、一个bool（表示第一个字符的UTF-8表示需要多个字节）、一个string&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;&amp;#xa0;&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;(剩下的字符串)以及一个error；如果b被设置为一个单引号或双引号，那么引号须转义&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;
+所有的strconv转换函数返回一个结果和error变量，如果转换成功的话error为nil。
+&lt;/p&gt;
 &lt;/div&gt;
+&lt;/div&gt;
+
 &lt;div id=&quot;outline-container-sec-1-1-3&quot; class=&quot;outline-4&quot;&gt;
 &lt;h4 id=&quot;sec-1-1-3&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.1.3&lt;/span&gt; utf8包&lt;/h4&gt;
+&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-1-3&quot;&gt;
+&lt;p&gt;
+unicode/utf8包里的几个有用的函数，主要用来查询和操作UTF-8编码的字符串或字符切片。
+&lt;/p&gt;
+
+&lt;p&gt;
+使用utf8包里的函数需要在程序中导入&quot;unicode/utf&quot;,下表中，变量b是一个[]byte类型的切片，s是字符串，c是一个rune类型的Unicode码点。
+&lt;/p&gt;
+
+&lt;table border=&quot;2&quot; cellspacing=&quot;0&quot; cellpadding=&quot;6&quot; rules=&quot;groups&quot; frame=&quot;hsides&quot;&gt;
+&lt;caption class=&quot;t-above&quot;&gt;&lt;span class=&quot;table-number&quot;&gt;Table 5:&lt;/span&gt; utf8包&lt;/caption&gt;
+
+&lt;colgroup&gt;
+&lt;col  class=&quot;left&quot; /&gt;
+
+&lt;col  class=&quot;left&quot; /&gt;
+&lt;/colgroup&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th scope=&quot;col&quot; class=&quot;left&quot;&gt;语法&lt;/th&gt;
+&lt;th scope=&quot;col&quot; class=&quot;left&quot;&gt;含义/结果&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;utf8.DecodeLastRune(b)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;返回b中最后一个rune和它占用的字节数，或者U+FFED(Unicode替换字符？)和0,如果最后一个rune&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;&amp;#xa0;&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;是非法的话&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;utf8.DecodeLastRuneInString(s)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;同上，但它输入的是字符串&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;utf8.DecodeRune(b)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;返回b中的第一个rune和它占用的字节数，或者U+FFED(Unicode替换字符？)和0,如果b开始rune&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;&amp;#xa0;&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;是非法的话&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;utf8.DecodeRuneIntString(s)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;同上，但它输入的是字符串&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;utf8.EncodeRune(b, c)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;将c作为一个UTF-8字符并返回写入的字节数（b必须有足够的存储空间）&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;utf8.FullRune(b)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;如果b的第一个rune是UTF-8编码的话，返回true&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;utf8.FullRuneInString(s)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;如果s的第一个rune是UTF-8编码，返回true&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;utf8.RuneCount(b)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;返回b中的rune个数，如果存在非ASCII字符的话，这个值可能小于len(s)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;utf8.RuneCountInString(s)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;同上，但它输入的是字符串&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;utf8.RuneLen(c)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;对c进行编码需要的字节数&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;utf8.RuneStart(x)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;如果x可以作为一个rune的第一个字节的话，返回true&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;utf8.RuneValid(b)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;如果b中的字节能正确表示一个UTF-8字符串，返回true&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;utf8.ValidString(s)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;如果s中的字节能正确表示一个UTF-8编码的字符串，返回true&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
 &lt;/div&gt;
+&lt;/div&gt;
+
+
 &lt;div id=&quot;outline-container-sec-1-1-4&quot; class=&quot;outline-4&quot;&gt;
 &lt;h4 id=&quot;sec-1-1-4&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.1.4&lt;/span&gt; unicode包&lt;/h4&gt;
+&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-1-4&quot;&gt;
+&lt;p&gt;
+unicode包主要提供了一些用来检查Unicode码点是否符合主要标准的函数。
+&lt;/p&gt;
+
+&lt;p&gt;
+下表中，变量c是一个rune类型变量，表示一个Unicode码点。
+&lt;/p&gt;
+&lt;table border=&quot;2&quot; cellspacing=&quot;0&quot; cellpadding=&quot;6&quot; rules=&quot;groups&quot; frame=&quot;hsides&quot;&gt;
+&lt;caption class=&quot;t-above&quot;&gt;&lt;span class=&quot;table-number&quot;&gt;Table 6:&lt;/span&gt; unicode包&lt;/caption&gt;
+
+&lt;colgroup&gt;
+&lt;col  class=&quot;left&quot; /&gt;
+
+&lt;col  class=&quot;left&quot; /&gt;
+&lt;/colgroup&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;语法&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;含义/结果&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;unicode.Is(table, c)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;如果c在table中，返回true&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;unicode.IsControl(c)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;如果c是一个控制字符，返回true&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;unicode.IsDigit(c)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;如果c是一个十进制数字，返回true&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;unicode.IsGraphic(c)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;如果c是一个“图形”字符，如字母、数字、标记、符号或空格返回true&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;unicode.IsLetter(c)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;如果c是一个字母，返回true&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;unicode.IsLower(c)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;如果c是一小写字母，返回true&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;unicode.IsMark(c)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;如果c是一个标记，返回true&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;unicode.IsOneOf(tables, c)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;如果c在tables中的任何一个table中，返回true&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;unicode.IsPrint(c)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;如果c是一个可打印的字符，返回true&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;unicode.IsPunct(c)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;如果c是一个标点符号，返回true&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;unicode.IsSpace(c)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;如果c是一个空格，返回true&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;unicode.IsSymbol(c)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;如果c是一个符号，返回true&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;unicode.IsTitle(c)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;如果c是一个标题大写字符，返回true&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;unicode.IsUpper(c)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;如果c是一个大写字母，返回true&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;unicode.SimpleFold(c)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;在与c的码点等价的码点集中，该方法返回最小的大于等于c的码点，否则如果不存在与其等价的码点，&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;&amp;#xa0;&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;则返回最小的大于等于0的码点&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;&amp;#xa0;&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;&amp;#xa0;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;unicode.To(case, c)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;字符c的case版本，其中case可以是unicode.LowerCase、unicode.TitleCase或unicode.UpperCasw&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;unicode.ToLower(c)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;字母c的小写形式&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;unicode.ToTitle(c)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;字符c的标题形式&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;unicode.ToUpper(c)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;字母c的大写形式&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
 &lt;/div&gt;
-&lt;div id=&quot;outline-container-sec-1-1-5&quot; class=&quot;outline-4&quot;&gt;
-&lt;h4 id=&quot;sec-1-1-5&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.1.5&lt;/span&gt; regexp包&lt;/h4&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -1381,7 +3282,7 @@ Go语言的标识符是一个非空的字母或数字串，第一个字符必须
 &lt;/tr&gt;
 
 &lt;tr&gt;
-&lt;td class=&quot;left&quot;&gt;contiue&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;continue&lt;/td&gt;
 &lt;td class=&quot;left&quot;&gt;for&lt;/td&gt;
 &lt;td class=&quot;left&quot;&gt;import&lt;/td&gt;
 &lt;td class=&quot;left&quot;&gt;return&lt;/td&gt;
@@ -2025,638 +3926,6 @@ Go语言提供了两种类型的浮点类型和两种类型的复数类型。
         
         
         <category>golang</category>
-        
-      </item>
-    
-      <item>
-        <title>GNU Emacs Lisp编程入门笔记（七）</title>
-        <description>&lt;div id=&quot;table-of-contents&quot;&gt;
-&lt;h2&gt;Table of Contents&lt;/h2&gt;
-&lt;div id=&quot;text-table-of-contents&quot;&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1&quot;&gt;1. 第8章 剪切和存储文本&lt;/a&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-1&quot;&gt;1.1. zap-to-char函数&lt;/a&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-1-1&quot;&gt;1.1.1. interactive表达式&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-1-2&quot;&gt;1.1.2. zap-to-char函数体&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-1-3&quot;&gt;1.1.3. search-forward函数&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-1-4&quot;&gt;1.1.4. progn函数&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-1-5&quot;&gt;1.1.5. 总结zap-to-char函数&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-2&quot;&gt;1.2. kill-region函数&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-3&quot;&gt;1.3. delete-region函数：接触c&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-4&quot;&gt;1.4. 用defvar初始化变量&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-5&quot;&gt;1.5. copy-region-as-kill函数&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-6&quot;&gt;1.6. 回顾&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-
-&lt;div id=&quot;outline-container-sec-1&quot; class=&quot;outline-2&quot;&gt;
-&lt;h2 id=&quot;sec-1&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;1&lt;/span&gt; 第8章 剪切和存储文本&lt;/h2&gt;
-&lt;div class=&quot;outline-text-2&quot; id=&quot;text-1&quot;&gt;
-&lt;p&gt;
-在Emacs中，kill命令从一个缓冲区剪切一段文本，它不会丢弃文本，而是用一个列表保存起来。保存被剪切的一段文本的列表被称为kill环(kill ring)。
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;div id=&quot;outline-container-sec-1-1&quot; class=&quot;outline-3&quot;&gt;
-&lt;h3 id=&quot;sec-1-1&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.1&lt;/span&gt; zap-to-char函数&lt;/h3&gt;
-&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-1&quot;&gt;
-&lt;p&gt;
-此函数的功能就是：将光标当前位置（位点）与出现特定字符的下一个位置之间这一区域中的文本剪切掉。剪切掉的文本放在kill环中。并能通过C-y(yank)命令从kill环中找回。
-&lt;/p&gt;
-&lt;div class=&quot;org-src-container&quot;&gt;
-
-&lt;pre class=&quot;src src-lisp&quot;&gt;(&lt;span style=&quot;color: #00ffff;&quot;&gt;defun&lt;/span&gt; &lt;span style=&quot;color: #00fa9a;&quot;&gt;zap-to-char&lt;/span&gt; (arg char) &lt;span style=&quot;color: #ffd700;&quot;&gt;;&lt;/span&gt;&lt;span style=&quot;color: #ffd700;&quot;&gt;version 19 implementation&lt;/span&gt;
-  &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;Kill up to and including ARG&#39;th occurrence of CHAR.&lt;/span&gt;
-&lt;span style=&quot;color: #ffa500;&quot;&gt;Goes backward if ARG is engative; error if CHAR not found.&quot;&lt;/span&gt;
-  (interactive &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;*p\ncZap to char: &quot;&lt;/span&gt;)
-  (kill-region (point)
-               (&lt;span style=&quot;color: #00ffff;&quot;&gt;progn&lt;/span&gt;
-                 (search-forward (char-to-string char) nil nil arg)
-                 (point))))
-&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id=&quot;outline-container-sec-1-1-1&quot; class=&quot;outline-4&quot;&gt;
-&lt;h4 id=&quot;sec-1-1-1&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.1.1&lt;/span&gt; interactive表达式&lt;/h4&gt;
-&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-1-1&quot;&gt;
-&lt;p&gt;
-(interactive &quot;*p\ncZap to char: &quot;)
-&lt;/p&gt;
-&lt;ul class=&quot;org-ul&quot;&gt;
-&lt;li&gt;“*”，星号意味着如果缓冲区是只读的，将产生一个错误。
-&lt;/li&gt;
-&lt;li&gt;“p”，这一部分以换行符&quot;\n&quot;结束。“p”是指传送给函数的第一个参量将是一个处理过的前缀参量的值。前缀参量用C-u以及其后的一个数来传送，或者用M-和一个数来传送。如果不带参量交互地调用这个函数，默认值1将被传送给这个函数。
-&lt;/li&gt;
-&lt;li&gt;“cZap to char: ”。小写的&quot;c&quot;是指交互表达式希望产生一个提示并且后续的参量将是一个字符。
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id=&quot;outline-container-sec-1-1-2&quot; class=&quot;outline-4&quot;&gt;
-&lt;h4 id=&quot;sec-1-1-2&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.1.2&lt;/span&gt; zap-to-char函数体&lt;/h4&gt;
-&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-1-2&quot;&gt;
-&lt;p&gt;
-zap-to-char函数体包含了从光标的当前位置到（并包含）指定字符的这一区域剪切文本的代码。
-(kill-region (point)……
-(point)就是光标所处的当前位置。
-代码的下一个部分是一个使用progn的表达式。progn表达式的主体由search-forward和point函数组成。
-学习了search-forward函数之后，就容易理解progn是如何工作的了。因此先学search-forward函数。
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id=&quot;outline-container-sec-1-1-3&quot; class=&quot;outline-4&quot;&gt;
-&lt;h4 id=&quot;sec-1-1-3&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.1.3&lt;/span&gt; search-forward函数&lt;/h4&gt;
-&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-1-3&quot;&gt;
-&lt;p&gt;
-此函数用于定位zap-to-char函数中被截取的字符的。查询成功，search-forward函数就在目标字符串中最后一个字符处设置位点。
-&lt;/p&gt;
-
-&lt;p&gt;
-search-forward函数如下：
-&lt;/p&gt;
-
-&lt;p&gt;
-(search-forward (char-to-string char) nil nil arg)
-&lt;/p&gt;
-
-&lt;p&gt;
-search-forward函数有4个参量：
-&lt;/p&gt;
-&lt;ol class=&quot;org-ol&quot;&gt;
-&lt;li&gt;第一个参量是目标，就是所要查找的内容。此参量必须是一个字符串。char-to-string用于转换字符串。
-&lt;/li&gt;
-&lt;li&gt;第二个参量绑定查询范围;nil表示到达缓冲区末尾。
-&lt;/li&gt;
-&lt;li&gt;第三个参量告诉这个函数如果查询失败应该怎么办——可以发出一个出错信号，也可返回nil。nil表示发出一个出错信号。
-&lt;/li&gt;
-&lt;li&gt;第四个参量是重复计数值——待查找字符串出现的次数的计数。此参量可选。如未给，则默认为1,如为负，则查询就朝后进行。
-&lt;/li&gt;
-&lt;/ol&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id=&quot;outline-container-sec-1-1-4&quot; class=&quot;outline-4&quot;&gt;
-&lt;h4 id=&quot;sec-1-1-4&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.1.4&lt;/span&gt; progn函数&lt;/h4&gt;
-&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-1-4&quot;&gt;
-&lt;p&gt;
-progn函数使其每一个参量顺序求值并返回最后一个参量的值。此例中progn有两个参量，一个是search-forward，表示在文本中查询目标字符串，如查到就在目标字符串后设置位点。第二个参量point表达式返回位点的值。传送给kill-region函数作为其第二个参量。
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id=&quot;outline-container-sec-1-1-5&quot; class=&quot;outline-4&quot;&gt;
-&lt;h4 id=&quot;sec-1-1-5&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.1.5&lt;/span&gt; 总结zap-to-char函数&lt;/h4&gt;
-&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-1-5&quot;&gt;
-&lt;p&gt;
-当zap-to-char函数被调用时，给kill-region的第一个参量是光标所在的位置，search-forward函数将位点移到查找到的字符后，point返回位点的值。然后kill-region将区域内的文本剪切掉。
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div id=&quot;outline-container-sec-1-2&quot; class=&quot;outline-3&quot;&gt;
-&lt;h3 id=&quot;sec-1-2&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.2&lt;/span&gt; kill-region函数&lt;/h3&gt;
-&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-2&quot;&gt;
-&lt;p&gt;
-kill-region函数功能就是删去文档字符串的一部分。代码如下：
-&lt;/p&gt;
-&lt;div class=&quot;org-src-container&quot;&gt;
-
-&lt;pre class=&quot;src src-lisp&quot;&gt;(&lt;span style=&quot;color: #00ffff;&quot;&gt;defun&lt;/span&gt; &lt;span style=&quot;color: #00fa9a;&quot;&gt;kill-region&lt;/span&gt; (beg end)
-    &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;Kill between point and mark.&lt;/span&gt;
-&lt;span style=&quot;color: #ffa500;&quot;&gt;The text is deleted but saved in the kill ring.&quot;&lt;/span&gt;
-(interactive &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;*r&quot;&lt;/span&gt;)
-(copy-region-as-kill beg end)
-(delete-region beg end))
-&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id=&quot;outline-container-sec-1-3&quot; class=&quot;outline-3&quot;&gt;
-&lt;h3 id=&quot;sec-1-3&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.3&lt;/span&gt; delete-region函数：接触c&lt;/h3&gt;
-&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-3&quot;&gt;
-&lt;p&gt;
-delete-region函数删除一个区域中的内容，而且你永远无法找回它。此函数是用c语言写成的。
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id=&quot;outline-container-sec-1-4&quot; class=&quot;outline-3&quot;&gt;
-&lt;h3 id=&quot;sec-1-4&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.4&lt;/span&gt; 用defvar初始化变量&lt;/h3&gt;
-&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-4&quot;&gt;
-&lt;p&gt;
-defvar是创建一个变量并可以赋初值用的。它跟setq函数相似。但有两点不同。
-&lt;/p&gt;
-
-&lt;p&gt;
-defvar与setq的不同之处：
-&lt;/p&gt;
-
-&lt;ul class=&quot;org-ul&quot;&gt;
-&lt;li&gt;第一，defvar只对无值的变量赋值。如果变量已经有一个值，defvar不会覆盖已经存在的值。
-&lt;/li&gt;
-&lt;li&gt;第二，defvar特殊表有一个文档字符串。
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id=&quot;outline-container-sec-1-5&quot; class=&quot;outline-3&quot;&gt;
-&lt;h3 id=&quot;sec-1-5&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.5&lt;/span&gt; copy-region-as-kill函数&lt;/h3&gt;
-&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-5&quot;&gt;
-&lt;p&gt;
-此函数拷贝缓冲区中的一个文本区域，并将其保存到kill-ring变量中。
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id=&quot;outline-container-sec-1-6&quot; class=&quot;outline-3&quot;&gt;
-&lt;h3 id=&quot;sec-1-6&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.6&lt;/span&gt; 回顾&lt;/h3&gt;
-&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-6&quot;&gt;
-&lt;ul class=&quot;org-ul&quot;&gt;
-&lt;li&gt;progn 
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;
-这个函数依次对其第一个参量求值，并返回最后一个参量的值。例如：
-(progn 1 2 3 4 )
-结果返回4。
-&lt;/p&gt;
-&lt;ul class=&quot;org-ul&quot;&gt;
-&lt;li&gt;searchforward
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;
-这个函数查找一个字符串，并且如果找到这个字符串就移动位点。
-这个函数有4个参量：
-&lt;/p&gt;
-&lt;ol class=&quot;org-ol&quot;&gt;
-&lt;li&gt;要查找的字符串
-&lt;/li&gt;
-&lt;li&gt;查找的限制范围（可选）
-&lt;/li&gt;
-&lt;li&gt;如果查找失败是返回nil还是返回一个错误消息（可选）
-&lt;/li&gt;
-&lt;li&gt;重复查找多少次，如果这个参量是负的，就是往后查找（可选）
-&lt;/li&gt;
-&lt;/ol&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-</description>
-        <pubDate>Thu, 23 Oct 2014 00:00:00 +0800</pubDate>
-        <link>http://xep007.github.io/emacs/lisp/2014/10/23/gnu%20emacs%20lisp%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%83%EF%BC%89.html</link>
-        <guid isPermaLink="true">http://xep007.github.io/emacs/lisp/2014/10/23/gnu%20emacs%20lisp%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%83%EF%BC%89.html</guid>
-        
-        <category>lisp</category>
-        
-        
-        <category>emacs</category>
-        
-        <category>lisp</category>
-        
-      </item>
-    
-      <item>
-        <title>Go语言程序设计读书笔记（一）</title>
-        <description>&lt;div id=&quot;table-of-contents&quot;&gt;
-&lt;h2&gt;Table of Contents&lt;/h2&gt;
-&lt;div id=&quot;text-table-of-contents&quot;&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1&quot;&gt;1. 第1章 5个例子&lt;/a&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-1&quot;&gt;1.1. 开始&lt;/a&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-1-1&quot;&gt;1.1.1. 下载Go并配置&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-1-2&quot;&gt;1.1.2. 安装gocode及配置&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-1-3&quot;&gt;1.1.3. 配置Emacs&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-2&quot;&gt;1.2. 编辑、编译和运行&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-3&quot;&gt;1.3. 原著接下去示范了5个小程序。对于没有其他语言基础的人来说，还是有点难。我也不准备做笔记。等到学会了基本的Go语法后再来分析这5个例子。&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;p&gt;
-《Go语言程序设计》，[英] Mark Summerfield著，许式伟、吕桂华、徐立、何李石译。国外最权威的Go语言编程书籍。
-&lt;/p&gt;
-
-&lt;p&gt;
-&lt;b&gt;本书的结构&lt;/b&gt;
-&lt;/p&gt;
-&lt;ul class=&quot;org-ul&quot;&gt;
-&lt;li&gt;第1章 开始讲解如何建立和运行Go程序，通过介绍5个简短的示例简要介绍了Go语言的语法与特性，以及一些标准库。
-&lt;/li&gt;
-&lt;li&gt;第2章至第7章更深入地讲解了Go语言的方方面面。其中有三章讲解了Go语言的内置数据类型：第2章涵盖了标识符、布尔型和数值类型，第3章涵盖了字符串，第4章涵盖了Go语言内置的集合类型。
-&lt;/li&gt;
-&lt;li&gt;第5章描述并讲解了Go语言的语句和控制结构，还解释了如何创建和使用自定义函数。最后展示了如何使用Go语言创建一个过程式的非并发程序。
-&lt;/li&gt;
-&lt;li&gt;第6章展示了如何在Go语言中进行面向对象编程。
-&lt;/li&gt;
-&lt;li&gt;第7章讲解了Go语言的并发特性。
-&lt;/li&gt;
-&lt;li&gt;第8章展示了如何读取和写入自定义的二进制文件，Go二进制文件、文本、、JSON以及XML文件。
-&lt;/li&gt;
-&lt;li&gt;最后一章展示了导入和使用标准库包，自定义包以及第三方软件包。
-&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div id=&quot;outline-container-sec-1&quot; class=&quot;outline-2&quot;&gt;
-&lt;h2 id=&quot;sec-1&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;1&lt;/span&gt; 第1章 5个例子&lt;/h2&gt;
-&lt;div class=&quot;outline-text-2&quot; id=&quot;text-1&quot;&gt;
-&lt;p&gt;
-这一章作者使用了5个例子简洁概览了Go语言的一些特性和核心包（其他语言称作模块或标准库）。
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;div id=&quot;outline-container-sec-1-1&quot; class=&quot;outline-3&quot;&gt;
-&lt;h3 id=&quot;sec-1-1&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.1&lt;/span&gt; 开始&lt;/h3&gt;
-&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-1&quot;&gt;
-&lt;p&gt;
-&lt;b&gt;debian+Emacs构建Go编程环境&lt;/b&gt;
-&lt;/p&gt;
-
-&lt;p&gt;
-这不是原著内容，是我的配置过程。不同系统请baidu。
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;div id=&quot;outline-container-sec-1-1-1&quot; class=&quot;outline-4&quot;&gt;
-&lt;h4 id=&quot;sec-1-1-1&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.1.1&lt;/span&gt; 下载Go并配置&lt;/h4&gt;
-&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-1-1&quot;&gt;
-&lt;ul class=&quot;org-ul&quot;&gt;
-&lt;li&gt;因go.googlecode.com被墙。所以到国内&lt;a href=&quot;http://www.golangtc.com/download&quot;&gt;golang中国下载。&lt;/a&gt;
-&lt;/li&gt;
-&lt;li&gt;解压到~/家目录。
-&lt;/li&gt;
-&lt;li&gt;配置goroot和gopath。打开~/.profile文件。在结尾加入以下内容。
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;div class=&quot;org-src-container&quot;&gt;
-
-&lt;pre class=&quot;src src-sh&quot;&gt;&lt;span style=&quot;color: #b0c4de;&quot;&gt;export&lt;/span&gt; &lt;span style=&quot;color: #ffa07a;&quot;&gt;GOROOT&lt;/span&gt;=$&lt;span style=&quot;color: #ffa07a;&quot;&gt;HOME&lt;/span&gt;/go  
-&lt;span style=&quot;color: #b0c4de;&quot;&gt;export&lt;/span&gt; &lt;span style=&quot;color: #ffa07a;&quot;&gt;GOARCH&lt;/span&gt;=amd64
-&lt;span style=&quot;color: #b0c4de;&quot;&gt;export&lt;/span&gt; &lt;span style=&quot;color: #ffa07a;&quot;&gt;GOOS&lt;/span&gt;=linux
-&lt;span style=&quot;color: #b0c4de;&quot;&gt;export&lt;/span&gt; &lt;span style=&quot;color: #ffa07a;&quot;&gt;GOBIN&lt;/span&gt;=$&lt;span style=&quot;color: #ffa07a;&quot;&gt;GOROOT&lt;/span&gt;/bin
-&lt;span style=&quot;color: #b0c4de;&quot;&gt;export&lt;/span&gt; &lt;span style=&quot;color: #ffa07a;&quot;&gt;GOPATH&lt;/span&gt;=$&lt;span style=&quot;color: #ffa07a;&quot;&gt;HOME&lt;/span&gt;/gopro
-&lt;span style=&quot;color: #b0c4de;&quot;&gt;export&lt;/span&gt; &lt;span style=&quot;color: #ffa07a;&quot;&gt;PATH&lt;/span&gt;=$&lt;span style=&quot;color: #ffa07a;&quot;&gt;PATH&lt;/span&gt;:$&lt;span style=&quot;color: #ffa07a;&quot;&gt;GOBIN&lt;/span&gt;
-&lt;/pre&gt;
-&lt;/div&gt;
-&lt;p&gt;
-保存，然后在xterm或gnome-terminal中运行go version。如显示版本号及系统，则表示安装成功。
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div id=&quot;outline-container-sec-1-1-2&quot; class=&quot;outline-4&quot;&gt;
-&lt;h4 id=&quot;sec-1-1-2&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.1.2&lt;/span&gt; 安装gocode及配置&lt;/h4&gt;
-&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-1-2&quot;&gt;
-&lt;p&gt;
-在xterm或gnome-terminal里输入:
-&lt;/p&gt;
-&lt;div class=&quot;org-src-container&quot;&gt;
-
-&lt;pre class=&quot;src src-sh&quot;&gt;go get github.com/nsf/gocode
-&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;
-配置gocode:
-xterm或gnome-terminal下输入: 
-&lt;/p&gt;
-&lt;div class=&quot;org-src-container&quot;&gt;
-
-&lt;pre class=&quot;src src-sh&quot;&gt;gocode set propose-builtins true
-gocode set lib-path &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;/home/user/go/pkg/linux_amd64&quot;&lt;/span&gt;
-gocode set autobuild true
-&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;
-然后输入: gocode set ，如显示以下内容则表示配置成功。
-&lt;/p&gt;
-&lt;div class=&quot;org-src-container&quot;&gt;
-
-&lt;pre class=&quot;src src-sh&quot;&gt;user@debian:~$ gocode set
-propose-builtins true
-lib-path &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;/home/user/go/pkg/linux_amd64&quot;&lt;/span&gt;
-autobuild true
-&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div id=&quot;outline-container-sec-1-1-3&quot; class=&quot;outline-4&quot;&gt;
-&lt;h4 id=&quot;sec-1-1-3&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.1.3&lt;/span&gt; 配置Emacs&lt;/h4&gt;
-&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-1-3&quot;&gt;
-&lt;p&gt;
-在Emacs中通过elpa安装auto-complete、go-autocomplete、yasnippet、ecb插件，并进行配置。以下是我的.emacs中相关设置。
-&lt;/p&gt;
-&lt;div class=&quot;org-src-container&quot;&gt;
-
-&lt;pre class=&quot;src src-sh&quot;&gt;;;;;auto-complete
-(add-to-list &lt;span style=&quot;color: #ffa500;&quot;&gt;&#39;load-path &quot;~/.emacs.d/elpa/auto-complete-20140824.1658&quot;)&lt;/span&gt;
-&lt;span style=&quot;color: #ffa500;&quot;&gt;(require &#39;&lt;/span&gt;auto-complete)
-(require &lt;span style=&quot;color: #ffa500;&quot;&gt;&#39;auto-complete-config)&lt;/span&gt;
-&lt;span style=&quot;color: #ffa500;&quot;&gt;(add-to-list &#39;&lt;/span&gt;ac-dictionary-directories &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;~/.emacs.d/elpa/auto-complete-20140824.1658/ac-dict&quot;&lt;/span&gt;)
-(ac-config-default)
-;(define-key ac-complete-mode-map &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;\C-n&quot;&lt;/span&gt; &lt;span style=&quot;color: #ffa500;&quot;&gt;&#39;ac-next)&lt;/span&gt;
-&lt;span style=&quot;color: #ffa500;&quot;&gt;;(define-key ac-complete-mode-map &quot;\C-p&quot; &#39;&lt;/span&gt;ac-previous)
-
-;;;;yasnippet
-(require &lt;span style=&quot;color: #ffa500;&quot;&gt;&#39;yasnippet)&lt;/span&gt;
-&lt;span style=&quot;color: #ffa500;&quot;&gt;(yas-global-mode 1)&lt;/span&gt;
-
-&lt;span style=&quot;color: #ffa500;&quot;&gt;;;;;ecb&lt;/span&gt;
-&lt;span style=&quot;color: #ffa500;&quot;&gt;(require &#39;&lt;/span&gt;ecb)
-(setq ecb-tip-of-the-day nil)
-;;&amp;#33258;&amp;#21160;&amp;#32553;&amp;#36827;
-(global-set-key (kbd &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;RET&quot;&lt;/span&gt;) &lt;span style=&quot;color: #ffa500;&quot;&gt;&#39;newline-and-indent)&lt;/span&gt;
-&lt;span style=&quot;color: #ffa500;&quot;&gt;;;;;go-autocomplete--------go&amp;#32534;&amp;#31243;&lt;/span&gt;
-&lt;span style=&quot;color: #ffa500;&quot;&gt;(add-to-list &#39;&lt;/span&gt;load-path &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;~/.emacs.d/elpa/go-mode-20140905.2210&quot;&lt;/span&gt;)
-(require &lt;span style=&quot;color: #ffa500;&quot;&gt;&#39;go-mode-autoloads)&lt;/span&gt;
-&lt;span style=&quot;color: #ffa500;&quot;&gt;(add-to-list &#39;&lt;/span&gt;load-path &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;~/.emacs.d/elpa/go-autocomplete-20140527.2104&quot;&lt;/span&gt;)
-(require &lt;span style=&quot;color: #ffa500;&quot;&gt;&#39;go-autocomplete)&lt;/span&gt;
-&lt;span style=&quot;color: #ffa500;&quot;&gt;(require &#39;&lt;/span&gt;auto-complete-config)
-(add-hook &lt;span style=&quot;color: #ffa500;&quot;&gt;&#39;before-save-hook &#39;&lt;/span&gt;gofmt-before-save)
-&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;
-&lt;b&gt;Go语言文档&lt;/b&gt;
-&lt;/p&gt;
-
-&lt;p&gt;
-golang.org被墙，上不了。可在本地查找golang文档。具体做法如下：
-&lt;/p&gt;
-&lt;ul class=&quot;org-ul&quot;&gt;
-&lt;li&gt;在xterm或gnome-terminal中运行
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;div class=&quot;org-src-container&quot;&gt;
-
-&lt;pre class=&quot;src src-sh&quot;&gt;godoc -http:=8000
-&lt;/pre&gt;
-&lt;/div&gt;
-&lt;ul class=&quot;org-ul&quot;&gt;
-&lt;li&gt;然后在浏览器中打开localhost:8000就行了。
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div id=&quot;outline-container-sec-1-2&quot; class=&quot;outline-3&quot;&gt;
-&lt;h3 id=&quot;sec-1-2&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.2&lt;/span&gt; 编辑、编译和运行&lt;/h3&gt;
-&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-2&quot;&gt;
-&lt;p&gt;
-随便打开一个编辑器就可以进行Go代码编辑。如果是简单的小程序，随便在什么方创建程序都可以。如果是工程，一般要在go-path中创建以下文件夹，源代码放在src文件夹中。
-&lt;/p&gt;
-&lt;div class=&quot;org-src-container&quot;&gt;
-
-&lt;pre class=&quot;src src-sh&quot;&gt;mkdir ~/gopro/bin ~/gopro/src ~/gopro/pkg
-&lt;/pre&gt;
-&lt;/div&gt;
-&lt;p&gt;
-我们先来个hello world。打开Emacs,C-x C-f新建hello.go文件，在文件中输入以下代码。
-&lt;/p&gt;
-&lt;div class=&quot;org-src-container&quot;&gt;
-
-&lt;pre class=&quot;src src-go&quot;&gt;&lt;span style=&quot;color: #00ffff;&quot;&gt;package&lt;/span&gt; main
-
-&lt;span style=&quot;color: #00ffff;&quot;&gt;import&lt;/span&gt; (
-        &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;fmt&quot;&lt;/span&gt;
-)
-
-&lt;span style=&quot;color: #00ffff;&quot;&gt;func&lt;/span&gt; &lt;span style=&quot;color: #00fa9a;&quot;&gt;main&lt;/span&gt;() {
-        fmt.&lt;span style=&quot;color: #00fa9a;&quot;&gt;Println&lt;/span&gt;(&lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;Hello,World.&quot;&lt;/span&gt;)
-}
-&lt;/pre&gt;
-&lt;/div&gt;
-&lt;p&gt;
-保存后，运行go build hello.go，如果没有错误提示，就表示编译成功了。
-输入./hello就可以运行程序了。
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div id=&quot;outline-container-sec-1-3&quot; class=&quot;outline-3&quot;&gt;
-&lt;h3 id=&quot;sec-1-3&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.3&lt;/span&gt; 原著接下去示范了5个小程序。对于没有其他语言基础的人来说，还是有点难。我也不准备做笔记。等到学会了基本的Go语法后再来分析这5个例子。&lt;/h3&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-</description>
-        <pubDate>Thu, 23 Oct 2014 00:00:00 +0800</pubDate>
-        <link>http://xep007.github.io/golang/2014/10/23/Go%E8%AF%AD%E8%A8%80%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%80%EF%BC%89.html</link>
-        <guid isPermaLink="true">http://xep007.github.io/golang/2014/10/23/Go%E8%AF%AD%E8%A8%80%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%80%EF%BC%89.html</guid>
-        
-        <category>golang</category>
-        
-        
-        <category>golang</category>
-        
-      </item>
-    
-      <item>
-        <title>GNU Emacs Lisp编程入门笔记（六）</title>
-        <description>&lt;div id=&quot;table-of-contents&quot;&gt;
-&lt;h2&gt;Table of Contents&lt;/h2&gt;
-&lt;div id=&quot;text-table-of-contents&quot;&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1&quot;&gt;1. 第7章 基本函数：car、cdr、cons&lt;/a&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-1&quot;&gt;1.1. car和cdr函数&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-2&quot;&gt;1.2. cons函数&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-3&quot;&gt;1.3. nthcdr函数&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-4&quot;&gt;1.4. setcar函数&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-5&quot;&gt;1.5. setcdr函数&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div id=&quot;outline-container-sec-1&quot; class=&quot;outline-2&quot;&gt;
-&lt;h2 id=&quot;sec-1&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;1&lt;/span&gt; 第7章 基本函数：car、cdr、cons&lt;/h2&gt;
-&lt;div class=&quot;outline-text-2&quot; id=&quot;text-1&quot;&gt;
-&lt;p&gt;
-在Lisp中，car、cdr、cons都是基本函数。cons函数用于构造列表，car和cdr函数则用于拆分列表。
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;div id=&quot;outline-container-sec-1-1&quot; class=&quot;outline-3&quot;&gt;
-&lt;h3 id=&quot;sec-1-1&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.1&lt;/span&gt; car和cdr函数&lt;/h3&gt;
-&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-1&quot;&gt;
-&lt;p&gt;
-一个列表的car，就是返回这个列表的第一个元素。
-&lt;/p&gt;
-&lt;div class=&quot;org-src-container&quot;&gt;
-
-&lt;pre class=&quot;src src-lisp&quot;&gt;&lt;span class=&quot;linenr&quot;&gt;1: &lt;/span&gt;(car &#39;(rose violet daisy buttercup))
-&lt;/pre&gt;
-&lt;/div&gt;
-&lt;p&gt;
-得到结果为“rose”。
-car并不改变列表。只是返回列表的第一个元素。
-一个列表的cdr就是一个列表第一个元素之后的所有元素。
-&lt;/p&gt;
-&lt;div class=&quot;org-src-container&quot;&gt;
-
-&lt;pre class=&quot;src src-lisp&quot;&gt;&lt;span class=&quot;linenr&quot;&gt;1: &lt;/span&gt;(car &#39;(rose violet daisy buttercup))
-&lt;/pre&gt;
-&lt;/div&gt;
-&lt;p&gt;
-结果为“(violet daisy buttercup)”。cdr也不改变原列表。
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id=&quot;outline-container-sec-1-2&quot; class=&quot;outline-3&quot;&gt;
-&lt;h3 id=&quot;sec-1-2&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.2&lt;/span&gt; cons函数&lt;/h3&gt;
-&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-2&quot;&gt;
-&lt;p&gt;
-cons函数可以构造列表，其作用与car和cdr函数正好相反。
-&lt;/p&gt;
-&lt;div class=&quot;org-src-container&quot;&gt;
-
-&lt;pre class=&quot;src src-lisp&quot;&gt;&lt;span class=&quot;linenr&quot;&gt;1: &lt;/span&gt;(cons &#39;pine &#39;(fir oak maple))
-&lt;/pre&gt;
-&lt;/div&gt;
-&lt;p&gt;
-结果为“(pine fir oak maple)”。cons必须提供一个待插入元素的列表，哪怕是空列表。
-&lt;/p&gt;
-
-&lt;p&gt;
-&lt;b&gt;查询列表的长度：length函数&lt;/b&gt;
-通过Lisp的length函数可以得到一个列表的长度。
-&lt;/p&gt;
-&lt;div class=&quot;org-src-container&quot;&gt;
-
-&lt;pre class=&quot;src src-lisp&quot;&gt;&lt;span class=&quot;linenr&quot;&gt;1: &lt;/span&gt;(length &#39;(a b c))
-&lt;/pre&gt;
-&lt;/div&gt;
-&lt;p&gt;
-结果为3。
-&lt;/p&gt;
-&lt;div class=&quot;org-src-container&quot;&gt;
-
-&lt;pre class=&quot;src src-lisp&quot;&gt;&lt;span class=&quot;linenr&quot;&gt;1: &lt;/span&gt;(length (cons &#39;a &#39;(b c d e)))
-&lt;/pre&gt;
-&lt;/div&gt;
-&lt;p&gt;
-结果为5。
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id=&quot;outline-container-sec-1-3&quot; class=&quot;outline-3&quot;&gt;
-&lt;h3 id=&quot;sec-1-3&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.3&lt;/span&gt; nthcdr函数&lt;/h3&gt;
-&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-3&quot;&gt;
-&lt;p&gt;
-nthcdr函数,其所做之事就是重复地取列表的cdr。
-&lt;/p&gt;
-&lt;div class=&quot;org-src-container&quot;&gt;
-
-&lt;pre class=&quot;src src-lisp&quot;&gt;&lt;span class=&quot;linenr&quot;&gt;1: &lt;/span&gt;(nthcdr 2 &#39;(pine fir oak maple))
-&lt;/pre&gt;
-&lt;/div&gt;
-&lt;p&gt;
-结果为(oak maple)。
-&lt;/p&gt;
-&lt;div class=&quot;org-src-container&quot;&gt;
-
-&lt;pre class=&quot;src src-lisp&quot;&gt;&lt;span class=&quot;linenr&quot;&gt;1: &lt;/span&gt;(netcdr 4 &#39;(pine fir oak maple))
-&lt;/pre&gt;
-&lt;/div&gt;
-&lt;p&gt;
-结果为nil。nthcdr也不会改变原列表。
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id=&quot;outline-container-sec-1-4&quot; class=&quot;outline-3&quot;&gt;
-&lt;h3 id=&quot;sec-1-4&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.4&lt;/span&gt; setcar函数&lt;/h3&gt;
-&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-4&quot;&gt;
-&lt;p&gt;
-setcar函数会改变列表的值。
-&lt;/p&gt;
-&lt;div class=&quot;org-src-container&quot;&gt;
-
-&lt;pre class=&quot;src src-lisp&quot;&gt;&lt;span class=&quot;linenr&quot;&gt;1: &lt;/span&gt;(setq animals &#39;(giraffe antelope tiger lion))  
-&lt;span class=&quot;linenr&quot;&gt;2: &lt;/span&gt;(setcar animals &#39;hippopotamus)
-&lt;/pre&gt;
-&lt;/div&gt;
-&lt;p&gt;
-第一行代码构造一个列表，并把列表赋值给变量animals。第二行代码：这时变量animals的值变成了(hippopotamus antelope tiger lion),列表的第一个值被替换了。
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div id=&quot;outline-container-sec-1-5&quot; class=&quot;outline-3&quot;&gt;
-&lt;h3 id=&quot;sec-1-5&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.5&lt;/span&gt; setcdr函数&lt;/h3&gt;
-&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-5&quot;&gt;
-&lt;p&gt;
-与setcar函数相似，不同之处在于这个函数替换列表的第二个以及其后的所有元素。
-&lt;/p&gt;
-&lt;div class=&quot;org-src-container&quot;&gt;
-
-&lt;pre class=&quot;src src-lisp&quot;&gt;&lt;span class=&quot;linenr&quot;&gt;1: &lt;/span&gt;(setq domesticated-animals &#39;(horse cow sheep goat))
-&lt;span class=&quot;linenr&quot;&gt;2: &lt;/span&gt;(setcdr domesticated-animals &#39;(cat dog))
-&lt;/pre&gt;
-&lt;/div&gt;
-&lt;p&gt;
-现在domesticated-animals的值变成了(horse cat dog)。
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-</description>
-        <pubDate>Wed, 22 Oct 2014 00:00:00 +0800</pubDate>
-        <link>http://xep007.github.io/emacs/lisp/2014/10/22/gnu%20emacs%20lisp%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8%E7%AC%94%E8%AE%B0%EF%BC%88%E5%85%AD%EF%BC%89.html</link>
-        <guid isPermaLink="true">http://xep007.github.io/emacs/lisp/2014/10/22/gnu%20emacs%20lisp%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8%E7%AC%94%E8%AE%B0%EF%BC%88%E5%85%AD%EF%BC%89.html</guid>
-        
-        
-        <category>emacs</category>
-        
-        <category>lisp</category>
         
       </item>
     
