@@ -1,0 +1,372 @@
+---
+layout     : post
+title      : Go语言程序设计读书笔记（八）——集合类型之映射
+categories : [golang , ]
+tags       : golang
+description: golang
+author: xep007
+---
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1. Go语言程序设计读书笔记（八）——集合类型之映射</a>
+<ul>
+<li><a href="#sec-1-1">1.1. 映射</a></li>
+<li><a href="#sec-1-2">1.2. 创建和填充映射</a></li>
+<li><a href="#sec-1-3">1.3. 映射查询</a></li>
+<li><a href="#sec-1-4">1.4. 映射修改</a></li>
+<li><a href="#sec-1-5">1.5. 键序遍历映射</a></li>
+<li><a href="#sec-1-6">1.6. 映射反转</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> Go语言程序设计读书笔记（八）——集合类型之映射</h2>
+<div class="outline-text-2" id="text-1">
+</div><div id="outline-container-sec-1-1" class="outline-3">
+<h3 id="sec-1-1"><span class="section-number-3">1.1</span> 映射</h3>
+<div class="outline-text-3" id="text-1-1">
+<p>
+Go语言中的映射(map)是一种内置的数据结构，保存键——值对的无序集合，它的容量只受到机器内在的限制。
+</p>
+
+<p>
+在一个映射里所有的键都是唯一的而且必须是支持==和!=操作符的类型，大部分Go语言的基本类型都可以作为映射的键，例如：int、float64、rune、string、可比较的数组和结构体、基于这些类型的自定义类型，以及指针。Go语言的切片和不能用于比较的数组和结构体以及基于这些类型的自定义类型都不能用作键。
+</p>
+
+<p>
+指针、引用类型或任何内置类型的值、自定义类型都可用作值，包括映射本身。因此，它可以创建任意复杂的数据结构。
+</p>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<caption class="t-above"><span class="table-number">Table 1:</span> 映射的操作</caption>
+
+<colgroup>
+<col  class="left" />
+
+<col  class="left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="left">语法</th>
+<th scope="col" class="left">含义/结果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="left">m[k] = v</td>
+<td class="left">用键k来将值v赋值给映射m。如果映射m中的k已存在，则将之前的值丢弃</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">Delete(m, k)</td>
+<td class="left">将键k及其相关的值从映射m中删除。如果k不存在则安全地不执行任何操作</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">v := m[k]</td>
+<td class="left">从映射m中取得键k相对应的值并将其赋值给v。如果k在映射中不存在，则将映射类型的0值赋值给v</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">v, found := m[k]</td>
+<td class="left">从映射m中取得键k相对应的值并将其赋值给v,并将found的值赋值为true。如果k在映射中不存在，</td>
+</tr>
+
+<tr>
+<td class="left">&#xa0;</td>
+<td class="left">则将映射类型的0值 赋值给v，并将found的值赋值为false</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">len(m)</td>
+<td class="left">返回映射m中的项（“键/值”对） 的数目</td>
+</tr>
+</tbody>
+</table>
+
+
+<p>
+映射属于引用类型，其传递很廉价，其搜索很快，比线性搜索还快100倍左右。
+</p>
+
+<p>
+映射里所有键类型必须是相同的，所有值类型必须是相同的，但键和值的类型可以不同。
+</p>
+
+<p>
+<b>映射的创建方式</b>
+</p>
+<div class="org-src-container">
+
+<pre class="src src-go"><span style="color: #b0c4de;">make</span> (<span style="color: #00ffff;">map</span>[<span style="color: #ffff00;">KeyType</span>]<span style="color: #ffff00;">ValueType</span>, initialCapacity)
+<span style="color: #b0c4de;">make</span> (<span style="color: #00ffff;">map</span>[<span style="color: #ffff00;">KeyType</span>]<span style="color: #ffff00;">ValueType</span>)
+<span style="color: #00ffff;">map</span>[<span style="color: #ffff00;">KeyType</span>]<span style="color: #ffff00;">ValueType</span>{}
+<span style="color: #00ffff;">map</span>[<span style="color: #ffff00;">KeyType</span>]<span style="color: #ffff00;">ValueType</span>{key1: value1, key2:value2, ..., keyN:valueN}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-1-2" class="outline-3">
+<h3 id="sec-1-2"><span class="section-number-3">1.2</span> 创建和填充映射</h3>
+<div class="outline-text-3" id="text-1-2">
+<ol class="org-ol">
+<li>键为string类型，值为float64类型的映射
+</li>
+</ol>
+<div class="org-src-container">
+
+<pre class="src src-go"><span style="color: #00ffff;">package</span> main
+
+<span style="color: #00ffff;">import</span> <span style="color: #ffa500;">"fmt"</span>
+
+<span style="color: #00ffff;">func</span> <span style="color: #00fa9a;">main</span>() {
+        massForPlanet := <span style="color: #b0c4de;">make</span>(<span style="color: #00ffff;">map</span>[<span style="color: #ffff00;">string</span>]<span style="color: #ffff00;">float64</span>) <span style="color: #ffd700;">//</span><span style="color: #ffd700;">&#19982;map[string]float64{}&#30456;&#21516;</span>
+        massForPlanet[<span style="color: #ffa500;">"Mercury"</span>] = 0.06
+        massForPlanet[<span style="color: #ffa500;">"Venus"</span>] = 0.82
+        massForPlanet[<span style="color: #ffa500;">"Earth"</span>] = 1.00
+        massForPlanet[<span style="color: #ffa500;">"Mars"</span>] = 0.11
+
+        fmt.<span style="color: #00fa9a;">Println</span>(massForPlanet)
+}
+
+&#32467;&#26524;&#20026;&#65306;
+<span style="color: #00ffff;">map</span>[<span style="color: #ffff00;">Mercury</span>:0.06 Venus:0.82 Earth:1 Mars:0.11]
+</pre>
+</div>
+
+<ol class="org-ol">
+<li>键的类型为指针
+</li>
+</ol>
+<div class="org-src-container">
+
+<pre class="src src-go"><span style="color: #00ffff;">package</span> main
+
+<span style="color: #00ffff;">import</span> (
+        <span style="color: #ffa500;">"fmt"</span>
+)
+
+<span style="color: #00ffff;">type</span> <span style="color: #ffff00;">Point</span> <span style="color: #00ffff;">struct</span>{ x, y, z int }
+
+<span style="color: #00ffff;">func</span> (point <span style="color: #ffff00;">Point</span>) <span style="color: #00fa9a;">String</span>() <span style="color: #ffff00;">string</span> {
+        <span style="color: #00ffff;">return</span> fmt.<span style="color: #00fa9a;">Sprintf</span>(<span style="color: #ffa500;">"(%d, %d, %d)"</span>, point.x, point.y, point.z)
+}
+
+<span style="color: #00ffff;">func</span> <span style="color: #00fa9a;">main</span>() {
+
+        triangle := <span style="color: #b0c4de;">make</span>(<span style="color: #00ffff;">map</span>[*<span style="color: #ffff00;">Point</span>]<span style="color: #ffff00;">string</span>, 3)
+        triangle[&amp;<span style="color: #ffff00;">Point</span>{89, 47, 27}] = <span style="color: #ffa500;">"a"</span>
+        triangle[&amp;<span style="color: #ffff00;">Point</span>{86, 65, 86}] = <span style="color: #ffa500;">"b"</span>
+        triangle[&amp;<span style="color: #ffff00;">Point</span>{7, 44, 45}] = <span style="color: #ffa500;">"c"</span>
+
+        fmt.<span style="color: #00fa9a;">Println</span>(triangle)
+}
+&#32467;&#26524;&#20026;&#65306;
+<span style="color: #00ffff;">map</span>[(<span style="color: #ffff00;">89</span>, 47, 27):<span style="color: #00fa9a;">a</span> (86, 65, 86):<span style="color: #00fa9a;">b</span> (7, 44, 45):c]
+</pre>
+</div>
+<p>
+使用指针作为键，意味着我们可以增加两个相同的内容，只要分别创建它们就可以获得不同的地址。但如果我们希望这个映射对任何实际上相同的内容只存储一个的话，我们就存储Point的值而不是指向Point的指针就可以了。即把struct作为键。
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-1-3" class="outline-3">
+<h3 id="sec-1-3"><span class="section-number-3">1.3</span> 映射查询</h3>
+<div class="outline-text-3" id="text-1-3">
+<p>
+映射和数组或切片一样可以使用索引操作符[]，但为数组或切片不同的是，映射的键类型不必是int类型。Go语言提供了两种类型的语法用于映射查询，两种方式都使用[]操作符。
+</p>
+<div class="org-src-container">
+
+<pre class="src src-go"><span style="color: #00ffff;">package</span> main
+
+<span style="color: #00ffff;">import</span> <span style="color: #ffa500;">"fmt"</span>
+
+<span style="color: #00ffff;">func</span> <span style="color: #00fa9a;">main</span>() {
+        populationForCity := <span style="color: #00ffff;">map</span>[<span style="color: #ffff00;">string</span>]<span style="color: #ffff00;">int</span>{
+                <span style="color: #ffa500;">"Istanbul"</span>: 12610000,
+                <span style="color: #ffa500;">"Karachi"</span>:  10620000,
+                <span style="color: #ffa500;">"Mumbai"</span>:   12690000,
+                <span style="color: #ffa500;">"Shanghai"</span>: 13680000,
+        }
+
+        population := populationForCity[<span style="color: #ffa500;">"Mumbai"</span>]
+        fmt.<span style="color: #00fa9a;">Println</span>(<span style="color: #ffa500;">"Mumbai's population is "</span>, population)
+        population = populationForCity[<span style="color: #ffa500;">"Emerald City"</span>]
+        fmt.<span style="color: #00fa9a;">Println</span>(<span style="color: #ffa500;">"Emerald City's population is "</span>, population)
+
+}
+
+&#32467;&#26524;&#20026;&#65306;
+Mumbai<span style="color: #ffa500;">'s population is  12690000</span>
+<span style="color: #ffa500;">Emerald City'</span>s population is  0
+</pre>
+</div>
+<p>
+如果我们查询的键在映射里，就返回它的值。如果键不存在，就会返回一个0值。这就会出现一个问题，0是表示不存在这个键还是它的值就是0。为了避免这种情况，我们可以使用以下另一种查询方法。
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-go"><span style="color: #00ffff;">package</span> main
+
+<span style="color: #00ffff;">import</span> <span style="color: #ffa500;">"fmt"</span>
+
+<span style="color: #00ffff;">func</span> <span style="color: #00fa9a;">main</span>() {
+        populationForCity := <span style="color: #00ffff;">map</span>[<span style="color: #ffff00;">string</span>]<span style="color: #ffff00;">int</span>{
+                <span style="color: #ffa500;">"Istanbul"</span>: 12610000,
+                <span style="color: #ffa500;">"Karachi"</span>:  10620000,
+                <span style="color: #ffa500;">"Mumbai"</span>:   12690000,
+                <span style="color: #ffa500;">"Shanghai"</span>: 13680000,
+        }
+
+        city := <span style="color: #ffa500;">"Emerald"</span>
+        <span style="color: #00ffff;">if</span> population, found := populationForCity[city]; found {
+                fmt.<span style="color: #00fa9a;">Printf</span>(<span style="color: #ffa500;">"%s's population is %d\n"</span>, city, population)
+        } <span style="color: #00ffff;">else</span> {
+                fmt.<span style="color: #00fa9a;">Printf</span>(<span style="color: #ffa500;">"%s's population data is unavailable\n"</span>, city)
+        }
+
+}
+
+&#32467;&#26524;&#20026;&#65306;
+Emerald<span style="color: #ffa500;">'s population data is unavailable</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-1-4" class="outline-3">
+<h3 id="sec-1-4"><span class="section-number-3">1.4</span> 映射修改</h3>
+<div class="outline-text-3" id="text-1-4">
+<p>
+我们可以往映射里插入或删除一个项（键/值对）。
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-go"><span style="color: #00ffff;">package</span> main
+
+<span style="color: #00ffff;">import</span> <span style="color: #ffa500;">"fmt"</span>
+
+<span style="color: #00ffff;">func</span> <span style="color: #00fa9a;">main</span>() {
+        populationForCity := <span style="color: #00ffff;">map</span>[<span style="color: #ffff00;">string</span>]<span style="color: #ffff00;">int</span>{
+                <span style="color: #ffa500;">"Istanbul"</span>: 12610000,
+                <span style="color: #ffa500;">"Karachi"</span>:  10620000,
+                <span style="color: #ffa500;">"Mumbai"</span>:   12690000,
+                <span style="color: #ffa500;">"Shanghai"</span>: 13680000,
+        }
+
+        fmt.<span style="color: #00fa9a;">Println</span>(<span style="color: #b0c4de;">len</span>(populationForCity), populationForCity)
+        <span style="color: #b0c4de;">delete</span>(populationForCity, <span style="color: #ffa500;">"Shanghai"</span>) <span style="color: #ffd700;">//</span><span style="color: #ffd700;">&#21024;&#38500;</span>
+        fmt.<span style="color: #00fa9a;">Println</span>(<span style="color: #b0c4de;">len</span>(populationForCity), populationForCity)
+        populationForCity[<span style="color: #ffa500;">"Emerald"</span>] = 11620000 <span style="color: #ffd700;">//</span><span style="color: #ffd700;">&#25554;&#20837;&#19968;&#20010;&#26032;&#38190;/&#20540;&#23545;</span>
+        fmt.<span style="color: #00fa9a;">Println</span>(<span style="color: #b0c4de;">len</span>(populationForCity), populationForCity)
+
+}
+
+&#32467;&#26524;&#20026;&#65306;
+4 <span style="color: #00ffff;">map</span>[<span style="color: #ffff00;">Istanbul</span>:12610000 Karachi:10620000 Mumbai:12690000 Shanghai:13680000]
+3 <span style="color: #00ffff;">map</span>[<span style="color: #ffff00;">Mumbai</span>:12690000 Istanbul:12610000 Karachi:10620000]
+4 <span style="color: #00ffff;">map</span>[<span style="color: #ffff00;">Emerald</span>:11620000 Istanbul:12610000 Karachi:10620000 Mumbai:12690000]
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-1-5" class="outline-3">
+<h3 id="sec-1-5"><span class="section-number-3">1.5</span> 键序遍历映射</h3>
+<div class="outline-text-3" id="text-1-5">
+<p>
+按键的顺序遍历映射。映射是无序集合，如果我们想要按顺序输出映射，可以有两种方式，一种是按键顺序输出，一种是按值顺序输出。本节先介绍按键序输出。按键顺序输出的思想是创建一个足够大的切片去保存映射里的所有键，然后对切片排序，遍历切片得到键，再从映射里得到这个键的值。这样就可以实现顺序输出了。
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-go"><span style="color: #00ffff;">package</span> main
+
+<span style="color: #00ffff;">import</span> (
+        <span style="color: #ffa500;">"fmt"</span>
+        <span style="color: #ffa500;">"sort"</span>
+)
+
+<span style="color: #00ffff;">func</span> <span style="color: #00fa9a;">main</span>() {
+        populationForCity := <span style="color: #00ffff;">map</span>[<span style="color: #ffff00;">string</span>]<span style="color: #ffff00;">int</span>{
+                <span style="color: #ffa500;">"Istanbul"</span>: 12610000,
+                <span style="color: #ffa500;">"Karachi"</span>:  10620000,
+                <span style="color: #ffa500;">"Mumbai"</span>:   12690000,
+                <span style="color: #ffa500;">"Shanghai"</span>: 13680000,
+        }
+
+        cities := <span style="color: #b0c4de;">make</span>([]<span style="color: #ffff00;">string</span>, 0, <span style="color: #b0c4de;">len</span>(populationForCity))
+        <span style="color: #00ffff;">for</span> city := <span style="color: #00ffff;">range</span> populationForCity {
+                cities = <span style="color: #b0c4de;">append</span>(cities, city)
+        }
+
+        sort.<span style="color: #00fa9a;">Strings</span>(cities)
+        <span style="color: #00ffff;">for</span> _, city := <span style="color: #00ffff;">range</span> cities {
+                fmt.<span style="color: #00fa9a;">Printf</span>(<span style="color: #ffa500;">"%-10s  %8d\n"</span>, city, populationForCity[city])
+        }
+}
+
+&#32467;&#26524;&#20026;&#65306;
+Istanbul    12610000
+Karachi     10620000
+Mumbai      12690000
+Shanghai    13680000
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-1-6" class="outline-3">
+<h3 id="sec-1-6"><span class="section-number-3">1.6</span> 映射反转</h3>
+<div class="outline-text-3" id="text-1-6">
+<p>
+上节实现的是按键顺序输出映射，要实现按值顺序输出也是可以的。如果一个映射的值都是唯一的，而且值的类型也是映射支持的键类型。那么很容易将它反转。
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-go"><span style="color: #00ffff;">package</span> main
+
+<span style="color: #00ffff;">import</span> <span style="color: #ffa500;">"fmt"</span>
+
+<span style="color: #00ffff;">func</span> <span style="color: #00fa9a;">main</span>() {
+        populationForCity := <span style="color: #00ffff;">map</span>[<span style="color: #ffff00;">string</span>]<span style="color: #ffff00;">int</span>{
+                <span style="color: #ffa500;">"Istanbul"</span>: 12610000,
+                <span style="color: #ffa500;">"Karachi"</span>:  10620000,
+                <span style="color: #ffa500;">"Mumbai"</span>:   12690000,
+                <span style="color: #ffa500;">"Shanghai"</span>: 13680000,
+        }
+
+        cityForPopulation := <span style="color: #b0c4de;">make</span>(<span style="color: #00ffff;">map</span>[<span style="color: #ffff00;">int</span>]<span style="color: #ffff00;">string</span>, <span style="color: #b0c4de;">len</span>(populationForCity))
+        <span style="color: #00ffff;">for</span> city, population := <span style="color: #00ffff;">range</span> populationForCity {
+                cityForPopulation[population] = city
+        }
+
+        fmt.<span style="color: #00fa9a;">Println</span>(cityForPopulation)
+}
+&#32467;&#26524;&#20026;&#65306;
+<span style="color: #00ffff;">map</span>[<span style="color: #ffff00;">10620000</span>:Karachi 12690000:Mumbai 13680000:Shanghai 12610000:Istanbul]
+</pre>
+</div>
+
+<p>
+记住映射里的值必须是唯一的，不然只能保存最后一个。
+</p>
+</div>
+</div>
+</div>
