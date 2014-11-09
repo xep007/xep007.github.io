@@ -5,8 +5,8 @@
     <description>Linux / C / golang / Emacs</description>
     <link>http://xep007.github.io/</link>
     <atom:link href="http://xep007.github.io/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Sun, 09 Nov 2014 11:36:05 +0800</pubDate>
-    <lastBuildDate>Sun, 09 Nov 2014 11:36:05 +0800</lastBuildDate>
+    <pubDate>Sun, 09 Nov 2014 18:19:21 +0800</pubDate>
+    <lastBuildDate>Sun, 09 Nov 2014 18:19:21 +0800</lastBuildDate>
     <generator>Jekyll v2.4.0</generator>
     
       <item>
@@ -1964,702 +1964,6 @@ regexp包的是Russ Cox 的RE2正则表达式引擎的Go语言实现。这个引
       </item>
     
       <item>
-        <title>Go语言程序设计读书笔记（七）</title>
-        <description>&lt;div id=&quot;table-of-contents&quot;&gt;
-&lt;h2&gt;Table of Contents&lt;/h2&gt;
-&lt;div id=&quot;text-table-of-contents&quot;&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1&quot;&gt;1. 第4章 集合类型(一)数组与切片&lt;/a&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-1&quot;&gt;1.1. 值、指针和引用类型&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-2&quot;&gt;1.2. 数组和切片&lt;/a&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-2-1&quot;&gt;1.2.1. 数组&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-2-2&quot;&gt;1.2.2. 切片&lt;/a&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-2-2-1&quot;&gt;1.2.2.1. 索引与分割切片&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-2-2-2&quot;&gt;1.2.2.2. 遍历切片&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-2-2-3&quot;&gt;1.2.2.3. 修改切片&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-2-2-4&quot;&gt;1.2.2.4. 排序和搜索切片&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-
-&lt;div id=&quot;outline-container-sec-1&quot; class=&quot;outline-2&quot;&gt;
-&lt;h2 id=&quot;sec-1&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;1&lt;/span&gt; 第4章 集合类型(一)数组与切片&lt;/h2&gt;
-&lt;div class=&quot;outline-text-2&quot; id=&quot;text-1&quot;&gt;
-&lt;/div&gt;&lt;div id=&quot;outline-container-sec-1-1&quot; class=&quot;outline-3&quot;&gt;
-&lt;h3 id=&quot;sec-1-1&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.1&lt;/span&gt; 值、指针和引用类型&lt;/h3&gt;
-&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-1&quot;&gt;
-&lt;p&gt;
-通常情况下，Go语言的变量持有相应的值。也就是说，我们可以将一个变量想像成它所持有的值来使用。其中有些例外，对于通道、函数、方法、映射及切片的引用变量，它们持有的都是引用，也即保存指针的变量。
-&lt;/p&gt;
-
-&lt;p&gt;
-Go语言中函数和方法是值传递的。
-&lt;/p&gt;
-&lt;ul class=&quot;org-ul&quot;&gt;
-&lt;li&gt;对于布尔变量、数值类型和字符串按值传递是非常廉价的，也就1～16个字节（视机器而定）。但是如果修改了一个传入的字符串（例如使用+=操作符），因需创建一个新的字符串，并且复制原始的字符串并将其加到该字符串之后，所以这对于大字符串来说代价将非常大。
-&lt;/li&gt;
-&lt;li&gt;数组也是值传递，因此传递一个大数组代价也很大。在Go中，一般使用切片代替数组来传递。
-&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;
-如果需要一个函数修改我们传入的值。由于值类型是复制的，因此任何修改只作用于其副本，原始值不会被改变。同时传值的成本也较大。这种情况下，一般使用指针。
-&lt;/p&gt;
-
-&lt;p&gt;
-Go语言的指针跟c/c++大致一样，但不支持指针运算。
-&lt;/p&gt;
-
-
-&lt;p&gt;
-常用情况：
-&lt;/p&gt;
-&lt;ul class=&quot;org-ul&quot;&gt;
-&lt;li&gt;需要在一个函数或方法中返回超过四五个值的情况时，如果这些值是同一类型的，最好使用一个切片来传递。
-&lt;/li&gt;
-&lt;li&gt;如果值类型各异最好传递一个指向结构体的指针。
-&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;
-除了值和指针外，Go语言还有引用类型（另外还有接口类型，但大多数实际使用中可以把接口看成某种类型的引用，引用类型将地6.3节接触）。Go语言中的引用类型主要有：映射、切片、通道、函数和方法。
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div id=&quot;outline-container-sec-1-2&quot; class=&quot;outline-3&quot;&gt;
-&lt;h3 id=&quot;sec-1-2&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.2&lt;/span&gt; 数组和切片&lt;/h3&gt;
-&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-2&quot;&gt;
-&lt;/div&gt;&lt;div id=&quot;outline-container-sec-1-2-1&quot; class=&quot;outline-4&quot;&gt;
-&lt;h4 id=&quot;sec-1-2-1&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.2.1&lt;/span&gt; 数组&lt;/h4&gt;
-&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-2-1&quot;&gt;
-&lt;p&gt;
-Go语言的数组是一个定长的序列，其中的元素类型相同。多维数组可以简单地使用自身为数组的元素来创建。
-&lt;/p&gt;
-
-&lt;p&gt;
-数组的元素使用操作符[]来索引，索引从0开始。数组是可以更改的（字符串不能更改）。
-&lt;/p&gt;
-
-&lt;p&gt;
-数组使用以下方法来创建：
-&lt;/p&gt;
-&lt;div class=&quot;org-src-container&quot;&gt;
-
-&lt;pre class=&quot;src src-go&quot;&gt;[length]Type
-[N]&lt;span style=&quot;color: #ffff00;&quot;&gt;Type&lt;/span&gt;{value1, value2, value3..., valueN}
-[...]&lt;span style=&quot;color: #ffff00;&quot;&gt;Type&lt;/span&gt;{value1, value2, ...,valueN} &lt;span style=&quot;color: #ffd700;&quot;&gt;//&lt;/span&gt;&lt;span style=&quot;color: #ffd700;&quot;&gt;&amp;#30465;&amp;#30053;&amp;#31526;...&amp;#65292;Go&amp;#20250;&amp;#33258;&amp;#21160;&amp;#35745;&amp;#31639;&amp;#25968;&amp;#32452;&amp;#38271;&amp;#24230;&lt;/span&gt;
-&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;
-以下示例展示了如何创建和索引数组：
-&lt;/p&gt;
-&lt;div class=&quot;org-src-container&quot;&gt;
-
-&lt;pre class=&quot;src src-go&quot;&gt;&lt;span style=&quot;color: #00ffff;&quot;&gt;package&lt;/span&gt; main
-&lt;span style=&quot;color: #00ffff;&quot;&gt;import&lt;/span&gt; &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;fmt&quot;&lt;/span&gt;
-&lt;span style=&quot;color: #00ffff;&quot;&gt;func&lt;/span&gt; &lt;span style=&quot;color: #00fa9a;&quot;&gt;main&lt;/span&gt;() {
-        &lt;span style=&quot;color: #00ffff;&quot;&gt;var&lt;/span&gt; buffer [20]&lt;span style=&quot;color: #ffff00;&quot;&gt;byte&lt;/span&gt;
-        &lt;span style=&quot;color: #00ffff;&quot;&gt;var&lt;/span&gt; grid1 [3][3]&lt;span style=&quot;color: #ffff00;&quot;&gt;int&lt;/span&gt;
-        grid1[1][0], grid1[1][1], grid1[1][2] = 8, 6, 2
-        grid2 := [3][3]&lt;span style=&quot;color: #ffff00;&quot;&gt;int&lt;/span&gt;{ 
-                            {4, 3}, 
-                            {8, 6, 2} 
-                          }
-
-        fmt.&lt;span style=&quot;color: #00fa9a;&quot;&gt;Println&lt;/span&gt;(grid1, grid2)
-
-        cities := [...]&lt;span style=&quot;color: #ffff00;&quot;&gt;string&lt;/span&gt;{&lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;Shanghai&quot;&lt;/span&gt;, &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;Mumbai&quot;&lt;/span&gt;, &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;Istanbul&quot;&lt;/span&gt;, &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;Beijing&quot;&lt;/span&gt;}
-        cities[&lt;span style=&quot;color: #b0c4de;&quot;&gt;len&lt;/span&gt;(cities)-1] = &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;Karachi&quot;&lt;/span&gt;
-
-        fmt.&lt;span style=&quot;color: #00fa9a;&quot;&gt;Println&lt;/span&gt;(&lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;Type Len Contents&quot;&lt;/span&gt;)
-        fmt.&lt;span style=&quot;color: #00fa9a;&quot;&gt;Printf&lt;/span&gt;(&lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;%-8T %2d %v\n&quot;&lt;/span&gt;, buffer, &lt;span style=&quot;color: #b0c4de;&quot;&gt;len&lt;/span&gt;(buffer), buffer)
-        fmt.&lt;span style=&quot;color: #00fa9a;&quot;&gt;Printf&lt;/span&gt;(&lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;%-8T %2d %q\n&quot;&lt;/span&gt;, cities, &lt;span style=&quot;color: #b0c4de;&quot;&gt;len&lt;/span&gt;(cities), cities)
-}
-&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;div class=&quot;org-src-container&quot;&gt;
-
-&lt;pre class=&quot;src src-go&quot;&gt;&amp;#36816;&amp;#34892;&amp;#32467;&amp;#26524;&amp;#20026;&amp;#65306;
-
-[[0 0 0] [8 6 2] [0 0 0]] [[4 3 0] [8 6 2] [0 0 0]]
-Type Len Contents
-[20]&lt;span style=&quot;color: #ffff00;&quot;&gt;uint8&lt;/span&gt; 20 [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0]
-[4]&lt;span style=&quot;color: #ffff00;&quot;&gt;string&lt;/span&gt;  4 [&lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;Shanghai&quot;&lt;/span&gt; &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;Mumbai&quot;&lt;/span&gt; &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;Istanbul&quot;&lt;/span&gt; &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;Karachi&quot;&lt;/span&gt;]
-&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;
-未初始化的数组元素都为0。
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div id=&quot;outline-container-sec-1-2-2&quot; class=&quot;outline-4&quot;&gt;
-&lt;h4 id=&quot;sec-1-2-2&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.2.2&lt;/span&gt; 切片&lt;/h4&gt;
-&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-2-2&quot;&gt;
-&lt;p&gt;
-一般而言，切片比数组更加灵活、强大而且方便。数组是值传递的，切片是引用传递，效率更高。Go语言标准库中的所有公开函数使用的都是切片而非数组。除非特别情况，不然的话都使用切片而非数组。
-&lt;/p&gt;
-
-&lt;p&gt;
-Go语言的切片是长度可变、容量固定（可以通过将其切片来收缩或使用内置的append()函数来增长）的相同类型元素的序列。
-&lt;/p&gt;
-
-&lt;p&gt;
-切片的创建：
-&lt;/p&gt;
-&lt;div class=&quot;org-src-container&quot;&gt;
-
-&lt;pre class=&quot;src src-go&quot;&gt;&lt;span style=&quot;color: #b0c4de;&quot;&gt;make&lt;/span&gt;([]&lt;span style=&quot;color: #ffff00;&quot;&gt;Type&lt;/span&gt;, length, capacity)
-&lt;span style=&quot;color: #b0c4de;&quot;&gt;make&lt;/span&gt;([]&lt;span style=&quot;color: #ffff00;&quot;&gt;Type&lt;/span&gt;, length)
-[]&lt;span style=&quot;color: #ffff00;&quot;&gt;Type&lt;/span&gt;{}
-[]&lt;span style=&quot;color: #ffff00;&quot;&gt;Type&lt;/span&gt;{value1, value2, value3, ... , valueN}
-&lt;/pre&gt;
-&lt;/div&gt;
-&lt;p&gt;
-内置函数make()用于创建切片、映射和通道。当用于创建切片时，它会创建一个隐藏的初始化为零值的数组，然后返回一个引用该隐藏数组的切片。
-&lt;/p&gt;
-
-&lt;table border=&quot;2&quot; cellspacing=&quot;0&quot; cellpadding=&quot;6&quot; rules=&quot;groups&quot; frame=&quot;hsides&quot;&gt;
-&lt;caption class=&quot;t-above&quot;&gt;&lt;span class=&quot;table-number&quot;&gt;Table 1:&lt;/span&gt; 切片的操作&lt;/caption&gt;
-
-&lt;colgroup&gt;
-&lt;col  class=&quot;left&quot; /&gt;
-
-&lt;col  class=&quot;left&quot; /&gt;
-&lt;/colgroup&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th scope=&quot;col&quot; class=&quot;left&quot;&gt;语法&lt;/th&gt;
-&lt;th scope=&quot;col&quot; class=&quot;left&quot;&gt;含义/结果&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td class=&quot;left&quot;&gt;s[n]&lt;/td&gt;
-&lt;td class=&quot;left&quot;&gt;切片s中索引位置为n的项&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td class=&quot;left&quot;&gt;s[n:m]&lt;/td&gt;
-&lt;td class=&quot;left&quot;&gt;从切片s的索引位置n到m-1处所获得的切片&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td class=&quot;left&quot;&gt;s[n:]&lt;/td&gt;
-&lt;td class=&quot;left&quot;&gt;从切片s的索引位置n到len(s)-1处所获得的切片&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td class=&quot;left&quot;&gt;s[:m]&lt;/td&gt;
-&lt;td class=&quot;left&quot;&gt;从切片s的索引位置0到m-1处所获得的切片&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td class=&quot;left&quot;&gt;s[:]&lt;/td&gt;
-&lt;td class=&quot;left&quot;&gt;从切片s的索引位置0到len(s)-1处所获得的切片&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td class=&quot;left&quot;&gt;cap(s)&lt;/td&gt;
-&lt;td class=&quot;left&quot;&gt;切片s的容量&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td class=&quot;left&quot;&gt;len(s)&lt;/td&gt;
-&lt;td class=&quot;left&quot;&gt;切片s中所包含项的个数;总是&amp;lt;=cap(s)&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td class=&quot;left&quot;&gt;s[:cap(s)]&lt;/td&gt;
-&lt;td class=&quot;left&quot;&gt;增加切片s的长度到其容量，如果两者不同的话&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-&lt;/div&gt;
-
-&lt;div id=&quot;outline-container-sec-1-2-2-1&quot; class=&quot;outline-5&quot;&gt;
-&lt;h5 id=&quot;sec-1-2-2-1&quot;&gt;&lt;span class=&quot;section-number-5&quot;&gt;1.2.2.1&lt;/span&gt; 索引与分割切片&lt;/h5&gt;
-&lt;div class=&quot;outline-text-5&quot; id=&quot;text-1-2-2-1&quot;&gt;
-&lt;p&gt;
-一个切片是一个隐藏数组的引用，并且对于该切片的切片也引用同一个数组。通过原始切片或切片的切片，都会改变底层切片。任何切片的第一个索引位置都是0,最后一个都是len(s)-1。
-&lt;/p&gt;
-&lt;div class=&quot;org-src-container&quot;&gt;
-
-&lt;pre class=&quot;src src-go&quot;&gt;&lt;span style=&quot;color: #00ffff;&quot;&gt;package&lt;/span&gt; main
-
-&lt;span style=&quot;color: #00ffff;&quot;&gt;import&lt;/span&gt; &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;fmt&quot;&lt;/span&gt;
-
-&lt;span style=&quot;color: #00ffff;&quot;&gt;func&lt;/span&gt; &lt;span style=&quot;color: #00fa9a;&quot;&gt;main&lt;/span&gt;() {
-        s := []&lt;span style=&quot;color: #ffff00;&quot;&gt;string&lt;/span&gt;{&lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;A&quot;&lt;/span&gt;, &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;B&quot;&lt;/span&gt;, &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;C&quot;&lt;/span&gt;, &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;D&quot;&lt;/span&gt;, &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;E&quot;&lt;/span&gt;, &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;F&quot;&lt;/span&gt;, &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;G&quot;&lt;/span&gt;}
-        t := s[2:6]
-        fmt.&lt;span style=&quot;color: #00fa9a;&quot;&gt;Println&lt;/span&gt;(t, s, &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;=&quot;&lt;/span&gt;, s[:4], &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;+&quot;&lt;/span&gt;, s[4:])
-        s[3] = &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;x&quot;&lt;/span&gt;
-        t[&lt;span style=&quot;color: #b0c4de;&quot;&gt;len&lt;/span&gt;(t)-1] = &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;y&quot;&lt;/span&gt;
-        fmt.&lt;span style=&quot;color: #00fa9a;&quot;&gt;Println&lt;/span&gt;(t, s, &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;=&quot;&lt;/span&gt;, s[:4], &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;+&quot;&lt;/span&gt;, s[4:])
-}
-
-&amp;#32467;&amp;#26524;&amp;#20026;&amp;#65306;
-[C D E F] [A B C D E F G] = [A B C D] + [E F G]
-[C x E y] [A B C x E y G] = [A B C x] + [E y G]
-&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div id=&quot;outline-container-sec-1-2-2-2&quot; class=&quot;outline-5&quot;&gt;
-&lt;h5 id=&quot;sec-1-2-2-2&quot;&gt;&lt;span class=&quot;section-number-5&quot;&gt;1.2.2.2&lt;/span&gt; 遍历切片&lt;/h5&gt;
-&lt;div class=&quot;outline-text-5&quot; id=&quot;text-1-2-2-2&quot;&gt;
-&lt;p&gt;
-要取得切片中的某个元素而不想修改它，可以使用for&amp;#x2026;range循环，如果想修改它则可以使用for循环。
-&lt;/p&gt;
-
-&lt;div class=&quot;org-src-container&quot;&gt;
-
-&lt;pre class=&quot;src src-go&quot;&gt;&lt;span style=&quot;color: #00ffff;&quot;&gt;package&lt;/span&gt; main
-
-&lt;span style=&quot;color: #00ffff;&quot;&gt;import&lt;/span&gt; &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;fmt&quot;&lt;/span&gt;
-
-&lt;span style=&quot;color: #00ffff;&quot;&gt;func&lt;/span&gt; &lt;span style=&quot;color: #00fa9a;&quot;&gt;main&lt;/span&gt;() {
-        amounts := []&lt;span style=&quot;color: #ffff00;&quot;&gt;float64&lt;/span&gt;{237.81, 261.87, 273.93, 279.99, 281.07, 303.17,
-                231.47, 227.33, 209.23, 197.09}
-        sum := 0.0
-        &lt;span style=&quot;color: #00ffff;&quot;&gt;for&lt;/span&gt; _, amount := &lt;span style=&quot;color: #00ffff;&quot;&gt;range&lt;/span&gt; amounts {
-                sum += amount
-        }
-        fmt.&lt;span style=&quot;color: #00fa9a;&quot;&gt;Printf&lt;/span&gt;(&lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;&amp;#8721; %.1f&amp;#8594; %.1f\n&quot;&lt;/span&gt;, amounts, sum)
-}
-
-&amp;#32467;&amp;#26524;&amp;#65306;
-&amp;#8721; [237.8 261.9 273.9 280.0 281.1 303.2 231.5 227.3 209.2 197.1]&amp;#8594; 2503.0
-&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;
-如果想修改切片的项，必须使用可以提供有效切片索引而非仅仅是元素副本的for循环。
-&lt;/p&gt;
-
-&lt;div class=&quot;org-src-container&quot;&gt;
-
-&lt;pre class=&quot;src src-go&quot;&gt;&lt;span style=&quot;color: #00ffff;&quot;&gt;package&lt;/span&gt; main
-
-&lt;span style=&quot;color: #00ffff;&quot;&gt;import&lt;/span&gt; &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;fmt&quot;&lt;/span&gt;
-
-&lt;span style=&quot;color: #00ffff;&quot;&gt;func&lt;/span&gt; &lt;span style=&quot;color: #00fa9a;&quot;&gt;main&lt;/span&gt;() {
-        amounts := []&lt;span style=&quot;color: #ffff00;&quot;&gt;float64&lt;/span&gt;{237.81, 261.87, 273.93, 279.99, 281.07, 303.17,
-                231.47, 227.33, 209.23, 197.09}
-        sum := 0.0
-        &lt;span style=&quot;color: #00ffff;&quot;&gt;for&lt;/span&gt; i := &lt;span style=&quot;color: #00ffff;&quot;&gt;range&lt;/span&gt; amounts {
-                amounts[i] *= 1.05
-                sum += amounts[i]
-        }
-
-        fmt.&lt;span style=&quot;color: #00fa9a;&quot;&gt;Printf&lt;/span&gt;(&lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;&amp;#8721; %.1f&amp;#8594; %.1f\n&quot;&lt;/span&gt;, amounts, sum)
-}
-
-&amp;#32467;&amp;#26524;&amp;#20026;&amp;#65306;
-&amp;#8721; [249.7 275.0 287.6 294.0 295.1 318.3 243.0 238.7 219.7 206.9]&amp;#8594; 2628.1
-&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div id=&quot;outline-container-sec-1-2-2-3&quot; class=&quot;outline-5&quot;&gt;
-&lt;h5 id=&quot;sec-1-2-2-3&quot;&gt;&lt;span class=&quot;section-number-5&quot;&gt;1.2.2.3&lt;/span&gt; 修改切片&lt;/h5&gt;
-&lt;div class=&quot;outline-text-5&quot; id=&quot;text-1-2-2-3&quot;&gt;
-&lt;ol class=&quot;org-ol&quot;&gt;
-&lt;li&gt;在切片末尾追加元素或切片
-&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;
-在一个切片的末尾追加一个或多个元素甚至是其它切片，可以使用append()函数。这个函数接受一个需要被追加的切片，以及一个或多个需要加入的元素。如果需要在一个切片末尾追加另一个切片，那必须使用&amp;#x2026;操作符来告诉Go语言将被添加进来的切片当成多个元素。追加的元素或切片必须和原切片类型相同 。
-&lt;/p&gt;
-
-&lt;div class=&quot;org-src-container&quot;&gt;
-
-&lt;pre class=&quot;src src-go&quot;&gt;&lt;span style=&quot;color: #00ffff;&quot;&gt;package&lt;/span&gt; main
-
-&lt;span style=&quot;color: #00ffff;&quot;&gt;import&lt;/span&gt; &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;fmt&quot;&lt;/span&gt;
-
-&lt;span style=&quot;color: #00ffff;&quot;&gt;func&lt;/span&gt; &lt;span style=&quot;color: #00fa9a;&quot;&gt;main&lt;/span&gt;() {
-        s := []&lt;span style=&quot;color: #ffff00;&quot;&gt;string&lt;/span&gt;{&lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;A&quot;&lt;/span&gt;, &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;B&quot;&lt;/span&gt;, &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;C&quot;&lt;/span&gt;, &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;D&quot;&lt;/span&gt;, &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;E&quot;&lt;/span&gt;, &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;F&quot;&lt;/span&gt;, &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;G&quot;&lt;/span&gt;}
-        t := []&lt;span style=&quot;color: #ffff00;&quot;&gt;string&lt;/span&gt;{&lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;K&quot;&lt;/span&gt;, &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;L&quot;&lt;/span&gt;, &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;M&quot;&lt;/span&gt;, &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;N&quot;&lt;/span&gt;}
-        u := []&lt;span style=&quot;color: #ffff00;&quot;&gt;string&lt;/span&gt;{&lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;m&quot;&lt;/span&gt;, &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;n&quot;&lt;/span&gt;, &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;o&quot;&lt;/span&gt;, &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;p&quot;&lt;/span&gt;, &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;q&quot;&lt;/span&gt;, &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;r&quot;&lt;/span&gt;}
-
-        s = &lt;span style=&quot;color: #b0c4de;&quot;&gt;append&lt;/span&gt;(s, &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;h&quot;&lt;/span&gt;, &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;i&quot;&lt;/span&gt;, &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;j&quot;&lt;/span&gt;) &lt;span style=&quot;color: #ffd700;&quot;&gt;//&lt;/span&gt;&lt;span style=&quot;color: #ffd700;&quot;&gt;&amp;#36861;&amp;#21152;&amp;#21333;&amp;#19968;&amp;#30340;&amp;#20540;&lt;/span&gt;
-        s = &lt;span style=&quot;color: #b0c4de;&quot;&gt;append&lt;/span&gt;(s, t...)          &lt;span style=&quot;color: #ffd700;&quot;&gt;//&lt;/span&gt;&lt;span style=&quot;color: #ffd700;&quot;&gt;&amp;#36861;&amp;#21152;&amp;#20999;&amp;#29255;&amp;#20013;&amp;#30340;&amp;#25152;&amp;#26377;&amp;#20540;&lt;/span&gt;
-        s = &lt;span style=&quot;color: #b0c4de;&quot;&gt;append&lt;/span&gt;(s, u[2:5]...)     &lt;span style=&quot;color: #ffd700;&quot;&gt;//&lt;/span&gt;&lt;span style=&quot;color: #ffd700;&quot;&gt;&amp;#28155;&amp;#21152;&amp;#19968;&amp;#20010;&amp;#23376;&amp;#20999;&amp;#29255;&lt;/span&gt;
-        b := []&lt;span style=&quot;color: #ffff00;&quot;&gt;byte&lt;/span&gt;{&lt;span style=&quot;color: #ffa500;&quot;&gt;&#39;U&#39;&lt;/span&gt;, &lt;span style=&quot;color: #ffa500;&quot;&gt;&#39;V&#39;&lt;/span&gt;}
-        letters := &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;WXY&quot;&lt;/span&gt;
-        b = &lt;span style=&quot;color: #b0c4de;&quot;&gt;append&lt;/span&gt;(b, letters...) &lt;span style=&quot;color: #ffd700;&quot;&gt;//&lt;/span&gt;&lt;span style=&quot;color: #ffd700;&quot;&gt;&amp;#23558;&amp;#19968;&amp;#20010;&amp;#23383;&amp;#31526;&amp;#20018;&amp;#23383;&amp;#33410;&amp;#28155;&amp;#21152;&amp;#36827;&amp;#19968;&amp;#20010;&amp;#23383;&amp;#33410;&amp;#20999;&amp;#29255;&amp;#20013;&lt;/span&gt;
-        fmt.&lt;span style=&quot;color: #00fa9a;&quot;&gt;Printf&lt;/span&gt;(&lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;%v\n%s\n&quot;&lt;/span&gt;, s, b)
-}
-
-&amp;#32467;&amp;#26524;&amp;#20026;&amp;#65306;
-[A B C D E F G h i j K L M N o p q]
-UVWXY
-&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;ol class=&quot;org-ol&quot;&gt;
-&lt;li&gt;在切片的任意位置追加元素或切片，并且不改变原切片，使用InsertStringSliceCipy()自定义函数。
-&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;div class=&quot;org-src-container&quot;&gt;
-
-&lt;pre class=&quot;src src-go&quot;&gt;&lt;span style=&quot;color: #00ffff;&quot;&gt;package&lt;/span&gt; main
-
-&lt;span style=&quot;color: #00ffff;&quot;&gt;import&lt;/span&gt; &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;fmt&quot;&lt;/span&gt;
-
-&lt;span style=&quot;color: #00ffff;&quot;&gt;func&lt;/span&gt; &lt;span style=&quot;color: #00fa9a;&quot;&gt;main&lt;/span&gt;() {
-        s := []&lt;span style=&quot;color: #ffff00;&quot;&gt;string&lt;/span&gt;{&lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;M&quot;&lt;/span&gt;, &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;N&quot;&lt;/span&gt;, &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;O&quot;&lt;/span&gt;, &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;P&quot;&lt;/span&gt;, &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;Q&quot;&lt;/span&gt;, &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;R&quot;&lt;/span&gt;}
-        x := &lt;span style=&quot;color: #00fa9a;&quot;&gt;InsertStringSliceCopy&lt;/span&gt;(s, []&lt;span style=&quot;color: #ffff00;&quot;&gt;string&lt;/span&gt;{&lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;a&quot;&lt;/span&gt;, &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;b&quot;&lt;/span&gt;, &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;c&quot;&lt;/span&gt;}, 0) &lt;span style=&quot;color: #ffd700;&quot;&gt;//&lt;/span&gt;&lt;span style=&quot;color: #ffd700;&quot;&gt;&amp;#22312;&amp;#20999;&amp;#29255;&amp;#36215;&amp;#21021;&amp;#22788;&amp;#28155;&amp;#21152;&amp;#20999;&amp;#29255;&lt;/span&gt;
-        y := &lt;span style=&quot;color: #00fa9a;&quot;&gt;InsertStringSliceCopy&lt;/span&gt;(s, []&lt;span style=&quot;color: #ffff00;&quot;&gt;string&lt;/span&gt;{&lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;x&quot;&lt;/span&gt;, &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;y&quot;&lt;/span&gt;}, 3)      &lt;span style=&quot;color: #ffd700;&quot;&gt;//&lt;/span&gt;&lt;span style=&quot;color: #ffd700;&quot;&gt;&amp;#22312;&amp;#20999;&amp;#29255;&amp;#20013;&amp;#38388;&amp;#22788;&amp;#28155;&amp;#21152;&amp;#20999;&amp;#29255;&lt;/span&gt;
-        z := &lt;span style=&quot;color: #00fa9a;&quot;&gt;InsertStringSliceCopy&lt;/span&gt;(s, []&lt;span style=&quot;color: #ffff00;&quot;&gt;string&lt;/span&gt;{&lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;z&quot;&lt;/span&gt;}, &lt;span style=&quot;color: #b0c4de;&quot;&gt;len&lt;/span&gt;(s))      &lt;span style=&quot;color: #ffd700;&quot;&gt;//&lt;/span&gt;&lt;span style=&quot;color: #ffd700;&quot;&gt;&amp;#22312;&amp;#20999;&amp;#29255;&amp;#26411;&amp;#23614;&amp;#28155;&amp;#21152;&amp;#20803;&amp;#32032;&lt;/span&gt;
-        fmt.&lt;span style=&quot;color: #00fa9a;&quot;&gt;Printf&lt;/span&gt;(&lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;%v\n%v\n%v\n&quot;&lt;/span&gt;, x, y, z)
-}
-
-&lt;span style=&quot;color: #00ffff;&quot;&gt;func&lt;/span&gt; &lt;span style=&quot;color: #00fa9a;&quot;&gt;InsertStringSliceCopy&lt;/span&gt;(slice, insertion []&lt;span style=&quot;color: #ffff00;&quot;&gt;string&lt;/span&gt;, index &lt;span style=&quot;color: #ffff00;&quot;&gt;int&lt;/span&gt;) []&lt;span style=&quot;color: #ffff00;&quot;&gt;string&lt;/span&gt; {
-        result := &lt;span style=&quot;color: #b0c4de;&quot;&gt;make&lt;/span&gt;([]&lt;span style=&quot;color: #ffff00;&quot;&gt;string&lt;/span&gt;, &lt;span style=&quot;color: #b0c4de;&quot;&gt;len&lt;/span&gt;(slice)+&lt;span style=&quot;color: #b0c4de;&quot;&gt;len&lt;/span&gt;(insertion))
-        at := &lt;span style=&quot;color: #b0c4de;&quot;&gt;copy&lt;/span&gt;(result, slice[:index])
-        at += &lt;span style=&quot;color: #b0c4de;&quot;&gt;copy&lt;/span&gt;(result[at:], insertion)
-        &lt;span style=&quot;color: #b0c4de;&quot;&gt;copy&lt;/span&gt;(result[at:], slice[index:])
-        &lt;span style=&quot;color: #00ffff;&quot;&gt;return&lt;/span&gt; result
-}
-
-&amp;#32467;&amp;#26524;&amp;#20026;&amp;#65306;
-[a b c M N O P Q R]
-[M N O x y P Q R]
-[M N O P Q R z]
-&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;ol class=&quot;org-ol&quot;&gt;
-&lt;li&gt;删除切片元素。利用Go语言的标准切片语法就可以将元素从切片的头尾和中间处删除，这样做会改变原切片。这种删除切片元素的方法其实是对原切片进行再切片。
-&lt;/li&gt;
-&lt;/ol&gt;
-&lt;div class=&quot;org-src-container&quot;&gt;
-
-&lt;pre class=&quot;src src-go&quot;&gt;&lt;span style=&quot;color: #00ffff;&quot;&gt;package&lt;/span&gt; main
-
-&lt;span style=&quot;color: #00ffff;&quot;&gt;import&lt;/span&gt; &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;fmt&quot;&lt;/span&gt;
-
-&lt;span style=&quot;color: #00ffff;&quot;&gt;func&lt;/span&gt; &lt;span style=&quot;color: #00fa9a;&quot;&gt;main&lt;/span&gt;() {
-        s := []&lt;span style=&quot;color: #ffff00;&quot;&gt;string&lt;/span&gt;{&lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;A&quot;&lt;/span&gt;, &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;B&quot;&lt;/span&gt;, &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;C&quot;&lt;/span&gt;, &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;D&quot;&lt;/span&gt;, &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;E&quot;&lt;/span&gt;, &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;F&quot;&lt;/span&gt;, &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;G&quot;&lt;/span&gt;}
-        s = s[2:] &lt;span style=&quot;color: #ffd700;&quot;&gt;//&lt;/span&gt;&lt;span style=&quot;color: #ffd700;&quot;&gt;&amp;#20174;&amp;#24320;&amp;#22836;&amp;#21024;&amp;#38500;&amp;#20803;&amp;#32032;&lt;/span&gt;
-        fmt.&lt;span style=&quot;color: #00fa9a;&quot;&gt;Println&lt;/span&gt;(s)
-
-        s = []&lt;span style=&quot;color: #ffff00;&quot;&gt;string&lt;/span&gt;{&lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;A&quot;&lt;/span&gt;, &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;B&quot;&lt;/span&gt;, &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;C&quot;&lt;/span&gt;, &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;D&quot;&lt;/span&gt;, &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;E&quot;&lt;/span&gt;, &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;F&quot;&lt;/span&gt;, &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;G&quot;&lt;/span&gt;}
-        s = s[:4] &lt;span style=&quot;color: #ffd700;&quot;&gt;//&lt;/span&gt;&lt;span style=&quot;color: #ffd700;&quot;&gt;&amp;#20174;&amp;#26411;&amp;#23614;&amp;#21024;&amp;#38500;&amp;#20803;&amp;#32032;&lt;/span&gt;
-        fmt.&lt;span style=&quot;color: #00fa9a;&quot;&gt;Println&lt;/span&gt;(s)
-
-        s = []&lt;span style=&quot;color: #ffff00;&quot;&gt;string&lt;/span&gt;{&lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;A&quot;&lt;/span&gt;, &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;B&quot;&lt;/span&gt;, &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;C&quot;&lt;/span&gt;, &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;D&quot;&lt;/span&gt;, &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;E&quot;&lt;/span&gt;, &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;F&quot;&lt;/span&gt;, &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;G&quot;&lt;/span&gt;}
-        s = &lt;span style=&quot;color: #b0c4de;&quot;&gt;append&lt;/span&gt;(s[:1], s[5:]...) &lt;span style=&quot;color: #ffd700;&quot;&gt;//&lt;/span&gt;&lt;span style=&quot;color: #ffd700;&quot;&gt;&amp;#20174;&amp;#20013;&amp;#38388;&amp;#21024;&amp;#38500;&amp;#20803;&amp;#32032;&lt;/span&gt;
-        fmt.&lt;span style=&quot;color: #00fa9a;&quot;&gt;Println&lt;/span&gt;(s)
-}
-
-&amp;#32467;&amp;#26524;&amp;#20026;&amp;#65306;
-[C D E F G]
-[A B C D]
-[A F G]
-&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;ol class=&quot;org-ol&quot;&gt;
-&lt;li&gt;利用自定义函数RemoveStringSliceCopy(),可以在任意位置删除切片元素，又可以保持原切片完整。
-&lt;/li&gt;
-&lt;/ol&gt;
-&lt;div class=&quot;org-src-container&quot;&gt;
-
-&lt;pre class=&quot;src src-go&quot;&gt;&lt;span style=&quot;color: #00ffff;&quot;&gt;package&lt;/span&gt; main
-
-&lt;span style=&quot;color: #00ffff;&quot;&gt;import&lt;/span&gt; &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;fmt&quot;&lt;/span&gt;
-
-&lt;span style=&quot;color: #00ffff;&quot;&gt;func&lt;/span&gt; &lt;span style=&quot;color: #00fa9a;&quot;&gt;main&lt;/span&gt;() {
-        s := []&lt;span style=&quot;color: #ffff00;&quot;&gt;string&lt;/span&gt;{&lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;A&quot;&lt;/span&gt;, &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;B&quot;&lt;/span&gt;, &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;C&quot;&lt;/span&gt;, &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;D&quot;&lt;/span&gt;, &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;E&quot;&lt;/span&gt;, &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;F&quot;&lt;/span&gt;, &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;G&quot;&lt;/span&gt;}
-        x := &lt;span style=&quot;color: #00fa9a;&quot;&gt;RemoveStringSliceCopy&lt;/span&gt;(s, 0, 2)      &lt;span style=&quot;color: #ffd700;&quot;&gt;//&lt;/span&gt;&lt;span style=&quot;color: #ffd700;&quot;&gt;&amp;#20174;&amp;#22836;&amp;#37096;&amp;#21024;&amp;#38500;s[:2]&lt;/span&gt;
-        y := &lt;span style=&quot;color: #00fa9a;&quot;&gt;RemoveStringSliceCopy&lt;/span&gt;(s, 1, 5)      &lt;span style=&quot;color: #ffd700;&quot;&gt;//&lt;/span&gt;&lt;span style=&quot;color: #ffd700;&quot;&gt;&amp;#20174;&amp;#20013;&amp;#38388;&amp;#21024;&amp;#38500;s[1:5]&lt;/span&gt;
-        z := &lt;span style=&quot;color: #00fa9a;&quot;&gt;RemoveStringSliceCopy&lt;/span&gt;(s, 4, &lt;span style=&quot;color: #b0c4de;&quot;&gt;len&lt;/span&gt;(s)) &lt;span style=&quot;color: #ffd700;&quot;&gt;//&lt;/span&gt;&lt;span style=&quot;color: #ffd700;&quot;&gt;&amp;#20174;&amp;#26411;&amp;#23614;&amp;#21024;&amp;#38500;s[4:]&lt;/span&gt;
-
-        fmt.&lt;span style=&quot;color: #00fa9a;&quot;&gt;Printf&lt;/span&gt;(&lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;%v\n%v\n%v\n%v\n&quot;&lt;/span&gt;, s, x, y, z)
-}
-
-&lt;span style=&quot;color: #00ffff;&quot;&gt;func&lt;/span&gt; &lt;span style=&quot;color: #00fa9a;&quot;&gt;RemoveStringSliceCopy&lt;/span&gt;(slice []&lt;span style=&quot;color: #ffff00;&quot;&gt;string&lt;/span&gt;, start, end &lt;span style=&quot;color: #ffff00;&quot;&gt;int&lt;/span&gt;) []&lt;span style=&quot;color: #ffff00;&quot;&gt;string&lt;/span&gt; {
-        result := &lt;span style=&quot;color: #b0c4de;&quot;&gt;make&lt;/span&gt;([]&lt;span style=&quot;color: #ffff00;&quot;&gt;string&lt;/span&gt;, &lt;span style=&quot;color: #b0c4de;&quot;&gt;len&lt;/span&gt;(slice)-(end-start))
-        at := &lt;span style=&quot;color: #b0c4de;&quot;&gt;copy&lt;/span&gt;(result, slice[:start])
-        &lt;span style=&quot;color: #b0c4de;&quot;&gt;copy&lt;/span&gt;(result[at:], slice[end:])
-        &lt;span style=&quot;color: #00ffff;&quot;&gt;return&lt;/span&gt; result
-}
-
-&amp;#32467;&amp;#26524;&amp;#20026;&amp;#65306;
-[A B C D E F G]
-[C D E F G]
-[A F G]
-[A B C D]
-&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div id=&quot;outline-container-sec-1-2-2-4&quot; class=&quot;outline-5&quot;&gt;
-&lt;h5 id=&quot;sec-1-2-2-4&quot;&gt;&lt;span class=&quot;section-number-5&quot;&gt;1.2.2.4&lt;/span&gt; 排序和搜索切片&lt;/h5&gt;
-&lt;div class=&quot;outline-text-5&quot; id=&quot;text-1-2-2-4&quot;&gt;
-&lt;p&gt;
-标准库的sort包提供了对整型、浮点型和字符串型切片进行排序的函数，检查一个切片是否排序好的函数，以及使用二分搜索算法在一个有序切片中搜索一个元素的函数。同时提供了通用的sorg.Sort()和sorg.Search()函数，可用于任何自定义的数据。
-&lt;/p&gt;
-
-&lt;table border=&quot;2&quot; cellspacing=&quot;0&quot; cellpadding=&quot;6&quot; rules=&quot;groups&quot; frame=&quot;hsides&quot;&gt;
-&lt;caption class=&quot;t-above&quot;&gt;&lt;span class=&quot;table-number&quot;&gt;Table 2:&lt;/span&gt; sort包中的函数&lt;/caption&gt;
-
-&lt;colgroup&gt;
-&lt;col  class=&quot;left&quot; /&gt;
-
-&lt;col  class=&quot;left&quot; /&gt;
-&lt;/colgroup&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th scope=&quot;col&quot; class=&quot;left&quot;&gt;语法&lt;/th&gt;
-&lt;th scope=&quot;col&quot; class=&quot;left&quot;&gt;含义/结果&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td class=&quot;left&quot;&gt;sort.Float64s(fs)&lt;/td&gt;
-&lt;td class=&quot;left&quot;&gt;将[]float64按升序排序&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td class=&quot;left&quot;&gt;sort.Float64AreSorted(fs)&lt;/td&gt;
-&lt;td class=&quot;left&quot;&gt;如果[]float64是有序的则返回true&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td class=&quot;left&quot;&gt;sort.Insts(is)&lt;/td&gt;
-&lt;td class=&quot;left&quot;&gt;将[]int按升序排序&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td class=&quot;left&quot;&gt;sort.InstsAreSorted(is)&lt;/td&gt;
-&lt;td class=&quot;left&quot;&gt;如果[]int是有序的则返回true&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td class=&quot;left&quot;&gt;sort.IsSorted(d)&lt;/td&gt;
-&lt;td class=&quot;left&quot;&gt;如果sort.InterFace的值d是有序的，则返回true&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td class=&quot;left&quot;&gt;sort.Search(size, fn)&lt;/td&gt;
-&lt;td class=&quot;left&quot;&gt;在一个排序好的数组中根据函数签名为func(int)bool的函数fn进行搜索，&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class=&quot;left&quot;&gt;&amp;#xa0;&lt;/td&gt;
-&lt;td class=&quot;left&quot;&gt;返回第一个使得函数fn返回值为true的索引&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td class=&quot;left&quot;&gt;sort.SearchFloat64s(fs, f)&lt;/td&gt;
-&lt;td class=&quot;left&quot;&gt;返回有序[]float64切片fs中类型为float64的值f的索引&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td class=&quot;left&quot;&gt;sort.SearchInts(is, i)&lt;/td&gt;
-&lt;td class=&quot;left&quot;&gt;返回有序[]int切片中类型为int的值i的索引&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td class=&quot;left&quot;&gt;sort.SearchStrings(ss, s)&lt;/td&gt;
-&lt;td class=&quot;left&quot;&gt;返回有序[]string切片ss中类型为string的值s的索引&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td class=&quot;left&quot;&gt;sort.Sort(d)&lt;/td&gt;
-&lt;td class=&quot;left&quot;&gt;排序类型为sorg.Interface的切片d&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td class=&quot;left&quot;&gt;sort.Strings(ss)&lt;/td&gt;
-&lt;td class=&quot;left&quot;&gt;按升序排序[]string类型的切片ss&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td class=&quot;left&quot;&gt;sort.StringsAreSorted(ss)&lt;/td&gt;
-&lt;td class=&quot;left&quot;&gt;如果[]string类型的切片ss是有序的，则返回true&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-
-
-&lt;ol class=&quot;org-ol&quot;&gt;
-&lt;li&gt;切片的排序
-&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;
-Go语言对数值的排序没什么可说的，可对字符串的排序则完全是字节排序，这意味着字符串的排序是区分大小写的。
-&lt;/p&gt;
-
-&lt;div class=&quot;org-src-container&quot;&gt;
-
-&lt;pre class=&quot;src src-go&quot;&gt;&lt;span style=&quot;color: #00ffff;&quot;&gt;package&lt;/span&gt; main
-
-&lt;span style=&quot;color: #00ffff;&quot;&gt;import&lt;/span&gt; (
-        &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;fmt&quot;&lt;/span&gt;
-        &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;sort&quot;&lt;/span&gt;
-        &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;strings&quot;&lt;/span&gt;
-)
-
-&lt;span style=&quot;color: #00ffff;&quot;&gt;func&lt;/span&gt; &lt;span style=&quot;color: #00fa9a;&quot;&gt;main&lt;/span&gt;() {
-        files := []&lt;span style=&quot;color: #ffff00;&quot;&gt;string&lt;/span&gt;{&lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;Test.conf&quot;&lt;/span&gt;, &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;util.go&quot;&lt;/span&gt;, &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;Makefile&quot;&lt;/span&gt;, &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;misc.go&quot;&lt;/span&gt;, &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;main.go&quot;&lt;/span&gt;}
-        fmt.&lt;span style=&quot;color: #00fa9a;&quot;&gt;Printf&lt;/span&gt;(&lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;Unsrted:          %q\n&quot;&lt;/span&gt;, files)
-        sort.&lt;span style=&quot;color: #00fa9a;&quot;&gt;Strings&lt;/span&gt;(files) &lt;span style=&quot;color: #ffd700;&quot;&gt;//&lt;/span&gt;&lt;span style=&quot;color: #ffd700;&quot;&gt;&amp;#26631;&amp;#20934;&amp;#24211;&amp;#20013;&amp;#30340;&amp;#25490;&amp;#24207;&amp;#20989;&amp;#25968;&lt;/span&gt;
-        fmt.&lt;span style=&quot;color: #00fa9a;&quot;&gt;Printf&lt;/span&gt;(&lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;Underlying bytes: %q\n&quot;&lt;/span&gt;, files)
-        &lt;span style=&quot;color: #00fa9a;&quot;&gt;SortFoldedStrings&lt;/span&gt;(files) &lt;span style=&quot;color: #ffd700;&quot;&gt;//&lt;/span&gt;&lt;span style=&quot;color: #ffd700;&quot;&gt;&amp;#33258;&amp;#23450;&amp;#20041;&amp;#25490;&amp;#24207;&amp;#20989;&amp;#25968;&lt;/span&gt;
-        fmt.&lt;span style=&quot;color: #00fa9a;&quot;&gt;Printf&lt;/span&gt;(&lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;Case insensitive: %q\n&quot;&lt;/span&gt;, files)
-}
-
-&lt;span style=&quot;color: #00ffff;&quot;&gt;func&lt;/span&gt; &lt;span style=&quot;color: #00fa9a;&quot;&gt;SortFoldedStrings&lt;/span&gt;(slice []&lt;span style=&quot;color: #ffff00;&quot;&gt;string&lt;/span&gt;) {
-        sort.&lt;span style=&quot;color: #00fa9a;&quot;&gt;Sort&lt;/span&gt;(&lt;span style=&quot;color: #00fa9a;&quot;&gt;FoldedStrings&lt;/span&gt;(slice))
-}
-
-&lt;span style=&quot;color: #00ffff;&quot;&gt;type&lt;/span&gt; &lt;span style=&quot;color: #ffff00;&quot;&gt;FoldedStrings&lt;/span&gt; []&lt;span style=&quot;color: #ffff00;&quot;&gt;string&lt;/span&gt;
-
-&lt;span style=&quot;color: #00ffff;&quot;&gt;func&lt;/span&gt; (slice &lt;span style=&quot;color: #ffff00;&quot;&gt;FoldedStrings&lt;/span&gt;) &lt;span style=&quot;color: #00fa9a;&quot;&gt;Len&lt;/span&gt;() &lt;span style=&quot;color: #ffff00;&quot;&gt;int&lt;/span&gt; { &lt;span style=&quot;color: #00ffff;&quot;&gt;return&lt;/span&gt; &lt;span style=&quot;color: #b0c4de;&quot;&gt;len&lt;/span&gt;(slice) }
-
-&lt;span style=&quot;color: #00ffff;&quot;&gt;func&lt;/span&gt; (slice &lt;span style=&quot;color: #ffff00;&quot;&gt;FoldedStrings&lt;/span&gt;) &lt;span style=&quot;color: #00fa9a;&quot;&gt;Less&lt;/span&gt;(i, j &lt;span style=&quot;color: #ffff00;&quot;&gt;int&lt;/span&gt;) &lt;span style=&quot;color: #ffff00;&quot;&gt;bool&lt;/span&gt; {
-        &lt;span style=&quot;color: #00ffff;&quot;&gt;return&lt;/span&gt; strings.&lt;span style=&quot;color: #00fa9a;&quot;&gt;ToLower&lt;/span&gt;(slice[i]) &amp;lt; strings.&lt;span style=&quot;color: #00fa9a;&quot;&gt;ToLower&lt;/span&gt;(slice[j])
-}
-
-&lt;span style=&quot;color: #00ffff;&quot;&gt;func&lt;/span&gt; (slice &lt;span style=&quot;color: #ffff00;&quot;&gt;FoldedStrings&lt;/span&gt;) &lt;span style=&quot;color: #00fa9a;&quot;&gt;Swap&lt;/span&gt;(i, j &lt;span style=&quot;color: #ffff00;&quot;&gt;int&lt;/span&gt;) {
-        slice[i], slice[j] = slice[j], slice[i]
-}
-
-&amp;#32467;&amp;#26524;&amp;#20026;&amp;#65306;
-&lt;span style=&quot;color: #fa8072;&quot;&gt;Unsrted&lt;/span&gt;:          [&lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;Test.conf&quot;&lt;/span&gt; &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;util.go&quot;&lt;/span&gt; &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;Makefile&quot;&lt;/span&gt; &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;misc.go&quot;&lt;/span&gt; &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;main.go&quot;&lt;/span&gt;]
-Underlying bytes: [&lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;Makefile&quot;&lt;/span&gt; &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;Test.conf&quot;&lt;/span&gt; &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;main.go&quot;&lt;/span&gt; &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;misc.go&quot;&lt;/span&gt; &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;util.go&quot;&lt;/span&gt;]
-Case insensitive: [&lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;main.go&quot;&lt;/span&gt; &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;Makefile&quot;&lt;/span&gt; &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;misc.go&quot;&lt;/span&gt; &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;Test.conf&quot;&lt;/span&gt; &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;util.go&quot;&lt;/span&gt;]
-&lt;/pre&gt;
-&lt;/div&gt;
-&lt;p&gt;
-sort.Sort()函数能够对任意类型进行排序，只要其类型提供了sort.Interface接口中定义的方法，即只要这些类型根据相应的签名实现了Len()、Less()和Swap()方法。
-&lt;/p&gt;
-
-&lt;p&gt;
-SortFoldedStrings()函数简单地使用标准库中的sort.Srot()函数来完成工作，即使用Go语言的标准转换语法将给定的[]string类型的值转换成FoldedStrings类型的值。其实现了3个方法以对应sort.Interface接口。Less()方法通过使用strings.ToLower()函数来达到大小写无关。
-&lt;/p&gt;
-
-
-&lt;ol class=&quot;org-ol&quot;&gt;
-&lt;li&gt;切片的搜索
-&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;
-对于无序数据来说，我们可以使用for&amp;#x2026;range线性搜索。对于小切片（大至上百个元素）来说，效果还不错。
-&lt;/p&gt;
-&lt;div class=&quot;org-src-container&quot;&gt;
-
-&lt;pre class=&quot;src src-go&quot;&gt;&lt;span style=&quot;color: #00ffff;&quot;&gt;package&lt;/span&gt; main
-
-&lt;span style=&quot;color: #00ffff;&quot;&gt;import&lt;/span&gt; &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;fmt&quot;&lt;/span&gt;
-
-&lt;span style=&quot;color: #00ffff;&quot;&gt;func&lt;/span&gt; &lt;span style=&quot;color: #00fa9a;&quot;&gt;main&lt;/span&gt;() {
-        files := []&lt;span style=&quot;color: #ffff00;&quot;&gt;string&lt;/span&gt;{&lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;Test.conf&quot;&lt;/span&gt;, &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;util.go&quot;&lt;/span&gt;, &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;Makefile&quot;&lt;/span&gt;, &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;misc.go&quot;&lt;/span&gt;, &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;main.go&quot;&lt;/span&gt;}
-        target := &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;Makefile&quot;&lt;/span&gt;
-
-        &lt;span style=&quot;color: #00ffff;&quot;&gt;for&lt;/span&gt; i, file := &lt;span style=&quot;color: #00ffff;&quot;&gt;range&lt;/span&gt; files {
-                &lt;span style=&quot;color: #00ffff;&quot;&gt;if&lt;/span&gt; file == target {
-                        fmt.&lt;span style=&quot;color: #00fa9a;&quot;&gt;Printf&lt;/span&gt;(&lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;found \&quot;%s\&quot; at files[%d]\n&quot;&lt;/span&gt;, file, i)
-                        &lt;span style=&quot;color: #00ffff;&quot;&gt;break&lt;/span&gt;
-                }
-        }
-}
-
-&amp;#32467;&amp;#26524;&amp;#20026;&amp;#65306;
-found &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;Makefile&quot;&lt;/span&gt; at files[2]
-&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;
-对于大切片特别是如果需要进行重复搜索的话，线性搜索非常低效，平均每次都需要让一半元素相互比较。Go提供了一个使用二分搜索算法的sort.Search()方法，每次只需比较log&lt;sub&gt;2&lt;/sub&gt;n个元素。
-&lt;/p&gt;
-
-&lt;div class=&quot;org-src-container&quot;&gt;
-
-&lt;pre class=&quot;src src-go&quot;&gt;&lt;span style=&quot;color: #00ffff;&quot;&gt;package&lt;/span&gt; main
-
-&lt;span style=&quot;color: #00ffff;&quot;&gt;import&lt;/span&gt; (
-        &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;fmt&quot;&lt;/span&gt;
-        &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;sort&quot;&lt;/span&gt;
-)
-
-&lt;span style=&quot;color: #00ffff;&quot;&gt;func&lt;/span&gt; &lt;span style=&quot;color: #00fa9a;&quot;&gt;main&lt;/span&gt;() {
-        files := []&lt;span style=&quot;color: #ffff00;&quot;&gt;string&lt;/span&gt;{&lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;Test.conf&quot;&lt;/span&gt;, &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;util.go&quot;&lt;/span&gt;, &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;Makefile&quot;&lt;/span&gt;, &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;misc.go&quot;&lt;/span&gt;, &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;main.go&quot;&lt;/span&gt;}
-        target := &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;Makefile&quot;&lt;/span&gt;
-        sort.&lt;span style=&quot;color: #00fa9a;&quot;&gt;Strings&lt;/span&gt;(files)
-        fmt.&lt;span style=&quot;color: #00fa9a;&quot;&gt;Printf&lt;/span&gt;(&lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;%q\n&quot;&lt;/span&gt;, files)
-        i := sort.&lt;span style=&quot;color: #00fa9a;&quot;&gt;Search&lt;/span&gt;(&lt;span style=&quot;color: #b0c4de;&quot;&gt;len&lt;/span&gt;(files),
-                &lt;span style=&quot;color: #00ffff;&quot;&gt;func&lt;/span&gt;(i &lt;span style=&quot;color: #ffff00;&quot;&gt;int&lt;/span&gt;) &lt;span style=&quot;color: #ffff00;&quot;&gt;bool&lt;/span&gt; { &lt;span style=&quot;color: #00ffff;&quot;&gt;return&lt;/span&gt; files[i] &amp;gt;= target })
-        &lt;span style=&quot;color: #00ffff;&quot;&gt;if&lt;/span&gt; i &amp;lt; &lt;span style=&quot;color: #b0c4de;&quot;&gt;len&lt;/span&gt;(files) &amp;amp;&amp;amp; files[i] == target {
-                fmt.&lt;span style=&quot;color: #00fa9a;&quot;&gt;Printf&lt;/span&gt;(&lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;found \&quot;%s\&quot; at files[%d]\n&quot;&lt;/span&gt;, files[i], i)
-        }
-
-}
-
-&amp;#32467;&amp;#26524;&amp;#20026;&amp;#65306;
-[&lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;Makefile&quot;&lt;/span&gt; &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;Test.conf&quot;&lt;/span&gt; &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;main.go&quot;&lt;/span&gt; &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;misc.go&quot;&lt;/span&gt; &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;util.go&quot;&lt;/span&gt;]
-found &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;Makefile&quot;&lt;/span&gt; at files[0]
-&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-</description>
-        <pubDate>Sun, 02 Nov 2014 00:00:00 +0800</pubDate>
-        <link>http://xep007.github.io/golang/2014/11/02/Go%E8%AF%AD%E8%A8%80%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%83%EF%BC%89.html</link>
-        <guid isPermaLink="true">http://xep007.github.io/golang/2014/11/02/Go%E8%AF%AD%E8%A8%80%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%83%EF%BC%89.html</guid>
-        
-        <category>golang</category>
-        
-        
-        <category>golang</category>
-        
-      </item>
-    
-      <item>
         <title>Go语言程序设计读书笔记（五）——字符串之其他字符处理相关的包</title>
         <description>&lt;div id=&quot;table-of-contents&quot;&gt;
 &lt;h2&gt;Table of Contents&lt;/h2&gt;
@@ -4600,6 +3904,104 @@ Go语言的for……range循环可以用于一个字符一个字符的迭代字�
         
         
         <category>org</category>
+        
+      </item>
+    
+      <item>
+        <title>GNU Emacs Lisp编程入门笔记（八）</title>
+        <description>&lt;div id=&quot;table-of-contents&quot;&gt;
+&lt;h2&gt;Table of Contents&lt;/h2&gt;
+&lt;div id=&quot;text-table-of-contents&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1&quot;&gt;1. 第10章 找回文本&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-1&quot;&gt;1.1. kill环总览&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-2&quot;&gt;1.2. kill-ring-yank-pointer变量&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+
+&lt;div id=&quot;outline-container-sec-1&quot; class=&quot;outline-2&quot;&gt;
+&lt;h2 id=&quot;sec-1&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;1&lt;/span&gt; 第10章 找回文本&lt;/h2&gt;
+&lt;div class=&quot;outline-text-2&quot; id=&quot;text-1&quot;&gt;
+&lt;p&gt;
+在GNU Emacs中，无论你何时用&quot;kill&quot;命令从缓冲区中剪切了文本，都能用一个&quot;yank&quot;命令将其找回。
+&lt;/p&gt;
+
+&lt;p&gt;
+一个简单的C-y(yank)命令，就从kill-ring(kill环)中取出第一个元素插入到当前缓冲区中。如果C-y后紧跟一个M-y命令，则不是第一个元素而是第二个元素被插入到当前缓冲区中。连续使用M-y则会把第三个、第四个……等代替第二个元素插入到当前缓冲区。
+&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-sec-1-1&quot; class=&quot;outline-3&quot;&gt;
+&lt;h3 id=&quot;sec-1-1&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.1&lt;/span&gt; kill环总览&lt;/h3&gt;
+&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-1&quot;&gt;
+&lt;p&gt;
+kill环是文本字符串的一个列表。它类似于下面的列表：
+(&quot;some text&quot; &quot;a different piece of text&quot; &quot;yet more text&quot;)
+&lt;/p&gt;
+
+&lt;p&gt;
+能将文本从kill环中找回的函数有三个：yank函数，通常绑定到C-y; yank-pop函数，通常绑定到M-y;rotate-yank-pointer函数，这个函数被前面两个函数使用。
+&lt;/p&gt;
+
+&lt;p&gt;
+这些函数通过一个被称为kill-ring-ynak-pointer的变量指向kill环。事实上，yank函数和yank-pop函数中插入文本的代码都是下面这个表达式。
+&lt;/p&gt;
+
+&lt;p&gt;
+(insert (car kill-ring-yank-pointer))
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-sec-1-2&quot; class=&quot;outline-3&quot;&gt;
+&lt;h3 id=&quot;sec-1-2&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.2&lt;/span&gt; kill-ring-yank-pointer变量&lt;/h3&gt;
+&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-2&quot;&gt;
+&lt;p&gt;
+跟kill-ring一样，kill-ring-yank-pointer也是一个变量。它通过被绑定到相应的值来指向某些东西，这一点与其他Lisp变量没有什么两样。
+&lt;/p&gt;
+
+&lt;p&gt;
+因而，如果kill环的值是：
+&lt;/p&gt;
+
+&lt;p&gt;
+(&quot;some text&quot; &quot;a different piece of text&quot; &quot;yet more text&quot;)
+&lt;/p&gt;
+
+&lt;p&gt;
+并且kill-ring-yank-pointer变量指向其中的第二个元素，则kill-ring-yank-pointer变量的值就是：
+&lt;/p&gt;
+
+&lt;p&gt;
+(&quot;a different piece of text&quot; &quot;yet more text&quot;)
+&lt;/p&gt;
+
+&lt;p&gt;
+变量kill-ring和kill-ring-yank-pointer都是指针，第一个指向被剪切文本列表的第一个元素，第二个指向第二个元素。
+&lt;/p&gt;
+
+&lt;p&gt;
+rotate-yank-pointer函数改变kill-ring-yank-pointer变量指向的kill环中的元素。当这个元素指向的下一个元素超出了kill环的末尾，它自动将这个指针指向kill环的第一个元素。这就将一个列表自动转化为一个环的方法。
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</description>
+        <pubDate>Sat, 25 Oct 2014 00:00:00 +0800</pubDate>
+        <link>http://xep007.github.io/emacs/lisp/2014/10/25/gnu%20emacs%20lisp%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8%E7%AC%94%E8%AE%B0%EF%BC%88%E5%85%AB%EF%BC%89.html</link>
+        <guid isPermaLink="true">http://xep007.github.io/emacs/lisp/2014/10/25/gnu%20emacs%20lisp%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8%E7%AC%94%E8%AE%B0%EF%BC%88%E5%85%AB%EF%BC%89.html</guid>
+        
+        <category>lisp</category>
+        
+        
+        <category>emacs</category>
+        
+        <category>lisp</category>
         
       </item>
     

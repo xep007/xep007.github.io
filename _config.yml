@@ -1,5 +1,5 @@
 # Site settings
-title: 行之博客 
+title: 行之技术博客 
 email: 48614191@qq.com
 description: Linux / C / golang / Emacs                
 baseurl:  # the subpath of your site, e.g. /blog/
