@@ -5,9 +5,65 @@
     <description>Linux / C / golang / Emacs</description>
     <link>http://xep007.github.io/</link>
     <atom:link href="http://xep007.github.io/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Mon, 10 Nov 2014 12:59:00 +0800</pubDate>
-    <lastBuildDate>Mon, 10 Nov 2014 12:59:00 +0800</lastBuildDate>
+    <pubDate>Mon, 10 Nov 2014 17:40:25 +0800</pubDate>
+    <lastBuildDate>Mon, 10 Nov 2014 17:40:25 +0800</lastBuildDate>
     <generator>Jekyll v2.4.0</generator>
+    
+      <item>
+        <title>firefox使用stylish扩展显示weibo.com等网站的字体图标</title>
+        <description>&lt;div id=&quot;table-of-contents&quot;&gt;
+&lt;h2&gt;Table of Contents&lt;/h2&gt;
+&lt;div id=&quot;text-table-of-contents&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1&quot;&gt;1. 存在的问题&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-2&quot;&gt;2. 解决办法&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+
+&lt;div id=&quot;outline-container-sec-1&quot; class=&quot;outline-2&quot;&gt;
+&lt;h2 id=&quot;sec-1&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;1&lt;/span&gt; 存在的问题&lt;/h2&gt;
+&lt;div class=&quot;outline-text-2&quot; id=&quot;text-1&quot;&gt;
+&lt;p&gt;
+firefox中s可以自定义页面显示字体。比如使用微软雅黑等漂亮的字体。但是在taobao.com、weibo.com和github.com等网站上有些图标是利用字体来显示的，因此一旦去掉“允许页面选择字体”选项时，上述网站的一些以字体来显示的图标就无法显示，甚至乱码。
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-sec-2&quot; class=&quot;outline-2&quot;&gt;
+&lt;h2 id=&quot;sec-2&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;2&lt;/span&gt; 解决办法&lt;/h2&gt;
+&lt;div class=&quot;outline-text-2&quot; id=&quot;text-2&quot;&gt;
+&lt;ol class=&quot;org-ol&quot;&gt;
+&lt;li&gt;在firefox附加组件中安装stylish扩展。重启后，在“附加组件”-&amp;gt;“用户样式”-&amp;gt;&quot;stylish&quot;中选择新建样式，填入以下内容。保存，重启。
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class=&quot;org-src-container&quot;&gt;
+
+&lt;pre class=&quot;src src-style&quot;&gt;@namespace url(http://www.w3.org/1999/xhtml);
+@-moz-document regexp(&quot;((?!github.com|itellyou.cn|400gb.com|mozilla.org|alipay.com|weibo.com|taobao.com|wallbase.cc).)*&quot;){
+ * {font-family:微软雅黑 !important;}
+}
+&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;ol class=&quot;org-ol&quot;&gt;
+&lt;li&gt;在firefox“选项”-&amp;gt;“内容”-&amp;gt;&quot;高级&quot;中把&quot;允许页面选择显示字体而无需使用上面的设置&quot;打上勾就行了。
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</description>
+        <pubDate>Mon, 10 Nov 2014 00:00:00 +0800</pubDate>
+        <link>http://xep007.github.io/firefox/2014/11/10/firefox%E4%BD%BF%E7%94%A8stylish%E6%89%A9%E5%B1%95%E6%98%BE%E7%A4%BAweibo.com%E7%AD%89%E7%BD%91%E7%AB%99%E7%9A%84%E5%AD%97%E4%BD%93%E5%9B%BE%E6%A0%87.html</link>
+        <guid isPermaLink="true">http://xep007.github.io/firefox/2014/11/10/firefox%E4%BD%BF%E7%94%A8stylish%E6%89%A9%E5%B1%95%E6%98%BE%E7%A4%BAweibo.com%E7%AD%89%E7%BD%91%E7%AB%99%E7%9A%84%E5%AD%97%E4%BD%93%E5%9B%BE%E6%A0%87.html</guid>
+        
+        <category>firefox</category>
+        
+        
+        <category>firefox</category>
+        
+      </item>
     
       <item>
         <title>Go语言程序设计读书笔记（八）——集合类型之映射</title>
@@ -111,17 +167,14 @@ Go语言中的映射(map)是一种内置的数据结构，保存键——值对�
 &lt;p&gt;
 &lt;b&gt;映射的创建方式&lt;/b&gt;
 &lt;/p&gt;
-&lt;div class=&quot;org-src-container&quot;&gt;
-
-&lt;pre class=&quot;src src-go&quot;&gt;&lt;span style=&quot;color: #b0c4de;&quot;&gt;make&lt;/span&gt; (&lt;span style=&quot;color: #00ffff;&quot;&gt;map&lt;/span&gt;[&lt;span style=&quot;color: #ffff00;&quot;&gt;KeyType&lt;/span&gt;]&lt;span style=&quot;color: #ffff00;&quot;&gt;ValueType&lt;/span&gt;, initialCapacity)
-&lt;span style=&quot;color: #b0c4de;&quot;&gt;make&lt;/span&gt; (&lt;span style=&quot;color: #00ffff;&quot;&gt;map&lt;/span&gt;[&lt;span style=&quot;color: #ffff00;&quot;&gt;KeyType&lt;/span&gt;]&lt;span style=&quot;color: #ffff00;&quot;&gt;ValueType&lt;/span&gt;)
-&lt;span style=&quot;color: #00ffff;&quot;&gt;map&lt;/span&gt;[&lt;span style=&quot;color: #ffff00;&quot;&gt;KeyType&lt;/span&gt;]&lt;span style=&quot;color: #ffff00;&quot;&gt;ValueType&lt;/span&gt;{}
-&lt;span style=&quot;color: #00ffff;&quot;&gt;map&lt;/span&gt;[&lt;span style=&quot;color: #ffff00;&quot;&gt;KeyType&lt;/span&gt;]&lt;span style=&quot;color: #ffff00;&quot;&gt;ValueType&lt;/span&gt;{key1: value1, key2:value2, ..., keyN:valueN}
+&lt;pre class=&quot;example&quot;&gt;
+make (map[KeyType]ValueType, initialCapacity)
+make (map[KeyType]ValueType)
+map[KeyType]ValueType{}
+map[KeyType]ValueType{key1: value1, key2:value2, ..., keyN:valueN}
 &lt;/pre&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;/div&gt;
-
 &lt;div id=&quot;outline-container-sec-1-2&quot; class=&quot;outline-3&quot;&gt;
 &lt;h3 id=&quot;sec-1-2&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.2&lt;/span&gt; 创建和填充映射&lt;/h3&gt;
 &lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-2&quot;&gt;
@@ -129,6 +182,7 @@ Go语言中的映射(map)是一种内置的数据结构，保存键——值对�
 &lt;li&gt;键为string类型，值为float64类型的映射
 &lt;/li&gt;
 &lt;/ol&gt;
+
 &lt;div class=&quot;org-src-container&quot;&gt;
 
 &lt;pre class=&quot;src src-go&quot;&gt;&lt;span style=&quot;color: #00ffff;&quot;&gt;package&lt;/span&gt; main
@@ -3904,104 +3958,6 @@ Go语言的for……range循环可以用于一个字符一个字符的迭代字�
         
         
         <category>org</category>
-        
-      </item>
-    
-      <item>
-        <title>GNU Emacs Lisp编程入门笔记（八）</title>
-        <description>&lt;div id=&quot;table-of-contents&quot;&gt;
-&lt;h2&gt;Table of Contents&lt;/h2&gt;
-&lt;div id=&quot;text-table-of-contents&quot;&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1&quot;&gt;1. 第10章 找回文本&lt;/a&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-1&quot;&gt;1.1. kill环总览&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-2&quot;&gt;1.2. kill-ring-yank-pointer变量&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-
-&lt;div id=&quot;outline-container-sec-1&quot; class=&quot;outline-2&quot;&gt;
-&lt;h2 id=&quot;sec-1&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;1&lt;/span&gt; 第10章 找回文本&lt;/h2&gt;
-&lt;div class=&quot;outline-text-2&quot; id=&quot;text-1&quot;&gt;
-&lt;p&gt;
-在GNU Emacs中，无论你何时用&quot;kill&quot;命令从缓冲区中剪切了文本，都能用一个&quot;yank&quot;命令将其找回。
-&lt;/p&gt;
-
-&lt;p&gt;
-一个简单的C-y(yank)命令，就从kill-ring(kill环)中取出第一个元素插入到当前缓冲区中。如果C-y后紧跟一个M-y命令，则不是第一个元素而是第二个元素被插入到当前缓冲区中。连续使用M-y则会把第三个、第四个……等代替第二个元素插入到当前缓冲区。
-&lt;/p&gt;
-&lt;/div&gt;
-
-&lt;div id=&quot;outline-container-sec-1-1&quot; class=&quot;outline-3&quot;&gt;
-&lt;h3 id=&quot;sec-1-1&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.1&lt;/span&gt; kill环总览&lt;/h3&gt;
-&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-1&quot;&gt;
-&lt;p&gt;
-kill环是文本字符串的一个列表。它类似于下面的列表：
-(&quot;some text&quot; &quot;a different piece of text&quot; &quot;yet more text&quot;)
-&lt;/p&gt;
-
-&lt;p&gt;
-能将文本从kill环中找回的函数有三个：yank函数，通常绑定到C-y; yank-pop函数，通常绑定到M-y;rotate-yank-pointer函数，这个函数被前面两个函数使用。
-&lt;/p&gt;
-
-&lt;p&gt;
-这些函数通过一个被称为kill-ring-ynak-pointer的变量指向kill环。事实上，yank函数和yank-pop函数中插入文本的代码都是下面这个表达式。
-&lt;/p&gt;
-
-&lt;p&gt;
-(insert (car kill-ring-yank-pointer))
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div id=&quot;outline-container-sec-1-2&quot; class=&quot;outline-3&quot;&gt;
-&lt;h3 id=&quot;sec-1-2&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.2&lt;/span&gt; kill-ring-yank-pointer变量&lt;/h3&gt;
-&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-2&quot;&gt;
-&lt;p&gt;
-跟kill-ring一样，kill-ring-yank-pointer也是一个变量。它通过被绑定到相应的值来指向某些东西，这一点与其他Lisp变量没有什么两样。
-&lt;/p&gt;
-
-&lt;p&gt;
-因而，如果kill环的值是：
-&lt;/p&gt;
-
-&lt;p&gt;
-(&quot;some text&quot; &quot;a different piece of text&quot; &quot;yet more text&quot;)
-&lt;/p&gt;
-
-&lt;p&gt;
-并且kill-ring-yank-pointer变量指向其中的第二个元素，则kill-ring-yank-pointer变量的值就是：
-&lt;/p&gt;
-
-&lt;p&gt;
-(&quot;a different piece of text&quot; &quot;yet more text&quot;)
-&lt;/p&gt;
-
-&lt;p&gt;
-变量kill-ring和kill-ring-yank-pointer都是指针，第一个指向被剪切文本列表的第一个元素，第二个指向第二个元素。
-&lt;/p&gt;
-
-&lt;p&gt;
-rotate-yank-pointer函数改变kill-ring-yank-pointer变量指向的kill环中的元素。当这个元素指向的下一个元素超出了kill环的末尾，它自动将这个指针指向kill环的第一个元素。这就将一个列表自动转化为一个环的方法。
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-</description>
-        <pubDate>Sat, 25 Oct 2014 00:00:00 +0800</pubDate>
-        <link>http://xep007.github.io/emacs/lisp/2014/10/25/gnu%20emacs%20lisp%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8%E7%AC%94%E8%AE%B0%EF%BC%88%E5%85%AB%EF%BC%89.html</link>
-        <guid isPermaLink="true">http://xep007.github.io/emacs/lisp/2014/10/25/gnu%20emacs%20lisp%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8%E7%AC%94%E8%AE%B0%EF%BC%88%E5%85%AB%EF%BC%89.html</guid>
-        
-        <category>lisp</category>
-        
-        
-        <category>emacs</category>
-        
-        <category>lisp</category>
         
       </item>
     
