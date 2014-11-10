@@ -1,0 +1,290 @@
+---
+layout     : post
+title      : Go语言程序设计读书笔记（九）——过程式编程之语句基础
+categories : [golang , ]
+tags       : golang
+description: golang
+author: xep007
+---
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1. 第5章 过程式编程</a>
+<ul>
+<li><a href="#sec-1-1">1.1. 语句基础</a>
+<ul>
+<li><a href="#sec-1-1-1">1.1.1. 类型转换</a></li>
+<li><a href="#sec-1-1-2">1.1.2. 类型断言</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> 第5章 过程式编程</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+Go语言可以用于写纯过程式程序，可用于写纯面向对象程序，也可用于写过程式和面向对象式相结合的程序。过程式编程很重要，因为它是并发编程和面向对象编程的基础。
+</p>
+
+<p>
+前几章描述并阐明了Go语言内置的数据类型，本章将详细地讲解Go语言的表达式语句和控制结构，同时详细是讲解创建和使用自定义的函数。
+</p>
+</div>
+<div id="outline-container-sec-1-1" class="outline-3">
+<h3 id="sec-1-1"><span class="section-number-3">1.1</span> 语句基础</h3>
+<div class="outline-text-3" id="text-1-1">
+<p>
+编写Go语言程序时，不必显式地使用分号（;）来作为上下文语句的分隔结束符。在编译时，Go语言能智能地在该加分号的地方加上分号。但是有两个地方必须使用分号（;），一是当我们需要在一行中放入多条语句时，一是在使用原始的for循环时。
+</p>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<caption class="t-above"><span class="table-number">Table 1:</span> Go语言内置函数</caption>
+
+<colgroup>
+<col  class="left" />
+
+<col  class="left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="left">语法</th>
+<th scope="col" class="left">含义/结果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="left">append(s, &#x2026;)</td>
+<td class="left">如果切片s的容量足够，则将函数末尾的项添加进给定的切片中;否则新建一个切片，</td>
+</tr>
+
+<tr>
+<td class="left">&#xa0;</td>
+<td class="left">其内容为原始切片的项和函数末尾传入的项</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">cap(x)</td>
+<td class="left">切片x的容量、通道x的缓存容量、数组x（或所指向数组）的长度。</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">close(ch)</td>
+<td class="left">关闭通道ch（但用于只接收信息的通道是非法的）。不能再往通道中发送数据。数据还可以从关闭的通道中接收</td>
+</tr>
+
+<tr>
+<td class="left">&#xa0;</td>
+<td class="left">（例如，任何已发送但未接收的值），并且如果通道中没有值了，接收端得到的将是通道类型的零值。</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">complex(r, i)</td>
+<td class="left">一个complex128复数，其实部r和虚部i给定，并且都为float64</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">copy(dst, src)</td>
+<td class="left">将src切片中的项复制（可能是重叠）到dst切片中，如果空间不够则截断;或者将字符串s复制到[]byte类型的b中</td>
+</tr>
+
+<tr>
+<td class="left">copy(b, s)</td>
+<td class="left">&#xa0;</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">delete(m, k)</td>
+<td class="left">从映射m中删除键为k的项，如果键为空则什么也不做</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">imag(cx)</td>
+<td class="left">作为float64类型的complex128类型数据的虚部</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">len(x)</td>
+<td class="left">切片x的长度、通道x的缓冲区中排队的项的数量、数组（或所指向数组）的长度、一个映射x中项的个数、字符串</td>
+</tr>
+
+<tr>
+<td class="left">&#xa0;</td>
+<td class="left">x中的字节的个数。</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">make(T)</td>
+<td class="left">一个切片、映射或通道类型T的引用。如果给定n，那它就是该切片的长度和容量，或者提示一个映射需要多少项，</td>
+</tr>
+
+<tr>
+<td class="left">make(T, n)</td>
+<td class="left">或者一个缓冲区的大小。对于切片而言，n和m可用于声明长度和容量</td>
+</tr>
+
+<tr>
+<td class="left">make(T,n, m)</td>
+<td class="left">&#xa0;</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">new(T)</td>
+<td class="left">一个指向类型T的值指针</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">panic(x)</td>
+<td class="left">抛出一个运行时异常，其值为x</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">real(cx)</td>
+<td class="left">类型为complex128的cx值的实部，是一个float64类型值</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="left">recover()</td>
+<td class="left">捕获一个运行时异常</td>
+</tr>
+</tbody>
+</table>
+
+
+<p>
+Go语言支持++（递增）和&#x2013;（递减）操作符。它们都是后置操作符，必须跟在一个操作数后面，并且没有返回值。因此，这两个操作符不能用于表达式。举例，x++不是表达式，而是语句，*p++是(*p)++而不是*(p++)。
+</p>
+
+<p>
+赋值通过使用=赋值操作符来完成。变量可以使用=和一个var连接起来创建和赋值。如：
+</p>
+<pre class="example">
+var a = 5
+</pre>
+<p>
+此赋值语句和 
+</p>
+<pre class="example">
+a := 5
+</pre>
+<p>
+所达到的目的一样（全局变量不能用:=操作符，只能用var）。
+</p>
+
+<p>
+Go语言支持多重赋值，如: 
+</p>
+<pre class="example">
+a, b = 3, 4
+</pre>
+<p>
+多重赋值使得交换两个变量的值变得非常方便，它不需要引入第三个变量。
+</p>
+<pre class="example">
+a, b = b, a
+</pre>
+
+<p>
+快速声明操作符（:=）用于同时在一个语句中声明和赋值一个变量。多个逗号分隔的变量用法大多数情况下跟=操作符一样，除了必须至少有一个非空变量为新的。如果有一个变量已经存在，它就会直接被赋值，而不会新建一个变量，除非该:=操作符位于作用域的起始处，如if或者for语句中的初始化语句。
+</p>
+<div class="org-src-container">
+
+<pre class="src src-go">a, b, c := 2, 3, 5
+<span style="color: #00ffff;">for</span> a:= 7; a &lt; 8; a++ {  <span style="color: #ffd700;">//</span><span style="color: #ffd700;">a&#26080;&#24847;&#38388;&#35206;&#30422;&#20102;&#22806;&#37096;a&#30340;&#20540;</span>
+    b := 11              <span style="color: #ffd700;">//</span><span style="color: #ffd700;">b&#26080;&#24847;&#38388;&#35206;&#30422;&#20102;&#22806;&#37096;b&#30340;&#20540;</span>
+    c = 13               <span style="color: #ffd700;">//</span><span style="color: #ffd700;">c&#20026;&#22806;&#37096;&#30340;c&#20540;</span>
+    fmt.<span style="color: #00fa9a;">Printf</span>(<span style="color: #ffa500;">"inner: a&#8594;%d b&#8594;%d c&#8594;%d\n"</span>, a, b, c)
+}
+fmt.<span style="color: #00fa9a;">Printf</span>(<span style="color: #ffa500;">"outer: a&#8594;%d b&#8594;%d c&#8594;%d\n"</span>, a, b, c)
+
+&#32467;&#26524;&#20026;&#65306;
+<span style="color: #fa8072;">inner</span>: a&#8594;7 b&#8594;11 c&#8594;13
+<span style="color: #fa8072;">outer</span>: a&#8594;2 b&#8594;3 c&#8594;13
+</pre>
+</div>
+
+<p>
+这个代码片段展示了:=操作符是如何创建“影子”变量的。在上面代码中，for循环里面可以对for外部的已定义的变量进行重新定义（赋值）而不造成冲突，我们可以看到，for内部重新定义的变量的作用域只在for内部。
+</p>
+</div>
+
+<div id="outline-container-sec-1-1-1" class="outline-4">
+<h4 id="sec-1-1-1"><span class="section-number-4">1.1.1</span> 类型转换</h4>
+<div class="outline-text-4" id="text-1-1-1">
+<p>
+Go语言提供了一种在不同但相互兼容的类型之间相互转换的方式，并且这种转换非常有用并且安全。非数值类型之间的转换不会丢失精度。但对于数值类型之间的转换，可能会发生丢失精度或者其他问题。例如，x := uint16(65000),然后使用转换y := int16(x)，由于x走出了int16的范围，y的值会被转换成-536（错误值）。
+</p>
+
+<p>
+下面是转换的语法：
+</p>
+<pre class="example">
+resultOfType := Type(expression)
+</pre>
+
+<p>
+一个字符串可以转换成一个[]byte（其底层为UTF-8的字节）或者一个[]rune（它的Unicode码点），并且[]byte和[]rune都可以转换成一个字符串类型。单个字符是一个rune类型数据（即int32），可以转换成一个单字符的字符串。
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-1-1-2" class="outline-4">
+<h4 id="sec-1-1-2"><span class="section-number-4">1.1.2</span> 类型断言</h4>
+<div class="outline-text-4" id="text-1-1-2">
+<div class="org-src-container">
+
+<pre class="src src-go">resultOfType, boolean := expression.(<span style="color: #ffff00;">Type</span>)    <span style="color: #ffd700;">//</span><span style="color: #ffd700;">&#23433;&#20840;&#31867;&#22411;&#26029;&#35328;</span>
+resultOfType := expression.(<span style="color: #ffff00;">Type</span>)             <span style="color: #ffd700;">//</span><span style="color: #ffd700;">&#38750;&#23433;&#20840;&#31867;&#22411;&#26029;&#35328;&#65292;&#22833;&#36133;&#26102;panic()</span>
+</pre>
+</div>
+
+<p>
+安全类型断言如成功则返回一个值和true，失败则返回目标类型的0值和false。非安全类型断言要么返回一个目标类型的值，要么调用内置的panic()函数抛出一个异常。如未处理异常，则程序将终止。
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-go"><span style="color: #00ffff;">package</span> main
+
+<span style="color: #00ffff;">import</span> <span style="color: #ffa500;">"fmt"</span>
+
+<span style="color: #00ffff;">func</span> <span style="color: #00fa9a;">main</span>() {
+        <span style="color: #00ffff;">var</span> i <span style="color: #00ffff;">interface</span>{} = 99
+        <span style="color: #00ffff;">var</span> s <span style="color: #00ffff;">interface</span>{} = []<span style="color: #ffff00;">string</span>{<span style="color: #ffa500;">"left"</span>, <span style="color: #ffa500;">"right"</span>}
+        j := i.(<span style="color: #ffff00;">int</span>) <span style="color: #ffd700;">//</span><span style="color: #ffd700;">j&#26159;int&#31867;&#22411;&#30340;&#25968;&#25454;&#65288;&#25110;&#32773;&#21457;&#29983;&#20102;&#19968;&#20010;panic()&#65289;</span>
+        fmt.<span style="color: #00fa9a;">Printf</span>(<span style="color: #ffa500;">"%T&#8594;%d\n"</span>, j, j)
+        <span style="color: #00ffff;">if</span> i, ok := i.(<span style="color: #ffff00;">int</span>); ok {
+                fmt.<span style="color: #00fa9a;">Printf</span>(<span style="color: #ffa500;">"%T&#8594;%d\n"</span>, i, j) <span style="color: #ffd700;">//</span><span style="color: #ffd700;">i&#26159;&#19968;&#20010;int&#31867;&#22411;&#30340;&#24433;&#23376;&#21464;&#37327;</span>
+        }
+        <span style="color: #00ffff;">if</span> s, ok := s.([]<span style="color: #ffff00;">string</span>); ok {
+                fmt.<span style="color: #00fa9a;">Printf</span>(<span style="color: #ffa500;">"%T&#8594;%q\n"</span>, s, s) <span style="color: #ffd700;">//</span><span style="color: #ffd700;">s&#26159;&#19968;&#20010;[]string&#31867;&#22411;&#30340;&#24433;&#23376;&#21464;&#37327;</span>
+        }
+}
+
+&#32467;&#26524;&#20026;&#65306;
+int&#8594;99
+int&#8594;99
+[]<span style="color: #ffff00;">string&#8594;</span>[<span style="color: #ffa500;">"left"</span> <span style="color: #ffa500;">"right"</span>]
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
