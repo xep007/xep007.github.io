@@ -12,7 +12,6 @@ author: xep007
 <ul>
 <li><a href="#sec-1">1. 存在的问题</a></li>
 <li><a href="#sec-2">2. 解决办法</a></li>
-<li><a href="#sec-3">3. {font-family:微软雅黑 !important;}</a></li>
 </ul>
 </div>
 </div>
@@ -34,20 +33,14 @@ firefox中s可以自定义页面显示字体。比如使用微软雅黑等漂亮
 <li>在firefox附加组件中安装stylish扩展。重启后，在“附加组件”-&gt;“用户样式”-&gt;"stylish"中选择新建样式，填入以下内容。保存，重启。
 </li>
 </ol>
-<p>
-#+BEGIN<sub>SRC</sub> style
-@namespace url(<a href="http://www.w3.org/1999/xhtml">http://www.w3.org/1999/xhtml</a>);
+<div class="org-src-container">
+
+<pre class="src src-style">@namespace url(http://www.w3.org/1999/xhtml);
 @-moz-document regexp("((?!github.com|itellyou.cn|400gb.com|mozilla.org|alipay.com|weibo.com|taobao.com|wallbase.cc).)*"){
-</p>
-</div>
-</div>
-<div id="outline-container-sec-3" class="outline-2">
-<h2 id="sec-3"><span class="section-number-2">3</span> {font-family:微软雅黑 !important;}</h2>
-<div class="outline-text-2" id="text-3">
-<p>
+ * {font-family:微软雅黑 !important;}
 }
-#+END<sub>SRC</sub>
-</p>
+</pre>
+</div>
 
 <ol class="org-ol">
 <li>在firefox“选项”-&gt;“内容”-&gt;"高级"中把"允许页面选择显示字体而无需使用上面的设置"打上勾就行了。
