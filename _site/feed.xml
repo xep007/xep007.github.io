@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>行之博客</title>
+    <title>行之技术博客</title>
     <description>Linux / C / golang / Emacs</description>
     <link>http://xep007.github.io/</link>
     <atom:link href="http://xep007.github.io/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Sun, 09 Nov 2014 18:19:21 +0800</pubDate>
-    <lastBuildDate>Sun, 09 Nov 2014 18:19:21 +0800</lastBuildDate>
+    <pubDate>Mon, 10 Nov 2014 12:59:00 +0800</pubDate>
+    <lastBuildDate>Mon, 10 Nov 2014 12:59:00 +0800</lastBuildDate>
     <generator>Jekyll v2.4.0</generator>
     
       <item>
