@@ -76,7 +76,7 @@ Go语言的for有两种类型：一是无格式的for语句，一是for&#x2026;r
 </li>
 <li>字符串迭代可用②或③，通常②比③ 更方便。
 </li>
-<li>对于非空切片或索引而言，④和⑤依不同需要两样方便。在Go语言中，更多使用for&#x2026;range而较少用第①种for形式的循环。
+<li>对于非空切片或索引而言，④和⑤依不同需要同样方便。在Go语言中，更多使用for&#x2026;range而较少用①的循环。
 </li>
 <li>映射的迭代使用⑥或⑦，如需要有序的映射，就使用⑦。
 </li>
@@ -103,7 +103,7 @@ Go语言的for有两种类型：一是无格式的for语句，一是for&#x2026;r
             <span style="color: #00ffff;">break</span>
         }
     }
-    <span style="color: #00ffff;">if</span> round {
+    <span style="color: #00ffff;">if</span> found {
         <span style="color: #00ffff;">break</span>
     }
 }
@@ -124,6 +124,10 @@ Go语言的for有两种类型：一是无格式的for语句，一是for&#x2026;r
 }
 </pre>
 </div>
+
+<p>
+第一个程序片段通过两个break跳出两层for循环。第二个程序片段通过break FOUND标签直接跳出两层for循环。
+</p>
 
 <p>
 标签是一个后面带冒号的标识符。可以用于for、switch以及select语句。break和continue语句都可以声明标签，并且都可用于for循环里面。同时也可以在switch和select语句里面使用break语句。
