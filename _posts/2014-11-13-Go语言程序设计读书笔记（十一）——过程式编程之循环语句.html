@@ -1,0 +1,132 @@
+---
+layout     : post
+title      : Go语言程序设计读书笔记（十一）——过程式编程之循环语句
+categories : [golang , ]
+tags       : golang
+description: golang
+author: xep007
+---
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1. for循环语句</a></li>
+</ul>
+</div>
+</div>
+
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> for循环语句</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+Go语言没有while和do&#x2026;while循环语句，只提供for循环语句。但是Go语言的for比c/c++的for语句更丰富、更灵活。
+</p>
+
+<p>
+Go语言的for有两种类型：一是无格式的for语句，一是for&#x2026;range语句。
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-go"><span style="color: #00ffff;">for</span> { <span style="color: #ffd700;">//</span><span style="color: #ffd700;">&#26080;&#38480;&#24490;&#29615;</span>
+    block
+}
+
+<span style="color: #00ffff;">for</span> booleanExpression {  <span style="color: #ffd700;">//</span><span style="color: #ffd700;">&#30456;&#24403;&#20110;while&#24490;&#29615;</span>
+    block
+}
+
+<span style="color: #00ffff;">for</span> optionalPreStatement; booleanExpress; optionalPostStatement { <span style="color: #ffd700;">//</span><span style="color: #ffd700;">&#9312;</span>
+    block
+}
+
+<span style="color: #00ffff;">for</span> index, char := <span style="color: #00ffff;">range</span> aString {  <span style="color: #ffd700;">//</span><span style="color: #ffd700;">&#19968;&#20010;&#23383;&#31526;&#19968;&#20010;&#23383;&#31526;&#22320;&#36845;&#20195;&#19968;&#20010;&#23383;&#31526;&#20018;&#9313;</span>
+    block
+}
+
+<span style="color: #00ffff;">for</span> index := <span style="color: #00ffff;">range</span> aString {  <span style="color: #ffd700;">//</span><span style="color: #ffd700;">&#19968;&#20010;&#23383;&#31526;&#19968;&#20010;&#23383;&#31526;&#22320;&#36845;&#20195;&#19968;&#20010;&#23383;&#31526;&#20018;&#9314;</span>
+    block  <span style="color: #ffd700;">//</span><span style="color: #ffd700;">char, size := utf8.DecodeRuneInString(aString[index:])</span>
+}
+
+<span style="color: #00ffff;">for</span> index, item := <span style="color: #00ffff;">range</span> anArrayOrSlice {  <span style="color: #ffd700;">//</span><span style="color: #ffd700;">&#25968;&#32452;&#25110;&#20999;&#29255;&#36845;&#20195;&#9315;</span>
+    block
+}
+
+<span style="color: #00ffff;">for</span> index := <span style="color: #00ffff;">range</span> anArrayOrSlice {  <span style="color: #ffd700;">//</span><span style="color: #ffd700;">&#25968;&#32452;&#25110;&#20999;&#29255;&#36845;&#20195;&#9316;</span>
+    block  <span style="color: #ffd700;">//</span><span style="color: #ffd700;">item := anArrayOrSlice[index]</span>
+}
+
+<span style="color: #00ffff;">for</span> key, value := <span style="color: #00ffff;">range</span> aMap {  <span style="color: #ffd700;">//</span><span style="color: #ffd700;">&#26144;&#23556;&#36845;&#20195;&#9317;</span>
+    block
+}
+
+<span style="color: #00ffff;">for</span> key := <span style="color: #00ffff;">range</span> aMap {  <span style="color: #ffd700;">//</span><span style="color: #ffd700;">&#26144;&#23556;&#36845;&#20195;&#9318;</span>
+    block <span style="color: #ffd700;">//</span><span style="color: #ffd700;">value := aMap[key]</span>
+}
+
+<span style="color: #00ffff;">for</span> item := <span style="color: #00ffff;">range</span> aChannel { <span style="color: #ffd700;">//</span><span style="color: #ffd700;">&#36890;&#36947;&#36845;&#20195;</span>
+    block
+}
+</pre>
+</div>
+
+<ol class="org-ol">
+<li>for循环中的花括号与if、switch一样是必须的，分号只在可选的前置或后置声明语句都存在的时候才需要，比如①。两个声明必须是简短的。如果变量是在一个可选的声明语句中创建，或用来保存一个range子句中产生的值，那么它们的作用域是从声明处到for语句结束。
+</li>
+<li>字符串迭代可用②或③，通常②比③ 更方便。
+</li>
+<li>对于非空切片或索引而言，④和⑤依不同需要两样方便。在Go语言中，更多使用for&#x2026;range而较少用第①种for形式的循环。
+</li>
+<li>映射的迭代使用⑥或⑦，如需要有序的映射，就使用⑦。
+</li>
+<li>②至⑦如作用于一个空的字符串、数组、切片或映射，那么for循环就什么也不做。控制流程从下一条语句继续。
+</li>
+<li>一个for循环可以随时使用break语句来终止，这样控制权将传送给for循环语句的一一条语句。如果break语句声明了一个标签（见下面的例子），那么控制权就会进入包含该标签的最内层for、switch或者select语句中。也可通过continue来使得语句的控制权回到for循环的条件或范围子句，以进行新一次迭代。
+</li>
+</ol>
+
+<p>
+<b>例子：</b>
+</p>
+
+<p>
+假设有一个二维切片，其类型为[][]int，想要从中搜索是否包含某个特定的值。以下有两种方法。
+</p>
+<div class="org-src-container">
+
+<pre class="src src-go">found := <span style="color: #fa8072;">false</span>
+<span style="color: #00ffff;">for</span> row := <span style="color: #00ffff;">range</span> table {
+    <span style="color: #00ffff;">for</span> column := <span style="color: #00ffff;">range</span> table[row] {
+        <span style="color: #00ffff;">if</span> table[row][column] == x {
+            found = <span style="color: #fa8072;">true</span>
+            <span style="color: #00ffff;">break</span>
+        }
+    }
+    <span style="color: #00ffff;">if</span> round {
+        <span style="color: #00ffff;">break</span>
+    }
+}
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-go">found := <span style="color: #fa8072;">false</span>
+<span style="color: #fa8072;">FOUND</span>:
+<span style="color: #00ffff;">for</span> row := <span style="color: #00ffff;">range</span> table {
+    <span style="color: #00ffff;">for</span> column := <span style="color: #00ffff;">range</span> table[row] {
+        <span style="color: #00ffff;">if</span> table[row][column] == x {
+            found = <span style="color: #fa8072;">true</span>
+            <span style="color: #00ffff;">break</span> <span style="color: #fa8072;">FOUND</span>
+        }
+    }
+}
+</pre>
+</div>
+
+<p>
+标签是一个后面带冒号的标识符。可以用于for、switch以及select语句。break和continue语句都可以声明标签，并且都可用于for循环里面。同时也可以在switch和select语句里面使用break语句。
+</p>
+</div>
+</div>
