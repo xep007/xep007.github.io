@@ -1,0 +1,132 @@
+---
+layout     : post
+title      : Go语言程序设计读书笔记（十三）——过程式编程之defer、panic和recover
+categories : [golang , ]
+tags       : golang
+description: golang
+author: xep007
+---
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1. defer、panic和recover</a>
+<ul>
+<li><a href="#sec-1-1">1.1. defer</a></li>
+<li><a href="#sec-1-2">1.2. panic和recover</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> defer、panic和recover</h2>
+<div class="outline-text-2" id="text-1">
+</div><div id="outline-container-sec-1-1" class="outline-3">
+<h3 id="sec-1-1"><span class="section-number-3">1.1</span> defer</h3>
+<div class="outline-text-3" id="text-1-1">
+<p>
+defer语句用于延迟一个函数、方法或当前所创建的匿名函数的执行，它会在外围函数或方法返回之前但其返回值（如果有的话）计算之后执行。这样就有可能在一个被延迟执行的函数内部修改函数的命名返回值。如果一个函数或方法有多个defer语句，它们会以LIFO(后进先出)的顺序执行。
+</p>
+
+<p>
+defer语句最常见的用法是，保证使用完一个文件后将其成功关闭，或将一个不再使用的通道关闭，或者捕获异常。
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-go"><span style="color: #00ffff;">var</span> file *os.File
+<span style="color: #00ffff;">var</span> err error
+<span style="color: #00ffff;">if</span> file, err = os.<span style="color: #00fa9a;">Open</span>(filename); err != <span style="color: #fa8072;">nil</span> {
+    log.<span style="color: #00fa9a;">Println</span>(<span style="color: #ffa500;">"failed to open the file"</span>, err)
+    <span style="color: #00ffff;">return</span>
+}
+<span style="color: #00ffff;">defer</span> file.<span style="color: #00fa9a;">Close</span>()
+</pre>
+</div>
+<p>
+文件一打开，就用defer来执行关闭。
+</p>
+
+<p>
+再来一个例子,因为defer存在，因此for循环以后进先出的顺序来输出i：
+</p>
+<div class="org-src-container">
+
+<pre class="src src-go"><span style="color: #00ffff;">package</span> main
+
+<span style="color: #00ffff;">import</span> (
+        <span style="color: #ffa500;">"fmt"</span>
+)
+
+<span style="color: #00ffff;">func</span> <span style="color: #00fa9a;">main</span>() {
+        <span style="color: #00ffff;">for</span> i := 0; i &lt; 3; i++ {
+                <span style="color: #00ffff;">defer</span> fmt.<span style="color: #00fa9a;">Println</span>(i)
+        }
+}
+&#36755;&#20986;&#32467;&#26524;&#20026;&#65306;
+2
+1
+0
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-1-2" class="outline-3">
+<h3 id="sec-1-2"><span class="section-number-3">1.2</span> panic和recover</h3>
+<div class="outline-text-3" id="text-1-2">
+<p>
+内置的panic和recover函数是Go语言提供的一套异常处理机制。
+</p>
+
+<p>
+Go语言将错误和异常两者区分对待。
+</p>
+
+<p>
+处理错误的惯用法是将错误以函数或方法最后一个返回值的形式将其返回，并在调用它的时候检查返回的错误值。
+</p>
+
+<p>
+处理异常，我们可以调用内置的panic()函数，该函数可以传入任何想要的值（例如一个字符串用于解释为什么那些不变的东西被破坏了）。当内置的panic()函数被调用时，外围函数或方法的执行会立即中止。然而如果其中有个延迟执行的函数或方法包含一个对内置的recover()函数的调用，该异常则不会立即终止。这样我们就可以以任何我们需要的方式来响应异常。你可以忽略异常，也可先完成必要的清理工作，然后手动调用panic()函数来让该异常继续。但是通用的方案是，创建一个error值，并将其设置成包含了recover()调用的函数的返回值（或返回值之一），这样就可以将一个异常（即一个panic()）转换成错误（即一个error）。
+</p>
+
+<p>
+绝大多数情况下，Go语言标准库使用error而非异常。对于自定义的函数，一般不使用panic()，如果要使用，也要避免异常离开这个自定义包边界，可以通过使用recover()函数来捕捉异常并返回一个相应的错误值，就像标准库中所做的那样。
+</p>
+
+<p>
+什么时候应该允许异常终止程序，什么时候又应该使用recover()来捕捉异常？一般来说，如果程序中有逻辑错误，我们希望程序马上崩溃，以便我们可以发现并修改。但一旦程序部署好了，我们就不想让程序崩溃。对于那些只需通过执行程序就能捕捉的问题，我们应该使用panic()，或者能发生异常的函数（比如regexp.MustCompile()）。对于任何特殊情况下可能运行也可能不运行的函数或方法，如果调用了panic()函数或调用了可发生异常的函数或方法，我们应该使用recover()函数来保证将异常转换成错误。
+</p>
+<div class="org-src-container">
+
+<pre class="src src-go"><span style="color: #00ffff;">func</span> <span style="color: #00fa9a;">ConvertInt64ToInt</span>(x <span style="color: #ffff00;">int64</span>) <span style="color: #ffff00;">int</span> {
+        <span style="color: #00ffff;">if</span> math.MinInt32 &lt;= x &amp;&amp; x &lt;= math.MaxInt32 {
+                <span style="color: #00ffff;">return</span> <span style="color: #00fa9a;">int</span>(x)
+        }
+        <span style="color: #b0c4de;">panic</span>(fmt.<span style="color: #00fa9a;">Sprintf</span>(<span style="color: #ffa500;">"%d is out of the int32 range"</span>, x))
+}
+</pre>
+</div>
+<p>
+该函数安全地将一个int64类型的值转换成一个int类型的值，如果转换产生的结果非法，则报告发生异常。
+如果其他函数调用了这个函数，而这个函数又发生了异常，那么就会导致程序终止。在这种情况下，我们可以使用recover()来保证产生的异常不会传递出去，即不会因一个函数产生异常而导致整个程序崩溃。底下是一个包装函数，其功能是，如果转换成功，则返回一个int类型的值和一个nil，如果失败则返回一个int值和一个非空的错误值。
+</p>
+<div class="org-src-container">
+
+<pre class="src src-go"><span style="color: #00ffff;">func</span> <span style="color: #00fa9a;">IntFromInt64</span>(x <span style="color: #ffff00;">int64</span>) (i <span style="color: #ffff00;">int</span>, err <span style="color: #ffff00;">error</span>) {
+        <span style="color: #00ffff;">defer</span> <span style="color: #00ffff;">func</span>() {
+                <span style="color: #00ffff;">if</span> e := <span style="color: #b0c4de;">recover</span>(); e != <span style="color: #fa8072;">nil</span> {
+                        err = fmt.<span style="color: #00fa9a;">Errorf</span>(<span style="color: #ffa500;">"%v"</span>, e)
+                }
+        }()
+        i = <span style="color: #00fa9a;">ConvertInt64ToInt</span>(x)
+        <span style="color: #00ffff;">return</span> i, <span style="color: #fa8072;">nil</span>
+}
+</pre>
+</div>
+</div>
+</div>
+</div>
