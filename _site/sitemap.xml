@@ -3,7 +3,35 @@
 
     
     <url>
+      <loc>http://xep007.github.io/golang/2014/11/15/Go%E8%AF%AD%E8%A8%80%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%BA%8C%EF%BC%89%E2%80%94%E2%80%94%E8%BF%87%E7%A8%8B%E5%BC%8F%E7%BC%96%E7%A8%8B%E4%B9%8B%E9%80%9A%E4%BF%A1%E5%92%8C%E5%B9%B6%E5%8F%91%E8%AF%AD%E5%8F%A5.html</loc>
+      <changefreq>daily</changefreq>
+      <lastmod>2014-11-15T00:00:00+08:00</lastmod>
+      <priority>1.0</priority>
+    </url>
+    
+    <url>
+      <loc>http://xep007.github.io/golang/2014/11/13/Go%E8%AF%AD%E8%A8%80%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%B8%80%EF%BC%89%E2%80%94%E2%80%94%E8%BF%87%E7%A8%8B%E5%BC%8F%E7%BC%96%E7%A8%8B%E4%B9%8B%E5%BE%AA%E7%8E%AF%E8%AF%AD%E5%8F%A5.html</loc>
+      <changefreq>daily</changefreq>
+      <lastmod>2014-11-13T00:00:00+08:00</lastmod>
+      <priority>1.0</priority>
+    </url>
+    
+    <url>
+      <loc>http://xep007.github.io/golang/2014/11/11/Go%E8%AF%AD%E8%A8%80%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%EF%BC%89%E2%80%94%E2%80%94%E8%BF%87%E7%A8%8B%E5%BC%8F%E7%BC%96%E7%A8%8B%E4%B9%8B%E5%88%86%E6%94%AF.html</loc>
+      <changefreq>daily</changefreq>
+      <lastmod>2014-11-11T00:00:00+08:00</lastmod>
+      <priority>1.0</priority>
+    </url>
+    
+    <url>
       <loc>http://xep007.github.io/firefox/2014/11/10/firefox%E4%BD%BF%E7%94%A8stylish%E6%89%A9%E5%B1%95%E6%98%BE%E7%A4%BAweibo.com%E7%AD%89%E7%BD%91%E7%AB%99%E7%9A%84%E5%AD%97%E4%BD%93%E5%9B%BE%E6%A0%87.html</loc>
+      <changefreq>daily</changefreq>
+      <lastmod>2014-11-10T00:00:00+08:00</lastmod>
+      <priority>1.0</priority>
+    </url>
+    
+    <url>
+      <loc>http://xep007.github.io/golang/2014/11/10/Go%E8%AF%AD%E8%A8%80%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B9%9D%EF%BC%89%E2%80%94%E2%80%94%E8%BF%87%E7%A8%8B%E5%BC%8F%E7%BC%96%E7%A8%8B%E4%B9%8B%E8%AF%AD%E5%8F%A5%E5%9F%BA%E7%A1%80.html</loc>
       <changefreq>daily</changefreq>
       <lastmod>2014-11-10T00:00:00+08:00</lastmod>
       <priority>1.0</priority>
@@ -221,6 +249,12 @@
       <changefreq>monthly</changefreq>
       <priority>0.80</priority>
     </url>
+    
+    
+    
+    
+    
+    
     
     
     

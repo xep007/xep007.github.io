@@ -5,9 +5,583 @@
     <description>Linux / C / golang / Emacs</description>
     <link>http://xep007.github.io/</link>
     <atom:link href="http://xep007.github.io/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Mon, 10 Nov 2014 17:40:25 +0800</pubDate>
-    <lastBuildDate>Mon, 10 Nov 2014 17:40:25 +0800</lastBuildDate>
+    <pubDate>Sat, 15 Nov 2014 11:51:18 +0800</pubDate>
+    <lastBuildDate>Sat, 15 Nov 2014 11:51:18 +0800</lastBuildDate>
     <generator>Jekyll v2.4.0</generator>
+    
+      <item>
+        <title>Go语言程序设计读书笔记（十二）——过程式编程之通信和并发语句</title>
+        <description>&lt;div id=&quot;table-of-contents&quot;&gt;
+&lt;h2&gt;Table of Contents&lt;/h2&gt;
+&lt;div id=&quot;text-table-of-contents&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1&quot;&gt;1. 通信和并发语句&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-1&quot;&gt;1.1. goroutine的创建&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-2&quot;&gt;1.2. goroutine之间的通信&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-3&quot;&gt;1.3. 通道的创建&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-4&quot;&gt;1.4. select语句&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+
+&lt;div id=&quot;outline-container-sec-1&quot; class=&quot;outline-2&quot;&gt;
+&lt;h2 id=&quot;sec-1&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;1&lt;/span&gt; 通信和并发语句&lt;/h2&gt;
+&lt;div class=&quot;outline-text-2&quot; id=&quot;text-1&quot;&gt;
+&lt;p&gt;
+本章简要介绍Go语言通信和并发的基本语法，详细的内容将在第7章涉及。
+&lt;/p&gt;
+
+&lt;p&gt;
+goroutine是程序中与其他goroutine完全相互独立而并发执行的函数或方法调用。每一个Go程序至少有一个goroutine，即用来执行main函数的主goroutine。
+&lt;/p&gt;
+
+&lt;p&gt;
+goroutine非常像轻量的线程或协程，可以大批量创建，所有的goroutine共享相同的地址空间，同时提供锁原语来保证数据能安全地跨goroutine共享。
+&lt;/p&gt;
+
+&lt;p&gt;
+Go语言推荐使用通信而非共享数据来进行并发编程。通道是一个双向或单向的通信管道，可用于在两个或多个goroutine之间通信（接收或发送）数据。
+&lt;/p&gt;
+
+&lt;p&gt;
+在goroutine和通道之间，Go语言提供了一种轻量级、可扩展的并发方式，该方式不需要共享内存，因此也不需要锁。
+&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-sec-1-1&quot; class=&quot;outline-3&quot;&gt;
+&lt;h3 id=&quot;sec-1-1&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.1&lt;/span&gt; goroutine的创建&lt;/h3&gt;
+&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-1&quot;&gt;
+&lt;div class=&quot;org-src-container&quot;&gt;
+
+&lt;pre class=&quot;src src-go&quot;&gt;&lt;span style=&quot;color: #00ffff;&quot;&gt;go&lt;/span&gt; &lt;span style=&quot;color: #00fa9a;&quot;&gt;function&lt;/span&gt;(arguments)
+&lt;span style=&quot;color: #00ffff;&quot;&gt;go&lt;/span&gt; &lt;span style=&quot;color: #00ffff;&quot;&gt;func&lt;/span&gt;(&lt;span style=&quot;color: #ffff00;&quot;&gt;parameters&lt;/span&gt;) {block} (arguments)
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;
+goroutine的创建非常简单，只需要使用go关键字即可。我们要么调用一个函数，要么调用一个临时创建的匿名函数。被调用的函数的执行会立即进行，但它是在另一个goroutine上执行，并且当前goroutine的执行（即包含该go语句的goroutine）会从下一条语句中立即恢复。因此执行一个go语句之后，当前程序中至少有两个goroutine在运行，其中包括原始的goroutine和新创建的goroutine。这和进程与线程的创建相似。
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-sec-1-2&quot; class=&quot;outline-3&quot;&gt;
+&lt;h3 id=&quot;sec-1-2&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.2&lt;/span&gt; goroutine之间的通信&lt;/h3&gt;
+&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-2&quot;&gt;
+&lt;div class=&quot;org-src-container&quot;&gt;
+
+&lt;pre class=&quot;src src-go&quot;&gt;channel &amp;lt;- value         &lt;span style=&quot;color: #ffd700;&quot;&gt;//&lt;/span&gt;&lt;span style=&quot;color: #ffd700;&quot;&gt;&amp;#38459;&amp;#22622;&amp;#21457;&amp;#36865;&lt;/span&gt;
+&amp;lt;-channel                &lt;span style=&quot;color: #ffd700;&quot;&gt;//&lt;/span&gt;&lt;span style=&quot;color: #ffd700;&quot;&gt;&amp;#25509;&amp;#25910;&amp;#24182;&amp;#23558;&amp;#20854;&amp;#20002;&amp;#24323;&lt;/span&gt;
+x := &amp;lt;-channel           &lt;span style=&quot;color: #ffd700;&quot;&gt;//&lt;/span&gt;&lt;span style=&quot;color: #ffd700;&quot;&gt;&amp;#25509;&amp;#25910;&amp;#24182;&amp;#23558;&amp;#20854;&amp;#20445;&amp;#23384;&lt;/span&gt;
+x, ok := &amp;lt;-channel       &lt;span style=&quot;color: #ffd700;&quot;&gt;//&lt;/span&gt;&lt;span style=&quot;color: #ffd700;&quot;&gt;&amp;#21151;&amp;#33021;&amp;#21516;&amp;#19978;&amp;#19968;&amp;#26465;&amp;#65292;&amp;#21516;&amp;#26102;&amp;#26816;&amp;#26597;&amp;#36890;&amp;#36947;&amp;#26159;&amp;#21542;&amp;#24050;&amp;#20851;&amp;#38381;&amp;#25110;&amp;#26159;&amp;#21542;&amp;#20026;&amp;#31354;&lt;/span&gt;
+&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;
+非阻塞发送可以使用select语句，或使用带缓冲的通道。
+&lt;/p&gt;
+
+&lt;p&gt;
+通道使用内置make()函数来创建。
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-sec-1-3&quot; class=&quot;outline-3&quot;&gt;
+&lt;h3 id=&quot;sec-1-3&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.3&lt;/span&gt; 通道的创建&lt;/h3&gt;
+&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-3&quot;&gt;
+&lt;div class=&quot;org-src-container&quot;&gt;
+
+&lt;pre class=&quot;src src-go&quot;&gt;&lt;span style=&quot;color: #b0c4de;&quot;&gt;make&lt;/span&gt; (&lt;span style=&quot;color: #00ffff;&quot;&gt;chan&lt;/span&gt; &lt;span style=&quot;color: #ffff00;&quot;&gt;Type&lt;/span&gt;)                   &lt;span style=&quot;color: #ffd700;&quot;&gt;//&lt;/span&gt;&lt;span style=&quot;color: #ffd700;&quot;&gt;&amp;#21516;&amp;#27493;&amp;#36890;&amp;#36947;&amp;#65292;&amp;#38459;&amp;#22622;&amp;#24335;&lt;/span&gt;
+&lt;span style=&quot;color: #b0c4de;&quot;&gt;make&lt;/span&gt; (&lt;span style=&quot;color: #00ffff;&quot;&gt;chan&lt;/span&gt; &lt;span style=&quot;color: #ffff00;&quot;&gt;Type&lt;/span&gt;, capacity)         &lt;span style=&quot;color: #ffd700;&quot;&gt;//&lt;/span&gt;&lt;span style=&quot;color: #ffd700;&quot;&gt;&amp;#24322;&amp;#27493;&amp;#36890;&amp;#36947;&amp;#65292;&amp;#32531;&amp;#20914;&amp;#24335;&lt;/span&gt;
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;
+如果没有声明缓冲区容量，那么该通道就是同步的，因此会阻塞直到发送者准备好发送和接收者准备好接收。如果设定了缓冲区容量，那么通道就是异步的，只要缓冲区还有未使用的空间用于发送数据，或还有未输出的数据，那么其通信就会无阻塞地进行。
+&lt;/p&gt;
+
+&lt;p&gt;
+通道默认是双向的，当然，也可设定为单向（在第7章介绍）。
+例子：
+&lt;/p&gt;
+&lt;div class=&quot;org-src-container&quot;&gt;
+
+&lt;pre class=&quot;src src-go&quot;&gt;&lt;span style=&quot;color: #00ffff;&quot;&gt;package&lt;/span&gt; main
+
+&lt;span style=&quot;color: #00ffff;&quot;&gt;import&lt;/span&gt; (
+        &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;fmt&quot;&lt;/span&gt;
+)
+
+&lt;span style=&quot;color: #00ffff;&quot;&gt;func&lt;/span&gt; &lt;span style=&quot;color: #00fa9a;&quot;&gt;main&lt;/span&gt;() {
+        counterA := &lt;span style=&quot;color: #00fa9a;&quot;&gt;createCounter&lt;/span&gt;(2)   &lt;span style=&quot;color: #ffd700;&quot;&gt;//&lt;/span&gt;&lt;span style=&quot;color: #ffd700;&quot;&gt;counterA&amp;#26159;chan int&amp;#31867;&amp;#22411;&lt;/span&gt;
+        counterB := &lt;span style=&quot;color: #00fa9a;&quot;&gt;createCounter&lt;/span&gt;(102) &lt;span style=&quot;color: #ffd700;&quot;&gt;//&lt;/span&gt;&lt;span style=&quot;color: #ffd700;&quot;&gt;counterB&amp;#26159;chan int&amp;#31867;&amp;#22411;&lt;/span&gt;
+        &lt;span style=&quot;color: #00ffff;&quot;&gt;for&lt;/span&gt; i := 0; i &amp;lt; 5; i++ {
+                a := &amp;lt;-counterA
+                fmt.&lt;span style=&quot;color: #00fa9a;&quot;&gt;Printf&lt;/span&gt;(&lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;(A&amp;#8594;%d, B&amp;#8594;%d)&quot;&lt;/span&gt;, a, &amp;lt;-counterB)
+        }
+        fmt.&lt;span style=&quot;color: #00fa9a;&quot;&gt;Println&lt;/span&gt;()
+}
+
+&lt;span style=&quot;color: #00ffff;&quot;&gt;func&lt;/span&gt; &lt;span style=&quot;color: #00fa9a;&quot;&gt;createCounter&lt;/span&gt;(start &lt;span style=&quot;color: #ffff00;&quot;&gt;int&lt;/span&gt;) &lt;span style=&quot;color: #00ffff;&quot;&gt;chan&lt;/span&gt; &lt;span style=&quot;color: #ffff00;&quot;&gt;int&lt;/span&gt; {
+        next := &lt;span style=&quot;color: #b0c4de;&quot;&gt;make&lt;/span&gt;(&lt;span style=&quot;color: #00ffff;&quot;&gt;chan&lt;/span&gt; &lt;span style=&quot;color: #ffff00;&quot;&gt;int&lt;/span&gt;)
+
+        &lt;span style=&quot;color: #00ffff;&quot;&gt;go&lt;/span&gt; &lt;span style=&quot;color: #00ffff;&quot;&gt;func&lt;/span&gt;(i &lt;span style=&quot;color: #ffff00;&quot;&gt;int&lt;/span&gt;) {
+                &lt;span style=&quot;color: #00ffff;&quot;&gt;for&lt;/span&gt; {
+                        next &amp;lt;- i
+                        i++
+                }
+        }(start)
+        &lt;span style=&quot;color: #00ffff;&quot;&gt;return&lt;/span&gt; next
+}
+
+&amp;#36755;&amp;#20986;&amp;#32467;&amp;#26524;&amp;#20026;&amp;#65306;
+(A&amp;#8594;2, B&amp;#8594;102)(A&amp;#8594;3, B&amp;#8594;103)(A&amp;#8594;4, B&amp;#8594;104)(A&amp;#8594;5, B&amp;#8594;105)(A&amp;#8594;6, B&amp;#8594;106)
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-sec-1-4&quot; class=&quot;outline-3&quot;&gt;
+&lt;h3 id=&quot;sec-1-4&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.4&lt;/span&gt; select语句&lt;/h3&gt;
+&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-4&quot;&gt;
+&lt;p&gt;
+select语法如下：
+&lt;/p&gt;
+&lt;div class=&quot;org-src-container&quot;&gt;
+
+&lt;pre class=&quot;src src-go&quot;&gt;&lt;span style=&quot;color: #00ffff;&quot;&gt;select&lt;/span&gt; {
+&lt;span style=&quot;color: #00ffff;&quot;&gt;case&lt;/span&gt; sendOrReceive1: block1
+...
+&lt;span style=&quot;color: #00ffff;&quot;&gt;case&lt;/span&gt; sendOrReceiveN: blockN
+&lt;span style=&quot;color: #00ffff;&quot;&gt;default&lt;/span&gt;: blockD
+}
+&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;
+在一个select语句中，Go语言会按顺序从头至尾评估每一个发送和接收语句，如果其中任一语句可执行（即没有被阻塞），那么就从那些可以执行的语句中任意选择一条来使用。如果没有任意一条语句可以执行（即所有通道都被阻塞），那么有两种可能的情况。如果给出了default语句，那么就会执行default语句，同时程序的执行会从select语句后的语句中恢复，但是如果没有default语句，那么select语句将被阻塞，直到至少有一个通信可以继续下去。
+&lt;/p&gt;
+
+&lt;div class=&quot;org-src-container&quot;&gt;
+
+&lt;pre class=&quot;src src-go&quot;&gt;&lt;span style=&quot;color: #00ffff;&quot;&gt;package&lt;/span&gt; main
+
+&lt;span style=&quot;color: #00ffff;&quot;&gt;import&lt;/span&gt; (
+        &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;fmt&quot;&lt;/span&gt;
+        &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;math/rand&quot;&lt;/span&gt;
+)
+
+&lt;span style=&quot;color: #00ffff;&quot;&gt;func&lt;/span&gt; &lt;span style=&quot;color: #00fa9a;&quot;&gt;main&lt;/span&gt;() {
+        channels := &lt;span style=&quot;color: #b0c4de;&quot;&gt;make&lt;/span&gt;([]&lt;span style=&quot;color: #00ffff;&quot;&gt;chan&lt;/span&gt; &lt;span style=&quot;color: #ffff00;&quot;&gt;bool&lt;/span&gt;, 6)
+        &lt;span style=&quot;color: #00ffff;&quot;&gt;for&lt;/span&gt; i := &lt;span style=&quot;color: #00ffff;&quot;&gt;range&lt;/span&gt; channels {
+                channels[i] = &lt;span style=&quot;color: #b0c4de;&quot;&gt;make&lt;/span&gt;(&lt;span style=&quot;color: #00ffff;&quot;&gt;chan&lt;/span&gt; &lt;span style=&quot;color: #ffff00;&quot;&gt;bool&lt;/span&gt;)
+        }
+        &lt;span style=&quot;color: #00ffff;&quot;&gt;go&lt;/span&gt; &lt;span style=&quot;color: #00ffff;&quot;&gt;func&lt;/span&gt;() {
+                &lt;span style=&quot;color: #00ffff;&quot;&gt;for&lt;/span&gt; {
+                        channels[rand.&lt;span style=&quot;color: #00fa9a;&quot;&gt;Intn&lt;/span&gt;(6)] &amp;lt;- &lt;span style=&quot;color: #fa8072;&quot;&gt;true&lt;/span&gt;
+                }
+        }()
+
+        &lt;span style=&quot;color: #00ffff;&quot;&gt;for&lt;/span&gt; i := 0; i &amp;lt; 36; i++ {
+                &lt;span style=&quot;color: #00ffff;&quot;&gt;var&lt;/span&gt; x int
+                &lt;span style=&quot;color: #00ffff;&quot;&gt;select&lt;/span&gt; {
+                &lt;span style=&quot;color: #00ffff;&quot;&gt;case&lt;/span&gt; &amp;lt;-channels[0]:
+                        x = 1
+                &lt;span style=&quot;color: #00ffff;&quot;&gt;case&lt;/span&gt; &amp;lt;-channels[1]:
+                        x = 2
+                &lt;span style=&quot;color: #00ffff;&quot;&gt;case&lt;/span&gt; &amp;lt;-channels[2]:
+                        x = 3
+                &lt;span style=&quot;color: #00ffff;&quot;&gt;case&lt;/span&gt; &amp;lt;-channels[3]:
+                        x = 4
+                &lt;span style=&quot;color: #00ffff;&quot;&gt;case&lt;/span&gt; &amp;lt;-channels[4]:
+                        x = 5
+                &lt;span style=&quot;color: #00ffff;&quot;&gt;case&lt;/span&gt; &amp;lt;-channels[5]:
+                        x = 6
+
+                }
+                fmt.&lt;span style=&quot;color: #00fa9a;&quot;&gt;Printf&lt;/span&gt;(&lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;%d &quot;&lt;/span&gt;, x)
+        }
+        fmt.&lt;span style=&quot;color: #00fa9a;&quot;&gt;Println&lt;/span&gt;()
+
+}
+
+&amp;#38543;&amp;#26426;&amp;#36755;&amp;#20986;&amp;#32467;&amp;#26524;&amp;#20026;&amp;#65306;
+6 4 6 6 2 1 2 3 5 1 3 2 1 6 5 3 4 6 6 3 6 1 3 5 4 2 2 5 1 4 2 1 6 6 4 3
+&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;
+在上面代码中，首先创建了6个用于发送和接收布尔数据的通道。然后创建了一个gorotine，其中有一个无限循环语句，在循环中每次迭代都随机选择了一个通道来发送一个true值。当然，该gorotine会立即阻塞，因为这些通道不带缓冲且我们也没有从这些通道接收数据。
+&lt;/p&gt;
+
+&lt;p&gt;
+接下来的代码，我们使用6个通道来模拟一个公平骰子的滚动。其中的select语句等待通道发送数据，由于没有default语句，该select语句会阻塞。一旦有一个或更多个通道准备好了发送数据，那么程序会以伪随机的形式选择一个case语句来执行。由于该select语句在一个普通for循环内部，它会执行固定数量的次数。
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</description>
+        <pubDate>Sat, 15 Nov 2014 00:00:00 +0800</pubDate>
+        <link>http://xep007.github.io/golang/2014/11/15/Go%E8%AF%AD%E8%A8%80%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%BA%8C%EF%BC%89%E2%80%94%E2%80%94%E8%BF%87%E7%A8%8B%E5%BC%8F%E7%BC%96%E7%A8%8B%E4%B9%8B%E9%80%9A%E4%BF%A1%E5%92%8C%E5%B9%B6%E5%8F%91%E8%AF%AD%E5%8F%A5.html</link>
+        <guid isPermaLink="true">http://xep007.github.io/golang/2014/11/15/Go%E8%AF%AD%E8%A8%80%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%BA%8C%EF%BC%89%E2%80%94%E2%80%94%E8%BF%87%E7%A8%8B%E5%BC%8F%E7%BC%96%E7%A8%8B%E4%B9%8B%E9%80%9A%E4%BF%A1%E5%92%8C%E5%B9%B6%E5%8F%91%E8%AF%AD%E5%8F%A5.html</guid>
+        
+        <category>golang</category>
+        
+        
+        <category>golang</category>
+        
+      </item>
+    
+      <item>
+        <title>Go语言程序设计读书笔记（十一）——过程式编程之循环语句</title>
+        <description>&lt;div id=&quot;table-of-contents&quot;&gt;
+&lt;h2&gt;Table of Contents&lt;/h2&gt;
+&lt;div id=&quot;text-table-of-contents&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1&quot;&gt;1. for循环语句&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+
+&lt;div id=&quot;outline-container-sec-1&quot; class=&quot;outline-2&quot;&gt;
+&lt;h2 id=&quot;sec-1&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;1&lt;/span&gt; for循环语句&lt;/h2&gt;
+&lt;div class=&quot;outline-text-2&quot; id=&quot;text-1&quot;&gt;
+&lt;p&gt;
+Go语言没有while和do&amp;#x2026;while循环语句，只提供for循环语句。但是Go语言的for比c/c++的for语句更丰富、更灵活。
+&lt;/p&gt;
+
+&lt;p&gt;
+Go语言的for有两种类型：一是无格式的for语句，一是for&amp;#x2026;range语句。
+&lt;/p&gt;
+
+&lt;div class=&quot;org-src-container&quot;&gt;
+
+&lt;pre class=&quot;src src-go&quot;&gt;&lt;span style=&quot;color: #00ffff;&quot;&gt;for&lt;/span&gt; { &lt;span style=&quot;color: #ffd700;&quot;&gt;//&lt;/span&gt;&lt;span style=&quot;color: #ffd700;&quot;&gt;&amp;#26080;&amp;#38480;&amp;#24490;&amp;#29615;&lt;/span&gt;
+    block
+}
+
+&lt;span style=&quot;color: #00ffff;&quot;&gt;for&lt;/span&gt; booleanExpression {  &lt;span style=&quot;color: #ffd700;&quot;&gt;//&lt;/span&gt;&lt;span style=&quot;color: #ffd700;&quot;&gt;&amp;#30456;&amp;#24403;&amp;#20110;while&amp;#24490;&amp;#29615;&lt;/span&gt;
+    block
+}
+
+&lt;span style=&quot;color: #00ffff;&quot;&gt;for&lt;/span&gt; optionalPreStatement; booleanExpress; optionalPostStatement { &lt;span style=&quot;color: #ffd700;&quot;&gt;//&lt;/span&gt;&lt;span style=&quot;color: #ffd700;&quot;&gt;&amp;#9312;&lt;/span&gt;
+    block
+}
+
+&lt;span style=&quot;color: #00ffff;&quot;&gt;for&lt;/span&gt; index, char := &lt;span style=&quot;color: #00ffff;&quot;&gt;range&lt;/span&gt; aString {  &lt;span style=&quot;color: #ffd700;&quot;&gt;//&lt;/span&gt;&lt;span style=&quot;color: #ffd700;&quot;&gt;&amp;#19968;&amp;#20010;&amp;#23383;&amp;#31526;&amp;#19968;&amp;#20010;&amp;#23383;&amp;#31526;&amp;#22320;&amp;#36845;&amp;#20195;&amp;#19968;&amp;#20010;&amp;#23383;&amp;#31526;&amp;#20018;&amp;#9313;&lt;/span&gt;
+    block
+}
+
+&lt;span style=&quot;color: #00ffff;&quot;&gt;for&lt;/span&gt; index := &lt;span style=&quot;color: #00ffff;&quot;&gt;range&lt;/span&gt; aString {  &lt;span style=&quot;color: #ffd700;&quot;&gt;//&lt;/span&gt;&lt;span style=&quot;color: #ffd700;&quot;&gt;&amp;#19968;&amp;#20010;&amp;#23383;&amp;#31526;&amp;#19968;&amp;#20010;&amp;#23383;&amp;#31526;&amp;#22320;&amp;#36845;&amp;#20195;&amp;#19968;&amp;#20010;&amp;#23383;&amp;#31526;&amp;#20018;&amp;#9314;&lt;/span&gt;
+    block  &lt;span style=&quot;color: #ffd700;&quot;&gt;//&lt;/span&gt;&lt;span style=&quot;color: #ffd700;&quot;&gt;char, size := utf8.DecodeRuneInString(aString[index:])&lt;/span&gt;
+}
+
+&lt;span style=&quot;color: #00ffff;&quot;&gt;for&lt;/span&gt; index, item := &lt;span style=&quot;color: #00ffff;&quot;&gt;range&lt;/span&gt; anArrayOrSlice {  &lt;span style=&quot;color: #ffd700;&quot;&gt;//&lt;/span&gt;&lt;span style=&quot;color: #ffd700;&quot;&gt;&amp;#25968;&amp;#32452;&amp;#25110;&amp;#20999;&amp;#29255;&amp;#36845;&amp;#20195;&amp;#9315;&lt;/span&gt;
+    block
+}
+
+&lt;span style=&quot;color: #00ffff;&quot;&gt;for&lt;/span&gt; index := &lt;span style=&quot;color: #00ffff;&quot;&gt;range&lt;/span&gt; anArrayOrSlice {  &lt;span style=&quot;color: #ffd700;&quot;&gt;//&lt;/span&gt;&lt;span style=&quot;color: #ffd700;&quot;&gt;&amp;#25968;&amp;#32452;&amp;#25110;&amp;#20999;&amp;#29255;&amp;#36845;&amp;#20195;&amp;#9316;&lt;/span&gt;
+    block  &lt;span style=&quot;color: #ffd700;&quot;&gt;//&lt;/span&gt;&lt;span style=&quot;color: #ffd700;&quot;&gt;item := anArrayOrSlice[index]&lt;/span&gt;
+}
+
+&lt;span style=&quot;color: #00ffff;&quot;&gt;for&lt;/span&gt; key, value := &lt;span style=&quot;color: #00ffff;&quot;&gt;range&lt;/span&gt; aMap {  &lt;span style=&quot;color: #ffd700;&quot;&gt;//&lt;/span&gt;&lt;span style=&quot;color: #ffd700;&quot;&gt;&amp;#26144;&amp;#23556;&amp;#36845;&amp;#20195;&amp;#9317;&lt;/span&gt;
+    block
+}
+
+&lt;span style=&quot;color: #00ffff;&quot;&gt;for&lt;/span&gt; key := &lt;span style=&quot;color: #00ffff;&quot;&gt;range&lt;/span&gt; aMap {  &lt;span style=&quot;color: #ffd700;&quot;&gt;//&lt;/span&gt;&lt;span style=&quot;color: #ffd700;&quot;&gt;&amp;#26144;&amp;#23556;&amp;#36845;&amp;#20195;&amp;#9318;&lt;/span&gt;
+    block &lt;span style=&quot;color: #ffd700;&quot;&gt;//&lt;/span&gt;&lt;span style=&quot;color: #ffd700;&quot;&gt;value := aMap[key]&lt;/span&gt;
+}
+
+&lt;span style=&quot;color: #00ffff;&quot;&gt;for&lt;/span&gt; item := &lt;span style=&quot;color: #00ffff;&quot;&gt;range&lt;/span&gt; aChannel { &lt;span style=&quot;color: #ffd700;&quot;&gt;//&lt;/span&gt;&lt;span style=&quot;color: #ffd700;&quot;&gt;&amp;#36890;&amp;#36947;&amp;#36845;&amp;#20195;&lt;/span&gt;
+    block
+}
+&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;ol class=&quot;org-ol&quot;&gt;
+&lt;li&gt;for循环中的花括号与if、switch一样是必须的，分号只在可选的前置或后置声明语句都存在的时候才需要，比如①。两个声明必须是简短的。如果变量是在一个可选的声明语句中创建，或用来保存一个range子句中产生的值，那么它们的作用域是从声明处到for语句结束。
+&lt;/li&gt;
+&lt;li&gt;字符串迭代可用②或③，通常②比③ 更方便。
+&lt;/li&gt;
+&lt;li&gt;对于非空切片或索引而言，④和⑤依不同需要同样方便。在Go语言中，更多使用for&amp;#x2026;range而较少用①的循环。
+&lt;/li&gt;
+&lt;li&gt;映射的迭代使用⑥或⑦，如需要有序的映射，就使用⑦。
+&lt;/li&gt;
+&lt;li&gt;②至⑦如作用于一个空的字符串、数组、切片或映射，那么for循环就什么也不做。控制流程从下一条语句继续。
+&lt;/li&gt;
+&lt;li&gt;一个for循环可以随时使用break语句来终止，这样控制权将传送给for循环语句的一一条语句。如果break语句声明了一个标签（见下面的例子），那么控制权就会进入包含该标签的最内层for、switch或者select语句中。也可通过continue来使得语句的控制权回到for循环的条件或范围子句，以进行新一次迭代。
+&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;
+&lt;b&gt;例子：&lt;/b&gt;
+&lt;/p&gt;
+
+&lt;p&gt;
+假设有一个二维切片，其类型为[][]int，想要从中搜索是否包含某个特定的值。以下有两种方法。
+&lt;/p&gt;
+&lt;div class=&quot;org-src-container&quot;&gt;
+
+&lt;pre class=&quot;src src-go&quot;&gt;found := &lt;span style=&quot;color: #fa8072;&quot;&gt;false&lt;/span&gt;
+&lt;span style=&quot;color: #00ffff;&quot;&gt;for&lt;/span&gt; row := &lt;span style=&quot;color: #00ffff;&quot;&gt;range&lt;/span&gt; table {
+    &lt;span style=&quot;color: #00ffff;&quot;&gt;for&lt;/span&gt; column := &lt;span style=&quot;color: #00ffff;&quot;&gt;range&lt;/span&gt; table[row] {
+        &lt;span style=&quot;color: #00ffff;&quot;&gt;if&lt;/span&gt; table[row][column] == x {
+            found = &lt;span style=&quot;color: #fa8072;&quot;&gt;true&lt;/span&gt;
+            &lt;span style=&quot;color: #00ffff;&quot;&gt;break&lt;/span&gt;
+        }
+    }
+    &lt;span style=&quot;color: #00ffff;&quot;&gt;if&lt;/span&gt; found {
+        &lt;span style=&quot;color: #00ffff;&quot;&gt;break&lt;/span&gt;
+    }
+}
+&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;div class=&quot;org-src-container&quot;&gt;
+
+&lt;pre class=&quot;src src-go&quot;&gt;found := &lt;span style=&quot;color: #fa8072;&quot;&gt;false&lt;/span&gt;
+&lt;span style=&quot;color: #fa8072;&quot;&gt;FOUND&lt;/span&gt;:
+&lt;span style=&quot;color: #00ffff;&quot;&gt;for&lt;/span&gt; row := &lt;span style=&quot;color: #00ffff;&quot;&gt;range&lt;/span&gt; table {
+    &lt;span style=&quot;color: #00ffff;&quot;&gt;for&lt;/span&gt; column := &lt;span style=&quot;color: #00ffff;&quot;&gt;range&lt;/span&gt; table[row] {
+        &lt;span style=&quot;color: #00ffff;&quot;&gt;if&lt;/span&gt; table[row][column] == x {
+            found = &lt;span style=&quot;color: #fa8072;&quot;&gt;true&lt;/span&gt;
+            &lt;span style=&quot;color: #00ffff;&quot;&gt;break&lt;/span&gt; &lt;span style=&quot;color: #fa8072;&quot;&gt;FOUND&lt;/span&gt;
+        }
+    }
+}
+&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;
+第一个程序片段通过两个break跳出两层for循环。第二个程序片段通过break FOUND标签直接跳出两层for循环。
+&lt;/p&gt;
+
+&lt;p&gt;
+标签是一个后面带冒号的标识符。可以用于for、switch以及select语句。break和continue语句都可以声明标签，并且都可用于for循环里面。同时也可以在switch和select语句里面使用break语句。
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</description>
+        <pubDate>Thu, 13 Nov 2014 00:00:00 +0800</pubDate>
+        <link>http://xep007.github.io/golang/2014/11/13/Go%E8%AF%AD%E8%A8%80%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%B8%80%EF%BC%89%E2%80%94%E2%80%94%E8%BF%87%E7%A8%8B%E5%BC%8F%E7%BC%96%E7%A8%8B%E4%B9%8B%E5%BE%AA%E7%8E%AF%E8%AF%AD%E5%8F%A5.html</link>
+        <guid isPermaLink="true">http://xep007.github.io/golang/2014/11/13/Go%E8%AF%AD%E8%A8%80%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%B8%80%EF%BC%89%E2%80%94%E2%80%94%E8%BF%87%E7%A8%8B%E5%BC%8F%E7%BC%96%E7%A8%8B%E4%B9%8B%E5%BE%AA%E7%8E%AF%E8%AF%AD%E5%8F%A5.html</guid>
+        
+        <category>golang</category>
+        
+        
+        <category>golang</category>
+        
+      </item>
+    
+      <item>
+        <title>Go语言程序设计读书笔记（十）——过程式编程之分支</title>
+        <description>&lt;div id=&quot;table-of-contents&quot;&gt;
+&lt;h2&gt;Table of Contents&lt;/h2&gt;
+&lt;div id=&quot;text-table-of-contents&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1&quot;&gt;1. 第5章 过程式编程——分支&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-1&quot;&gt;1.1. if语句&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-2&quot;&gt;1.2. switch语句&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-2-1&quot;&gt;1.2.1. 表达式开关&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-2-2&quot;&gt;1.2.2. 类型开关&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+
+&lt;div id=&quot;outline-container-sec-1&quot; class=&quot;outline-2&quot;&gt;
+&lt;h2 id=&quot;sec-1&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;1&lt;/span&gt; 第5章 过程式编程——分支&lt;/h2&gt;
+&lt;div class=&quot;outline-text-2&quot; id=&quot;text-1&quot;&gt;
+&lt;p&gt;
+Go语言提供了3种分支语句，即if、switch和select。select将在本章末尾介绍。
+&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-sec-1-1&quot; class=&quot;outline-3&quot;&gt;
+&lt;h3 id=&quot;sec-1-1&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.1&lt;/span&gt; if语句&lt;/h3&gt;
+&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-1&quot;&gt;
+&lt;p&gt;
+Go语言if语句语法如下：
+&lt;/p&gt;
+&lt;div class=&quot;org-src-container&quot;&gt;
+
+&lt;pre class=&quot;src src-go&quot;&gt;&lt;span style=&quot;color: #00ffff;&quot;&gt;if&lt;/span&gt; optionalStatement1; booleanExpression1 {
+    block1
+} &lt;span style=&quot;color: #00ffff;&quot;&gt;else&lt;/span&gt; &lt;span style=&quot;color: #00ffff;&quot;&gt;if&lt;/span&gt; optionalStatement2; booleanExpression2 {
+    block2
+} &lt;span style=&quot;color: #00ffff;&quot;&gt;else&lt;/span&gt; {
+    block3
+}
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;
+注意：
+&lt;/p&gt;
+&lt;ul class=&quot;org-ul&quot;&gt;
+&lt;li&gt;if后面的条件判断语句不需要用括号包裹起来。
+&lt;/li&gt;
+&lt;li&gt;大（花）括号的位置是规定的。
+&lt;/li&gt;
+&lt;li&gt;条件判断语句里允许声明一个变量 ，这个变量的作用域只能在该条件逻辑块内。
+&lt;/li&gt;
+&lt;li&gt;布尔表达式必须是bool类型。Go不支持自动转换非布尔值，因此必须使用比较操作符。例如，if i == 0。
+&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;
+以下两个示例为if的惯用法。
+&lt;/p&gt;
+&lt;ul class=&quot;org-ul&quot;&gt;
+&lt;li&gt;在if内部声明一个临时变量，而不是在if外部
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&quot;org-src-container&quot;&gt;
+
+&lt;pre class=&quot;src src-go&quot;&gt;&lt;span style=&quot;color: #ffd700;&quot;&gt;//&lt;/span&gt;&lt;span style=&quot;color: #ffd700;&quot;&gt;&amp;#24815;(&amp;#32463;&amp;#20856;)&amp;#29992;&amp;#27861;&lt;/span&gt;
+&lt;span style=&quot;color: #00ffff;&quot;&gt;if&lt;/span&gt; a := &lt;span style=&quot;color: #00fa9a;&quot;&gt;compute&lt;/span&gt;(); a &amp;lt; 0 {
+    fmt.&lt;span style=&quot;color: #00fa9a;&quot;&gt;Printf&lt;/span&gt;(&lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;(%d)\n&quot;&lt;/span&gt;, -a)
+} &lt;span style=&quot;color: #00ffff;&quot;&gt;else&lt;/span&gt; {
+    fmt.&lt;span style=&quot;color: #00fa9a;&quot;&gt;Println&lt;/span&gt;(a)
+}
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div class=&quot;org-src-container&quot;&gt;
+
+&lt;pre class=&quot;src src-go&quot;&gt;&lt;span style=&quot;color: #ffd700;&quot;&gt;//&lt;/span&gt;&lt;span style=&quot;color: #ffd700;&quot;&gt;&amp;#21872;&amp;#21990;&amp;#29992;&amp;#27861;&lt;/span&gt;
+a := &lt;span style=&quot;color: #00fa9a;&quot;&gt;compute&lt;/span&gt;()
+&lt;span style=&quot;color: #00ffff;&quot;&gt;if&lt;/span&gt; a &amp;lt; 0 {
+    fmt.&lt;span style=&quot;color: #00fa9a;&quot;&gt;Printf&lt;/span&gt;(&lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;(%d)\n&quot;&lt;/span&gt;, a)
+} &lt;span style=&quot;color: #00ffff;&quot;&gt;else&lt;/span&gt; {
+    fmt.&lt;span style=&quot;color: #00fa9a;&quot;&gt;Println&lt;/span&gt;(a)
+}
+&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;ul class=&quot;org-ul&quot;&gt;
+&lt;li&gt;最后一个return不需要使用else
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&quot;org-src-container&quot;&gt;
+
+&lt;pre class=&quot;src src-go&quot;&gt;&lt;span style=&quot;color: #00ffff;&quot;&gt;func&lt;/span&gt; &lt;span style=&quot;color: #00fa9a;&quot;&gt;ArchiveFileList&lt;/span&gt; (file &lt;span style=&quot;color: #ffff00;&quot;&gt;string&lt;/span&gt;) ([]&lt;span style=&quot;color: #ffff00;&quot;&gt;string&lt;/span&gt; error) {
+        &lt;span style=&quot;color: #00ffff;&quot;&gt;if&lt;/span&gt; suffix := &lt;span style=&quot;color: #00fa9a;&quot;&gt;Suffix&lt;/span&gt;(file); suffix == &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;.gz&quot;&lt;/span&gt; {
+                &lt;span style=&quot;color: #00ffff;&quot;&gt;return&lt;/span&gt; &lt;span style=&quot;color: #00fa9a;&quot;&gt;GzipFileList&lt;/span&gt;(file)
+        } &lt;span style=&quot;color: #00ffff;&quot;&gt;else&lt;/span&gt; &lt;span style=&quot;color: #00ffff;&quot;&gt;if&lt;/span&gt; suffix == &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;.tar&quot;&lt;/span&gt; || suffix == &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;.tar.gz&quot;&lt;/span&gt; || suffix == &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;.tgz&quot;&lt;/span&gt; {
+                &lt;span style=&quot;color: #00ffff;&quot;&gt;return&lt;/span&gt; &lt;span style=&quot;color: #00fa9a;&quot;&gt;TarFileList&lt;/span&gt;(file)
+        } &lt;span style=&quot;color: #00ffff;&quot;&gt;else&lt;/span&gt; &lt;span style=&quot;color: #00ffff;&quot;&gt;if&lt;/span&gt; suffix == &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;.zip&quot;&lt;/span&gt; {
+                &lt;span style=&quot;color: #00ffff;&quot;&gt;return&lt;/span&gt; &lt;span style=&quot;color: #00fa9a;&quot;&gt;ZipFileList&lt;/span&gt;(file)
+        }
+        &lt;span style=&quot;color: #00ffff;&quot;&gt;return&lt;/span&gt; &lt;span style=&quot;color: #fa8072;&quot;&gt;nil&lt;/span&gt;, errors.&lt;span style=&quot;color: #00fa9a;&quot;&gt;New&lt;/span&gt;(&lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;unrecognized archive&quot;&lt;/span&gt;)
+}
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-sec-1-2&quot; class=&quot;outline-3&quot;&gt;
+&lt;h3 id=&quot;sec-1-2&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.2&lt;/span&gt; switch语句&lt;/h3&gt;
+&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-2&quot;&gt;
+&lt;p&gt;
+Go语言有两种类型的switch语句：表达式开关(expression switch)和类型开关(type switch)。
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&quot;outline-container-sec-1-2-1&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1-2-1&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.2.1&lt;/span&gt; 表达式开关&lt;/h4&gt;
+&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-2-1&quot;&gt;
+&lt;div class=&quot;org-src-container&quot;&gt;
+
+&lt;pre class=&quot;src src-go&quot;&gt;&lt;span style=&quot;color: #00ffff;&quot;&gt;switch&lt;/span&gt; optionalStatement; optionalExpression {
+&lt;span style=&quot;color: #00ffff;&quot;&gt;case&lt;/span&gt; expressionList1: block1
+&lt;span style=&quot;color: #00ffff;&quot;&gt;case&lt;/span&gt; expressionList2: block2
+...
+&lt;span style=&quot;color: #00ffff;&quot;&gt;case&lt;/span&gt; expressionListN: blockN
+&lt;span style=&quot;color: #00ffff;&quot;&gt;default&lt;/span&gt;: blockD
+&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;
+注意：
+&lt;/p&gt;
+&lt;ol class=&quot;org-ol&quot;&gt;
+&lt;li&gt;如果有可选的声明语句，那么中间的分号是必须的。无论后面可选的表达式是否出现。
+&lt;/li&gt;
+&lt;li&gt;如果switch未包含表达式语句，则默认为true
+&lt;/li&gt;
+&lt;li&gt;case默认不会往下贯穿，所以不需要在结尾使用break语句。如果需要往下贯穿，需使用fallthrough语句。
+&lt;/li&gt;
+&lt;li&gt;default语句可选，如有，一般放在最后。
+&lt;/li&gt;
+&lt;li&gt;如case或default后带break或return，则运行到break或return时会提前结束代码块的执行。
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class=&quot;org-src-container&quot;&gt;
+
+&lt;pre class=&quot;src src-go&quot;&gt;&lt;span style=&quot;color: #00ffff;&quot;&gt;switch&lt;/span&gt; &lt;span style=&quot;color: #00fa9a;&quot;&gt;Suffix&lt;/span&gt;(file) {
+&lt;span style=&quot;color: #00ffff;&quot;&gt;case&lt;/span&gt; &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;.gz&quot;&lt;/span&gt;:
+    &lt;span style=&quot;color: #00ffff;&quot;&gt;return&lt;/span&gt; &lt;span style=&quot;color: #00fa9a;&quot;&gt;GzipFileList&lt;/span&gt;(file)
+&lt;span style=&quot;color: #00ffff;&quot;&gt;case&lt;/span&gt; &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;.tar&quot;&lt;/span&gt;, &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;.tar.gz&quot;&lt;/span&gt;, &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;.tgz&quot;&lt;/span&gt;:
+    &lt;span style=&quot;color: #00ffff;&quot;&gt;return&lt;/span&gt; &lt;span style=&quot;color: #00fa9a;&quot;&gt;TarFileList&lt;/span&gt;(file)
+&lt;span style=&quot;color: #00ffff;&quot;&gt;case&lt;/span&gt; &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;.zip&quot;&lt;/span&gt;:
+    &lt;span style=&quot;color: #00ffff;&quot;&gt;return&lt;/span&gt; &lt;span style=&quot;color: #00fa9a;&quot;&gt;ZipFileList&lt;/span&gt;(file)
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-sec-1-2-2&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1-2-2&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.2.2&lt;/span&gt; 类型开关&lt;/h4&gt;
+&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-2-2&quot;&gt;
+&lt;p&gt;
+在笔记（九）的最后一小节提到类型断言，我们也可以使用switch来进行类型判断,当需要判断的类型特别多时，用switch更清晰简洁。
+&lt;/p&gt;
+&lt;div class=&quot;org-src-container&quot;&gt;
+
+&lt;pre class=&quot;src src-go&quot;&gt;&lt;span style=&quot;color: #00ffff;&quot;&gt;func&lt;/span&gt; &lt;span style=&quot;color: #00fa9a;&quot;&gt;classifier&lt;/span&gt;(items... &lt;span style=&quot;color: #00ffff;&quot;&gt;interface&lt;/span&gt;{}) {
+        &lt;span style=&quot;color: #00ffff;&quot;&gt;for&lt;/span&gt; i, x := &lt;span style=&quot;color: #00ffff;&quot;&gt;range&lt;/span&gt; items {
+                &lt;span style=&quot;color: #00ffff;&quot;&gt;switch&lt;/span&gt; x.(&lt;span style=&quot;color: #00ffff;&quot;&gt;type&lt;/span&gt;) {
+                &lt;span style=&quot;color: #00ffff;&quot;&gt;case&lt;/span&gt; bool:
+                        fmt.&lt;span style=&quot;color: #00fa9a;&quot;&gt;Printf&lt;/span&gt;(&lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;param #%d is a bool\n&quot;&lt;/span&gt;, i)
+                &lt;span style=&quot;color: #00ffff;&quot;&gt;case&lt;/span&gt; float64:
+                        fmt.&lt;span style=&quot;color: #00fa9a;&quot;&gt;Printf&lt;/span&gt;(&lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;param #%d is a float64\n&quot;&lt;/span&gt;, i)
+                &lt;span style=&quot;color: #00ffff;&quot;&gt;case&lt;/span&gt; int, int8, int16, int32, int64:
+                        fmt.&lt;span style=&quot;color: #00fa9a;&quot;&gt;Printf&lt;/span&gt;(&lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;param #%d is a int\n&quot;&lt;/span&gt;, i)
+                &lt;span style=&quot;color: #00ffff;&quot;&gt;case&lt;/span&gt; uint, uint8, uint16, uint32, uint64:
+                        fmt.&lt;span style=&quot;color: #00fa9a;&quot;&gt;Printf&lt;/span&gt;(&lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;param #%d is a unsigned int\n&quot;&lt;/span&gt;, i)
+                &lt;span style=&quot;color: #00ffff;&quot;&gt;case&lt;/span&gt; &lt;span style=&quot;color: #fa8072;&quot;&gt;nil&lt;/span&gt;:
+                        fmt.&lt;span style=&quot;color: #00fa9a;&quot;&gt;Printf&lt;/span&gt;(&lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;param #%d is nil\n&quot;&lt;/span&gt;, i)
+                &lt;span style=&quot;color: #00ffff;&quot;&gt;case&lt;/span&gt; string:
+                        fmt.&lt;span style=&quot;color: #00fa9a;&quot;&gt;Printf&lt;/span&gt;(&lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;param #%d is a string\n&quot;&lt;/span&gt;, i)
+                &lt;span style=&quot;color: #00ffff;&quot;&gt;default&lt;/span&gt;:
+                        fmt.&lt;span style=&quot;color: #00fa9a;&quot;&gt;Printf&lt;/span&gt;(&lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;param #%d&#39;s type is unknow\n&quot;&lt;/span&gt;, i)
+                }
+        }
+}
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</description>
+        <pubDate>Tue, 11 Nov 2014 00:00:00 +0800</pubDate>
+        <link>http://xep007.github.io/golang/2014/11/11/Go%E8%AF%AD%E8%A8%80%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%EF%BC%89%E2%80%94%E2%80%94%E8%BF%87%E7%A8%8B%E5%BC%8F%E7%BC%96%E7%A8%8B%E4%B9%8B%E5%88%86%E6%94%AF.html</link>
+        <guid isPermaLink="true">http://xep007.github.io/golang/2014/11/11/Go%E8%AF%AD%E8%A8%80%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%EF%BC%89%E2%80%94%E2%80%94%E8%BF%87%E7%A8%8B%E5%BC%8F%E7%BC%96%E7%A8%8B%E4%B9%8B%E5%88%86%E6%94%AF.html</guid>
+        
+        <category>golang</category>
+        
+        
+        <category>golang</category>
+        
+      </item>
     
       <item>
         <title>firefox使用stylish扩展显示weibo.com等网站的字体图标</title>
@@ -26,7 +600,7 @@
 &lt;h2 id=&quot;sec-1&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;1&lt;/span&gt; 存在的问题&lt;/h2&gt;
 &lt;div class=&quot;outline-text-2&quot; id=&quot;text-1&quot;&gt;
 &lt;p&gt;
-firefox中s可以自定义页面显示字体。比如使用微软雅黑等漂亮的字体。但是在taobao.com、weibo.com和github.com等网站上有些图标是利用字体来显示的，因此一旦去掉“允许页面选择字体”选项时，上述网站的一些以字体来显示的图标就无法显示，甚至乱码。
+firefox中可以自定义页面显示字体。比如使用微软雅黑等漂亮的字体。但是在taobao.com、weibo.com和github.com等网站上有些图标是利用字体来显示的，因此一旦去掉“允许页面选择字体”选项时，上述网站的一些以字体来显示的图标就无法显示，甚至乱码。
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -34,10 +608,10 @@ firefox中s可以自定义页面显示字体。比如使用微软雅黑等漂亮
 &lt;div id=&quot;outline-container-sec-2&quot; class=&quot;outline-2&quot;&gt;
 &lt;h2 id=&quot;sec-2&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;2&lt;/span&gt; 解决办法&lt;/h2&gt;
 &lt;div class=&quot;outline-text-2&quot; id=&quot;text-2&quot;&gt;
-&lt;ol class=&quot;org-ol&quot;&gt;
+&lt;ul class=&quot;org-ul&quot;&gt;
 &lt;li&gt;在firefox附加组件中安装stylish扩展。重启后，在“附加组件”-&amp;gt;“用户样式”-&amp;gt;&quot;stylish&quot;中选择新建样式，填入以下内容。保存，重启。
 &lt;/li&gt;
-&lt;/ol&gt;
+&lt;/ul&gt;
 &lt;div class=&quot;org-src-container&quot;&gt;
 
 &lt;pre class=&quot;src src-style&quot;&gt;@namespace url(http://www.w3.org/1999/xhtml);
@@ -47,10 +621,10 @@ firefox中s可以自定义页面显示字体。比如使用微软雅黑等漂亮
 &lt;/pre&gt;
 &lt;/div&gt;
 
-&lt;ol class=&quot;org-ol&quot;&gt;
+&lt;ul class=&quot;org-ul&quot;&gt;
 &lt;li&gt;在firefox“选项”-&amp;gt;“内容”-&amp;gt;&quot;高级&quot;中把&quot;允许页面选择显示字体而无需使用上面的设置&quot;打上勾就行了。
 &lt;/li&gt;
-&lt;/ol&gt;
+&lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 </description>
@@ -62,6 +636,302 @@ firefox中s可以自定义页面显示字体。比如使用微软雅黑等漂亮
         
         
         <category>firefox</category>
+        
+      </item>
+    
+      <item>
+        <title>Go语言程序设计读书笔记（九）——过程式编程之语句基础</title>
+        <description>&lt;div id=&quot;table-of-contents&quot;&gt;
+&lt;h2&gt;Table of Contents&lt;/h2&gt;
+&lt;div id=&quot;text-table-of-contents&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1&quot;&gt;1. 第5章 过程式编程&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-1&quot;&gt;1.1. 语句基础&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-1-1&quot;&gt;1.1.1. 类型转换&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-1-1-2&quot;&gt;1.1.2. 类型断言&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+
+&lt;div id=&quot;outline-container-sec-1&quot; class=&quot;outline-2&quot;&gt;
+&lt;h2 id=&quot;sec-1&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;1&lt;/span&gt; 第5章 过程式编程&lt;/h2&gt;
+&lt;div class=&quot;outline-text-2&quot; id=&quot;text-1&quot;&gt;
+&lt;p&gt;
+Go语言可以用于写纯过程式程序，可用于写纯面向对象程序，也可用于写过程式和面向对象式相结合的程序。过程式编程很重要，因为它是并发编程和面向对象编程的基础。
+&lt;/p&gt;
+
+&lt;p&gt;
+前几章描述并阐明了Go语言内置的数据类型，本章将详细地讲解Go语言的表达式语句和控制结构，同时详细是讲解创建和使用自定义的函数。
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&quot;outline-container-sec-1-1&quot; class=&quot;outline-3&quot;&gt;
+&lt;h3 id=&quot;sec-1-1&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.1&lt;/span&gt; 语句基础&lt;/h3&gt;
+&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-1&quot;&gt;
+&lt;p&gt;
+编写Go语言程序时，不必显式地使用分号（;）来作为上下文语句的分隔结束符。在编译时，Go语言能智能地在该加分号的地方加上分号。但是有两个地方必须使用分号（;），一是当我们需要在一行中放入多条语句时，一是在使用原始的for循环时。
+&lt;/p&gt;
+
+&lt;table border=&quot;2&quot; cellspacing=&quot;0&quot; cellpadding=&quot;6&quot; rules=&quot;groups&quot; frame=&quot;hsides&quot;&gt;
+&lt;caption class=&quot;t-above&quot;&gt;&lt;span class=&quot;table-number&quot;&gt;Table 1:&lt;/span&gt; Go语言内置函数&lt;/caption&gt;
+
+&lt;colgroup&gt;
+&lt;col  class=&quot;left&quot; /&gt;
+
+&lt;col  class=&quot;left&quot; /&gt;
+&lt;/colgroup&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th scope=&quot;col&quot; class=&quot;left&quot;&gt;语法&lt;/th&gt;
+&lt;th scope=&quot;col&quot; class=&quot;left&quot;&gt;含义/结果&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;append(s, &amp;#x2026;)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;如果切片s的容量足够，则将函数末尾的项添加进给定的切片中;否则新建一个切片，&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;&amp;#xa0;&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;其内容为原始切片的项和函数末尾传入的项&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;cap(x)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;切片x的容量、通道x的缓存容量、数组x（或所指向数组）的长度。&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;close(ch)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;关闭通道ch（但用于只接收信息的通道是非法的）。不能再往通道中发送数据。数据还可以从关闭的通道中接收&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;&amp;#xa0;&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;（例如，任何已发送但未接收的值），并且如果通道中没有值了，接收端得到的将是通道类型的零值。&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;complex(r, i)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;一个complex128复数，其实部r和虚部i给定，并且都为float64&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;copy(dst, src)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;将src切片中的项复制（可能是重叠）到dst切片中，如果空间不够则截断;或者将字符串s复制到[]byte类型的b中&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;copy(b, s)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;&amp;#xa0;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;delete(m, k)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;从映射m中删除键为k的项，如果键为空则什么也不做&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;imag(cx)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;作为float64类型的complex128类型数据的虚部&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;len(x)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;切片x的长度、通道x的缓冲区中排队的项的数量、数组（或所指向数组）的长度、一个映射x中项的个数、字符串&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;&amp;#xa0;&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;x中的字节的个数。&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;make(T)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;一个切片、映射或通道类型T的引用。如果给定n，那它就是该切片的长度和容量，或者提示一个映射需要多少项，&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;make(T, n)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;或者一个缓冲区的大小。对于切片而言，n和m可用于声明长度和容量&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;make(T,n, m)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;&amp;#xa0;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;new(T)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;一个指向类型T的值指针&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;panic(x)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;抛出一个运行时异常，其值为x&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;real(cx)&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;类型为complex128的cx值的实部，是一个float64类型值&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;left&quot;&gt;recover()&lt;/td&gt;
+&lt;td class=&quot;left&quot;&gt;捕获一个运行时异常&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+
+&lt;p&gt;
+Go语言支持++（递增）和&amp;#x2013;（递减）操作符。它们都是后置操作符，必须跟在一个操作数后面，并且没有返回值。因此，这两个操作符不能用于表达式。举例，x++不是表达式，而是语句，*p++是(*p)++而不是*(p++)。
+&lt;/p&gt;
+
+&lt;p&gt;
+赋值通过使用=赋值操作符来完成。变量可以使用=和一个var连接起来创建和赋值。如：
+&lt;/p&gt;
+&lt;pre class=&quot;example&quot;&gt;
+var a = 5
+&lt;/pre&gt;
+&lt;p&gt;
+此赋值语句和 
+&lt;/p&gt;
+&lt;pre class=&quot;example&quot;&gt;
+a := 5
+&lt;/pre&gt;
+&lt;p&gt;
+所达到的目的一样（全局变量不能用:=操作符，只能用var）。
+&lt;/p&gt;
+
+&lt;p&gt;
+Go语言支持多重赋值，如: 
+&lt;/p&gt;
+&lt;pre class=&quot;example&quot;&gt;
+a, b = 3, 4
+&lt;/pre&gt;
+&lt;p&gt;
+多重赋值使得交换两个变量的值变得非常方便，它不需要引入第三个变量。
+&lt;/p&gt;
+&lt;pre class=&quot;example&quot;&gt;
+a, b = b, a
+&lt;/pre&gt;
+
+&lt;p&gt;
+快速声明操作符（:=）用于同时在一个语句中声明和赋值一个变量。多个逗号分隔的变量用法大多数情况下跟=操作符一样，除了必须至少有一个非空变量为新的。如果有一个变量已经存在，它就会直接被赋值，而不会新建一个变量，除非该:=操作符位于作用域的起始处，如if或者for语句中的初始化语句。
+&lt;/p&gt;
+&lt;div class=&quot;org-src-container&quot;&gt;
+
+&lt;pre class=&quot;src src-go&quot;&gt;a, b, c := 2, 3, 5
+&lt;span style=&quot;color: #00ffff;&quot;&gt;for&lt;/span&gt; a:= 7; a &amp;lt; 8; a++ {  &lt;span style=&quot;color: #ffd700;&quot;&gt;//&lt;/span&gt;&lt;span style=&quot;color: #ffd700;&quot;&gt;a&amp;#26080;&amp;#24847;&amp;#38388;&amp;#35206;&amp;#30422;&amp;#20102;&amp;#22806;&amp;#37096;a&amp;#30340;&amp;#20540;&lt;/span&gt;
+    b := 11              &lt;span style=&quot;color: #ffd700;&quot;&gt;//&lt;/span&gt;&lt;span style=&quot;color: #ffd700;&quot;&gt;b&amp;#26080;&amp;#24847;&amp;#38388;&amp;#35206;&amp;#30422;&amp;#20102;&amp;#22806;&amp;#37096;b&amp;#30340;&amp;#20540;&lt;/span&gt;
+    c = 13               &lt;span style=&quot;color: #ffd700;&quot;&gt;//&lt;/span&gt;&lt;span style=&quot;color: #ffd700;&quot;&gt;c&amp;#20026;&amp;#22806;&amp;#37096;&amp;#30340;c&amp;#20540;&lt;/span&gt;
+    fmt.&lt;span style=&quot;color: #00fa9a;&quot;&gt;Printf&lt;/span&gt;(&lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;inner: a&amp;#8594;%d b&amp;#8594;%d c&amp;#8594;%d\n&quot;&lt;/span&gt;, a, b, c)
+}
+fmt.&lt;span style=&quot;color: #00fa9a;&quot;&gt;Printf&lt;/span&gt;(&lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;outer: a&amp;#8594;%d b&amp;#8594;%d c&amp;#8594;%d\n&quot;&lt;/span&gt;, a, b, c)
+
+&amp;#32467;&amp;#26524;&amp;#20026;&amp;#65306;
+&lt;span style=&quot;color: #fa8072;&quot;&gt;inner&lt;/span&gt;: a&amp;#8594;7 b&amp;#8594;11 c&amp;#8594;13
+&lt;span style=&quot;color: #fa8072;&quot;&gt;outer&lt;/span&gt;: a&amp;#8594;2 b&amp;#8594;3 c&amp;#8594;13
+&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;
+这个代码片段展示了:=操作符是如何创建“影子”变量的。在上面代码中，for循环里面可以对for外部的已定义的变量进行重新定义（赋值）而不造成冲突，我们可以看到，for内部重新定义的变量的作用域只在for内部。
+&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-sec-1-1-1&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1-1-1&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.1.1&lt;/span&gt; 类型转换&lt;/h4&gt;
+&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-1-1&quot;&gt;
+&lt;p&gt;
+Go语言提供了一种在不同但相互兼容的类型之间相互转换的方式，并且这种转换非常有用并且安全。非数值类型之间的转换不会丢失精度。但对于数值类型之间的转换，可能会发生丢失精度或者其他问题。例如，x := uint16(65000),然后使用转换y := int16(x)，由于x走出了int16的范围，y的值会被转换成-536（错误值）。
+&lt;/p&gt;
+
+&lt;p&gt;
+下面是转换的语法：
+&lt;/p&gt;
+&lt;pre class=&quot;example&quot;&gt;
+resultOfType := Type(expression)
+&lt;/pre&gt;
+
+&lt;p&gt;
+一个字符串可以转换成一个[]byte（其底层为UTF-8的字节）或者一个[]rune（它的Unicode码点），并且[]byte和[]rune都可以转换成一个字符串类型。单个字符是一个rune类型数据（即int32），可以转换成一个单字符的字符串。
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-sec-1-1-2&quot; class=&quot;outline-4&quot;&gt;
+&lt;h4 id=&quot;sec-1-1-2&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.1.2&lt;/span&gt; 类型断言&lt;/h4&gt;
+&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-1-2&quot;&gt;
+&lt;div class=&quot;org-src-container&quot;&gt;
+
+&lt;pre class=&quot;src src-go&quot;&gt;resultOfType, boolean := expression.(&lt;span style=&quot;color: #ffff00;&quot;&gt;Type&lt;/span&gt;)    &lt;span style=&quot;color: #ffd700;&quot;&gt;//&lt;/span&gt;&lt;span style=&quot;color: #ffd700;&quot;&gt;&amp;#23433;&amp;#20840;&amp;#31867;&amp;#22411;&amp;#26029;&amp;#35328;&lt;/span&gt;
+resultOfType := expression.(&lt;span style=&quot;color: #ffff00;&quot;&gt;Type&lt;/span&gt;)             &lt;span style=&quot;color: #ffd700;&quot;&gt;//&lt;/span&gt;&lt;span style=&quot;color: #ffd700;&quot;&gt;&amp;#38750;&amp;#23433;&amp;#20840;&amp;#31867;&amp;#22411;&amp;#26029;&amp;#35328;&amp;#65292;&amp;#22833;&amp;#36133;&amp;#26102;panic()&lt;/span&gt;
+&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;
+安全类型断言如成功则返回一个值和true，失败则返回目标类型的0值和false。非安全类型断言要么返回一个目标类型的值，要么调用内置的panic()函数抛出一个异常。如未处理异常，则程序将终止。
+&lt;/p&gt;
+
+&lt;div class=&quot;org-src-container&quot;&gt;
+
+&lt;pre class=&quot;src src-go&quot;&gt;&lt;span style=&quot;color: #00ffff;&quot;&gt;package&lt;/span&gt; main
+
+&lt;span style=&quot;color: #00ffff;&quot;&gt;import&lt;/span&gt; &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;fmt&quot;&lt;/span&gt;
+
+&lt;span style=&quot;color: #00ffff;&quot;&gt;func&lt;/span&gt; &lt;span style=&quot;color: #00fa9a;&quot;&gt;main&lt;/span&gt;() {
+        &lt;span style=&quot;color: #00ffff;&quot;&gt;var&lt;/span&gt; i &lt;span style=&quot;color: #00ffff;&quot;&gt;interface&lt;/span&gt;{} = 99
+        &lt;span style=&quot;color: #00ffff;&quot;&gt;var&lt;/span&gt; s &lt;span style=&quot;color: #00ffff;&quot;&gt;interface&lt;/span&gt;{} = []&lt;span style=&quot;color: #ffff00;&quot;&gt;string&lt;/span&gt;{&lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;left&quot;&lt;/span&gt;, &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;right&quot;&lt;/span&gt;}
+        j := i.(&lt;span style=&quot;color: #ffff00;&quot;&gt;int&lt;/span&gt;) &lt;span style=&quot;color: #ffd700;&quot;&gt;//&lt;/span&gt;&lt;span style=&quot;color: #ffd700;&quot;&gt;j&amp;#26159;int&amp;#31867;&amp;#22411;&amp;#30340;&amp;#25968;&amp;#25454;&amp;#65288;&amp;#25110;&amp;#32773;&amp;#21457;&amp;#29983;&amp;#20102;&amp;#19968;&amp;#20010;panic()&amp;#65289;&lt;/span&gt;
+        fmt.&lt;span style=&quot;color: #00fa9a;&quot;&gt;Printf&lt;/span&gt;(&lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;%T&amp;#8594;%d\n&quot;&lt;/span&gt;, j, j)
+        &lt;span style=&quot;color: #00ffff;&quot;&gt;if&lt;/span&gt; i, ok := i.(&lt;span style=&quot;color: #ffff00;&quot;&gt;int&lt;/span&gt;); ok {
+                fmt.&lt;span style=&quot;color: #00fa9a;&quot;&gt;Printf&lt;/span&gt;(&lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;%T&amp;#8594;%d\n&quot;&lt;/span&gt;, i, j) &lt;span style=&quot;color: #ffd700;&quot;&gt;//&lt;/span&gt;&lt;span style=&quot;color: #ffd700;&quot;&gt;i&amp;#26159;&amp;#19968;&amp;#20010;int&amp;#31867;&amp;#22411;&amp;#30340;&amp;#24433;&amp;#23376;&amp;#21464;&amp;#37327;&lt;/span&gt;
+        }
+        &lt;span style=&quot;color: #00ffff;&quot;&gt;if&lt;/span&gt; s, ok := s.([]&lt;span style=&quot;color: #ffff00;&quot;&gt;string&lt;/span&gt;); ok {
+                fmt.&lt;span style=&quot;color: #00fa9a;&quot;&gt;Printf&lt;/span&gt;(&lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;%T&amp;#8594;%q\n&quot;&lt;/span&gt;, s, s) &lt;span style=&quot;color: #ffd700;&quot;&gt;//&lt;/span&gt;&lt;span style=&quot;color: #ffd700;&quot;&gt;s&amp;#26159;&amp;#19968;&amp;#20010;[]string&amp;#31867;&amp;#22411;&amp;#30340;&amp;#24433;&amp;#23376;&amp;#21464;&amp;#37327;&lt;/span&gt;
+        }
+}
+
+&amp;#32467;&amp;#26524;&amp;#20026;&amp;#65306;
+int&amp;#8594;99
+int&amp;#8594;99
+[]&lt;span style=&quot;color: #ffff00;&quot;&gt;string&amp;#8594;&lt;/span&gt;[&lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;left&quot;&lt;/span&gt; &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;right&quot;&lt;/span&gt;]
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</description>
+        <pubDate>Mon, 10 Nov 2014 00:00:00 +0800</pubDate>
+        <link>http://xep007.github.io/golang/2014/11/10/Go%E8%AF%AD%E8%A8%80%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B9%9D%EF%BC%89%E2%80%94%E2%80%94%E8%BF%87%E7%A8%8B%E5%BC%8F%E7%BC%96%E7%A8%8B%E4%B9%8B%E8%AF%AD%E5%8F%A5%E5%9F%BA%E7%A1%80.html</link>
+        <guid isPermaLink="true">http://xep007.github.io/golang/2014/11/10/Go%E8%AF%AD%E8%A8%80%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B9%9D%EF%BC%89%E2%80%94%E2%80%94%E8%BF%87%E7%A8%8B%E5%BC%8F%E7%BC%96%E7%A8%8B%E4%B9%8B%E8%AF%AD%E5%8F%A5%E5%9F%BA%E7%A1%80.html</guid>
+        
+        <category>golang</category>
+        
+        
+        <category>golang</category>
         
       </item>
     
@@ -200,7 +1070,7 @@ map[KeyType]ValueType{key1: value1, key2:value2, ..., keyN:valueN}
 }
 
 &amp;#32467;&amp;#26524;&amp;#20026;&amp;#65306;
-&lt;span style=&quot;color: #00ffff;&quot;&gt;map&lt;/span&gt;[&lt;span style=&quot;color: #ffff00;&quot;&gt;Mercury&lt;/span&gt;:0.06 Venus:0.82 Earth:1 Mars:0.11]
+&lt;span style=&quot;color: #00ffff;&quot;&gt;map&lt;/span&gt;[ Mercury:0.06 Venus:0.82 Earth:1 Mars:0.11 ]
 &lt;/pre&gt;
 &lt;/div&gt;
 
@@ -2849,1115 +3719,6 @@ unicode包主要提供了一些用来检查Unicode码点是否符合主要标准
         
         
         <category>golang</category>
-        
-      </item>
-    
-      <item>
-        <title>Go语言程序设计读书笔记（四）——使用fmt格式化包</title>
-        <description>&lt;div id=&quot;table-of-contents&quot;&gt;
-&lt;h2&gt;Table of Contents&lt;/h2&gt;
-&lt;div id=&quot;text-table-of-contents&quot;&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1&quot;&gt;1. 第3章 字符串（二）&lt;/a&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-1&quot;&gt;1.1. 使用fmt包来格式化字符串&lt;/a&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-1-1&quot;&gt;1.1.1. 格式化布尔值&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-1-2&quot;&gt;1.1.2. 格式化整数&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-1-3&quot;&gt;1.1.3. 格式化字符&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-1-4&quot;&gt;1.1.4. 格式化浮点数&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-1-5&quot;&gt;1.1.5. 格式化字符串和切片&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-1-6&quot;&gt;1.1.6. 为调试格式化&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div id=&quot;outline-container-sec-1&quot; class=&quot;outline-2&quot;&gt;
-&lt;h2 id=&quot;sec-1&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;1&lt;/span&gt; 第3章 字符串（二）&lt;/h2&gt;
-&lt;div class=&quot;outline-text-2&quot; id=&quot;text-1&quot;&gt;
-&lt;/div&gt;&lt;div id=&quot;outline-container-sec-1-1&quot; class=&quot;outline-3&quot;&gt;
-&lt;h3 id=&quot;sec-1-1&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.1&lt;/span&gt; 使用fmt包来格式化字符串&lt;/h3&gt;
-&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-1&quot;&gt;
-&lt;p&gt;
-Go语言标准库中的fmt包提供了打印函数将数据以字符串形式输出到控制台、文件、其他满足io.Writer接口的值以及其他字符串中。有些输出函数的返回值为error,当将数据打印到控制台时，常常将该错误值忽略，但是如果打印到文件和网络连接等地方时，则一定要检查该错误值。
-&lt;/p&gt;
-&lt;table border=&quot;2&quot; cellspacing=&quot;0&quot; cellpadding=&quot;6&quot; rules=&quot;groups&quot; frame=&quot;hsides&quot;&gt;
-&lt;caption class=&quot;t-above&quot;&gt;&lt;span class=&quot;table-number&quot;&gt;Table 1:&lt;/span&gt; fmt包中的打印函数&lt;/caption&gt;
-
-&lt;colgroup&gt;
-&lt;col  class=&quot;left&quot; /&gt;
-
-&lt;col  class=&quot;left&quot; /&gt;
-&lt;/colgroup&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th scope=&quot;col&quot; class=&quot;left&quot;&gt;语法&lt;/th&gt;
-&lt;th scope=&quot;col&quot; class=&quot;left&quot;&gt;含义/结果&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td class=&quot;left&quot;&gt;fmt.Errorf(format, args&amp;#x2026;)&lt;/td&gt;
-&lt;td class=&quot;left&quot;&gt;返回一个包含所给定的格式化字符串以及args参数的错误值&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td class=&quot;left&quot;&gt;fmt.Fprint(writer, args&amp;#x2026;)&lt;/td&gt;
-&lt;td class=&quot;left&quot;&gt;按照格式%v和空格分隔的非字符串将args写入writer中，&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class=&quot;left&quot;&gt;&amp;#xa0;&lt;/td&gt;
-&lt;td class=&quot;left&quot;&gt;返回写入的字节数和一个值为error或nil的错误值&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td class=&quot;left&quot;&gt;fmt.Fprintf(writer, format, args&amp;#x2026;)&lt;/td&gt;
-&lt;td class=&quot;left&quot;&gt;按照字符串格式format将args参数写入writer,&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class=&quot;left&quot;&gt;&amp;#xa0;&lt;/td&gt;
-&lt;td class=&quot;left&quot;&gt;返回写入的字节数和一个值为error或nil的错误值&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td class=&quot;left&quot;&gt;fmt.Fprintln(writer, args&amp;#x2026;)&lt;/td&gt;
-&lt;td class=&quot;left&quot;&gt;按照格式%v以空格分隔以换行符结尾将参数args写入writer,&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class=&quot;left&quot;&gt;&amp;#xa0;&lt;/td&gt;
-&lt;td class=&quot;left&quot;&gt;返回写入的字节数和一个值为error或nil的错误值&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td class=&quot;left&quot;&gt;fmt.Print(args&amp;#x2026;)&lt;/td&gt;
-&lt;td class=&quot;left&quot;&gt;使用格式%v以空格分隔的非字符串将args写入os.Stdout,&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class=&quot;left&quot;&gt;&amp;#xa0;&lt;/td&gt;
-&lt;td class=&quot;left&quot;&gt;返回写入的字节数和一个值为error或nil的错误值&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td class=&quot;left&quot;&gt;fmt.Printf(format, args&amp;#x2026;)&lt;/td&gt;
-&lt;td class=&quot;left&quot;&gt;使用格式化字符串format将args写入os.Stdout,&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class=&quot;left&quot;&gt;&amp;#xa0;&lt;/td&gt;
-&lt;td class=&quot;left&quot;&gt;返回写入的字节数和一个值为error或nil的错误值&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td class=&quot;left&quot;&gt;fmt.Println(args&amp;#x2026;)&lt;/td&gt;
-&lt;td class=&quot;left&quot;&gt;使用格式%v以空格分隔以换行符结尾将args写入os.Stdout,&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class=&quot;left&quot;&gt;&amp;#xa0;&lt;/td&gt;
-&lt;td class=&quot;left&quot;&gt;返回写入的字节数和一个值为error或nil的错误值&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td class=&quot;left&quot;&gt;fmt.Sprint(args&amp;#x2026;)&lt;/td&gt;
-&lt;td class=&quot;left&quot;&gt;返回args参数组成的字符串，每个参数都使用%v进行格式化的使用空格分离的非字符串&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td class=&quot;left&quot;&gt;fmt.Sprintf(format, args&amp;#x2026;)&lt;/td&gt;
-&lt;td class=&quot;left&quot;&gt;返回使用格式format格式化的args字符串&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td class=&quot;left&quot;&gt;fmt.Sprintln(args&amp;#x2026;)&lt;/td&gt;
-&lt;td class=&quot;left&quot;&gt;返回使用格式%v格式化args后的字符串，以空格分隔以换行符结尾&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-
-
-&lt;p&gt;
-输出值的最简单方式是使用fmt.Print()函数和fmt.Println()函数输出到os.Stdout,或者使用fmt.Fprint()函数来输出到给定的io.Writer(如一个文件)，或者使用fmt.Sprint()函数和fmt.Sprintln()函数来输出到一个字符串。
-&lt;/p&gt;
-
-&lt;p&gt;
-用于fmt.Errorf()、fmt.Printff()、fmt.Fprintf()以及fmt.Sprintf()函数的格式字符串包含一个或多个格式指令，这些格式指令的形式是%ML，其中M表示一个或多个可选的格式指令修饰符，而L则表示一个特定的格式指令符，这些格式指令见下表。有些格式指令可以接收一个或者多个修饰符，这些修饰符见再下一个表。
-&lt;/p&gt;
-
-&lt;table border=&quot;2&quot; cellspacing=&quot;0&quot; cellpadding=&quot;6&quot; rules=&quot;groups&quot; frame=&quot;hsides&quot;&gt;
-&lt;caption class=&quot;t-above&quot;&gt;&lt;span class=&quot;table-number&quot;&gt;Table 2:&lt;/span&gt; fmt包中的格式指令&lt;/caption&gt;
-
-&lt;colgroup&gt;
-&lt;col  class=&quot;left&quot; /&gt;
-
-&lt;col  class=&quot;left&quot; /&gt;
-&lt;/colgroup&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th scope=&quot;col&quot; class=&quot;left&quot;&gt;格式指令&lt;/th&gt;
-&lt;th scope=&quot;col&quot; class=&quot;left&quot;&gt;含义/结果&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td class=&quot;left&quot;&gt;%%&lt;/td&gt;
-&lt;td class=&quot;left&quot;&gt;一个%字面量&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class=&quot;left&quot;&gt;%b&lt;/td&gt;
-&lt;td class=&quot;left&quot;&gt;一个二进制整数值（基数为２），或者是一个（高级的）用科学计数法表示的指数为２的浮点数&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class=&quot;left&quot;&gt;%c&lt;/td&gt;
-&lt;td class=&quot;left&quot;&gt;一个Unicode字符的码点值&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class=&quot;left&quot;&gt;%d&lt;/td&gt;
-&lt;td class=&quot;left&quot;&gt;一个十进制数值（基数为0）&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class=&quot;left&quot;&gt;%e&lt;/td&gt;
-&lt;td class=&quot;left&quot;&gt;以科学计数法e表示的浮点数或者复数值&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class=&quot;left&quot;&gt;%E&lt;/td&gt;
-&lt;td class=&quot;left&quot;&gt;以科学计数法E表示的浮点数或者复数值&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class=&quot;left&quot;&gt;%f&lt;/td&gt;
-&lt;td class=&quot;left&quot;&gt;以标准记数法表示的浮点数或者复数值&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class=&quot;left&quot;&gt;%g&lt;/td&gt;
-&lt;td class=&quot;left&quot;&gt;以%e或者%f表示的浮点数或者复数，任何一个都以最为紧凑的方式输出&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class=&quot;left&quot;&gt;%G&lt;/td&gt;
-&lt;td class=&quot;left&quot;&gt;以%E或者%f表示的浮点数或者复数，任何一个都以最为紧凑的方式输出&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class=&quot;left&quot;&gt;%o&lt;/td&gt;
-&lt;td class=&quot;left&quot;&gt;一个以八进制表示的数字（基数为8）&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class=&quot;left&quot;&gt;%p&lt;/td&gt;
-&lt;td class=&quot;left&quot;&gt;以十六进制（基数为16）表示的一个值的地址，前缀为Ox，字母使用小写民的a~f表示（用于高度）&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class=&quot;left&quot;&gt;%q&lt;/td&gt;
-&lt;td class=&quot;left&quot;&gt;使用Go语法以及必要时使用转义，以双引号括起来的字符串或字节切片[]byte,或是以单引号括起来的数字&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class=&quot;left&quot;&gt;%s&lt;/td&gt;
-&lt;td class=&quot;left&quot;&gt;以原生的UTF-8字节表示的字符串或[]byte切片，对于一个给定的文本文件或在一个能够显示UTF-8编码的&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class=&quot;left&quot;&gt;&amp;#xa0;&lt;/td&gt;
-&lt;td class=&quot;left&quot;&gt;控制台，它会产生正确的Unicode输出&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class=&quot;left&quot;&gt;%t&lt;/td&gt;
-&lt;td class=&quot;left&quot;&gt;以true或false输出的布尔值&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class=&quot;left&quot;&gt;%T&lt;/td&gt;
-&lt;td class=&quot;left&quot;&gt;使用Go语法输出的值的类型&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class=&quot;left&quot;&gt;%U&lt;/td&gt;
-&lt;td class=&quot;left&quot;&gt;一个用Unicode表示法表示的整数码点，默认值为4个数字字符。&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class=&quot;left&quot;&gt;%v&lt;/td&gt;
-&lt;td class=&quot;left&quot;&gt;使用默认格式输出的内置或自定义类型的值，或者是使用其类型的String()方法输出的自定义值，如果该方法存在的话&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class=&quot;left&quot;&gt;%x&lt;/td&gt;
-&lt;td class=&quot;left&quot;&gt;以十六进制表示的整型值（基数为十六），或者是以十六进制数字表示的字符串或&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class=&quot;left&quot;&gt;&amp;#xa0;&lt;/td&gt;
-&lt;td class=&quot;left&quot;&gt;[]byte数组（每个字节用两个数字表示），数字a~f使用小写表示&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class=&quot;left&quot;&gt;%X&lt;/td&gt;
-&lt;td class=&quot;left&quot;&gt;以十六进制表示的整型值（基数为十六），或者是以十六进制数字表示的字符串或&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class=&quot;left&quot;&gt;&amp;#xa0;&lt;/td&gt;
-&lt;td class=&quot;left&quot;&gt;[]byte数组（每个字节用两个数字表示），数字A~F使用大写表示&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-
-
-
-&lt;table border=&quot;2&quot; cellspacing=&quot;0&quot; cellpadding=&quot;6&quot; rules=&quot;groups&quot; frame=&quot;hsides&quot;&gt;
-&lt;caption class=&quot;t-above&quot;&gt;&lt;span class=&quot;table-number&quot;&gt;Table 3:&lt;/span&gt; fmt 包中的格式指令修饰符&lt;/caption&gt;
-
-&lt;colgroup&gt;
-&lt;col  class=&quot;left&quot; /&gt;
-
-&lt;col  class=&quot;left&quot; /&gt;
-&lt;/colgroup&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td class=&quot;left&quot;&gt;修饰符&lt;/td&gt;
-&lt;td class=&quot;left&quot;&gt;含义/结果&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class=&quot;left&quot;&gt;空白&lt;/td&gt;
-&lt;td class=&quot;left&quot;&gt;如果输出的数字为负数，则在其前面加上一个减号&quot;-&quot;。如果输出的是正数，则在其前面&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class=&quot;left&quot;&gt;&amp;#xa0;&lt;/td&gt;
-&lt;td class=&quot;left&quot;&gt;加上一个空格。使用%x或者%X格式指令输出时，会在结果之间添加一个空格，例如，&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class=&quot;left&quot;&gt;&amp;#xa0;&lt;/td&gt;
-&lt;td class=&quot;left&quot;&gt;fmt.Printf(&quot;% X&quot;, &quot;←&quot;)输出E2 86 92&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class=&quot;left&quot;&gt;#&lt;/td&gt;
-&lt;td class=&quot;left&quot;&gt;让格式指令以另外一种格式输出数据：&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class=&quot;left&quot;&gt;&amp;#xa0;&lt;/td&gt;
-&lt;td class=&quot;left&quot;&gt;%#o输出以0打头的八进制数据&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class=&quot;left&quot;&gt;&amp;#xa0;&lt;/td&gt;
-&lt;td class=&quot;left&quot;&gt;%#p输出一个不含0x打头的指针&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class=&quot;left&quot;&gt;&amp;#xa0;&lt;/td&gt;
-&lt;td class=&quot;left&quot;&gt;%#q尽可能以原始字符串的形式输出一个字符串或者[]byte切片（使用反引号），否则输出以双引号引起来的字符串&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class=&quot;left&quot;&gt;&amp;#xa0;&lt;/td&gt;
-&lt;td class=&quot;left&quot;&gt;%#v使用Go语法将值自身输出&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class=&quot;left&quot;&gt;&amp;#xa0;&lt;/td&gt;
-&lt;td class=&quot;left&quot;&gt;%#x输出以0x打头的十六进制数据&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class=&quot;left&quot;&gt;&amp;#xa0;&lt;/td&gt;
-&lt;td class=&quot;left&quot;&gt;%#X输出以0X打头的十六进制数据&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class=&quot;left&quot;&gt;+&lt;/td&gt;
-&lt;td class=&quot;left&quot;&gt;让格式指令在数值前面输出+号或者-号，为字符串输出ASCII字符（别的字符会被转义），为结构体输出其字段名&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class=&quot;left&quot;&gt;-&lt;/td&gt;
-&lt;td class=&quot;left&quot;&gt;让格式指令将值进行向左对齐（默认值为右对齐）&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class=&quot;left&quot;&gt;0&lt;/td&gt;
-&lt;td class=&quot;left&quot;&gt;让格式指令以数字0而非空白进行填充&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class=&quot;left&quot;&gt;n.m&lt;/td&gt;
-&lt;td class=&quot;left&quot;&gt;对于数字，这个修饰符会使用n（int值）个字符输出浮点数或者复数（为避免截断可以输出更多个），并在小数点后面&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class=&quot;left&quot;&gt;n&lt;/td&gt;
-&lt;td class=&quot;left&quot;&gt;输出m（int值）个数字。对于字符串，n声明了其最小宽度，并且如果字符串太小则会以空格填充，而m则声明了输出&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class=&quot;left&quot;&gt;m&lt;/td&gt;
-&lt;td class=&quot;left&quot;&gt;的字符串所能使用的最长字符个数（从左至右），如果太长则可能会导致字符被截断。m和n两个都可以使用&#39;*&#39;来代替，&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class=&quot;left&quot;&gt;&amp;#xa0;&lt;/td&gt;
-&lt;td class=&quot;left&quot;&gt;这种情况下它们的值就可以从参数中获取。n或m都可以被省略&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-&lt;/div&gt;
-
-
-
-&lt;div id=&quot;outline-container-sec-1-1-1&quot; class=&quot;outline-4&quot;&gt;
-&lt;h4 id=&quot;sec-1-1-1&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.1.1&lt;/span&gt; 格式化布尔值&lt;/h4&gt;
-&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-1-1&quot;&gt;
-&lt;p&gt;
-布尔值使用%t（真值，truth value）格式指令来输出。
-&lt;/p&gt;
-&lt;div class=&quot;org-src-container&quot;&gt;
-
-&lt;pre class=&quot;src src-go&quot;&gt;fmt.&lt;span style=&quot;color: #00fa9a;&quot;&gt;Printf&lt;/span&gt;(&lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;%t %t\n&quot;&lt;/span&gt;, &lt;span style=&quot;color: #fa8072;&quot;&gt;true&lt;/span&gt;, &lt;span style=&quot;color: #fa8072;&quot;&gt;false&lt;/span&gt;)
-&amp;#36755;&amp;#20986;&amp;#65306;true &lt;span style=&quot;color: #fa8072;&quot;&gt;false&lt;/span&gt;
-&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div id=&quot;outline-container-sec-1-1-2&quot; class=&quot;outline-4&quot;&gt;
-&lt;h4 id=&quot;sec-1-1-2&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.1.2&lt;/span&gt; 格式化整数&lt;/h4&gt;
-&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-1-2&quot;&gt;
-&lt;p&gt;
-二进制格式指令为%b,八进制为%o,十六进制为%x，八进制和十六进制都可使用#修饰符。十进制整数使用%d，字符串使用%s。
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div id=&quot;outline-container-sec-1-1-3&quot; class=&quot;outline-4&quot;&gt;
-&lt;h4 id=&quot;sec-1-1-3&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.1.3&lt;/span&gt; 格式化字符&lt;/h4&gt;
-&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-1-3&quot;&gt;
-&lt;p&gt;
-Go语言的字符都是rune(即int32值)，它们可以以数字或者Unicode字符的形式输出。
-&lt;/p&gt;
-&lt;div class=&quot;org-src-container&quot;&gt;
-
-&lt;pre class=&quot;src src-go&quot;&gt;fmt.&lt;span style=&quot;color: #00fa9a;&quot;&gt;Printf&lt;/span&gt;(&lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;%d %#o4x %U &#39;%c&#39;\n&quot;&lt;/span&gt;, 0x3A6, 934, &lt;span style=&quot;color: #ffa500;&quot;&gt;&#39;\u03A6&#39;&lt;/span&gt;, &lt;span style=&quot;color: #ffa500;&quot;&gt;&#39;\U000003A6&#39;&lt;/span&gt;)
-&amp;#36755;&amp;#20986;&amp;#65306;934 016464x U+03A6 &lt;span style=&quot;color: #ffa500;&quot;&gt;&#39;&amp;#934;&#39;&lt;/span&gt;
-&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div id=&quot;outline-container-sec-1-1-4&quot; class=&quot;outline-4&quot;&gt;
-&lt;h4 id=&quot;sec-1-1-4&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.1.4&lt;/span&gt; 格式化浮点数&lt;/h4&gt;
-&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-1-4&quot;&gt;
-&lt;p&gt;
-浮点数格式可以指定整体长度、小数位数，以及使用标准计数法还是科学计数法。
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id=&quot;outline-container-sec-1-1-5&quot; class=&quot;outline-4&quot;&gt;
-&lt;h4 id=&quot;sec-1-1-5&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.1.5&lt;/span&gt; 格式化字符串和切片&lt;/h4&gt;
-&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-1-5&quot;&gt;
-&lt;p&gt;
-字符串输出时可以指定一个最小宽度（如果字符串太短，打印函数会以空格填充）或者一个最大输出字符数（会将太长的字符串截断）。字符串可以以Unicode编码（即字符）、一个码点序列（即rune）或者表示它们的UTF-8字节码的形式输出。
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id=&quot;outline-container-sec-1-1-6&quot; class=&quot;outline-4&quot;&gt;
-&lt;h4 id=&quot;sec-1-1-6&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.1.6&lt;/span&gt; 为调试格式化&lt;/h4&gt;
-&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-1-6&quot;&gt;
-&lt;p&gt;
-%T（类型）格式指令用于打印一个内置的或者自定义值的类型，而%v格式指令则用于打印一个内置值的类型。事实上%v也可以打印自定义类型的值。
-&lt;/p&gt;
-
-&lt;p&gt;
-为了更好地调试，使用%#v格式指令可以以编程的形式输出Go语言代码。
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-</description>
-        <pubDate>Tue, 28 Oct 2014 00:00:00 +0800</pubDate>
-        <link>http://xep007.github.io/golang/2014/10/28/Go%E8%AF%AD%E8%A8%80%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0%EF%BC%88%E5%9B%9B%EF%BC%89.html</link>
-        <guid isPermaLink="true">http://xep007.github.io/golang/2014/10/28/Go%E8%AF%AD%E8%A8%80%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0%EF%BC%88%E5%9B%9B%EF%BC%89.html</guid>
-        
-        <category>golang</category>
-        
-        
-        <category>golang</category>
-        
-      </item>
-    
-      <item>
-        <title>GNU Emacs Lisp编程入门笔记（九）</title>
-        <description>&lt;div id=&quot;table-of-contents&quot;&gt;
-&lt;h2&gt;Table of Contents&lt;/h2&gt;
-&lt;div id=&quot;text-table-of-contents&quot;&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1&quot;&gt;1. 循环和递归&lt;/a&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-1&quot;&gt;1.1. while&lt;/a&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-1-1&quot;&gt;1.1.1. 一个例子：print-elements-of-list&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-1-2&quot;&gt;1.1.2. 使用增量计数器的循环&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-1-3&quot;&gt;1.1.3. 使用减量计数器的循环&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-2&quot;&gt;1.2. 递归&lt;/a&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-2-1&quot;&gt;1.2.1. 使用列表的递归函数&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-2-2&quot;&gt;1.2.2. 用递归算法代替计数器&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-2-3&quot;&gt;1.2.3. 使用cond的递归例子&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-
-&lt;div id=&quot;outline-container-sec-1&quot; class=&quot;outline-2&quot;&gt;
-&lt;h2 id=&quot;sec-1&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;1&lt;/span&gt; 循环和递归&lt;/h2&gt;
-&lt;div class=&quot;outline-text-2&quot; id=&quot;text-1&quot;&gt;
-&lt;p&gt;
-Emacs Lisp有两种方式使一个表达式或一组表达式不断被求值：一是使用while循环，一是使用递归。
-&lt;/p&gt;
-&lt;/div&gt;
-
-&lt;div id=&quot;outline-container-sec-1-1&quot; class=&quot;outline-3&quot;&gt;
-&lt;h3 id=&quot;sec-1-1&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.1&lt;/span&gt; while&lt;/h3&gt;
-&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-1&quot;&gt;
-&lt;p&gt;
-while特殊表对其第一个参量进行求值，并测试这个返回值的真假。如为假，则跳出这个表达式的其余部分。如为真则对表达式的主体进行求值，然后再次测试第一个参量的真假，重复进行。
-&lt;/p&gt;
-
-&lt;p&gt;
-while表达式的模板如下：
-&lt;/p&gt;
-
-&lt;div class=&quot;org-src-container&quot;&gt;
-
-&lt;pre class=&quot;src src-lisp&quot;&gt;(&lt;span style=&quot;color: #00ffff;&quot;&gt;while&lt;/span&gt; true-of-false-test
-    body&amp;#8230;&amp;#8230;)
-&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div id=&quot;outline-container-sec-1-1-1&quot; class=&quot;outline-4&quot;&gt;
-&lt;h4 id=&quot;sec-1-1-1&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.1.1&lt;/span&gt; 一个例子：print-elements-of-list&lt;/h4&gt;
-&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-1-1&quot;&gt;
-&lt;div class=&quot;org-src-container&quot;&gt;
-
-&lt;pre class=&quot;src src-lisp&quot;&gt;(setq animals &#39;(giraffe gazelle lion tiger))
-(&lt;span style=&quot;color: #00ffff;&quot;&gt;defun&lt;/span&gt; &lt;span style=&quot;color: #00fa9a;&quot;&gt;print-elements-of-list&lt;/span&gt; (list)
-  &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;Print each element of LIST on a line of its own.&quot;&lt;/span&gt;
-  (&lt;span style=&quot;color: #00ffff;&quot;&gt;while&lt;/span&gt; list
-          (print (car list))
-          (setq list (cdr list))))
-(print-elements-of-list animals)
-&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div id=&quot;outline-container-sec-1-1-2&quot; class=&quot;outline-4&quot;&gt;
-&lt;h4 id=&quot;sec-1-1-2&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.1.2&lt;/span&gt; 使用增量计数器的循环&lt;/h4&gt;
-&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-1-2&quot;&gt;
-&lt;p&gt;
-来一个例子吧。
-&lt;/p&gt;
-
-&lt;div class=&quot;org-src-container&quot;&gt;
-
-&lt;pre class=&quot;src src-lisp&quot;&gt;(&lt;span style=&quot;color: #00ffff;&quot;&gt;defun&lt;/span&gt; &lt;span style=&quot;color: #00fa9a;&quot;&gt;sum&lt;/span&gt; (number)
-  (&lt;span style=&quot;color: #00ffff;&quot;&gt;let&lt;/span&gt; ((total 0)
-        (i 1))
-    (&lt;span style=&quot;color: #00ffff;&quot;&gt;while&lt;/span&gt; (&amp;lt;= i number)
-    (setq total (+ i total))
-    (setq i (1+ i)))
-    total))
-&lt;/pre&gt;
-&lt;/div&gt;
-&lt;div class=&quot;org-src-container&quot;&gt;
-
-&lt;pre class=&quot;src src-lisp&quot;&gt;(sum 100)          //&amp;#24471;&amp;#25968;&amp;#20026;5050
-&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div id=&quot;outline-container-sec-1-1-3&quot; class=&quot;outline-4&quot;&gt;
-&lt;h4 id=&quot;sec-1-1-3&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.1.3&lt;/span&gt; 使用减量计数器的循环&lt;/h4&gt;
-&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-1-3&quot;&gt;
-&lt;p&gt;
-来一个例子吧。
-&lt;/p&gt;
-
-&lt;div class=&quot;org-src-container&quot;&gt;
-
-&lt;pre class=&quot;src src-lisp&quot;&gt;(&lt;span style=&quot;color: #00ffff;&quot;&gt;defun&lt;/span&gt; &lt;span style=&quot;color: #00fa9a;&quot;&gt;sum&lt;/span&gt; (number)
-  (&lt;span style=&quot;color: #00ffff;&quot;&gt;let&lt;/span&gt; ((total 0))
-    (&lt;span style=&quot;color: #00ffff;&quot;&gt;while&lt;/span&gt; (&amp;gt; number 0)
-    (setq total (+ number total))
-    (setq number (- number 1)))
-    total))
-&lt;/pre&gt;
-&lt;/div&gt;
-&lt;div class=&quot;org-src-container&quot;&gt;
-
-&lt;pre class=&quot;src src-lisp&quot;&gt;(sum 100)       //&amp;#24471;&amp;#25968;5050
-&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div id=&quot;outline-container-sec-1-2&quot; class=&quot;outline-3&quot;&gt;
-&lt;h3 id=&quot;sec-1-2&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.2&lt;/span&gt; 递归&lt;/h3&gt;
-&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-2&quot;&gt;
-&lt;p&gt;
-递归函数就是调用自身的函数。
-&lt;/p&gt;
-
-&lt;p&gt;
-一个递归函数通常一个条件表达式，这个表达式有三个部分：
-&lt;/p&gt;
-
-&lt;ol class=&quot;org-ol&quot;&gt;
-&lt;li&gt;一个真假测试
-&lt;/li&gt;
-&lt;li&gt;函数名
-&lt;/li&gt;
-&lt;li&gt;一个表达式
-&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;
-递归的模板如下所示：
-&lt;/p&gt;
-
-&lt;div class=&quot;org-src-container&quot;&gt;
-
-&lt;pre class=&quot;src src-lisp&quot;&gt;(&lt;span style=&quot;color: #00ffff;&quot;&gt;defun&lt;/span&gt; &lt;span style=&quot;color: #00fa9a;&quot;&gt;name-of-recursive-function&lt;/span&gt; (argument-list)
-    &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;documentation&amp;#8230;&amp;#8230;&quot;&lt;/span&gt;
-    body&amp;#8230;&amp;#8230;
-    (&lt;span style=&quot;color: #00ffff;&quot;&gt;if&lt;/span&gt; do-again-test
-        (name-of-recursive-function
-            next-step-expression)))
-&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div id=&quot;outline-container-sec-1-2-1&quot; class=&quot;outline-4&quot;&gt;
-&lt;h4 id=&quot;sec-1-2-1&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.2.1&lt;/span&gt; 使用列表的递归函数&lt;/h4&gt;
-&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-2-1&quot;&gt;
-&lt;div class=&quot;org-src-container&quot;&gt;
-
-&lt;pre class=&quot;src src-lisp&quot;&gt;(setq animals &#39;(giraffe gazelle lion tiger))
-(&lt;span style=&quot;color: #00ffff;&quot;&gt;defun&lt;/span&gt; &lt;span style=&quot;color: #00fa9a;&quot;&gt;print-elements-recursively&lt;/span&gt; (list)
-  (print (car list))
-  (&lt;span style=&quot;color: #00ffff;&quot;&gt;if&lt;/span&gt; list
-      (print-elements-recursively
-       (cdr list))))
-(print-elements-recursively animals)
-&lt;/pre&gt;
-&lt;/div&gt;
-&lt;p&gt;
-(print-elements-recursively animals)会递归调用打印列表animals。
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div id=&quot;outline-container-sec-1-2-2&quot; class=&quot;outline-4&quot;&gt;
-&lt;h4 id=&quot;sec-1-2-2&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.2.2&lt;/span&gt; 用递归算法代替计数器&lt;/h4&gt;
-&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-2-2&quot;&gt;
-&lt;div class=&quot;org-src-container&quot;&gt;
-
-&lt;pre class=&quot;src src-lisp&quot;&gt;(&lt;span style=&quot;color: #00ffff;&quot;&gt;defun&lt;/span&gt; &lt;span style=&quot;color: #00fa9a;&quot;&gt;sum&lt;/span&gt; (number)
-  (&lt;span style=&quot;color: #00ffff;&quot;&gt;if&lt;/span&gt; (= number 1)
-      1
-    (+ number
-       (sum
-        (1- number)))))
-&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;div class=&quot;org-src-container&quot;&gt;
-
-&lt;pre class=&quot;src src-lisp&quot;&gt;(sum 100)             //&amp;#24471;&amp;#25968;5050
-&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div id=&quot;outline-container-sec-1-2-3&quot; class=&quot;outline-4&quot;&gt;
-&lt;h4 id=&quot;sec-1-2-3&quot;&gt;&lt;span class=&quot;section-number-4&quot;&gt;1.2.3&lt;/span&gt; 使用cond的递归例子&lt;/h4&gt;
-&lt;div class=&quot;outline-text-4&quot; id=&quot;text-1-2-3&quot;&gt;
-&lt;p&gt;
-上文sum函数中用if来判断，其实也可用cond(conditinal条件)特殊表来编写。
-&lt;/p&gt;
-
-&lt;p&gt;
-cond表达式的模板如下所示：
-&lt;/p&gt;
-
-&lt;div class=&quot;org-src-container&quot;&gt;
-
-&lt;pre class=&quot;src src-lisp&quot;&gt;(&lt;span style=&quot;color: #00ffff;&quot;&gt;cond&lt;/span&gt;
-    body&amp;#8230;&amp;#8230;)
-&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;
-重写sum函数：
-&lt;/p&gt;
-
-&lt;div class=&quot;org-src-container&quot;&gt;
-
-&lt;pre class=&quot;src src-lisp&quot;&gt;(&lt;span style=&quot;color: #00ffff;&quot;&gt;defun&lt;/span&gt; &lt;span style=&quot;color: #00fa9a;&quot;&gt;sum&lt;/span&gt; (number)
-  (&lt;span style=&quot;color: #00ffff;&quot;&gt;cond&lt;/span&gt; ((&amp;lt;= number 0) 0)
-        ((= number 1) 1)
-        ((&amp;gt; number 1)
-         (+ number (sum (1- number))))))
-&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-</description>
-        <pubDate>Sun, 26 Oct 2014 00:00:00 +0800</pubDate>
-        <link>http://xep007.github.io/emacs/lisp/2014/10/26/gnu%20emacs%20lisp%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B9%9D%EF%BC%89.html</link>
-        <guid isPermaLink="true">http://xep007.github.io/emacs/lisp/2014/10/26/gnu%20emacs%20lisp%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B9%9D%EF%BC%89.html</guid>
-        
-        <category>lisp</category>
-        
-        
-        <category>emacs</category>
-        
-        <category>lisp</category>
-        
-      </item>
-    
-      <item>
-        <title>Go语言程序设计读书笔记（三）——字符串基本知识</title>
-        <description>&lt;div id=&quot;table-of-contents&quot;&gt;
-&lt;h2&gt;Table of Contents&lt;/h2&gt;
-&lt;div id=&quot;text-table-of-contents&quot;&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1&quot;&gt;1. 第3章 字符串(一)&lt;/a&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-1&quot;&gt;1.1. 字面量、操作符和转义&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-2&quot;&gt;1.2. 比较字符串&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-3&quot;&gt;1.3. 字符和字符串&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-1-4&quot;&gt;1.4. 字符串索引与切片&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-
-&lt;div id=&quot;outline-container-sec-1&quot; class=&quot;outline-2&quot;&gt;
-&lt;h2 id=&quot;sec-1&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;1&lt;/span&gt; 第3章 字符串(一)&lt;/h2&gt;
-&lt;div class=&quot;outline-text-2&quot; id=&quot;text-1&quot;&gt;
-&lt;/div&gt;&lt;div id=&quot;outline-container-sec-1-1&quot; class=&quot;outline-3&quot;&gt;
-&lt;h3 id=&quot;sec-1-1&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.1&lt;/span&gt; 字面量、操作符和转义&lt;/h3&gt;
-&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-1&quot;&gt;
-&lt;p&gt;
-字符串字面量使用双引号(&quot;)或者反引号(`)来创建。双引号用来创建可解析的字符串，但不能用来引用多行。反引号用来创建原生的字符串字面量，可多行，不支持转义序列。
-&lt;/p&gt;
-
-&lt;div class=&quot;org-src-container&quot;&gt;
-
-&lt;pre class=&quot;src src-go&quot;&gt;text1 := &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;\&quot;what&#39;s that?\&quot;, he said&quot;&lt;/span&gt;    &lt;span style=&quot;color: #ffd700;&quot;&gt;//&lt;/span&gt;&lt;span style=&quot;color: #ffd700;&quot;&gt;&amp;#21487;&amp;#35299;&amp;#26512;&amp;#30340;&amp;#23383;&amp;#31526;&amp;#20018;&amp;#23383;&amp;#38754;&amp;#37327;&lt;/span&gt;
-text2 := &lt;span style=&quot;color: #ffa500;&quot;&gt;`&quot;what&#39;s that?&quot;, he said`&lt;/span&gt;      &lt;span style=&quot;color: #ffd700;&quot;&gt;//&lt;/span&gt;&lt;span style=&quot;color: #ffd700;&quot;&gt;&amp;#21407;&amp;#29983;&amp;#30340;&amp;#23383;&amp;#31526;&amp;#20018;&amp;#23383;&amp;#38754;&amp;#37327;&lt;/span&gt;
-radicais := &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;&amp;#8730;\u221A \U0000221A&quot;&lt;/span&gt;        &lt;span style=&quot;color: #ffd700;&quot;&gt;//&lt;/span&gt;&lt;span style=&quot;color: #ffd700;&quot;&gt;radicais == &quot;&amp;#8730; &amp;#8730; &amp;#8730;&quot;&lt;/span&gt;
-&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;table border=&quot;2&quot; cellspacing=&quot;0&quot; cellpadding=&quot;6&quot; rules=&quot;groups&quot; frame=&quot;hsides&quot;&gt;
-&lt;caption class=&quot;t-above&quot;&gt;&lt;span class=&quot;table-number&quot;&gt;Table 1:&lt;/span&gt; Go语言的字符串和字符转义&lt;/caption&gt;
-
-&lt;colgroup&gt;
-&lt;col  class=&quot;left&quot; /&gt;
-
-&lt;col  class=&quot;left&quot; /&gt;
-&lt;/colgroup&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td class=&quot;left&quot;&gt;转义字符&lt;/td&gt;
-&lt;td class=&quot;left&quot;&gt;含义&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class=&quot;left&quot;&gt;\\&lt;/td&gt;
-&lt;td class=&quot;left&quot;&gt;反斜线&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class=&quot;left&quot;&gt;\ooo&lt;/td&gt;
-&lt;td class=&quot;left&quot;&gt;3个8位数给定的八进制代码的Unicode字符&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class=&quot;left&quot;&gt;\&#39;&lt;/td&gt;
-&lt;td class=&quot;left&quot;&gt;单引号，只用于字符字面量内&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class=&quot;left&quot;&gt;\&quot;&lt;/td&gt;
-&lt;td class=&quot;left&quot;&gt;双引号，只用于可解析的字符串字面量内&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class=&quot;left&quot;&gt;\a&lt;/td&gt;
-&lt;td class=&quot;left&quot;&gt;ASCII码响铃&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class=&quot;left&quot;&gt;\b&lt;/td&gt;
-&lt;td class=&quot;left&quot;&gt;ASCII码退格&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class=&quot;left&quot;&gt;\f&lt;/td&gt;
-&lt;td class=&quot;left&quot;&gt;ASCII码换页&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class=&quot;left&quot;&gt;\n&lt;/td&gt;
-&lt;td class=&quot;left&quot;&gt;ASCII码换行&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class=&quot;left&quot;&gt;\r&lt;/td&gt;
-&lt;td class=&quot;left&quot;&gt;ASCII码回车&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class=&quot;left&quot;&gt;\t&lt;/td&gt;
-&lt;td class=&quot;left&quot;&gt;ASCII码制表&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class=&quot;left&quot;&gt;\uhhhh&lt;/td&gt;
-&lt;td class=&quot;left&quot;&gt;4个16位数字给定的十六进制码点的Unicode字符&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class=&quot;left&quot;&gt;\Uhhhhhhhh&lt;/td&gt;
-&lt;td class=&quot;left&quot;&gt;8个32位数字给定的十六进制码点的Unicode字符&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class=&quot;left&quot;&gt;\v&lt;/td&gt;
-&lt;td class=&quot;left&quot;&gt;ASCII码的垂直制表符&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class=&quot;left&quot;&gt;\xhh&lt;/td&gt;
-&lt;td class=&quot;left&quot;&gt;2个8位数字给定的十六进制码点的Unicode字符&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-
-
-&lt;table border=&quot;2&quot; cellspacing=&quot;0&quot; cellpadding=&quot;6&quot; rules=&quot;groups&quot; frame=&quot;hsides&quot;&gt;
-&lt;caption class=&quot;t-above&quot;&gt;&lt;span class=&quot;table-number&quot;&gt;Table 2:&lt;/span&gt; 字符串操作符&lt;/caption&gt;
-
-&lt;colgroup&gt;
-&lt;col  class=&quot;left&quot; /&gt;
-
-&lt;col  class=&quot;left&quot; /&gt;
-&lt;/colgroup&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td class=&quot;left&quot;&gt;语法&lt;/td&gt;
-&lt;td class=&quot;left&quot;&gt;描述/结果&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class=&quot;left&quot;&gt;s += t&lt;/td&gt;
-&lt;td class=&quot;left&quot;&gt;将字符串t追加到字符串s的末尾&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class=&quot;left&quot;&gt;s + t&lt;/td&gt;
-&lt;td class=&quot;left&quot;&gt;将字符串s和t级联&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class=&quot;left&quot;&gt;s[n]&lt;/td&gt;
-&lt;td class=&quot;left&quot;&gt;字符串s中索引位置为n处的原始字节&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class=&quot;left&quot;&gt;s[n:m]&lt;/td&gt;
-&lt;td class=&quot;left&quot;&gt;从位置n到位置m-1处取得的字符串&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class=&quot;left&quot;&gt;s[n:]&lt;/td&gt;
-&lt;td class=&quot;left&quot;&gt;从位置n到位置len(s)-1处取得的字符串&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class=&quot;left&quot;&gt;s[:m]&lt;/td&gt;
-&lt;td class=&quot;left&quot;&gt;从索引位置0到位置m-1处取得的字符串&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class=&quot;left&quot;&gt;len(s)&lt;/td&gt;
-&lt;td class=&quot;left&quot;&gt;字符串s中的字节数&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class=&quot;left&quot;&gt;len([]rune(s))&lt;/td&gt;
-&lt;td class=&quot;left&quot;&gt;字符串s中字符的个数——可以使用更快的utf8.RuneCountInString()来代替&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class=&quot;left&quot;&gt;[]rune(s)&lt;/td&gt;
-&lt;td class=&quot;left&quot;&gt;将字符串s转换成一个Unicode码点&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class=&quot;left&quot;&gt;string(chars)&lt;/td&gt;
-&lt;td class=&quot;left&quot;&gt;将一个[]rune或者[]int32转换成字符串，这里假设rune和int32切片都是Unicode码点&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class=&quot;left&quot;&gt;[]byte(s)&lt;/td&gt;
-&lt;td class=&quot;left&quot;&gt;无副本地将字符串s转换成一个原始字节的切片数组，不保证转换的字节是合法的&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class=&quot;left&quot;&gt;string(bytes)&lt;/td&gt;
-&lt;td class=&quot;left&quot;&gt;无副本地将[]byte或者[]uint8转换成一个字符串类型，不保证转换的字节是合法的UTF8编码字节&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class=&quot;left&quot;&gt;string(i)&lt;/td&gt;
-&lt;td class=&quot;left&quot;&gt;将任意数字类型的i转换成字符串，假设i是一个Unicode码点。例如i的值是65,那返回值为A&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class=&quot;left&quot;&gt;strconv.Itoa(i)&lt;/td&gt;
-&lt;td class=&quot;left&quot;&gt;int类型i的字符串表示和一个错误值。&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class=&quot;left&quot;&gt;fmt.Sprint(x)&lt;/td&gt;
-&lt;td class=&quot;left&quot;&gt;任意类型x的字符串表示，例如，如果x是值为65的数字类型，那么返回值为65&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-
-
-&lt;div id=&quot;outline-container-sec-1-2&quot; class=&quot;outline-3&quot;&gt;
-&lt;h3 id=&quot;sec-1-2&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.2&lt;/span&gt; 比较字符串&lt;/h3&gt;
-&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-2&quot;&gt;
-&lt;p&gt;
-Go语言字符串支持常规的比较操作(&amp;lt;、&amp;lt;= 、==、!= 、&amp;gt; 、&amp;gt;=),这些比较操作符在内存中一个字节一个字节地比较字符串。
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div id=&quot;outline-container-sec-1-3&quot; class=&quot;outline-3&quot;&gt;
-&lt;h3 id=&quot;sec-1-3&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.3&lt;/span&gt; 字符和字符串&lt;/h3&gt;
-&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-3&quot;&gt;
-&lt;p&gt;
-在Go语言中，字符使用两种不同的方式（可以很容易相互转换）来表示。一个单一的字符可以用一个单一的rune（或int32）来表示。
-&lt;/p&gt;
-
-&lt;p&gt;
-字符串表示一个包含0个或多个字符序列的串。在一个字符串内部，每个字符都表示成一个或多个UTF-8编码的字节。
-&lt;/p&gt;
-
-&lt;p&gt;
-字符串和rune切片互相转换：
-&lt;/p&gt;
-
-&lt;ul class=&quot;org-ul&quot;&gt;
-&lt;li&gt;chars := []rune(s)   //字符串转换成一个rune（即码点）切片。
-&lt;/li&gt;
-&lt;li&gt;s := string(chars)   //字符转换成字符串。
-&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;
-在一个字符串末尾追加字符串有三种方法：
-&lt;/p&gt;
-
-&lt;ol class=&quot;org-ol&quot;&gt;
-&lt;li&gt;使用&quot;+=&quot;（不包括引号）操作符。s += s1
-&lt;/li&gt;
-&lt;li&gt;准备一个字符串切片([]string),然后使用strings.Join()函数一次性把所有的字符串串联起来。
-&lt;/li&gt;
-&lt;/ol&gt;
-&lt;div class=&quot;org-src-container&quot;&gt;
-
-&lt;pre class=&quot;src src-go&quot;&gt;&lt;span style=&quot;color: #00ffff;&quot;&gt;package&lt;/span&gt; main
-&lt;span style=&quot;color: #00ffff;&quot;&gt;import&lt;/span&gt; (
-        &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;fmt&quot;&lt;/span&gt;
-        &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;strings&quot;&lt;/span&gt;
-)
-&lt;span style=&quot;color: #00ffff;&quot;&gt;func&lt;/span&gt; &lt;span style=&quot;color: #00fa9a;&quot;&gt;main&lt;/span&gt;() {
-        s := []&lt;span style=&quot;color: #ffff00;&quot;&gt;string&lt;/span&gt;{&lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;abc&quot;&lt;/span&gt;, &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;def&quot;&lt;/span&gt;, &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;ghi&quot;&lt;/span&gt;}
-        fmt.&lt;span style=&quot;color: #00fa9a;&quot;&gt;Println&lt;/span&gt;(strings.&lt;span style=&quot;color: #00fa9a;&quot;&gt;Join&lt;/span&gt;(s, &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;&quot;&lt;/span&gt;))
-}
-&lt;/pre&gt;
-&lt;/div&gt;
-&lt;p&gt;
-输出：abcdefghi
-&lt;/p&gt;
-
-&lt;ol class=&quot;org-ol&quot;&gt;
-&lt;li&gt;利用bytes.Buffer.WriteString()方法
-&lt;/li&gt;
-&lt;/ol&gt;
-&lt;div class=&quot;org-src-container&quot;&gt;
-
-&lt;pre class=&quot;src src-go&quot;&gt;&lt;span style=&quot;color: #00ffff;&quot;&gt;var&lt;/span&gt; buffer bytes.Buffer
-&lt;span style=&quot;color: #00ffff;&quot;&gt;for&lt;/span&gt; {
-        &lt;span style=&quot;color: #00ffff;&quot;&gt;if&lt;/span&gt; piece, ok := &lt;span style=&quot;color: #00fa9a;&quot;&gt;getNextValidString&lt;/span&gt;(); ok { &lt;span style=&quot;color: #ffd700;&quot;&gt;//&lt;/span&gt;&lt;span style=&quot;color: #ffd700;&quot;&gt;getNextValidString()&amp;#24471;&amp;#33258;&amp;#24049;&amp;#23454;&amp;#29616;&lt;/span&gt;
-                buffer.&lt;span style=&quot;color: #00fa9a;&quot;&gt;WriteString&lt;/span&gt;(piece)
-        } &lt;span style=&quot;color: #00ffff;&quot;&gt;else&lt;/span&gt; {
-                &lt;span style=&quot;color: #00ffff;&quot;&gt;break&lt;/span&gt;
-        }
-}
-fmt.&lt;span style=&quot;color: #00fa9a;&quot;&gt;Print&lt;/span&gt;(buffer.&lt;span style=&quot;color: #00fa9a;&quot;&gt;String&lt;/span&gt;(), &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;\n&quot;&lt;/span&gt;)
-&lt;/pre&gt;
-&lt;/div&gt;
-&lt;p&gt;
-创建一个空的bytes.Buffer类型的值，然后使用bytes.Buffer.WriteString()方法将需要串联的字符串写入到buffer中，最后，bytes.Buffer.String()方法可以取回字符串。这个办法比前两个办法更高效。
-&lt;/p&gt;
-
-&lt;p&gt;
-Go语言的for……range循环可以用于一个字符一个字符的迭代字符串。
-&lt;/p&gt;
-&lt;div class=&quot;org-src-container&quot;&gt;
-
-&lt;pre class=&quot;src src-go&quot;&gt;&lt;span style=&quot;color: #00ffff;&quot;&gt;package&lt;/span&gt; main
-&lt;span style=&quot;color: #00ffff;&quot;&gt;import&lt;/span&gt; &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;fmt&quot;&lt;/span&gt;
-&lt;span style=&quot;color: #00ffff;&quot;&gt;func&lt;/span&gt; &lt;span style=&quot;color: #00fa9a;&quot;&gt;main&lt;/span&gt;() {
-        phrase := &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;I am a boy. &amp;#25105;&amp;#26159;&amp;#20013;&amp;#22269;&amp;#20154;&amp;#12290;&quot;&lt;/span&gt;
-        fmt.&lt;span style=&quot;color: #00fa9a;&quot;&gt;Printf&lt;/span&gt;(&lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;string: \&quot;%s\&quot;\n&quot;&lt;/span&gt;, phrase)
-        &lt;span style=&quot;color: #00ffff;&quot;&gt;for&lt;/span&gt; index, char := &lt;span style=&quot;color: #00ffff;&quot;&gt;range&lt;/span&gt; phrase {
-                fmt.&lt;span style=&quot;color: #00fa9a;&quot;&gt;Printf&lt;/span&gt;(&lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;%-2d    %U    &#39;%c&#39;    %X\n&quot;&lt;/span&gt;, index, char, char, []&lt;span style=&quot;color: #00fa9a;&quot;&gt;byte&lt;/span&gt;(&lt;span style=&quot;color: #00fa9a;&quot;&gt;string&lt;/span&gt;(char)))
-        }
-}
-&lt;/pre&gt;
-&lt;/div&gt;
-&lt;p&gt;
-运行结果为：
-&lt;/p&gt;
-&lt;div class=&quot;org-src-container&quot;&gt;
-
-&lt;pre class=&quot;src src-go&quot;&gt;&lt;span style=&quot;color: #fa8072;&quot;&gt;string&lt;/span&gt;: &lt;span style=&quot;color: #ffa500;&quot;&gt;&quot;I am a boy. &amp;#25105;&amp;#26159;&amp;#20013;&amp;#22269;&amp;#20154;&amp;#12290;&quot;&lt;/span&gt;
-0     U+0049    &lt;span style=&quot;color: #ffa500;&quot;&gt;&#39;I&#39;&lt;/span&gt;    49
-1     U+0020    &lt;span style=&quot;color: #ffa500;&quot;&gt;&#39; &#39;&lt;/span&gt;    20
-2     U+0061    &lt;span style=&quot;color: #ffa500;&quot;&gt;&#39;a&#39;&lt;/span&gt;    61
-3     U+006D    &lt;span style=&quot;color: #ffa500;&quot;&gt;&#39;m&#39;&lt;/span&gt;    6D
-4     U+0020    &lt;span style=&quot;color: #ffa500;&quot;&gt;&#39; &#39;&lt;/span&gt;    20
-5     U+0061    &lt;span style=&quot;color: #ffa500;&quot;&gt;&#39;a&#39;&lt;/span&gt;    61
-6     U+0020    &lt;span style=&quot;color: #ffa500;&quot;&gt;&#39; &#39;&lt;/span&gt;    20
-7     U+0062    &lt;span style=&quot;color: #ffa500;&quot;&gt;&#39;b&#39;&lt;/span&gt;    62
-8     U+006F    &lt;span style=&quot;color: #ffa500;&quot;&gt;&#39;o&#39;&lt;/span&gt;    6F
-9     U+0079    &lt;span style=&quot;color: #ffa500;&quot;&gt;&#39;y&#39;&lt;/span&gt;    79
-10    U+002E    &lt;span style=&quot;color: #ffa500;&quot;&gt;&#39;.&#39;&lt;/span&gt;    2E
-11    U+0020    &lt;span style=&quot;color: #ffa500;&quot;&gt;&#39; &#39;&lt;/span&gt;    20
-12    U+6211    &lt;span style=&quot;color: #ffa500;&quot;&gt;&#39;&amp;#25105;&#39;&lt;/span&gt;    E68891
-15    U+662F    &lt;span style=&quot;color: #ffa500;&quot;&gt;&#39;&amp;#26159;&#39;&lt;/span&gt;    E698AF
-18    U+4E2D    &lt;span style=&quot;color: #ffa500;&quot;&gt;&#39;&amp;#20013;&#39;&lt;/span&gt;    E4B8AD
-21    U+56FD    &lt;span style=&quot;color: #ffa500;&quot;&gt;&#39;&amp;#22269;&#39;&lt;/span&gt;    E59BBD
-24    U+4EBA    &lt;span style=&quot;color: #ffa500;&quot;&gt;&#39;&amp;#20154;&#39;&lt;/span&gt;    E4BABA
-27    U+3002    &lt;span style=&quot;color: #ffa500;&quot;&gt;&#39;&amp;#12290;&#39;&lt;/span&gt;    E38082
-&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div id=&quot;outline-container-sec-1-4&quot; class=&quot;outline-3&quot;&gt;
-&lt;h3 id=&quot;sec-1-4&quot;&gt;&lt;span class=&quot;section-number-3&quot;&gt;1.4&lt;/span&gt; 字符串索引与切片&lt;/h3&gt;
-&lt;div class=&quot;outline-text-3&quot; id=&quot;text-1-4&quot;&gt;
-&lt;p&gt;
-索引字符串的单个字符，有多种方法：
-&lt;/p&gt;
-
-&lt;ol class=&quot;org-ol&quot;&gt;
-&lt;li&gt;对于只包含7位ASCII字符的字符串，只需要简单使用[]索引操作符。
-&lt;/li&gt;
-&lt;li&gt;对于包含非ASCII字符组成的字符串，我们可以将其转换成[]rune再使用[]索引操作符。以上二者的性能都为O(1)。
-&lt;/li&gt;
-&lt;li&gt;对于任意字符串（即那些可能包含有非ASCII字符的字符串），更好的方法是使用字符串切片。请参照3.6.1(下一个笔记)中的string包。
-&lt;/li&gt;
-&lt;/ol&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-</description>
-        <pubDate>Sun, 26 Oct 2014 00:00:00 +0800</pubDate>
-        <link>http://xep007.github.io/golang/2014/10/26/Go%E8%AF%AD%E8%A8%80%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%89%EF%BC%89.html</link>
-        <guid isPermaLink="true">http://xep007.github.io/golang/2014/10/26/Go%E8%AF%AD%E8%A8%80%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%89%EF%BC%89.html</guid>
-        
-        <category>golang</category>
-        
-        
-        <category>golang</category>
-        
-      </item>
-    
-      <item>
-        <title>在org-mdoe表格中输入“|”符号</title>
-        <description>&lt;p&gt;
-今天在org-mode中制作表格，需要在单元格中输入“|”符号，可“|”符号是制表符，一直试都未能成功。没办法只好去找org-mode文档。终于在&lt;a href=&quot;http://orgmode.org/manual/Built_002din-table-editor.html#fnd-1&quot;&gt;org-mode文档&lt;/a&gt;最后一行找到了答案，记下来，备忘。
-&lt;/p&gt;
-
-
-&lt;p&gt;
-在需要输入“|”的地方输入\vert就行了。
-&lt;/p&gt;
-</description>
-        <pubDate>Sat, 25 Oct 2014 00:00:00 +0800</pubDate>
-        <link>http://xep007.github.io/org/2014/10/25/%E5%9C%A8org-mode%E8%A1%A8%E6%A0%BC%E4%B8%AD%E8%BE%93%E5%85%A5%7C%E7%AC%A6%E5%8F%B7.html</link>
-        <guid isPermaLink="true">http://xep007.github.io/org/2014/10/25/%E5%9C%A8org-mode%E8%A1%A8%E6%A0%BC%E4%B8%AD%E8%BE%93%E5%85%A5%7C%E7%AC%A6%E5%8F%B7.html</guid>
-        
-        <category>org</category>
-        
-        
-        <category>org</category>
         
       </item>
     

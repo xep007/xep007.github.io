@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width initial-scale=1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>Go语言程序设计读书笔记（十二）——过程式编程之通信和并发语句</title>
+    <meta name="description" content="Linux / C / golang / Emacs">
+
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="canonical" href="http://xep007.github.io/golang/2014/11/15/Go%E8%AF%AD%E8%A8%80%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%BA%8C%EF%BC%89%E2%80%94%E2%80%94%E8%BF%87%E7%A8%8B%E5%BC%8F%E7%BC%96%E7%A8%8B%E4%B9%8B%E9%80%9A%E4%BF%A1%E5%92%8C%E5%B9%B6%E5%8F%91%E8%AF%AD%E5%8F%A5.html">
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="/">行之技术博客</a>
+
+    <nav class="site-nav">
+      <a href="#" class="menu-icon">
+        <svg viewBox="0 0 18 15">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </a>
+
+      <div class="trigger"> 
+        
+          
+          <a class="page-link" href="/archives.html">归档</a> 
+          
+        
+          
+          <a class="page-link" href="/categories.html">分类</a> 
+          
+        
+          
+        
+          
+        
+          
+        
+          
+          <a class="page-link" href="/sitemap.xml">Sitemap</a> 
+          
+        
+          
+          <a class="page-link" href="/about/">关于我</a> 
+          
+        
+          
+        
+          
+        
+      	  <script type="text/javascript">document.write(unescape('%3Cdiv id="bdcs"%3E%3C/div%3E%3Cscript charset="utf-8" src="http://rp.baidu.com/rp3w/3w.js?sid=3996823661609448363') + '&t=' + (Math.ceil(new Date()/3600000)) + unescape('"%3E%3C/script%3E'));</script>
+      </div>
+    </nav>
+
+
+  </div>
+
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <div class="post">
+
+  <header class="post-header">
+    <h1 class="post-title">Go语言程序设计读书笔记（十二）——过程式编程之通信和并发语句</h1>
+    <p class="post-meta">Nov 15, 2014 • xep007</p>
+  </header>
+
+  <article class="post-content">
+    <div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1. 通信和并发语句</a>
+<ul>
+<li><a href="#sec-1-1">1.1. goroutine的创建</a></li>
+<li><a href="#sec-1-2">1.2. goroutine之间的通信</a></li>
+<li><a href="#sec-1-3">1.3. 通道的创建</a></li>
+<li><a href="#sec-1-4">1.4. select语句</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> 通信和并发语句</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+本章简要介绍Go语言通信和并发的基本语法，详细的内容将在第7章涉及。
+</p>
+
+<p>
+goroutine是程序中与其他goroutine完全相互独立而并发执行的函数或方法调用。每一个Go程序至少有一个goroutine，即用来执行main函数的主goroutine。
+</p>
+
+<p>
+goroutine非常像轻量的线程或协程，可以大批量创建，所有的goroutine共享相同的地址空间，同时提供锁原语来保证数据能安全地跨goroutine共享。
+</p>
+
+<p>
+Go语言推荐使用通信而非共享数据来进行并发编程。通道是一个双向或单向的通信管道，可用于在两个或多个goroutine之间通信（接收或发送）数据。
+</p>
+
+<p>
+在goroutine和通道之间，Go语言提供了一种轻量级、可扩展的并发方式，该方式不需要共享内存，因此也不需要锁。
+</p>
+</div>
+
+<div id="outline-container-sec-1-1" class="outline-3">
+<h3 id="sec-1-1"><span class="section-number-3">1.1</span> goroutine的创建</h3>
+<div class="outline-text-3" id="text-1-1">
+<div class="org-src-container">
+
+<pre class="src src-go"><span style="color: #00ffff;">go</span> <span style="color: #00fa9a;">function</span>(arguments)
+<span style="color: #00ffff;">go</span> <span style="color: #00ffff;">func</span>(<span style="color: #ffff00;">parameters</span>) {block} (arguments)
+</pre>
+</div>
+<p>
+goroutine的创建非常简单，只需要使用go关键字即可。我们要么调用一个函数，要么调用一个临时创建的匿名函数。被调用的函数的执行会立即进行，但它是在另一个goroutine上执行，并且当前goroutine的执行（即包含该go语句的goroutine）会从下一条语句中立即恢复。因此执行一个go语句之后，当前程序中至少有两个goroutine在运行，其中包括原始的goroutine和新创建的goroutine。这和进程与线程的创建相似。
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-1-2" class="outline-3">
+<h3 id="sec-1-2"><span class="section-number-3">1.2</span> goroutine之间的通信</h3>
+<div class="outline-text-3" id="text-1-2">
+<div class="org-src-container">
+
+<pre class="src src-go">channel &lt;- value         <span style="color: #ffd700;">//</span><span style="color: #ffd700;">&#38459;&#22622;&#21457;&#36865;</span>
+&lt;-channel                <span style="color: #ffd700;">//</span><span style="color: #ffd700;">&#25509;&#25910;&#24182;&#23558;&#20854;&#20002;&#24323;</span>
+x := &lt;-channel           <span style="color: #ffd700;">//</span><span style="color: #ffd700;">&#25509;&#25910;&#24182;&#23558;&#20854;&#20445;&#23384;</span>
+x, ok := &lt;-channel       <span style="color: #ffd700;">//</span><span style="color: #ffd700;">&#21151;&#33021;&#21516;&#19978;&#19968;&#26465;&#65292;&#21516;&#26102;&#26816;&#26597;&#36890;&#36947;&#26159;&#21542;&#24050;&#20851;&#38381;&#25110;&#26159;&#21542;&#20026;&#31354;</span>
+</pre>
+</div>
+
+<p>
+非阻塞发送可以使用select语句，或使用带缓冲的通道。
+</p>
+
+<p>
+通道使用内置make()函数来创建。
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-1-3" class="outline-3">
+<h3 id="sec-1-3"><span class="section-number-3">1.3</span> 通道的创建</h3>
+<div class="outline-text-3" id="text-1-3">
+<div class="org-src-container">
+
+<pre class="src src-go"><span style="color: #b0c4de;">make</span> (<span style="color: #00ffff;">chan</span> <span style="color: #ffff00;">Type</span>)                   <span style="color: #ffd700;">//</span><span style="color: #ffd700;">&#21516;&#27493;&#36890;&#36947;&#65292;&#38459;&#22622;&#24335;</span>
+<span style="color: #b0c4de;">make</span> (<span style="color: #00ffff;">chan</span> <span style="color: #ffff00;">Type</span>, capacity)         <span style="color: #ffd700;">//</span><span style="color: #ffd700;">&#24322;&#27493;&#36890;&#36947;&#65292;&#32531;&#20914;&#24335;</span>
+</pre>
+</div>
+<p>
+如果没有声明缓冲区容量，那么该通道就是同步的，因此会阻塞直到发送者准备好发送和接收者准备好接收。如果设定了缓冲区容量，那么通道就是异步的，只要缓冲区还有未使用的空间用于发送数据，或还有未输出的数据，那么其通信就会无阻塞地进行。
+</p>
+
+<p>
+通道默认是双向的，当然，也可设定为单向（在第7章介绍）。
+例子：
+</p>
+<div class="org-src-container">
+
+<pre class="src src-go"><span style="color: #00ffff;">package</span> main
+
+<span style="color: #00ffff;">import</span> (
+        <span style="color: #ffa500;">"fmt"</span>
+)
+
+<span style="color: #00ffff;">func</span> <span style="color: #00fa9a;">main</span>() {
+        counterA := <span style="color: #00fa9a;">createCounter</span>(2)   <span style="color: #ffd700;">//</span><span style="color: #ffd700;">counterA&#26159;chan int&#31867;&#22411;</span>
+        counterB := <span style="color: #00fa9a;">createCounter</span>(102) <span style="color: #ffd700;">//</span><span style="color: #ffd700;">counterB&#26159;chan int&#31867;&#22411;</span>
+        <span style="color: #00ffff;">for</span> i := 0; i &lt; 5; i++ {
+                a := &lt;-counterA
+                fmt.<span style="color: #00fa9a;">Printf</span>(<span style="color: #ffa500;">"(A&#8594;%d, B&#8594;%d)"</span>, a, &lt;-counterB)
+        }
+        fmt.<span style="color: #00fa9a;">Println</span>()
+}
+
+<span style="color: #00ffff;">func</span> <span style="color: #00fa9a;">createCounter</span>(start <span style="color: #ffff00;">int</span>) <span style="color: #00ffff;">chan</span> <span style="color: #ffff00;">int</span> {
+        next := <span style="color: #b0c4de;">make</span>(<span style="color: #00ffff;">chan</span> <span style="color: #ffff00;">int</span>)
+
+        <span style="color: #00ffff;">go</span> <span style="color: #00ffff;">func</span>(i <span style="color: #ffff00;">int</span>) {
+                <span style="color: #00ffff;">for</span> {
+                        next &lt;- i
+                        i++
+                }
+        }(start)
+        <span style="color: #00ffff;">return</span> next
+}
+
+&#36755;&#20986;&#32467;&#26524;&#20026;&#65306;
+(A&#8594;2, B&#8594;102)(A&#8594;3, B&#8594;103)(A&#8594;4, B&#8594;104)(A&#8594;5, B&#8594;105)(A&#8594;6, B&#8594;106)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-1-4" class="outline-3">
+<h3 id="sec-1-4"><span class="section-number-3">1.4</span> select语句</h3>
+<div class="outline-text-3" id="text-1-4">
+<p>
+select语法如下：
+</p>
+<div class="org-src-container">
+
+<pre class="src src-go"><span style="color: #00ffff;">select</span> {
+<span style="color: #00ffff;">case</span> sendOrReceive1: block1
+...
+<span style="color: #00ffff;">case</span> sendOrReceiveN: blockN
+<span style="color: #00ffff;">default</span>: blockD
+}
+</pre>
+</div>
+
+<p>
+在一个select语句中，Go语言会按顺序从头至尾评估每一个发送和接收语句，如果其中任一语句可执行（即没有被阻塞），那么就从那些可以执行的语句中任意选择一条来使用。如果没有任意一条语句可以执行（即所有通道都被阻塞），那么有两种可能的情况。如果给出了default语句，那么就会执行default语句，同时程序的执行会从select语句后的语句中恢复，但是如果没有default语句，那么select语句将被阻塞，直到至少有一个通信可以继续下去。
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-go"><span style="color: #00ffff;">package</span> main
+
+<span style="color: #00ffff;">import</span> (
+        <span style="color: #ffa500;">"fmt"</span>
+        <span style="color: #ffa500;">"math/rand"</span>
+)
+
+<span style="color: #00ffff;">func</span> <span style="color: #00fa9a;">main</span>() {
+        channels := <span style="color: #b0c4de;">make</span>([]<span style="color: #00ffff;">chan</span> <span style="color: #ffff00;">bool</span>, 6)
+        <span style="color: #00ffff;">for</span> i := <span style="color: #00ffff;">range</span> channels {
+                channels[i] = <span style="color: #b0c4de;">make</span>(<span style="color: #00ffff;">chan</span> <span style="color: #ffff00;">bool</span>)
+        }
+        <span style="color: #00ffff;">go</span> <span style="color: #00ffff;">func</span>() {
+                <span style="color: #00ffff;">for</span> {
+                        channels[rand.<span style="color: #00fa9a;">Intn</span>(6)] &lt;- <span style="color: #fa8072;">true</span>
+                }
+        }()
+
+        <span style="color: #00ffff;">for</span> i := 0; i &lt; 36; i++ {
+                <span style="color: #00ffff;">var</span> x int
+                <span style="color: #00ffff;">select</span> {
+                <span style="color: #00ffff;">case</span> &lt;-channels[0]:
+                        x = 1
+                <span style="color: #00ffff;">case</span> &lt;-channels[1]:
+                        x = 2
+                <span style="color: #00ffff;">case</span> &lt;-channels[2]:
+                        x = 3
+                <span style="color: #00ffff;">case</span> &lt;-channels[3]:
+                        x = 4
+                <span style="color: #00ffff;">case</span> &lt;-channels[4]:
+                        x = 5
+                <span style="color: #00ffff;">case</span> &lt;-channels[5]:
+                        x = 6
+
+                }
+                fmt.<span style="color: #00fa9a;">Printf</span>(<span style="color: #ffa500;">"%d "</span>, x)
+        }
+        fmt.<span style="color: #00fa9a;">Println</span>()
+
+}
+
+&#38543;&#26426;&#36755;&#20986;&#32467;&#26524;&#20026;&#65306;
+6 4 6 6 2 1 2 3 5 1 3 2 1 6 5 3 4 6 6 3 6 1 3 5 4 2 2 5 1 4 2 1 6 6 4 3
+</pre>
+</div>
+
+<p>
+在上面代码中，首先创建了6个用于发送和接收布尔数据的通道。然后创建了一个gorotine，其中有一个无限循环语句，在循环中每次迭代都随机选择了一个通道来发送一个true值。当然，该gorotine会立即阻塞，因为这些通道不带缓冲且我们也没有从这些通道接收数据。
+</p>
+
+<p>
+接下来的代码，我们使用6个通道来模拟一个公平骰子的滚动。其中的select语句等待通道发送数据，由于没有default语句，该select语句会阻塞。一旦有一个或更多个通道准备好了发送数据，那么程序会以伪随机的形式选择一个case语句来执行。由于该select语句在一个普通for循环内部，它会执行固定数量的次数。
+</p>
+</div>
+</div>
+</div>
+
+  </article>
+
+
+<br />
+<!--百度分享开始 -->
+  <div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a title="分享到QQ空间" href="#" class="bds_qzone" data-cmd="qzone"></a><a title="分享到新浪微博" href="#" class="bds_tsina" data-cmd="tsina"></a><a title="分享到腾讯微博" href="#" class="bds_tqq" data-cmd="tqq"></a><a title="分享到人人网" href="#" class="bds_renren" data-cmd="renren"></a><a title="分享到微信" href="#" class="bds_weixin" data-cmd="weixin"></a></div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"32"},"share":{},"image":{"viewList":["qzone","tsina","tqq","renren","weixin"],"viewText":"分享到：","viewSize":"32"},"selectShare":{"bdContainerClass":null,"bdSelectMiniList":["qzone","tsina","tqq","renren","weixin"]}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+<!--百度分享结束>
+
+<!-- UY BEGIN -->
+<div id="uyan_frame"></div>
+<script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=1975461"></script>
+<!-- UY END -->
+
+<h3 align="center"><a href="#top" target="_self">返回顶部</a></h3>
+
+</div>
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h1 class="footer-heading"><a href="http://xep007.github.io"</a>行之技术博客</h1>
+    <div class="footer-col-wrapper">
+      <div class="footer-col  footer-col-1">
+        <ul class="contact-list">
+<!--          <li><a href="">行之技术博客</a></li> -->
+          <li><a href="mailto:48614191@qq.com">48614191@qq.com</a></li>
+        </ul>
+      </div>
+
+
+      <div class="footer-col  footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/xep007">
+              <span class="icon  icon--github">
+                <svg viewBox="0 0 16 16">
+                  <path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/>
+                </svg>
+              </span>
+
+              <span class="username">xep007</span>
+            </a>
+          </li>
+          
+
+          
+        </ul>
+      </div>
+
+      <div class="footer-col  footer-col-3">
+        <p class="text">Linux / C / golang / Emacs</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+
+
+
+</body>
+</html>

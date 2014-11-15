@@ -1,0 +1,219 @@
+---
+layout     : post
+title      : Go语言程序设计读书笔记（十二）——过程式编程之通信和并发语句
+categories : [golang , ]
+tags       : golang
+description: golang
+author: xep007
+---
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1. 通信和并发语句</a>
+<ul>
+<li><a href="#sec-1-1">1.1. goroutine的创建</a></li>
+<li><a href="#sec-1-2">1.2. goroutine之间的通信</a></li>
+<li><a href="#sec-1-3">1.3. 通道的创建</a></li>
+<li><a href="#sec-1-4">1.4. select语句</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> 通信和并发语句</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+本章简要介绍Go语言通信和并发的基本语法，详细的内容将在第7章涉及。
+</p>
+
+<p>
+goroutine是程序中与其他goroutine完全相互独立而并发执行的函数或方法调用。每一个Go程序至少有一个goroutine，即用来执行main函数的主goroutine。
+</p>
+
+<p>
+goroutine非常像轻量的线程或协程，可以大批量创建，所有的goroutine共享相同的地址空间，同时提供锁原语来保证数据能安全地跨goroutine共享。
+</p>
+
+<p>
+Go语言推荐使用通信而非共享数据来进行并发编程。通道是一个双向或单向的通信管道，可用于在两个或多个goroutine之间通信（接收或发送）数据。
+</p>
+
+<p>
+在goroutine和通道之间，Go语言提供了一种轻量级、可扩展的并发方式，该方式不需要共享内存，因此也不需要锁。
+</p>
+</div>
+
+<div id="outline-container-sec-1-1" class="outline-3">
+<h3 id="sec-1-1"><span class="section-number-3">1.1</span> goroutine的创建</h3>
+<div class="outline-text-3" id="text-1-1">
+<div class="org-src-container">
+
+<pre class="src src-go"><span style="color: #00ffff;">go</span> <span style="color: #00fa9a;">function</span>(arguments)
+<span style="color: #00ffff;">go</span> <span style="color: #00ffff;">func</span>(<span style="color: #ffff00;">parameters</span>) {block} (arguments)
+</pre>
+</div>
+<p>
+goroutine的创建非常简单，只需要使用go关键字即可。我们要么调用一个函数，要么调用一个临时创建的匿名函数。被调用的函数的执行会立即进行，但它是在另一个goroutine上执行，并且当前goroutine的执行（即包含该go语句的goroutine）会从下一条语句中立即恢复。因此执行一个go语句之后，当前程序中至少有两个goroutine在运行，其中包括原始的goroutine和新创建的goroutine。这和进程与线程的创建相似。
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-1-2" class="outline-3">
+<h3 id="sec-1-2"><span class="section-number-3">1.2</span> goroutine之间的通信</h3>
+<div class="outline-text-3" id="text-1-2">
+<div class="org-src-container">
+
+<pre class="src src-go">channel &lt;- value         <span style="color: #ffd700;">//</span><span style="color: #ffd700;">&#38459;&#22622;&#21457;&#36865;</span>
+&lt;-channel                <span style="color: #ffd700;">//</span><span style="color: #ffd700;">&#25509;&#25910;&#24182;&#23558;&#20854;&#20002;&#24323;</span>
+x := &lt;-channel           <span style="color: #ffd700;">//</span><span style="color: #ffd700;">&#25509;&#25910;&#24182;&#23558;&#20854;&#20445;&#23384;</span>
+x, ok := &lt;-channel       <span style="color: #ffd700;">//</span><span style="color: #ffd700;">&#21151;&#33021;&#21516;&#19978;&#19968;&#26465;&#65292;&#21516;&#26102;&#26816;&#26597;&#36890;&#36947;&#26159;&#21542;&#24050;&#20851;&#38381;&#25110;&#26159;&#21542;&#20026;&#31354;</span>
+</pre>
+</div>
+
+<p>
+非阻塞发送可以使用select语句，或使用带缓冲的通道。
+</p>
+
+<p>
+通道使用内置make()函数来创建。
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-1-3" class="outline-3">
+<h3 id="sec-1-3"><span class="section-number-3">1.3</span> 通道的创建</h3>
+<div class="outline-text-3" id="text-1-3">
+<div class="org-src-container">
+
+<pre class="src src-go"><span style="color: #b0c4de;">make</span> (<span style="color: #00ffff;">chan</span> <span style="color: #ffff00;">Type</span>)                   <span style="color: #ffd700;">//</span><span style="color: #ffd700;">&#21516;&#27493;&#36890;&#36947;&#65292;&#38459;&#22622;&#24335;</span>
+<span style="color: #b0c4de;">make</span> (<span style="color: #00ffff;">chan</span> <span style="color: #ffff00;">Type</span>, capacity)         <span style="color: #ffd700;">//</span><span style="color: #ffd700;">&#24322;&#27493;&#36890;&#36947;&#65292;&#32531;&#20914;&#24335;</span>
+</pre>
+</div>
+<p>
+如果没有声明缓冲区容量，那么该通道就是同步的，因此会阻塞直到发送者准备好发送和接收者准备好接收。如果设定了缓冲区容量，那么通道就是异步的，只要缓冲区还有未使用的空间用于发送数据，或还有未输出的数据，那么其通信就会无阻塞地进行。
+</p>
+
+<p>
+通道默认是双向的，当然，也可设定为单向（在第7章介绍）。
+例子：
+</p>
+<div class="org-src-container">
+
+<pre class="src src-go"><span style="color: #00ffff;">package</span> main
+
+<span style="color: #00ffff;">import</span> (
+        <span style="color: #ffa500;">"fmt"</span>
+)
+
+<span style="color: #00ffff;">func</span> <span style="color: #00fa9a;">main</span>() {
+        counterA := <span style="color: #00fa9a;">createCounter</span>(2)   <span style="color: #ffd700;">//</span><span style="color: #ffd700;">counterA&#26159;chan int&#31867;&#22411;</span>
+        counterB := <span style="color: #00fa9a;">createCounter</span>(102) <span style="color: #ffd700;">//</span><span style="color: #ffd700;">counterB&#26159;chan int&#31867;&#22411;</span>
+        <span style="color: #00ffff;">for</span> i := 0; i &lt; 5; i++ {
+                a := &lt;-counterA
+                fmt.<span style="color: #00fa9a;">Printf</span>(<span style="color: #ffa500;">"(A&#8594;%d, B&#8594;%d)"</span>, a, &lt;-counterB)
+        }
+        fmt.<span style="color: #00fa9a;">Println</span>()
+}
+
+<span style="color: #00ffff;">func</span> <span style="color: #00fa9a;">createCounter</span>(start <span style="color: #ffff00;">int</span>) <span style="color: #00ffff;">chan</span> <span style="color: #ffff00;">int</span> {
+        next := <span style="color: #b0c4de;">make</span>(<span style="color: #00ffff;">chan</span> <span style="color: #ffff00;">int</span>)
+
+        <span style="color: #00ffff;">go</span> <span style="color: #00ffff;">func</span>(i <span style="color: #ffff00;">int</span>) {
+                <span style="color: #00ffff;">for</span> {
+                        next &lt;- i
+                        i++
+                }
+        }(start)
+        <span style="color: #00ffff;">return</span> next
+}
+
+&#36755;&#20986;&#32467;&#26524;&#20026;&#65306;
+(A&#8594;2, B&#8594;102)(A&#8594;3, B&#8594;103)(A&#8594;4, B&#8594;104)(A&#8594;5, B&#8594;105)(A&#8594;6, B&#8594;106)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-1-4" class="outline-3">
+<h3 id="sec-1-4"><span class="section-number-3">1.4</span> select语句</h3>
+<div class="outline-text-3" id="text-1-4">
+<p>
+select语法如下：
+</p>
+<div class="org-src-container">
+
+<pre class="src src-go"><span style="color: #00ffff;">select</span> {
+<span style="color: #00ffff;">case</span> sendOrReceive1: block1
+...
+<span style="color: #00ffff;">case</span> sendOrReceiveN: blockN
+<span style="color: #00ffff;">default</span>: blockD
+}
+</pre>
+</div>
+
+<p>
+在一个select语句中，Go语言会按顺序从头至尾评估每一个发送和接收语句，如果其中任一语句可执行（即没有被阻塞），那么就从那些可以执行的语句中任意选择一条来使用。如果没有任意一条语句可以执行（即所有通道都被阻塞），那么有两种可能的情况。如果给出了default语句，那么就会执行default语句，同时程序的执行会从select语句后的语句中恢复，但是如果没有default语句，那么select语句将被阻塞，直到至少有一个通信可以继续下去。
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-go"><span style="color: #00ffff;">package</span> main
+
+<span style="color: #00ffff;">import</span> (
+        <span style="color: #ffa500;">"fmt"</span>
+        <span style="color: #ffa500;">"math/rand"</span>
+)
+
+<span style="color: #00ffff;">func</span> <span style="color: #00fa9a;">main</span>() {
+        channels := <span style="color: #b0c4de;">make</span>([]<span style="color: #00ffff;">chan</span> <span style="color: #ffff00;">bool</span>, 6)
+        <span style="color: #00ffff;">for</span> i := <span style="color: #00ffff;">range</span> channels {
+                channels[i] = <span style="color: #b0c4de;">make</span>(<span style="color: #00ffff;">chan</span> <span style="color: #ffff00;">bool</span>)
+        }
+        <span style="color: #00ffff;">go</span> <span style="color: #00ffff;">func</span>() {
+                <span style="color: #00ffff;">for</span> {
+                        channels[rand.<span style="color: #00fa9a;">Intn</span>(6)] &lt;- <span style="color: #fa8072;">true</span>
+                }
+        }()
+
+        <span style="color: #00ffff;">for</span> i := 0; i &lt; 36; i++ {
+                <span style="color: #00ffff;">var</span> x int
+                <span style="color: #00ffff;">select</span> {
+                <span style="color: #00ffff;">case</span> &lt;-channels[0]:
+                        x = 1
+                <span style="color: #00ffff;">case</span> &lt;-channels[1]:
+                        x = 2
+                <span style="color: #00ffff;">case</span> &lt;-channels[2]:
+                        x = 3
+                <span style="color: #00ffff;">case</span> &lt;-channels[3]:
+                        x = 4
+                <span style="color: #00ffff;">case</span> &lt;-channels[4]:
+                        x = 5
+                <span style="color: #00ffff;">case</span> &lt;-channels[5]:
+                        x = 6
+
+                }
+                fmt.<span style="color: #00fa9a;">Printf</span>(<span style="color: #ffa500;">"%d "</span>, x)
+        }
+        fmt.<span style="color: #00fa9a;">Println</span>()
+
+}
+
+&#38543;&#26426;&#36755;&#20986;&#32467;&#26524;&#20026;&#65306;
+6 4 6 6 2 1 2 3 5 1 3 2 1 6 5 3 4 6 6 3 6 1 3 5 4 2 2 5 1 4 2 1 6 6 4 3
+</pre>
+</div>
+
+<p>
+在上面代码中，首先创建了6个用于发送和接收布尔数据的通道。然后创建了一个gorotine，其中有一个无限循环语句，在循环中每次迭代都随机选择了一个通道来发送一个true值。当然，该gorotine会立即阻塞，因为这些通道不带缓冲且我们也没有从这些通道接收数据。
+</p>
+
+<p>
+接下来的代码，我们使用6个通道来模拟一个公平骰子的滚动。其中的select语句等待通道发送数据，由于没有default语句，该select语句会阻塞。一旦有一个或更多个通道准备好了发送数据，那么程序会以伪随机的形式选择一个case语句来执行。由于该select语句在一个普通for循环内部，它会执行固定数量的次数。
+</p>
+</div>
+</div>
+</div>
