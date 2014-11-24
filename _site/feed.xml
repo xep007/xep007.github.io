@@ -5,8 +5,8 @@
     <description>Linux / C / golang / Emacs</description>
     <link>http://xep007.github.io/</link>
     <atom:link href="http://xep007.github.io/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Sat, 15 Nov 2014 21:08:52 +0800</pubDate>
-    <lastBuildDate>Sat, 15 Nov 2014 21:08:52 +0800</lastBuildDate>
+    <pubDate>Sun, 16 Nov 2014 19:01:54 +0800</pubDate>
+    <lastBuildDate>Sun, 16 Nov 2014 19:01:54 +0800</lastBuildDate>
     <generator>Jekyll v2.4.0</generator>
     
       <item>
@@ -250,7 +250,6 @@ select语法如下：
 &lt;/div&gt;
 &lt;/div&gt;
 
-
 &lt;div id=&quot;outline-container-sec-1&quot; class=&quot;outline-2&quot;&gt;
 &lt;h2 id=&quot;sec-1&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;1&lt;/span&gt; defer、panic和recover&lt;/h2&gt;
 &lt;div class=&quot;outline-text-2&quot; id=&quot;text-1&quot;&gt;
@@ -281,7 +280,7 @@ defer语句最常见的用法是，保证使用完一个文件后将其成功关
 &lt;/p&gt;
 
 &lt;p&gt;
-再来一个例子：
+再来一个例子,因为defer存在，因此for循环以后进先出的顺序来输出i：
 &lt;/p&gt;
 &lt;div class=&quot;org-src-container&quot;&gt;
 
