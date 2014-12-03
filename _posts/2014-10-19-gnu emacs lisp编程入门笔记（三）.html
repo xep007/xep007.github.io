@@ -61,7 +61,7 @@ author: xep007
 
 <pre class="src src-lisp">(<span style="color: #00ffff;">defun</span> <span style="color: #00fa9a;">function-name</span> (arguments...)
     <span style="color: #ffa500;">"optional-documentation..."</span>
-    (interactive argument-passing-info) <span style="color: #ffd700;">;</span><span style="color: #ffd700;">optional</span>
+    (interactive argument-passing-info) <span style="color: #ffd700;">;optional</span>
     body...)
 </pre>
 </div>
@@ -258,7 +258,7 @@ if是个条件特殊表。编写一个if表达式时，真假测试经常与if�
 <pre class="src src-lisp">(<span style="color: #00ffff;">let</span> ((zebra 'stripes)
       (tiger 'fierce)))
 
-(<span style="color: #00ffff;">defun</span> <span style="color: #00fa9a;">type-of-animal</span> (char) <span style="color: #ffd700;">;</span><span style="color: #ffd700;">second version</span>
+(<span style="color: #00ffff;">defun</span> <span style="color: #00fa9a;">type-of-animal</span> (char) <span style="color: #ffd700;">;second version</span>
     (<span style="color: #00ffff;">if</span> (equal char 'fierce)
         (message <span style="color: #ffa500;">"It's a tiger"</span>)
       (message <span style="color: #ffa500;">"It's not fierce!"</span>)))
@@ -344,7 +344,7 @@ r 位点和标记，作为两个数字参量，小的在前。这是唯一定义
 
 <pre class="src src-lisp">(message <span style="color: #ffa500;">"We are %d characters into this buffer."</span>
         (- (point)
-            (<span style="color: #00ffff;">save-excursion</span>
+            (save-excursion
                 (goto-char (poing-min)) (poing))))
 </pre>
 </div>

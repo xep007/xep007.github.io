@@ -1,0 +1,66 @@
+---
+layout     : post
+title      : 编译安装freshplayerplugin解决firefox上flashplayer版本过低问题
+categories : [firefox , ]
+tags       : firefox
+description: firefox
+author: xep007
+---
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1. 先安装编译所需的库文件</a></li>
+<li><a href="#sec-2">2. git clone freshplayerplugin并编译</a></li>
+<li><a href="#sec-3">3. 重启firefox就可以了。</a></li>
+</ul>
+</div>
+</div>
+
+<p>
+最近在网易云课堂学习。firefox上的flashplayer插件是adobe官网上下载的，版本号是11.2，低于11.4，因而无法播放网易云课堂上的课件。升级版本吧，但是adobe已经不再升级linux上的flash插件了，锁定在11.2了。怎么办？
+</p>
+
+<p>
+搜索了一通之后，发现了一个<a href="https://github.com/i-rinat/freshplayerplugin">网站</a>，提供了解决办法。
+</p>
+
+<p>
+底下简单地把安装过程介绍一下。
+</p>
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> 先安装编译所需的库文件</h2>
+<div class="outline-text-2" id="text-1">
+<pre class="example">
+sudo aptitude install cmake pkg-config ragel libasound2-dev libglib2.0-dev libconfig-dev \
+       libpango1.0-dev libegl1-mesa-dev libevent-dev libgtk2.0-dev libgles2-mesa-dev
+</pre>
+</div>
+</div>
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2"><span class="section-number-2">2</span> git clone freshplayerplugin并编译</h2>
+<div class="outline-text-2" id="text-2">
+<pre class="example">
+git clone https://github.com/i-rinat/freshplayerplugin
+
+cd freshplayerplugin/src
+
+cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo ..
+
+make
+
+cp libfreshwrapper-pepperflash.so ~/.mozilla/plugins
+</pre>
+</div>
+</div>
+
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3"><span class="section-number-2">3</span> 重启firefox就可以了。</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+<img src="asset/img/pepperflash.png" alt="pepperflash.png" />
+<img src="asset/img/emacs.jpg" alt="emacs.jpg" />
+</p>
+</div>
+</div>

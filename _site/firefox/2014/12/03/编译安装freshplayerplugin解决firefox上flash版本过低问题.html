@@ -6,11 +6,11 @@
     <meta name="viewport" content="width=device-width initial-scale=1" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-    <title>行之技术博客</title>
+    <title>编译安装freshplayerplugin解决firefox上flashplayer版本过低问题</title>
     <meta name="description" content="Linux / C / golang / Emacs">
 
     <link rel="stylesheet" href="/css/main.css">
-    <link rel="canonical" href="http://xep007.github.io/page3/">
+    <link rel="canonical" href="http://xep007.github.io/firefox/2014/12/03/%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85freshplayerplugin%E8%A7%A3%E5%86%B3firefox%E4%B8%8Aflash%E7%89%88%E6%9C%AC%E8%BF%87%E4%BD%8E%E9%97%AE%E9%A2%98.html">
 </head>
 
 
@@ -71,90 +71,90 @@
 
     <div class="page-content">
       <div class="wrapper">
-        <!-- 分页开始 -->
-<div class="home">
-  <h3 class="page-heading">最新文章</h3>
+        <div class="post">
 
-  <ul class="post-list">
-    
-      <li>
-        <h4>
-          2014 Oct 08 
-          <a  href="/linux/hexo/2014/10/08/debian7%E6%9E%84%E5%BB%BAhexo+github%E5%8D%9A%E5%AE%A2.html">debian7搭建hexo博客</a>
-        </h4>
-      </li>
-    
-      <li>
-        <h4>
-          2014 Oct 07 
-          <a  href="/emacs/org/2014/10/07/%E8%A7%A3%E5%86%B3%E5%8D%87%E7%BA%A7org8%E8%80%8C%E5%AF%BC%E8%87%B4%E7%9A%84%E5%87%A0%E4%B8%AA%E9%97%AE%E9%A2%98.html">解决升级org8而导致的几个问题</a>
-        </h4>
-      </li>
-    
-      <li>
-        <h4>
-          2014 Oct 05 
-          <a  href="/octopress/git/jekyll/2014/10/05/org-octopress+github%E6%9E%84%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2.html">org-octopress + github 构建静态博客</a>
-        </h4>
-      </li>
-    
-      <li>
-        <h4>
-          2014 Oct 05 
-          <a  href="/linux/golang/2014/10/05/debian7%E8%AE%BE%E7%BD%AEgolang%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F.html">debian7/gnome下设置golang环境</a>
-        </h4>
-      </li>
-    
-      <li>
-        <h4>
-          2014 Oct 04 
-          <a  href="/git/2014/10/04/git-everthing-up-to-date.html">git push提示everthing up to date,上传不成功</a>
-        </h4>
-      </li>
-    
-      <li>
-        <h4>
-          2014 Oct 01 
-          <a  href="/jekyll/update/2014/10/01/welcome-to-jekyll.html">Welcome to Jekyll!</a>
-        </h4>
-      </li>
-    
-  </ul>
+  <header class="post-header">
+    <h1 class="post-title">编译安装freshplayerplugin解决firefox上flashplayer版本过低问题</h1>
+    <p class="post-meta">Dec 3, 2014 • xep007</p>
+  </header>
+
+  <article class="post-content">
+    <div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1. 先安装编译所需的库文件</a></li>
+<li><a href="#sec-2">2. git clone freshplayerplugin并编译</a></li>
+<li><a href="#sec-3">3. 重启firefox就可以了。</a></li>
+</ul>
+</div>
 </div>
 
+<p>
+最近在网易云课堂学习。firefox上的flashplayer插件是adobe官网上下载的，版本号是11.2，低于11.4，因而无法播放网易云课堂上的课件。升级版本吧，但是adobe已经不再升级linux上的flash插件了，锁定在11.2了。怎么办？
+</p>
 
+<p>
+搜索了一通之后，发现了一个<a href="https://github.com/i-rinat/freshplayerplugin">网站</a>，提供了解决办法。
+</p>
 
-<div class="pagination">
-  
-    <a href="/page2">&laquo; 上一页</a>
-  
+<p>
+底下简单地把安装过程介绍一下。
+</p>
 
-  
-    
-      <a href="/index.html">1</a>
-    
-  
-    
-      <a href="page2">2</a>
-    
-  
-    
-      <em>3</em>
-    
-  
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> 先安装编译所需的库文件</h2>
+<div class="outline-text-2" id="text-1">
+<pre class="example">
+sudo aptitude install cmake pkg-config ragel libasound2-dev libglib2.0-dev libconfig-dev \
+       libpango1.0-dev libegl1-mesa-dev libevent-dev libgtk2.0-dev libgles2-mesa-dev
+</pre>
+</div>
+</div>
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2"><span class="section-number-2">2</span> git clone freshplayerplugin并编译</h2>
+<div class="outline-text-2" id="text-2">
+<pre class="example">
+git clone https://github.com/i-rinat/freshplayerplugin
 
-  
-    <span>下一页 &raquo;</span>
-  
+cd freshplayerplugin/src
+
+cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo ..
+
+make
+
+cp libfreshwrapper-pepperflash.so ~/.mozilla/plugins
+</pre>
+</div>
 </div>
 
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3"><span class="section-number-2">3</span> 重启firefox就可以了。</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+<img src="asset/img/pepperflash.png" alt="pepperflash.png" />
+<img src="asset/img/emacs.jpg" alt="emacs.jpg" />
+</p>
+</div>
+</div>
+
+  </article>
 
 
-<!-- 分页结束 -->
+<br />
+<!--百度分享开始 -->
+  <div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a title="分享到QQ空间" href="#" class="bds_qzone" data-cmd="qzone"></a><a title="分享到新浪微博" href="#" class="bds_tsina" data-cmd="tsina"></a><a title="分享到腾讯微博" href="#" class="bds_tqq" data-cmd="tqq"></a><a title="分享到人人网" href="#" class="bds_renren" data-cmd="renren"></a><a title="分享到微信" href="#" class="bds_weixin" data-cmd="weixin"></a></div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"32"},"share":{},"image":{"viewList":["qzone","tsina","tqq","renren","weixin"],"viewText":"分享到：","viewSize":"32"},"selectShare":{"bdContainerClass":null,"bdSelectMiniList":["qzone","tsina","tqq","renren","weixin"]}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+<!--百度分享结束>
 
-<!-- <p class="rss-subscribe">subscribe <a href="/feed.xml">via RSS</a></p>-->
+<!-- UY BEGIN -->
+<div id="uyan_frame"></div>
+<script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=1975461"></script>
+<!-- UY END -->
 
+<h3 align="center"><a href="#top" target="_self">返回顶部</a></h3>
 
+</div>
 
       </div>
     </div>

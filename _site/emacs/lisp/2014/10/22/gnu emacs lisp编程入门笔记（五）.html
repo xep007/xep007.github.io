@@ -113,10 +113,10 @@ copy-to-buffer函数拷贝文本到一个缓冲区，替换原有缓冲区中的
 <pre class="src src-lisp"><span class="linenr">1: </span>(<span style="color: #00ffff;">defun</span> <span style="color: #00fa9a;">copy-to-buffer</span> buffer start end
 <span class="linenr">2: </span>    (interactive <span style="color: #ffa500;">"BCopy to buffer: \nr"</span>)
 <span class="linenr">3: </span>        (<span style="color: #00ffff;">let</span> ((oldbuf (current-buffer)))
-<span class="linenr">4: </span>            (<span style="color: #00ffff;">save-excursion</span>
+<span class="linenr">4: </span>            (save-excursion
 <span class="linenr">5: </span>               (set-buffer (get-buffer-create buffer))
 <span class="linenr">6: </span>               (erase-buffer)
-<span class="linenr">7: </span>               (<span style="color: #00ffff;">save-excursion</span>
+<span class="linenr">7: </span>               (save-excursion
 <span class="linenr">8: </span>                  (insert-buffer-substring oldbuf start end)))))
 </pre>
 </div>
@@ -138,8 +138,8 @@ copy-to-buffer函数拷贝文本到一个缓冲区，替换原有缓冲区中的
 <span class="linenr"> 3: </span>  (or (bufferp buffer)
 <span class="linenr"> 4: </span>      (setq buffer (get-buffer buffer)))
 <span class="linenr"> 5: </span>  (<span style="color: #00ffff;">let</span> (start end newmark)
-<span class="linenr"> 6: </span>    (<span style="color: #00ffff;">save-excursion</span>
-<span class="linenr"> 7: </span>      (<span style="color: #00ffff;">save-excursion</span>
+<span class="linenr"> 6: </span>    (save-excursion
+<span class="linenr"> 7: </span>      (save-excursion
 <span class="linenr"> 8: </span>        (set-buffer buffer)
 <span class="linenr"> 9: </span>        (setq start (point-min) end (point-max)))
 <span class="linenr">10: </span>      (insert-buffer-substring buffer start end)

@@ -176,7 +176,7 @@ append-to-buffer函数功能是从当前缓冲区中拷贝一个域（即缓冲�
 <span class="linenr"> 6: </span><span style="color: #ffa500;">    apecifying the portion of the current buffer to be copied."</span>
 <span class="linenr"> 7: </span>    (interactive <span style="color: #ffa500;">"BAppend to buffer: \nr"</span>)
 <span class="linenr"> 8: </span>    (<span style="color: #00ffff;">let</span> ((oldbuf (current-buffer)))
-<span class="linenr"> 9: </span>       (<span style="color: #00ffff;">save-excursion</span>
+<span class="linenr"> 9: </span>       (save-excursion
 <span class="linenr">10: </span>           (set-buffer (get-buffer-create buffer))
 <span class="linenr">11: </span>           (insert-buffer-substring oldbuf start end))))
 </pre>

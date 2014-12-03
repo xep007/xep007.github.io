@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width initial-scale=1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>Go语言程序设计读书笔记（十四）——过程式编程之自定义函数</title>
+    <meta name="description" content="Linux / C / golang / Emacs">
+
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="canonical" href="http://xep007.github.io/golang/2014/11/24/Go%E8%AF%AD%E8%A8%80%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E5%9B%9B%EF%BC%89%E2%80%94%E2%80%94%E8%BF%87%E7%A8%8B%E5%BC%8F%E7%BC%96%E7%A8%8B%E4%B9%8B%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0.html">
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="/">行之技术博客</a>
+
+    <nav class="site-nav">
+      <a href="#" class="menu-icon">
+        <svg viewBox="0 0 18 15">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </a>
+
+      <div class="trigger"> 
+        
+          
+          <a class="page-link" href="/archives.html">归档</a> 
+          
+        
+          
+          <a class="page-link" href="/categories.html">分类</a> 
+          
+        
+          
+        
+          
+        
+          
+        
+          
+          <a class="page-link" href="/sitemap.xml">Sitemap</a> 
+          
+        
+          
+          <a class="page-link" href="/about/">关于我</a> 
+          
+        
+          
+        
+          
+        
+      	  <script type="text/javascript">document.write(unescape('%3Cdiv id="bdcs"%3E%3C/div%3E%3Cscript charset="utf-8" src="http://rp.baidu.com/rp3w/3w.js?sid=3996823661609448363') + '&t=' + (Math.ceil(new Date()/3600000)) + unescape('"%3E%3C/script%3E'));</script>
+      </div>
+    </nav>
+
+
+  </div>
+
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <div class="post">
+
+  <header class="post-header">
+    <h1 class="post-title">Go语言程序设计读书笔记（十四）——过程式编程之自定义函数</h1>
+    <p class="post-meta">Nov 24, 2014 • xep007</p>
+  </header>
+
+  <article class="post-content">
+    <div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1. 自定义函数</a>
+<ul>
+<li><a href="#sec-1-1">1.1. 函数参数</a>
+<ul>
+<li><a href="#sec-1-1-1">1.1.1. 将函数调用作为函数的参数</a></li>
+<li><a href="#sec-1-1-2">1.1.2. 可变参数函数</a></li>
+<li><a href="#sec-1-1-3">1.1.3. 可选参数的函数</a></li>
+</ul>
+</li>
+<li><a href="#sec-1-2">1.2. init()函数和main()函数</a></li>
+<li><a href="#sec-1-3">1.3. 闭包</a></li>
+<li><a href="#sec-1-4">1.4. 递归函数</a></li>
+<li><a href="#sec-1-5">1.5. 运行时选择函数</a>
+<ul>
+<li><a href="#sec-1-5-1">1.5.1. 使用映射和函数引用来制造分支</a></li>
+<li><a href="#sec-1-5-2">1.5.2. 动态函数的创建</a></li>
+</ul>
+</li>
+<li><a href="#sec-1-6">1.6. 高阶函数</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> 自定义函数</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+基本语法
+</p>
+<div class="org-src-container">
+
+<pre class="src src-go"><span style="color: #00ffff;">func</span> <span style="color: #00fa9a;">functionName</span>(<span style="color: #ffff00;">optionalParameters</span>) <span style="color: #ffff00;">optionalReturnType</span> {
+    body
+}
+
+<span style="color: #00ffff;">func</span> <span style="color: #00fa9a;">functionName</span>(<span style="color: #ffff00;">optionalParameters</span>) (<span style="color: #ffff00;">optionalReturnValues</span>) {
+    body
+}
+</pre>
+</div>
+<p>
+函数可以有任意多个参数，如果无参数，则圆括号是空的。否则就要写成：(params1 type1, params2 type2, &#x2026; paramsN typeN)，参数加参数类型。参数之间用逗号隔开。参数需按给定的顺序来传递。
+</p>
+
+<p>
+如果多个参数为同一类型，可以这样写：(params1, params2, &#x2026; paramsN typeN)。
+</p>
+
+<p>
+可变参数，要实现可变参数，可以在参数之后加上省略号(args&#x2026;int)，如果既有可变参数，也有固定参数，那么可变参数要放在最后面。
+</p>
+
+<p>
+函数的返回值跟参数相类。如没有返回值，就在参数列表之后紧跟右大括号。
+</p>
+
+<p>
+如果有返回值，就跟在参数列表之后，有两个或以上的返回值应加括号并且用逗号分隔，只有一个返回值的可加也可不加括号。返回值可设置成返回值命名加返回值类型，也可省略命名。但不可只为部分返回值命名。
+</p>
+
+<p>
+如果函数有返回值，则函数主体必须至少有一个return语句或最后执行panic()调用。如果返回值是未命名的，则return语句必须指定和返回值列表一样多的值。如果返回值是命名的，则return语句可以像没有命名的返回值方式或者是一个空的return语句。一般来说，不要使用空的return语句。
+</p>
+</div>
+
+<div id="outline-container-sec-1-1" class="outline-3">
+<h3 id="sec-1-1"><span class="section-number-3">1.1</span> 函数参数</h3>
+<div class="outline-text-3" id="text-1-1">
+<p>
+上面介绍的函数参数要么是固定参数，要么是可变参数，其实还有一种类型参数是interface{}，表示我们可以传递任何类型的数据。这将在第6章介绍。
+</p>
+</div>
+
+<div id="outline-container-sec-1-1-1" class="outline-4">
+<h4 id="sec-1-1-1"><span class="section-number-4">1.1.1</span> 将函数调用作为函数的参数</h4>
+<div class="outline-text-4" id="text-1-1-1">
+<p>
+如果我们有一个函数或方法，接收一个或多个参数，我们可以直接调用它并给它相应的参数。另外，我们也可将其他函数或方法调用作为一个函数的参数，只要该作为参数的函数或方法的返回值个数和类型与调用函数的列表匹配即可。
+</p>
+
+<p>
+来个例子：一个函数要求传入三角形的边长（以整数的方式），然后使用海伦公式计算出三角形的面积。
+</p>
+<div class="org-src-container">
+
+<pre class="src src-go"><span style="color: #00ffff;">package</span> main
+
+<span style="color: #00ffff;">import</span> (
+        <span style="color: #ffa500;">"fmt"</span>
+        <span style="color: #ffa500;">"math"</span>
+)
+
+<span style="color: #00ffff;">func</span> <span style="color: #00fa9a;">main</span>() {
+        <span style="color: #00ffff;">for</span> i := 1; i &lt;= 4; i++ {
+                a, b, c := <span style="color: #00fa9a;">PythagoreanTriple</span>(i, i+1)
+                &#916;1 := <span style="color: #00fa9a;">Heron</span>(a, b, c)
+                &#916;2 := <span style="color: #00fa9a;">Heron</span>(<span style="color: #00fa9a;">PythagoreanTriple</span>(i, i+1))
+                fmt.<span style="color: #00fa9a;">Printf</span>(<span style="color: #ffa500;">"&#916;1== %10f == &#916;2 == %10f\n"</span>, &#916;1, &#916;2)
+        }
+}
+
+<span style="color: #00ffff;">func</span> <span style="color: #00fa9a;">Heron</span>(a, b, c <span style="color: #ffff00;">int</span>) <span style="color: #ffff00;">float64</span> {
+        A, B, C := <span style="color: #00fa9a;">float64</span>(a), <span style="color: #00fa9a;">float64</span>(b), <span style="color: #00fa9a;">float64</span>(c)
+        s := (A + B + C) / 2
+        <span style="color: #00ffff;">return</span> math.<span style="color: #00fa9a;">Sqrt</span>(s * (s - A) * (s - B) * (s - C))
+}
+
+<span style="color: #00ffff;">func</span> <span style="color: #00fa9a;">PythagoreanTriple</span>(m, n <span style="color: #ffff00;">int</span>) (a, b, c <span style="color: #ffff00;">int</span>) {
+        <span style="color: #00ffff;">if</span> m &lt; n {
+                m, n = n, m
+        }
+        <span style="color: #00ffff;">return</span> (m * m) - (n * n), (2 * m * n), (m * m) + (n * n)
+}
+&#36755;&#20986;&#32467;&#26524;&#20026;&#65306;
+&#916;1==   6.000000 == &#916;2 ==   6.000000
+&#916;1==  30.000000 == &#916;2 ==  30.000000
+&#916;1==  84.000000 == &#916;2 ==  84.000000
+&#916;1== 180.000000 == &#916;2 == 180.000000
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-1-1-2" class="outline-4">
+<h4 id="sec-1-1-2"><span class="section-number-4">1.1.2</span> 可变参数函数</h4>
+<div class="outline-text-4" id="text-1-1-2">
+<p>
+所谓可变参数函数是指函数的最后一个参数可以接受任意多个参数。
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-go"><span style="color: #00ffff;">package</span> main
+
+<span style="color: #00ffff;">import</span> (
+        <span style="color: #ffa500;">"fmt"</span>
+)
+
+<span style="color: #00ffff;">func</span> <span style="color: #00fa9a;">main</span>() {
+        numbers := []<span style="color: #ffff00;">int</span>{7, 6, 2, -1, 7, -3, 9}
+        fmt.<span style="color: #00fa9a;">Println</span>(<span style="color: #00fa9a;">MinimumInt1</span>(numbers[0], numbers[1:]...))
+}
+
+<span style="color: #00ffff;">func</span> <span style="color: #00fa9a;">MinimumInt1</span>(first <span style="color: #ffff00;">int</span>, rest ...<span style="color: #ffff00;">int</span>) <span style="color: #ffff00;">int</span> {
+        <span style="color: #00ffff;">for</span> _, x := <span style="color: #00ffff;">range</span> rest {
+                <span style="color: #00ffff;">if</span> x &lt; first {
+                        first = x
+                }
+        }
+        <span style="color: #00ffff;">return</span> first
+}
+&#36755;&#20986;&#32467;&#26524;&#20026;&#65306;
+-3
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-1-1-3" class="outline-4">
+<h4 id="sec-1-1-3"><span class="section-number-4">1.1.3</span> 可选参数的函数</h4>
+<div class="outline-text-4" id="text-1-1-3">
+<p>
+Go语言并没有直接支持可选参数。但是，实现很容易，只需增加一个额外的结构体即可。而且Go语言能保证所有的值都会被初始化为零值。
+</p>
+
+<p>
+假设我们有一个函数用来处理一些自定义的数据，默认就是简单地处理所有的数据，但有些时候我们希望可以指定处理第一个或最后一个项，还是是否记录函数的行为，或对于非法的项做处理，等等。
+</p>
+
+<p>
+一个办法就是创建一个签名为ProcessItems(items Items, first, last int, audit bool, errorHandler func(item Item))的函数。如果last的值为0就意味着需要取到最后一个item而不管这个索引值。而errorHandler函数只有在不为nil时才会被调用。也就是说，不管在哪调用它，如果希望默认行为的话，只需要写ProcessItems(items, 0, 0, false, nil)就可以了。
+</p>
+
+<p>
+一个比较优雅的做法就是这样定义函数ProcessItems(items Items, options Options),其中Options结构体保存了其他所有参数，初始值都为零值。
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-go">&#20808;&#35774;&#32622;&#32467;&#26500;&#20307;&#12290;
+
+<span style="color: #00ffff;">type</span> <span style="color: #ffff00;">Options</span> <span style="color: #00ffff;">struct</span> {
+    First            int                          <span style="color: #ffd700;">//</span><span style="color: #ffd700;">&#35201;&#22788;&#29702;&#30340;&#31532;&#19968;&#39033;</span>
+    Last             int                          <span style="color: #ffd700;">//</span><span style="color: #ffd700;">&#35201;&#22788;&#29702;&#30340;&#26368;&#21518;&#19968;&#39033;</span>
+    Audit            bool                         <span style="color: #ffd700;">//</span><span style="color: #ffd700;">&#22914;&#26524;&#20026;true,&#25152;&#26377;&#21160;&#20316;&#37117;&#34987;&#35760;&#24405;</span>
+    ErrorHandler     <span style="color: #00ffff;">func</span>(item <span style="color: #ffff00;">Item</span>)              <span style="color: #ffd700;">//</span><span style="color: #ffd700;">&#22914;&#26524;&#19981;&#26159;nil,&#23545;&#27599;&#19968;&#20010;&#22351;&#39033;&#35843;&#29992;&#19968;&#27425;</span>
+}
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-go">&#35843;&#29992;&#65306;
+
+<span style="color: #00fa9a;">ProcessItems</span>(items, <span style="color: #ffff00;">Options</span>{})
+errorHandler := <span style="color: #00ffff;">func</span>(item <span style="color: #ffff00;">Item</span>) { log.<span style="color: #00fa9a;">Println</span>(<span style="color: #ffa500;">"Invalid:"</span>, item)}
+<span style="color: #00fa9a;">ProcessItems</span>(items, <span style="color: #ffff00;">Options</span>{Audit: <span style="color: #fa8072;">true</span>, ErrorHandler: errorHandler})
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-1-2" class="outline-3">
+<h3 id="sec-1-2"><span class="section-number-3">1.2</span> init()函数和main()函数</h3>
+<div class="outline-text-3" id="text-1-2">
+<p>
+Go语言有两个特殊的函数：init()和main()函数。init()函数可以出现在任何的包里，main()函数只在main包里。这两个函数既不接收任何参数，也不返回任何结果。init()函数和main()函数是自动执行的，不应该显式调用它们。对程序或包来说，init()函数是可选的，但每一个程序必须在main包里包含一个main()函数。
+</p>
+
+<p>
+Go程序的初始化和执行总是从main包开始，如果main包里导入了其他的包，则会按顺序将它们包含进main包里。如果一个包被其他的包多次导入的话，这个包实际上只会被导入一次。当一个包被导入时，如果它自己还导入了其他的包，则还是先将其他的导入进来，然后再创建这个包的一些常量和变量。再接着就是调用init()函数了，如果有多个就调用多次，最终所有的包都会被导入到main()包里，这时候main这个包的常量和变量也会被创建，init()函数会被执行。最后main包里的main()函数会被执行，程序开始运行。
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-1-3" class="outline-3">
+<h3 id="sec-1-3"><span class="section-number-3">1.3</span> 闭包</h3>
+<div class="outline-text-3" id="text-1-3">
+<p>
+所谓闭包就是一个函数“捕获”了和它在同一作用域的其他常量和变量。这就意味着当闭包被调用的时候，不管在程序什么地方调用，闭包能够使用这些常量或变量。它不关心这些捕获了的变量和常量是否已经超出了作用域，所以只要闭包还在使用它，这些变量就不会存在。
+</p>
+
+<p>
+在Go语言里，所有的匿名函数都是闭包。
+</p>
+
+<p>
+闭包的创建方式和普通函数在语法上几乎一模一样，但有一个关键的区别：闭包没有名字（func关键字之后紧接着左括号）。通常都是通过闭包赋值给一个变量来使用闭包，或者将它放到一个数据结构里（如映射或切片）。
+</p>
+
+<p>
+闭包的一种用法就是利用包装函数来为被包装函数预定义一到多个参数。例如，假如我们想给大量文件增加不同后缀，本质上就是要包装string的+连接操作符，一个参数会不断变化（文件名）而另一个参数为固定值（后缀名）。
+</p>
+<div class="org-src-container">
+
+<pre class="src src-go">addPng := <span style="color: #00ffff;">func</span>(name <span style="color: #ffff00;">string</span>) <span style="color: #ffff00;">string</span> {<span style="color: #00ffff;">return</span> name + <span style="color: #ffa500;">".png"</span>}
+addJpg := <span style="color: #00ffff;">func</span>(name <span style="color: #ffff00;">string</span>) <span style="color: #ffff00;">string</span> {<span style="color: #00ffff;">return</span> name + <span style="color: #ffa500;">".jpg"</span>}
+fmt.<span style="color: #00fa9a;">Println</span>(<span style="color: #00fa9a;">addPng</span>(<span style="color: #ffa500;">"filename"</span>), <span style="color: #00fa9a;">addJpg</span>(<span style="color: #ffa500;">"filename"</span>))
+</pre>
+</div>
+
+<p>
+在实际环境中当我们需要创建许多类似的函数时，我们会使用一个工厂函数（factory function）,工厂函数返回一个函数。下面是一个例子：
+</p>
+<div class="org-src-container">
+
+<pre class="src src-go"><span style="color: #00ffff;">func</span> <span style="color: #00fa9a;">MakeAddSuffix</span>(suffix <span style="color: #ffff00;">string</span>) <span style="color: #00ffff;">func</span>(<span style="color: #ffff00;">string</span>) <span style="color: #ffff00;">string</span> {
+    <span style="color: #00ffff;">return</span> <span style="color: #00ffff;">func</span>(name <span style="color: #ffff00;">string</span>) <span style="color: #ffff00;">string</span> {
+    <span style="color: #00ffff;">if</span> !strings.<span style="color: #00fa9a;">HasSuffix</span>(name, suffix) {
+        <span style="color: #00ffff;">return</span> name + suffix
+    }
+    <span style="color: #00ffff;">return</span> name
+   }
+}
+</pre>
+</div>
+
+<p>
+工厂函数MakeAddSuffix()返回的闭包在创建时捕获了suffix变量。这个返回的闭包接收一个字符串参数（如文件名）并返回添加了被捕获的suffix后缀的文件名。
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-go">addZip := <span style="color: #00fa9a;">MakeAddSuffix</span>(<span style="color: #ffa500;">".zip"</span>)
+addTgz := <span style="color: #00fa9a;">MakeAddSuffix</span>(<span style="color: #ffa500;">".tar.gz"</span>)
+fmt.<span style="color: #00fa9a;">Println</span>(<span style="color: #00fa9a;">addTgz</span>(<span style="color: #ffa500;">"filename"</span>), <span style="color: #00fa9a;">addZip</span>(<span style="color: #ffa500;">"filename"</span>), <span style="color: #00fa9a;">addZip</span>(<span style="color: #ffa500;">"gobook.zip"</span>))
+&#36755;&#20986;&#30340;&#32467;&#26524;&#20026;&#65306;
+filename.tar.gz filename.zip gobook.zip
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-1-4" class="outline-3">
+<h3 id="sec-1-4"><span class="section-number-3">1.4</span> 递归函数</h3>
+<div class="outline-text-3" id="text-1-4">
+<p>
+递归函数就是调用自己的函数，相互递归就是相互调用对方的函数。
+</p>
+
+<p>
+递归函数通常有相同的结构：一个跳出条件和一个递归体。
+</p>
+
+<ul class="org-ul">
+<li>递归函数：斐波那契数列
+</li>
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-go"><span style="color: #00ffff;">package</span> main
+
+<span style="color: #00ffff;">import</span> (
+        <span style="color: #ffa500;">"fmt"</span>
+)
+
+<span style="color: #00ffff;">func</span> <span style="color: #00fa9a;">Fibonacci</span>(n <span style="color: #ffff00;">int</span>) <span style="color: #ffff00;">int</span> {
+        <span style="color: #00ffff;">if</span> n &lt; 2 {
+                <span style="color: #00ffff;">return</span> n
+        }
+        <span style="color: #00ffff;">return</span> <span style="color: #00fa9a;">Fibonacci</span>(n-1) + <span style="color: #00fa9a;">Fibonacci</span>(n-2)
+}
+
+<span style="color: #00ffff;">func</span> <span style="color: #00fa9a;">main</span>() {
+        <span style="color: #00ffff;">for</span> i := 0; i &lt; 20; i++ {
+                fmt.<span style="color: #00fa9a;">Print</span>(<span style="color: #00fa9a;">Fibonacci</span>(i), <span style="color: #ffa500;">" "</span>)
+        }
+        fmt.<span style="color: #00fa9a;">Println</span>()
+}
+&#36755;&#20986;&#32467;&#26524;&#20026;&#65306;
+0 1 1 2 3 5 8 13 21 34 55 89 144 233 377 610 987 1597 2584 4181
+</pre>
+</div>
+
+<ul class="org-ul">
+<li>相互递归函数。下面代码会将每个序列中的前20个整数打印出来。
+</li>
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-go"><span style="color: #00ffff;">package</span> main
+
+<span style="color: #00ffff;">import</span> (
+        <span style="color: #ffa500;">"fmt"</span>
+)
+
+<span style="color: #00ffff;">func</span> <span style="color: #00fa9a;">main</span>() {
+        females := <span style="color: #b0c4de;">make</span>([]<span style="color: #ffff00;">int</span>, 20)
+        males := <span style="color: #b0c4de;">make</span>([]<span style="color: #ffff00;">int</span>, <span style="color: #b0c4de;">len</span>(females))
+        <span style="color: #00ffff;">for</span> n := <span style="color: #00ffff;">range</span> females {
+                females[n] = <span style="color: #00fa9a;">HofstadterFemale</span>(n)
+                males[n] = <span style="color: #00fa9a;">HofstadterMale</span>(n)
+        }
+        fmt.<span style="color: #00fa9a;">Println</span>(<span style="color: #ffa500;">"F"</span>, females)
+        fmt.<span style="color: #00fa9a;">Println</span>(<span style="color: #ffa500;">"M"</span>, males)
+
+}
+
+<span style="color: #00ffff;">func</span> <span style="color: #00fa9a;">HofstadterFemale</span>(n <span style="color: #ffff00;">int</span>) <span style="color: #ffff00;">int</span> {
+        <span style="color: #00ffff;">if</span> n &lt;= 0 {
+                <span style="color: #00ffff;">return</span> 1
+        }
+        <span style="color: #00ffff;">return</span> n - <span style="color: #00fa9a;">HofstadterMale</span>(<span style="color: #00fa9a;">HofstadterFemale</span>(n-1))
+}
+
+<span style="color: #00ffff;">func</span> <span style="color: #00fa9a;">HofstadterMale</span>(n <span style="color: #ffff00;">int</span>) <span style="color: #ffff00;">int</span> {
+        <span style="color: #00ffff;">if</span> n &lt;= 0 {
+                <span style="color: #00ffff;">return</span> 0
+        }
+        <span style="color: #00ffff;">return</span> n - <span style="color: #00fa9a;">HofstadterFemale</span>(<span style="color: #00fa9a;">HofstadterMale</span>(n-1))
+}
+&#36755;&#20986;&#32467;&#26524;&#20026;&#65306;
+F [1 1 2 2 3 3 4 5 5 6 6 7 8 8 9 9 10 11 11 12]
+M [0 0 1 2 2 3 4 4 5 6 6 7 7 8 9 9 10 11 11 12]
+</pre>
+</div>
+
+<ul class="org-ul">
+<li>判断回文的递归实现
+</li>
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-go"><span style="color: #00ffff;">package</span> main
+<span style="color: #00ffff;">import</span> (
+        <span style="color: #ffa500;">"fmt"</span>
+        <span style="color: #ffa500;">"unicode/utf8"</span>
+)
+
+<span style="color: #00ffff;">func</span> <span style="color: #00fa9a;">main</span>() {
+        s := []<span style="color: #ffff00;">string</span>{<span style="color: #ffa500;">"abc"</span>, <span style="color: #ffa500;">"abcdcba"</span>, <span style="color: #ffa500;">"1234554321"</span>, <span style="color: #ffa500;">"&#22825;&#36830;&#27700;&#23614;&#27700;&#36830;&#22825;"</span>}
+        <span style="color: #00ffff;">for</span> _, str := <span style="color: #00ffff;">range</span> s {
+                <span style="color: #00ffff;">if</span> <span style="color: #00fa9a;">IsPalindrome</span>(str) {
+                        fmt.<span style="color: #00fa9a;">Printf</span>(<span style="color: #ffa500;">"%s is palindrome\n"</span>, str)
+                } <span style="color: #00ffff;">else</span> {
+                        fmt.<span style="color: #00fa9a;">Printf</span>(<span style="color: #ffa500;">"%s is not palindrome\n"</span>, str)
+                }
+
+        }
+}
+
+<span style="color: #00ffff;">func</span> <span style="color: #00fa9a;">IsPalindrome</span>(word <span style="color: #ffff00;">string</span>) <span style="color: #ffff00;">bool</span> {
+        <span style="color: #00ffff;">if</span> utf8.<span style="color: #00fa9a;">RuneCountInString</span>(word) &lt;= 1 {
+                <span style="color: #00ffff;">return</span> <span style="color: #fa8072;">true</span>
+        }
+        first, sizeOfFirst := utf8.<span style="color: #00fa9a;">DecodeRuneInString</span>(word)
+        last, sizeOfLast := utf8.<span style="color: #00fa9a;">DecodeLastRuneInString</span>(word)
+        <span style="color: #00ffff;">if</span> first != last {
+                <span style="color: #00ffff;">return</span> <span style="color: #fa8072;">false</span>
+        }
+        <span style="color: #00ffff;">return</span> <span style="color: #00fa9a;">IsPalindrome</span>(word[sizeOfFirst : <span style="color: #b0c4de;">len</span>(word)-sizeOfLast])
+}
+
+&#36755;&#20986;&#32467;&#26524;&#20026;&#65306;
+abc is not palindrome
+abcdcba is palindrome
+1234554321 is palindrome
+&#22825;&#36830;&#27700;&#23614;&#27700;&#36830;&#22825; is palindrome
+</pre>
+</div>
+<p>
+utf8.DecodeRuneInString()函数，返回字符串的第一个字符（rune类型）和占用的字节数。utf8.DecodeLastRuneInString()函数相似，作用于最后一个字符，利用这两个大小，可以安全地将每个字符都切割出来。
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-1-5" class="outline-3">
+<h3 id="sec-1-5"><span class="section-number-3">1.5</span> 运行时选择函数</h3>
+<div class="outline-text-3" id="text-1-5">
+<p>
+在Go语言中，函数是第一类值，你可以将它保存到一个变量（实际上是个引用），这样我们就可以在运行时决定要执行哪个函数。再者，Go语言能创建闭包意味着我们可以在运行时创建函数，所以我们对同一个函数可以有两个或多个不同的实现（例如不同的算法），在使用时创建它们其中一个就行。
+</p>
+</div>
+<div id="outline-container-sec-1-5-1" class="outline-4">
+<h4 id="sec-1-5-1"><span class="section-number-4">1.5.1</span> 使用映射和函数引用来制造分支</h4>
+<div class="outline-text-4" id="text-1-5-1">
+<p>
+<b>新版ArchiverFileLIst()</b>
+</p>
+<div class="org-src-container">
+
+<pre class="src src-go"><span style="color: #00ffff;">var</span> FunctionForSuffix = <span style="color: #00ffff;">map</span>[<span style="color: #ffff00;">string</span>]<span style="color: #00ffff;">func</span>(<span style="color: #ffff00;">string</span>) ([]<span style="color: #ffff00;">string</span>, <span style="color: #ffff00;">error</span>){
+        <span style="color: #ffa500;">".gz"</span>: GzipFileList, <span style="color: #ffa500;">".tar"</span>: TarFileList, <span style="color: #ffa500;">".tar.gz"</span>: TarFileList, <span style="color: #ffa500;">".tgz"</span>: TarFileList, <span style="color: #ffa500;">".zip"</span>: ZipFileList}
+
+<span style="color: #00ffff;">func</span> <span style="color: #00fa9a;">ArchiveFileListMap</span>(file <span style="color: #ffff00;">string</span>) ([]<span style="color: #ffff00;">string</span>, <span style="color: #ffff00;">error</span>) {
+        <span style="color: #00ffff;">if</span> function, ok := FunctionForSuffix[<span style="color: #00fa9a;">Suffix</span>(file)]; ok {
+                <span style="color: #00ffff;">return</span> <span style="color: #00fa9a;">function</span>(file)
+        }
+        <span style="color: #00ffff;">return</span> <span style="color: #fa8072;">nil</span>, errors.<span style="color: #00fa9a;">New</span>(<span style="color: #ffa500;">"unrecognized archive"</span>)
+}
+</pre>
+</div>
+<p>
+这个函数使用了映射，键是字符串（文件名后缀），值是签名为func(string) ([]string, error)的函数。
+</p>
+
+<p>
+这个函数使用[]索引操作符根据给定的前缀从FunctionForSuffix结构里得到对应的函数，如果这个前缀存在则ok的值为true，否则为false。如果存在匹配的函数，执行这个函数并将文件名作为参数传递给它，返回它的结果。
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-1-5-2" class="outline-4">
+<h4 id="sec-1-5-2"><span class="section-number-4">1.5.2</span> 动态函数的创建</h4>
+<div class="outline-text-4" id="text-1-5-2">
+<p>
+在运行时动态地选择函数的另一个场景便是，当我们有两个或者更多的函数实现了相同的功能时，比如使用了不同的算法等，我们不不希望在程序编译时静态绑定到其中一个函数。
+</p>
+
+<p>
+举个例子了，如果我们使用一个7位的ASCII字符，我们可以写一个更加简单的IsPalindrome()函数，而在运行进动态地创建一个我们所需要的版本。
+</p>
+
+<p>
+一种做法就是声明一个和这个函数签名相同的包级别的变量，然后创建一个appropriate()函数和一个init()函数。
+</p>
+<div class="org-src-container">
+
+<pre class="src src-go"><span style="color: #00ffff;">var</span> IsPalindrome <span style="color: #00ffff;">func</span>(<span style="color: #ffff00;">string</span>) <span style="color: #ffff00;">bool</span> <span style="color: #ffd700;">//</span><span style="color: #ffd700;">&#20445;&#23384;&#21040;&#20989;&#25968;&#30340;&#24341;&#29992;</span>
+<span style="color: #00ffff;">func</span> <span style="color: #00fa9a;">init</span>() {
+        <span style="color: #00ffff;">if</span> <span style="color: #b0c4de;">len</span>(os.Args) &gt; 1 &amp;&amp; (os.Args[1] == <span style="color: #ffa500;">"-a"</span> || os.Args[1] == <span style="color: #ffa500;">"--ascii"</span>) {
+                os.Args = <span style="color: #b0c4de;">append</span>(os.Args[:1], os.Args[2:]...) <span style="color: #ffd700;">//</span><span style="color: #ffd700;">&#21435;&#25481;&#21442;&#25968;</span>
+                IsPalindrome = <span style="color: #00ffff;">func</span>(s <span style="color: #ffff00;">string</span>) <span style="color: #ffff00;">bool</span> {          <span style="color: #ffd700;">//</span><span style="color: #ffd700;">&#31616;&#21333;&#30340;ASCII&#29256;&#26412;</span>
+                        <span style="color: #00ffff;">if</span> <span style="color: #b0c4de;">len</span>(s) &lt;= 1 {
+                                <span style="color: #00ffff;">return</span> <span style="color: #fa8072;">true</span>
+                        }
+                        <span style="color: #00ffff;">if</span> s[0] != s[<span style="color: #b0c4de;">len</span>(s)-1] {
+                                <span style="color: #00ffff;">return</span> <span style="color: #fa8072;">false</span>
+                        }
+                        <span style="color: #00ffff;">return</span> <span style="color: #00fa9a;">IsPalindrome</span>(s[1 : <span style="color: #b0c4de;">len</span>(s)-1])
+                }
+        } <span style="color: #00ffff;">else</span> {
+                IsPalindrome = <span style="color: #00ffff;">func</span>(s <span style="color: #ffff00;">string</span>) <span style="color: #ffff00;">bool</span> { <span style="color: #ffd700;">//</span><span style="color: #ffd700;">UTF8&#29256;&#26412;</span>
+                        <span style="color: #ffd700;">//</span><span style="color: #ffd700;">...&#21516;&#21069;...</span>
+                }
+        }
+}
+</pre>
+</div>
+
+<p>
+我们根据命令行选项来决定IsPalindrome()的实现方式。如果指定了"-a" 或 "&#x2013;ascii"参数，我们将它从os.Args切片里移除，然后创建一个作用于ASCII码的IsPalindrome()函数。如果ASCII选项没有出现，我们就创建一个和之前一样的函数，既能处理ASCII编码的字符串也能处理UTF8编码的字符串。
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-1-6" class="outline-3">
+<h3 id="sec-1-6"><span class="section-number-3">1.6</span> 高阶函数</h3>
+<div class="outline-text-3" id="text-1-6">
+<p>
+所谓高阶函数就是将一个或多个其他函数作为自己的参数，并在函数体里调用它们。
+</p>
+
+<p>
+一个最简单的高阶函数：
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-go"><span style="color: #00ffff;">func</span> <span style="color: #00fa9a;">SliceIndex</span>(limit <span style="color: #ffff00;">int</span>, preficate <span style="color: #00ffff;">func</span>(i <span style="color: #ffff00;">int</span>) <span style="color: #ffff00;">bool</span>) <span style="color: #ffff00;">int</span> {
+        <span style="color: #00ffff;">for</span> i := 0; i &lt; limit; i++ {
+                <span style="color: #00ffff;">if</span> <span style="color: #00fa9a;">preficate</span>(i) {
+                        <span style="color: #00ffff;">return</span> i
+                }
+        }
+        <span style="color: #00ffff;">return</span> -1
+}
+</pre>
+</div>
+<p>
+这个函数返回preficate()为真时的索引值， 所以这个函数能做Index()、IndexReflect()、IntSliceIndex()的所有工作。
+</p>
+
+<p>
+下面是函数调用的4个样例和它们输出的结果。
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-go"><span style="color: #00ffff;">func</span> <span style="color: #00fa9a;">main</span>() {
+        xs := []<span style="color: #ffff00;">int</span>{2, 4, 5, 8}
+        ys := []<span style="color: #ffff00;">string</span>{<span style="color: #ffa500;">"C"</span>, <span style="color: #ffa500;">"B"</span>, <span style="color: #ffa500;">"K"</span>, <span style="color: #ffa500;">"A"</span>}
+
+        fmt.<span style="color: #00fa9a;">Println</span>(
+                <span style="color: #00fa9a;">SliceIndex</span>(<span style="color: #b0c4de;">len</span>(xs), <span style="color: #00ffff;">func</span>(i <span style="color: #ffff00;">int</span>) <span style="color: #ffff00;">bool</span> { <span style="color: #00ffff;">return</span> xs[i] == 5 }),
+                <span style="color: #00fa9a;">SliceIndex</span>(<span style="color: #b0c4de;">len</span>(xs), <span style="color: #00ffff;">func</span>(i <span style="color: #ffff00;">int</span>) <span style="color: #ffff00;">bool</span> { <span style="color: #00ffff;">return</span> xs[i] == 6 }),
+                <span style="color: #00fa9a;">SliceIndex</span>(<span style="color: #b0c4de;">len</span>(ys), <span style="color: #00ffff;">func</span>(i <span style="color: #ffff00;">int</span>) <span style="color: #ffff00;">bool</span> { <span style="color: #00ffff;">return</span> ys[i] == <span style="color: #ffa500;">"Z"</span> }),
+                <span style="color: #00fa9a;">SliceIndex</span>(<span style="color: #b0c4de;">len</span>(ys), <span style="color: #00ffff;">func</span>(i <span style="color: #ffff00;">int</span>) <span style="color: #ffff00;">bool</span> { <span style="color: #00ffff;">return</span> ys[i] == <span style="color: #ffa500;">"A"</span> }))
+}
+&#36755;&#20986;&#32467;&#26524;&#65306;
+2 -1 -1 3
+</pre>
+</div>
+<p>
+传给SliceIndex()函数的第二个参数的匿名函数是一个闭包，所以它们引用的xs和ys必须和这个函数被创建的地方在同一作用域。实际上，SliceIndex()就是一个能直接处理切片的通用函数。
+</p>
+
+<p>
+<b>纯记忆函数</b>
+</p>
+
+<p>
+所谓纯函数就是对同一组输入总是产生相同的结果，不存在任何副作用。如果一个纯函数执行时开销很大而且频繁地使用相同的参数进行调用，我们可以使用记忆功能来降低处理的开销。记忆技术就是保存计算的结果，当执行下一个相同的计算时，我们能返回保存的结果而不是重复执行一次计算过程。
+</p>
+
+<p>
+例子1：使用递归的具有记忆功能的斐波纳契函数。
+</p>
+<div class="org-src-container">
+
+<pre class="src src-go"><span style="color: #00ffff;">type</span> <span style="color: #ffff00;">memoizeFunction</span> <span style="color: #00ffff;">func</span>(<span style="color: #ffff00;">int</span>, ...<span style="color: #ffff00;">int</span>) <span style="color: #00ffff;">interface</span>{}
+
+<span style="color: #00ffff;">var</span> Fibonacci memoizeFunction
+
+<span style="color: #00ffff;">func</span> <span style="color: #00fa9a;">init</span>() {
+        Fibonacci = <span style="color: #00fa9a;">Memoize</span>(<span style="color: #00ffff;">func</span>(x <span style="color: #ffff00;">int</span>, xs ...<span style="color: #ffff00;">int</span>) <span style="color: #00ffff;">interface</span>{} {
+                <span style="color: #00ffff;">if</span> x &lt; 2 {
+                        <span style="color: #00ffff;">return</span> x
+                }
+                <span style="color: #00ffff;">return</span> <span style="color: #00fa9a;">Fibonacci</span>(x-1).(<span style="color: #ffff00;">int</span>) + <span style="color: #00fa9a;">Fibonacci</span>(x-2).(<span style="color: #ffff00;">int</span>)
+        })
+}
+</pre>
+</div>
+<p>
+Memoize()函数（下文讲到）可以记忆任何传入至少一个int参数并返回一个interface{}的函数。在init()函数里，我们创建了一个计算斐波纳契数列的匿名函数，并立即将它传给Memoize()函数。相应地，Memoize()函数返回一个memoizeFunction类型的函数，然后赋值给Fibonacci变量。
+</p>
+
+<p>
+在这个特定例子里，我们只需传一个参数给Fibonacci函数，所以我们可以忽略所有其他传入的整数（即忽略xs，在这个例子里它应该是一个空的切片）。还有，当我们将递归的结果汇总的时候，我们必须使用非检查类型断言将返回值从interface{}类型转换成int类型。
+</p>
+
+<p>
+现在我们可以像其他函数那样使用Fibonacci()，而且得益于记忆功能，它不会重复执行相同的计算过程。
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-go"><span style="color: #00ffff;">func</span> <span style="color: #00fa9a;">Memoize</span>(function <span style="color: #ffff00;">memoizeFunction</span>) <span style="color: #ffff00;">memoizeFunction</span> {
+        cache := <span style="color: #b0c4de;">make</span>(<span style="color: #00ffff;">map</span>[<span style="color: #ffff00;">string</span>]<span style="color: #00ffff;">interface</span>{})
+        <span style="color: #00ffff;">return</span> <span style="color: #00ffff;">func</span>(x <span style="color: #ffff00;">int</span>, xs ...<span style="color: #ffff00;">int</span>) <span style="color: #00ffff;">interface</span>{} {
+                key := fmt.<span style="color: #00fa9a;">Sprint</span>(x)
+                <span style="color: #00ffff;">for</span> _, i := <span style="color: #00ffff;">range</span> xs {
+                        key += fmt.<span style="color: #00fa9a;">Sprintf</span>(<span style="color: #ffa500;">", %d"</span>, i)
+                }
+                <span style="color: #00ffff;">if</span> value, found := cache[key]; found {
+                        <span style="color: #00ffff;">return</span> value
+                }
+                value := <span style="color: #00fa9a;">function</span>(x, xs...)
+                cache[key] = value
+                <span style="color: #00ffff;">return</span> value
+        }
+}
+</pre>
+</div>
+<p>
+记忆功能对那些开销大的纯函数而言是非常有用的。
+</p>
+</div>
+</div>
+</div>
+
+  </article>
+
+
+<br />
+<!--百度分享开始 -->
+  <div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a title="分享到QQ空间" href="#" class="bds_qzone" data-cmd="qzone"></a><a title="分享到新浪微博" href="#" class="bds_tsina" data-cmd="tsina"></a><a title="分享到腾讯微博" href="#" class="bds_tqq" data-cmd="tqq"></a><a title="分享到人人网" href="#" class="bds_renren" data-cmd="renren"></a><a title="分享到微信" href="#" class="bds_weixin" data-cmd="weixin"></a></div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"32"},"share":{},"image":{"viewList":["qzone","tsina","tqq","renren","weixin"],"viewText":"分享到：","viewSize":"32"},"selectShare":{"bdContainerClass":null,"bdSelectMiniList":["qzone","tsina","tqq","renren","weixin"]}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+<!--百度分享结束>
+
+<!-- UY BEGIN -->
+<div id="uyan_frame"></div>
+<script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=1975461"></script>
+<!-- UY END -->
+
+<h3 align="center"><a href="#top" target="_self">返回顶部</a></h3>
+
+</div>
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h1 class="footer-heading"><a href="http://xep007.github.io"</a>行之技术博客</h1>
+    <div class="footer-col-wrapper">
+      <div class="footer-col  footer-col-1">
+        <ul class="contact-list">
+<!--          <li><a href="">行之技术博客</a></li> -->
+          <li><a href="mailto:48614191@qq.com">48614191@qq.com</a></li>
+        </ul>
+      </div>
+
+
+      <div class="footer-col  footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/xep007">
+              <span class="icon  icon--github">
+                <svg viewBox="0 0 16 16">
+                  <path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/>
+                </svg>
+              </span>
+
+              <span class="username">xep007</span>
+            </a>
+          </li>
+          
+
+          
+        </ul>
+      </div>
+
+      <div class="footer-col  footer-col-3">
+        <p class="text">Linux / C / golang / Emacs</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+
+
+
+</body>
+</html>
