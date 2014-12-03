@@ -5,8 +5,8 @@
     <description>Linux / C / golang / Emacs</description>
     <link>http://xep007.github.io/</link>
     <atom:link href="http://xep007.github.io/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Wed, 03 Dec 2014 22:07:18 +0800</pubDate>
-    <lastBuildDate>Wed, 03 Dec 2014 22:07:18 +0800</lastBuildDate>
+    <pubDate>Wed, 03 Dec 2014 22:49:23 +0800</pubDate>
+    <lastBuildDate>Wed, 03 Dec 2014 22:49:23 +0800</lastBuildDate>
     <generator>Jekyll v2.4.0</generator>
     
       <item>
@@ -17,7 +17,7 @@
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&quot;#sec-1&quot;&gt;1. 先安装编译所需的库文件&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&quot;#sec-2&quot;&gt;2. git clone freshplayerplugin并编译&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#sec-3&quot;&gt;3. 重启firefox就可以了。&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#sec-3&quot;&gt;3. 重启firefox&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -61,7 +61,7 @@ cp libfreshwrapper-pepperflash.so ~/.mozilla/plugins
 &lt;/div&gt;
 
 &lt;div id=&quot;outline-container-sec-3&quot; class=&quot;outline-2&quot;&gt;
-&lt;h2 id=&quot;sec-3&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;3&lt;/span&gt; 重启firefox就可以了。&lt;/h2&gt;
+&lt;h2 id=&quot;sec-3&quot;&gt;&lt;span class=&quot;section-number-2&quot;&gt;3&lt;/span&gt; 重启firefox&lt;/h2&gt;
 &lt;/div&gt;
 </description>
         <pubDate>Wed, 03 Dec 2014 00:00:00 +0800</pubDate>
