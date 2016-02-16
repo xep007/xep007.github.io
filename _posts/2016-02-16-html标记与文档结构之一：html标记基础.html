@@ -1,0 +1,259 @@
+---
+layout     : post
+title      : HTML标记基础
+categories : [html ,css ]
+tags       : html
+description: html
+author: xep007
+---
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1. HTML标记基础知识</a>
+<ul>
+<li><a href="#sec-1-1">1.1. HTML标记基础</a>
+<ul>
+<li><a href="#sec-1-1-1">1.1.1. 文本用闭合标签</a></li>
+<li><a href="#sec-1-1-2">1.1.2. 引用内容用自闭合标签</a></li>
+<li><a href="#sec-1-1-3">1.1.3. 引用内容用自闭合标签</a></li>
+<li><a href="#sec-1-1-4">1.1.4. 属性</a></li>
+<li><a href="#sec-1-1-5">1.1.5. 标题与段落</a></li>
+<li><a href="#sec-1-1-6">1.1.6. 复合元素</a></li>
+<li><a href="#sec-1-1-7">1.1.7. 嵌套标签</a></li>
+</ul>
+</li>
+<li><a href="#sec-1-2">1.2. HTML文档剖析</a>
+<ul>
+<li><a href="#sec-1-2-1">1.2.1. HTML模板</a></li>
+<li><a href="#sec-1-2-2">1.2.2. 块级元素和行内元素</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#sec-2">2. 使用块级元素和行内元素构建页面 *</a></li>
+<li><a href="#sec-3">3. 块级元素例子会扩展到与父元素同宽 *</a></li>
+<li><a href="#sec-4">4. 行内元素盒子会“收缩包裹”其内容，并且会尽可能包紧*</a>
+<ul>
+<li><a href="#sec-4-1">4.1. 文档对象模型</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> HTML标记基础知识</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+HTML5新增加了一些标签，主要有&lt;header&gt;、&lt;nav&gt;、&lt;article&gt;、&lt;section&gt;和&lt;footer&gt;。
+</p>
+</div>
+<div id="outline-container-sec-1-1" class="outline-3">
+<h3 id="sec-1-1"><span class="section-number-3">1.1</span> HTML标记基础</h3>
+<div class="outline-text-3" id="text-1-1">
+<p>
+对于每个包含内容的元素（比如标题、段落和图片），根据它所包含的内容是不是文本，有两种不同的方式给它们加标记，一种是使用闭合标签，一种是使用非闭合标签。
+</p>
+</div>
+<div id="outline-container-sec-1-1-1" class="outline-4">
+<h4 id="sec-1-1-1"><span class="section-number-4">1.1.1</span> 文本用闭合标签</h4>
+<div class="outline-text-4" id="text-1-1-1">
+<p>
+闭合标签的基本格式如下：
+&lt;标签名&gt;文本内容&lt;/标签名&gt;
+可以给这个标签添加一些属性，比如：
+&lt;标签名 属性1=“属性值” 属性2=“属性值”&gt;文本内容&lt;/&gt;
+标题、段落等文本元素都要求闭合标签，也就是要有一个开标签和一个闭标签，比如:
+&lt;h1&gt;Word by Dogsworth&lt;/h1&gt;
+&lt;p&gt;wandered lonely as a dog.&lt;/p&gt;
+</p>
+</div>
+</div>
+<div id="outline-container-sec-1-1-2" class="outline-4">
+<h4 id="sec-1-1-2"><span class="section-number-4">1.1.2</span> 引用内容用自闭合标签</h4>
+<div class="outline-text-4" id="text-1-1-2">
+<p>
+&lt;标签名 属性1=“属性值” 属性2=“属性值”/&gt;
+</p>
+</div>
+</div>
+<div id="outline-container-sec-1-1-3" class="outline-4">
+<h4 id="sec-1-1-3"><span class="section-number-4">1.1.3</span> 引用内容用自闭合标签</h4>
+<div class="outline-text-4" id="text-1-1-3">
+<p>
+非文本内容是通过自闭合标签显示的。
+闭合标签和自闭合标签的区别在于，闭合标签包含的内容是会显示的实际内容，面自闭合标签只是给浏览器提供一个对要显示内容的引用。
+</p>
+</div>
+</div>
+<div id="outline-container-sec-1-1-4" class="outline-4">
+<h4 id="sec-1-1-4"><span class="section-number-4">1.1.4</span> 属性</h4>
+<div class="outline-text-4" id="text-1-1-4">
+<p>
+属性负责为浏览器提供有关标签的额外信息。比如：
+&lt;img src="abc.jpg" alt="图片abc"/&gt;
+一个属性是src,一个属性是alt。
+每个标签都可以添加属性。class和id等属性，几乎可以适用于任何标签，而另一些属性，比如src,则只适用于类似&lt;img&gt;这样的引用源文件的标签。
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-1-1-5" class="outline-4">
+<h4 id="sec-1-1-5"><span class="section-number-4">1.1.5</span> 标题与段落</h4>
+<div class="outline-text-4" id="text-1-1-5">
+<p>
+标题与段落是最深见的标签。
+</p>
+</div>
+</div>
+<div id="outline-container-sec-1-1-6" class="outline-4">
+<h4 id="sec-1-1-6"><span class="section-number-4">1.1.6</span> 复合元素</h4>
+<div class="outline-text-4" id="text-1-1-6">
+<p>
+HTML不仅规定了标题、图片和段落等基本的内容标记，还规定了用于创建列表、表格和表单等复杂用户界面组件的标记，这些就是所谓的复合元素，即它们是由多个标签共同构成的。
+比如，&lt;li&gt;标签是一个列表项，它只有在&lt;ol&gt;(有序列表)和&lt;ul&gt;(无序列表)这两种标签中才有效，在&lt;dl&gt;(定义列表)则无效。
+</p>
+<div class="org-src-container">
+
+<pre class="src src-html">&lt;<span style="color: #00fa9a;">ol</span>&gt;
+    &lt;<span style="color: #00fa9a;">li</span>&gt;Save HTML file&lt;/<span style="color: #00fa9a;">li</span>&gt;
+    &lt;<span style="color: #00fa9a;">li</span>&gt;Move file to Web server via FTP&lt;/<span style="color: #00fa9a;">li</span>&gt;
+    &lt;<span style="color: #00fa9a;">li</span>&gt;Preview in browser&lt;/<span style="color: #00fa9a;">li</span>&gt;
+&lt;/<span style="color: #00fa9a;">ol</span>&gt;
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-1-1-7" class="outline-4">
+<h4 id="sec-1-1-7"><span class="section-number-4">1.1.7</span> 嵌套标签</h4>
+<div class="outline-text-4" id="text-1-1-7">
+<p>
+在上面的例子中，基于&lt;li&gt;标签与&lt;ol&gt;标签的嵌套关系，又称为父亲标签与子标签。
+在一个标签里嵌套另一个标签，必须要先关闭后一个标签再关闭前一个标签。
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-1-2" class="outline-3">
+<h3 id="sec-1-2"><span class="section-number-3">1.2</span> HTML文档剖析</h3>
+<div class="outline-text-3" id="text-1-2">
+<p>
+有几处HTML元素是所有HTML文档（也就网页）中都必须包含的。这些元素为内容提供了框架，有了这个框架才能正确显示内容。
+</p>
+</div>
+
+<div id="outline-container-sec-1-2-1" class="outline-4">
+<h4 id="sec-1-2-1"><span class="section-number-4">1.2.1</span> HTML模板</h4>
+<div class="outline-text-4" id="text-1-2-1">
+<p>
+今天，按照HTML5语法编写的最简单的HTML
+</p>
+<div class="org-src-container">
+
+<pre class="src src-html">&lt;<span style="color: #00ffff;">!DOCTYPE</span> html&gt;
+&lt;<span style="color: #00fa9a;">html</span>&gt;
+    &lt;<span style="color: #00fa9a;">head</span>&gt;
+    &lt;<span style="color: #00fa9a;">meta</span> <span style="color: #ffa07a;">charset</span>=<span style="color: #ffa500;">"utf-8"</span>/&gt;
+    &lt;<span style="color: #00fa9a;">title</span>&gt;<span style="font-weight: bold; text-decoration: underline;">An HTML Template</span>&lt;/<span style="color: #00fa9a;">title</span>&gt;
+    &lt;/<span style="color: #00fa9a;">head</span>&gt;
+    &lt;<span style="color: #00fa9a;">body</span>&gt;
+    <span style="color: #ffd700;">&lt;!--</span><span style="color: #ffd700;">&#36825;&#37324;&#26159;&#32593;&#39029;&#20869;&#23481;</span><span style="color: #ffd700;">--&gt;</span>
+    &lt;/<span style="color: #00fa9a;">body</span>&gt;
+&lt;/<span style="color: #00fa9a;">html</span>&gt;
+</pre>
+</div>
+
+<p>
+浏览器会一行一行地按标签顺序来显示内容。
+</p>
+</div>
+</div>
+<div id="outline-container-sec-1-2-2" class="outline-4">
+<h4 id="sec-1-2-2"><span class="section-number-4">1.2.2</span> 块级元素和行内元素</h4>
+<div class="outline-text-4" id="text-1-2-2">
+<p>
+HTML文档是一种“文档流”，按照标签的先后顺序，依次显示。朴素而实用。CSS的妙处就是把这种实用主义的默认显示效果，转换成既有吸引力又直观的页面设计。
+几乎所有HTML元素的display属性值要么为block,要么为inline。最明显的一个例外是table元素，它有自己特殊的display属性值。
+块级元素（比如标题和段落）会相互堆叠在一起沿页面向下排列，每个元素分别占一行。而行内元素（比如链接和图片）则会相互并列，只有在空间不足以并列的情况下才会折行显示。
+</p>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2"><span class="section-number-2">2</span> 使用块级元素和行内元素构建页面 *</h2>
+<div class="outline-text-2" id="text-2">
+<div class="org-src-container">
+
+<pre class="src src-html">&lt;<span style="color: #00ffff;">!DOCTYPE</span> html&gt;
+&lt;<span style="color: #00fa9a;">html</span>&gt;
+
+    &lt;<span style="color: #00fa9a;">head</span>&gt;
+        &lt;<span style="color: #00fa9a;">mata</span> <span style="color: #ffa07a;">charset</span>=<span style="color: #ffa500;">"utf8"</span> /&gt;
+        &lt;<span style="color: #00fa9a;">title</span>&gt;<span style="font-weight: bold; text-decoration: underline;">Block and Inline Element</span>&lt;/<span style="color: #00fa9a;">title</span>&gt;
+    &lt;/<span style="color: #00fa9a;">head</span>&gt;
+    &lt;<span style="color: #00fa9a;">body</span>&gt;
+        &lt;<span style="color: #00fa9a;">h1</span>&gt;<span style="font-weight: bold; text-decoration: underline;">Types of Guitars</span>&lt;/<span style="color: #00fa9a;">h1</span>&gt;
+        &lt;<span style="color: #00fa9a;">p</span>&gt;Guitars come in two main types:electric and acoustic.&lt;/<span style="color: #00fa9a;">p</span>&gt;
+        &lt;<span style="color: #00fa9a;">h2</span>&gt;<span style="font-weight: bold; font-style: italic; text-decoration: underline;">Acoustic Guitars</span>&lt;/<span style="color: #00fa9a;">h2</span>&gt;
+        &lt;<span style="color: #00fa9a;">p</span>&gt;Acoustic guitars have a large hollow body that projects the sound of th estrings.&lt;/<span style="color: #00fa9a;">p</span>&gt;
+        &lt;<span style="color: #00fa9a;">h3</span>&gt;<span style="font-style: italic; text-decoration: underline;">Nylon String Acoustic Guitars</span>&lt;/<span style="color: #00fa9a;">h3</span>&gt;
+        &lt;<span style="color: #00fa9a;">p</span>&gt;Descendants of the gut-strung instruments of yore,nylon string guitars have a mellow tone.&lt;/<span style="color: #00fa9a;">p</span>&gt;
+        &lt;<span style="color: #00fa9a;">h3</span>&gt;<span style="font-style: italic; text-decoration: underline;">Steel String Acoustic</span>&lt;/<span style="color: #00fa9a;">h3</span>&gt;
+        &lt;<span style="color: #00fa9a;">p</span>&gt;Steel string guitars first appeared in country music and today most acoustic guitars have steel strings.&lt;/<span style="color: #00fa9a;">p</span>&gt;
+        &lt;<span style="color: #00fa9a;">h2</span>&gt;<span style="font-weight: bold; font-style: italic; text-decoration: underline;">Electric Guitars</span>&lt;/<span style="color: #00fa9a;">h2</span>&gt;
+        &lt;<span style="color: #00fa9a;">p</span>&gt;Electric guitars have a solid or hollow body with pickups that capture the string vibration so it can be amplified.&lt;/<span style="color: #00fa9a;">p</span>&gt;
+        &lt;<span style="color: #00fa9a;">h3</span>&gt;<span style="font-style: italic; text-decoration: underline;">Solid Body Electric Guitars</span>&lt;/<span style="color: #00fa9a;">h3</span>&gt;
+        &lt;<span style="color: #00fa9a;">p</span>&gt;Solid body Electric guitars are commonly used in rock and country music.&lt;/<span style="color: #00fa9a;">p</span>&gt;
+    &lt;/<span style="color: #00fa9a;">body</span>&gt;
+&lt;/<span style="color: #00fa9a;">html</span>&gt;
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3"><span class="section-number-2">3</span> 块级元素例子会扩展到与父元素同宽 *</h2>
+</div>
+<div id="outline-container-sec-4" class="outline-2">
+<h2 id="sec-4"><span class="section-number-2">4</span> 行内元素盒子会“收缩包裹”其内容，并且会尽可能包紧*</h2>
+<div class="outline-text-2" id="text-4">
+<ul class="org-ul">
+<li>文本被标记为段落
+</li>
+<li>&lt;strong&gt;标签表示重要，默认以粗体显示
+</li>
+<li>&lt;em&gt;标签表示强调，默认以斜体显示
+</li>
+<li>&lt;abbr&gt;标签表示简写，会加上点下划线
+</li>
+</ul>
+<p>
+块级标记在页面中创建的是盒子，嵌套标记实际上就嵌套盒子。
+</p>
+</div>
+
+<div id="outline-container-sec-4-1" class="outline-3">
+<h3 id="sec-4-1"><span class="section-number-3">4.1</span> 文档对象模型</h3>
+<div class="outline-text-3" id="text-4-1">
+<p>
+HTML结构所对应的文档对象模型（简称DOM），是从浏览器的视角来观察页面中的元素以及每个元素的属性，由此得出这些元素的一个家族树。通过DOM，可以确定元素之间的相互关系。在CSS中引用DOM中特定的位置，就可以选中相应的HTML元素，并修改其样式属性。
+我们通过下面这个例子来理解DOM。
+</p>
+<div class="org-src-container">
+
+<pre class="src src-html">&lt;<span style="color: #00fa9a;">body</span>&gt;
+    &lt;<span style="color: #00fa9a;">section</span>&gt;
+    &lt;<span style="color: #00fa9a;">h1</span>&gt;<span style="font-weight: bold; text-decoration: underline;">The Document Object Model </span>&lt;/<span style="color: #00fa9a;">h1</span>&gt;
+    &lt;<span style="color: #00fa9a;">p</span>&gt; The page's HTML markup structure defines the DOM.&lt;/<span style="color: #00fa9a;">p</span>&gt;
+    &lt;/<span style="color: #00fa9a;">section</span>&gt;
+&lt;/<span style="color: #00fa9a;">body</span>&gt;
+</pre>
+</div>
+<p>
+简而言之，就是通过HTML标记来构建DOM，然后在页面初次加载和用户与页面交互时，使用CSS来修改DOM。
+</p>
+</div>
+</div>
+</div>
